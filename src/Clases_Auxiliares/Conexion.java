@@ -587,6 +587,16 @@ public class Conexion{
         }       
     }
  
+    public void InsertarSinCartel(String inserta){        
+        try {
+            stnt = (Statement) this.conn.createStatement();
+            stnt.executeUpdate(inserta);
+            stnt.close();
+            //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);            
+        } catch (SQLException ex) {            
+        }
+    }
+    
     public boolean Insertar(String inserta) {
         try{            
             stnt = (Statement) this.conn.createStatement();

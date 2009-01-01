@@ -560,7 +560,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         mostrar_Msj_Error("¿Está seguro que desea Modificar?");
         field_tasa.requestFocus();
         combo_tipo.setEnabled(false);
-        field_desde.setEnabled(false);
+        field_desdee.setEnabled(false);
         field_hasta.setEnabled(false);
     }//GEN-LAST:event_menu_modMouseClicked
 
@@ -765,7 +765,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                     ocultar_Msj();
                     insertar();
                     combo_tipo.setEnabled(true);
-                    field_desde.setEnabled(true);
+                    field_desdee.setEnabled(true);
                     field_hasta.setEnabled(true);
                     menuDisponible(true); 
                     modoConsulta();           
@@ -1174,12 +1174,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         if(r_con.Insertar(sql)){            
                 mostrar_Msj_Exito("Tasa de IVA registrada en el Sistema.");
             };           
-        } catch (SQLException ex) {
-            Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {            
+        
             r_con.cierraConexion();
         }
-    }
+
     
     private void eliminar(){
         if (!field_tasa.getText().equals("")){
@@ -1354,7 +1352,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private boolean validarFechas (){
         boolean cumple = false;
         
-        if (fecha.menorFechas(field_desde.getText(), field_hasta.getText())==1){
+        if (fecha.menorFechas(field_desdee.getText(), field_hasta.getText())==1){
             try {
                 String sql = "SELECT * " +
                         " FROM Tasas_IVA" +
@@ -1364,7 +1362,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                 ResultSet res = r_con.Consultar(sql);
                 if (res.next()){
                     String fecha_desde = res.getString(3);
-                    if (fecha.menorFechas(field_desde.getText(), fecha.convertirBarras(fecha_desde))==2){
+                    if (fecha.menorFechas(field_desdee.getText(), fecha.convertirBarras(fecha_desde))==2){
                         cumple=true;
                         ocultar_Msj();
                     }

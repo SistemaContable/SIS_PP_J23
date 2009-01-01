@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
@@ -42,13 +44,13 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     //nombre de la Tabla del SGBD
     private String name_tabla = "ptoventa_x_tipocomprobante";
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
-    private String[] colum_names = {"vxc_id_pto_venta","vxc_id_tipo_comprobante","vxc_numero"};
+    //private String[] colum_names = {"vxc_id_pto_venta","vxc_id_tipo_comprobante","vxc_numero"};
     //nombres reales de los Indices de la Tabla
     private String[] indices_tabla = {"IX_vxc_pto_venta","IX_vxc_tipo_comprobante"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
-    private String[] colum_names_tabla = {"Punto Venta","Tipo Comprobante","Numero"};    
+    private String[] colum_names_tabla = {"Punto Venta","Codigo Comprobante","Tipo Comprobante","Numero"};    
     
    
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento)
@@ -69,6 +71,8 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         restringirCampos();
         r_con = r; 
         
+        cargarComboTipoIVA();
+        combo_pto_venta.setSelectedIndex(0);
         modoConsulta();
         cargarOrdenamientos ();
         detectarOrden ();
@@ -79,7 +83,8 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             tabla.setRowSelectionInterval(0,0); 
             cargar_ValoresPorFila(0);
         }
-        cargarComboTipoIVA();
+//        cargarComboTipoIVA();
+        cargarListaComprobantes();
     }
 
     /**
@@ -105,23 +110,13 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         lab_mensaje = new javax.swing.JLabel();
         lab_tipo = new javax.swing.JLabel();
         lab_tipo_pto_venta = new javax.swing.JLabel();
-        lab_ID = new javax.swing.JLabel();
         lab_tipo1 = new javax.swing.JLabel();
-        combo_comprobante = new javax.swing.JComboBox();
-        lab_tipo_comprobante = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
-        panel_desplazamiento = new javax.swing.JPanel();
-        btn_primero = new javax.swing.JButton();
-        btn_anterior = new javax.swing.JButton();
-        btn_proximo = new javax.swing.JButton();
-        btn_ultimo = new javax.swing.JButton();
-        field_buscar = new javax.swing.JTextField();
-        btn_buscar = new javax.swing.JButton();
-        lab_buscar = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaComprobantes = new javax.swing.JList();
         menu_interno = new javax.swing.JMenuBar();
         menu_alta = new javax.swing.JMenu();
         menu_baja = new javax.swing.JMenu();
-        menu_mod = new javax.swing.JMenu();
         menu_recorrido = new javax.swing.JMenu();
         menu_salir = new javax.swing.JMenu();
 
@@ -153,16 +148,16 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         panel_ayuda.setLayout(panel_ayudaLayout);
         panel_ayudaLayout.setHorizontalGroup(
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ayudaLayout.createSequentialGroup()
+            .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         panel_ayudaLayout.setVerticalGroup(
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_ayudaLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -220,70 +215,62 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         lab_tipo_pto_venta.setForeground(new java.awt.Color(51, 51, 51));
         lab_tipo_pto_venta.setText("Tipo");
 
-        lab_ID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_ID.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lab_ID.setText("ID");
-
         lab_tipo1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_tipo1.setText("Tipo Comprobante:");
-
-        combo_comprobante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        combo_comprobante.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                combo_comprobanteItemStateChanged(evt);
-            }
-        });
-
-        lab_tipo_comprobante.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lab_tipo_comprobante.setForeground(new java.awt.Color(51, 51, 51));
-        lab_tipo_comprobante.setText("Tipo");
+        lab_tipo1.setText("Seleccione los tipos de comprobantes para el Punto de Venta:");
 
         jCheckBox1.setText("Seleccionar todos los Tipos de Comprobantes");
         jCheckBox1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox1MouseClicked(evt);
+            }
+        });
+
+        listaComprobantes.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(listaComprobantes);
 
         javax.swing.GroupLayout panel_datosLayout = new javax.swing.GroupLayout(panel_datos);
         panel_datos.setLayout(panel_datosLayout);
         panel_datosLayout.setHorizontalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lab_mensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panel_datosLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lab_tit_orden)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lab_orden)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lab_tit_modo)
+                .addGap(18, 18, 18)
+                .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
+            .addGroup(panel_datosLayout.createSequentialGroup()
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGap(118, 118, 118)
+                        .addGap(224, 224, 224)
                         .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(88, 88, 88)
-                        .addComponent(btn_cancelar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(40, 40, 40)
+                        .addComponent(btn_cancelar))
                     .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addComponent(lab_orden)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lab_tit_modo)
-                        .addGap(18, 18, 18)
-                        .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jCheckBox1))
-                    .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addComponent(lab_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lab_tipo1)
-                            .addComponent(lab_tipo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(combo_comprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(combo_pto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(34, 34, 34)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lab_tipo_comprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lab_tipo_pto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(191, 191, 191))
+                        .addGap(155, 155, 155)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lab_tipo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                .addComponent(lab_tipo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(combo_pto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lab_tipo_pto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2))))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(panel_datosLayout.createSequentialGroup()
+                .addGap(227, 227, 227)
+                .addComponent(jCheckBox1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_datosLayout.setVerticalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,113 +283,25 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
                             .addComponent(lab_orden)
                             .addComponent(lab_tit_modo)
                             .addComponent(lab_modo))
-                        .addGap(100, 100, 100))
+                        .addGap(62, 62, 62))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(combo_pto_venta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lab_tipo)
-                            .addComponent(lab_tipo_pto_venta)
-                            .addComponent(lab_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lab_tipo_pto_venta))
                         .addGap(18, 18, 18)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_tipo1)
-                            .addComponent(combo_comprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lab_tipo_comprobante))))
+                        .addComponent(lab_tipo1)))
                 .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox1)
-                .addGap(34, 34, 34)
-                .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
-
-        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        btn_primero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-circle-left-2x.png"))); // NOI18N
-        btn_primero.setText("Primero");
-        btn_primero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_primeroActionPerformed(evt);
-            }
-        });
-
-        btn_anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-left-2x.png"))); // NOI18N
-        btn_anterior.setText("Anterior");
-        btn_anterior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_anteriorActionPerformed(evt);
-            }
-        });
-
-        btn_proximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-right-2x.png"))); // NOI18N
-        btn_proximo.setText("Próximo");
-        btn_proximo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_proximoActionPerformed(evt);
-            }
-        });
-
-        btn_ultimo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-circle-right-2x.png"))); // NOI18N
-        btn_ultimo.setText("Último");
-        btn_ultimo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ultimoActionPerformed(evt);
-            }
-        });
-
-        field_buscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                field_buscarKeyPressed(evt);
-            }
-        });
-
-        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png"))); // NOI18N
-        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_buscarActionPerformed(evt);
-            }
-        });
-
-        lab_buscar.setText("Buscar:");
-
-        javax.swing.GroupLayout panel_desplazamientoLayout = new javax.swing.GroupLayout(panel_desplazamiento);
-        panel_desplazamiento.setLayout(panel_desplazamientoLayout);
-        panel_desplazamientoLayout.setHorizontalGroup(
-            panel_desplazamientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_desplazamientoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btn_primero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_anterior)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_proximo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_ultimo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lab_buscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(field_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_buscar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panel_desplazamientoLayout.setVerticalGroup(
-            panel_desplazamientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_desplazamientoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panel_desplazamientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_buscar)
-                    .addGroup(panel_desplazamientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btn_primero)
-                        .addComponent(btn_anterior)
-                        .addComponent(btn_proximo)
-                        .addComponent(btn_ultimo)
-                        .addComponent(field_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lab_buscar)))
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -426,15 +325,6 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         });
         menu_interno.add(menu_baja);
 
-        menu_mod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/reload-4x.png"))); // NOI18N
-        menu_mod.setText(" MODIFICACIÓN");
-        menu_mod.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menu_modMouseClicked(evt);
-            }
-        });
-        menu_interno.add(menu_mod);
-
         menu_recorrido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/magnifying-glass-4x.png"))); // NOI18N
         menu_recorrido.setText(" ORDEN RECORRIDO ");
         menu_interno.add(menu_recorrido);
@@ -456,15 +346,12 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panel_datos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panel_desplazamiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_datos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel_desplazamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addGap(18, 18, 18)
                 .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -481,12 +368,17 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_altaMouseClicked
         menuDisponible(false);
         lab_modo.setText("Alta");
-        vaciarCampos();
-        camposEditables(true);
-        ayudaDisponible(false);
+        vaciarCampos();        
+        //ayudaDisponible(false);
+        
+        
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
-        combo_pto_venta.requestFocus();
+        jCheckBox1.setEnabled(true);
+        listaComprobantes.setEnabled(true);
+        combo_pto_venta.setEnabled(true);
+        
+        combo_pto_venta.setEnabled(false);
     }//GEN-LAST:event_menu_altaMouseClicked
 
     private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_bajaMouseClicked
@@ -496,55 +388,17 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         ayudaDisponible(false);
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
+        listaComprobantes.setEnabled(true);
+        jCheckBox1.setEnabled(true);
+        cargarListaBorrar();
         mostrar_Msj_Error("¿Está seguro que desea Eliminar?");
+        combo_pto_venta.setEnabled(false);
         btn_aceptar.requestFocus();
     }//GEN-LAST:event_menu_bajaMouseClicked
-
-    private void menu_modMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_modMouseClicked
-        menuDisponible(false);
-        lab_modo.setText("Modificación");
-        camposEditables(true);
-        ayudaDisponible(false);
-        btn_aceptar.setEnabled(true);
-        btn_cancelar.setEnabled(true);
-        mostrar_Msj_Error("¿Está seguro que desea Modificar?");        
-    }//GEN-LAST:event_menu_modMouseClicked
-
-    private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeroActionPerformed
-        if (tabla.getRowCount()>0){
-            scrollToCenter(this.tabla,0,0);
-            tabla.setRowSelectionInterval(0,0); 
-            cargar_ValoresPorFila(0);
-        }
-    }//GEN-LAST:event_btn_primeroActionPerformed
-
-    private void btn_ultimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ultimoActionPerformed
-        if (tabla.getRowCount()>0){
-            scrollToCenter(this.tabla,tabla.getRowCount(),tabla.getRowCount());
-            tabla.setRowSelectionInterval(tabla.getRowCount()-1,tabla.getRowCount()-1); 
-            cargar_ValoresPorFila(tabla.getRowCount()-1);
-        }
-    }//GEN-LAST:event_btn_ultimoActionPerformed
 
     private void menu_salirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_salirMouseClicked
         this.dispose();
     }//GEN-LAST:event_menu_salirMouseClicked
-
-    private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anteriorActionPerformed
-        if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
-            tabla.setRowSelectionInterval(fila_ultimo_registro-1,fila_ultimo_registro-1);
-            scrollCellToView(this.tabla,fila_ultimo_registro-1,fila_ultimo_registro-1); 
-            cargar_ValoresPorFila(fila_ultimo_registro-1);  
-        }
-    }//GEN-LAST:event_btn_anteriorActionPerformed
-
-    private void btn_proximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proximoActionPerformed
-        if ((fila_ultimo_registro+1 >= 0)&&(fila_ultimo_registro+1 < tabla.getRowCount())){                      
-            tabla.setRowSelectionInterval(fila_ultimo_registro+1,fila_ultimo_registro+1); 
-            scrollCellToView(this.tabla,fila_ultimo_registro+1,fila_ultimo_registro+1);
-            cargar_ValoresPorFila(fila_ultimo_registro+1);   
-        }
-    }//GEN-LAST:event_btn_proximoActionPerformed
 
     public int buscarValor (String valor){
         if (tabla.getRowCount()>0){
@@ -670,31 +524,13 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         return s1Length - s2Length;
     }
 //*******************************************************************************************************
-    
-    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        accion_Buscar();
-    }//GEN-LAST:event_btn_buscarActionPerformed
-    
-    private void accion_Buscar(){
-        int rta = buscarValor(field_buscar.getText());
-        if (rta >= 0){
-            posicionarAyuda(field_buscar.getText());
-            //ocultar_Msj();
-            //cargar_ValoresPorFila(rta);
-            //scrollCellToView(this.tabla,rta,1);
-            //tabla.setRowSelectionInterval(rta, rta);
-        }
-        else{
-            field_buscar.requestFocus();
-            String campobuscado = colum_names_tabla[relacion_indices_conTabla[numero_ordenamiento_elegido]];
-            mostrar_Msj_Error("No se encontro '"+campobuscado+"' para el valor : "+field_buscar.getText());
-        }  
-    }
+        
     
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         ocultar_Msj();
         menuDisponible(true); 
-        modoConsulta();
+        modoConsulta();        
+        listaComprobantes.clearSelection();
         /*if (field_tasa.getText().equals("")){
             cargar_ValoresPorFila(this.fila_ultimo_registro);
         }
@@ -719,57 +555,22 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         }
         else{
             if (lab_modo.getText().equals("Baja")){
-                if (!lab_tipo_pto_venta.getText().equals("")){
-                    if(!existe(Integer.parseInt(lab_ID.getText()))){
-                        mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
-                        //field_tasa.requestFocus();
-                    }
-                    else{                  
-                        ocultar_Msj();
-                        eliminar();                    
-                        menuDisponible(true); 
-                        modoConsulta();
-                        vaciarCampos();
-                        updateTabla(); 
-                    }
+                if (!lab_tipo_pto_venta.getText().equals("")){                                        
+                    ocultar_Msj();
+                    eliminar();                    
+                    menuDisponible(true); 
+                    modoConsulta();
+                    vaciarCampos();
+                    updateTabla();                    
                 }
-                else{
-                    mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
+                else
+                {
+                mostrar_Msj_Error("Por favor, seleccione un Punto de Venta");
                 }
             }
-            else{
-                if (lab_modo.getText().equals("Modificación")){
-                    if (!lab_tipo_pto_venta.getText().equals("")){
-                        if(!existe(Integer.parseInt(lab_tipo_pto_venta.getText()))){
-                            mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
-                            //field_tasa.requestFocus();
-                        }
-                        else{
-                            if (camposCompletos()){
-                                ocultar_Msj();
-                                modificar();
-                                menuDisponible(true); 
-                                modoConsulta();
-                                updateTabla();              
-                            }
-                            else{
-                                mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
-                            }                                                
-                        }
-                    }
-                    else{
-                        mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
-                    }
-                }
-            }
-        }
+        }                                    
+       cargarListaComprobantes();
     }//GEN-LAST:event_btn_aceptarActionPerformed
-
-    private void field_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_buscarKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            accion_Buscar();            
-        }
-    }//GEN-LAST:event_field_buscarKeyPressed
 
     private void combo_pto_ventaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_pto_ventaItemStateChanged
         try {
@@ -779,17 +580,22 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
 
             while(res.next()){
                lab_tipo_pto_venta.setText(res.getString(2).toUpperCase());
-            }
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Asignar_Pto_Venta_Comprobante.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             r_con.cierraConexion();
         }
+        updateTabla();
     }//GEN-LAST:event_combo_pto_ventaItemStateChanged
 
-    private void combo_comprobanteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_comprobanteItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_combo_comprobanteItemStateChanged
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        listaComprobantes.clearSelection();                
+        listaComprobantes.setSelectedIndex(0);
+        if(jCheckBox1.isSelected())
+            listaComprobantes.setSelectionInterval(0,listaComprobantes.getModel().getSize());
+        
+    }//GEN-LAST:event_jCheckBox1MouseClicked
     
     private void cargarOrdenamientos () {         
         ButtonGroup grupo_recorridos;
@@ -845,8 +651,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
 
             ResultSet res = pstm.executeQuery();
                 
-            while(res.next()){
-                lab_ID.setText(res.getString(1));
+            while(res.next()){                
                 combo_pto_venta.setSelectedItem(res.getString(2));                                                                
             }
             res.close();
@@ -862,11 +667,12 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
      * @param fila indica una fila valida dentro de la tabla, gestiona la posicion fila_registro
      */
     private void cargar_ValoresPorFila (int fila){
-        if ((fila >= 0)&&(fila < tabla.getRowCount())){
+    /*    if ((fila >= 0)&&(fila < tabla.getRowCount())){
             fila_ultimo_registro=fila;
             String codigo = String.valueOf(tabla.getValueAt(fila, 0));
             cargar_Campos(Integer.parseInt(codigo));
         }
+        */
     }
     
     /**
@@ -890,7 +696,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         columna.setMaxWidth(100);*/
         
         if (!lab_tipo_pto_venta.getText().equals("")){
-            posicionarAyuda(lab_tipo_pto_venta.getText());
+            //posicionarAyuda(lab_tipo_pto_venta.getText());
         }
         else{
             if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
@@ -1015,33 +821,23 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
      *         al modelo de la jTable
      */
     public Object [][] getDatos(){                 
-        Object[][] data = new String[getCantidad_Cuentas ()][colum_names.length];  
+        Object[][] data = new String[getCantidad_Cuentas ()][4];  
         //realizamos la consulta sql y llenamos los datos en "Object"
         try{    
-            if (colum_names.length>=0){
+            if (4>=0){
                 r_con.Connection();
-
-                String campos = colum_names[0];
-                for (int i = 1; i < colum_names.length; i++) {
-                    campos+=",";
-                    campos+=colum_names[i];
-                }
-
-                String consulta = ("SELECT "+campos+" "+
-                                   "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+"))");
+                int puntoVenta=combo_pto_venta.getSelectedIndex()+1;
+                String consulta = ("select pv_descripcion,tc_codigo,tc_descripcion,vxc_numero "
+                        + "         from punto_venta,tipo_comprobante,ptoventa_x_tipocomprobante "
+                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_codigo="+puntoVenta);
 
                 PreparedStatement pstm = r_con.getConn().prepareStatement(consulta);
 
                 ResultSet res = pstm.executeQuery();
                 int i = 0;
                 while(res.next()){
-                    for (int j = 0; j < colum_names.length; j++) {  
-                        if ((j==2)||(j==3)){
-                            data[i][j] = fecha.convertirBarras(res.getString(j+1));
-                        }
-                        else{
-                            data[i][j] = res.getString(j+1);
-                        }
+                    for (int j = 0; j < 4; j++) {                          
+                        data[i][j] = res.getString(j+1);                        
                     }     
                     i++;
                 }
@@ -1083,41 +879,39 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     
     private void insertar(){             
         r_con.Connection();
-        String sql = "INSERT INTO "+name_tabla
-                   + " VALUES('"+combo_pto_venta.getSelectedItem()+"','"+
-                                 combo_comprobante.getSelectedItem()+"',0"+
-                    ")";
-        
-        if(r_con.Insertar(sql)){            
-                mostrar_Msj_Exito("Tipo Comprobante asignado al Punto de Venta registrada en el Sistema.");
-        };
+        int puntoVenta=Integer.parseInt((String)combo_pto_venta.getSelectedItem());        
+        for(int i:listaComprobantes.getSelectedIndices()){                            
+            int comprobante=i+1;            
+            String sql = "INSERT INTO "+name_tabla
+                       + " VALUES("+puntoVenta+","+comprobante+",0)";                        
+            r_con.InsertarSinCartel(sql);                                
+        }
     }
     
     private void eliminar(){
         if (!lab_tipo_pto_venta.getText().equals("")){
+            int puntoVenta=Integer.parseInt((String)combo_pto_venta.getSelectedItem());        
             r_con.Connection();
-            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE vxc_id_pto_venta = "+combo_pto_venta.getSelectedItem()+" and vxc_id_tipo_comprobante="+combo_comprobante.getSelectedItem());         
+            for(int i:listaComprobantes.getSelectedIndices()){
+                String cadena=(String)listaComprobantes.getModel().getElementAt(i);
+                String [] separada; 
+                separada = cadena.split("-");                                              
+                int codigo_comprobante=Integer.parseInt(separada[0].trim());                 
+                r_con.ActualizarSinCartel("DELETE FROM "+name_tabla+" WHERE vxc_id_tipo_comprobante="+codigo_comprobante+" and vxc_id_pto_venta = "+puntoVenta);        
+            }            
             r_con.cierraConexion();
         }
     }
     
-    private void modificar(){
-        r_con.Connection(); 
-        
-        // Controlo los campos Numericos si son en blanco hay que ponerle null, sino da error
-        // ej:String dni = field_codigo.getText();        
-        
-        r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
-                + "vxc_id_pto_venta = '"+combo_pto_venta.getSelectedItem()+"', "
-                + "vxc_id_tipo_comprobante = '"+combo_comprobante.getSelectedItem()+"', "                
-                + "WHERE vxc_id_pto_venta = "+lab_tipo_pto_venta.getText());
-        r_con.cierraConexion();
-    }
+    
     
     private void modoConsulta (){
-        lab_modo.setText("Consulta");
+        lab_modo.setText("Consulta");  
+        combo_pto_venta.setEnabled(true);
+        listaComprobantes.setEnabled(false);
         btn_aceptar.setEnabled(false);
         btn_cancelar.setEnabled(false);
+        jCheckBox1.setEnabled(false);
         camposEditables(false); 
         ayudaDisponible(true);
     }
@@ -1125,28 +919,23 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     
     private void camposEditables (boolean condicion){
         combo_pto_venta.setEditable(condicion);
-        combo_comprobante.setEditable(condicion);
+
     }
     
     private void ayudaDisponible(boolean condicion){
-        btn_primero.setEnabled(condicion);
-        btn_anterior.setEnabled(condicion);
-        btn_proximo.setEnabled(condicion);
-        btn_ultimo.setEnabled(condicion);
-        field_buscar.setEnabled(condicion);
-        btn_buscar.setEnabled(condicion);
 
+        
+        
+        
         tabla.setVisible(condicion);
     }
     
     private void vaciarCampos(){
-        if(combo_pto_venta.getItemCount()>0){
-            combo_pto_venta.setSelectedIndex(0);
-        }        
+        
     }
     
     private boolean camposCompletos (){
-        if((combo_pto_venta.getSelectedIndex()>=0)&&(combo_comprobante.getSelectedIndex()>=0))         
+        if((combo_pto_venta.getSelectedIndex()>=0))         
           {
             return true;
         }
@@ -1157,8 +946,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     
     private void menuDisponible (boolean disponible){
         menu_alta.setEnabled(disponible);
-        menu_baja.setEnabled(disponible);
-        menu_mod.setEnabled(disponible);
+        menu_baja.setEnabled(disponible);        
         menu_recorrido.setEnabled(disponible);
         menu_salir.setEnabled(disponible);
 
@@ -1181,37 +969,27 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_aceptar;
-    private javax.swing.JButton btn_anterior;
-    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_cancelar;
-    private javax.swing.JButton btn_primero;
-    private javax.swing.JButton btn_proximo;
-    private javax.swing.JButton btn_ultimo;
-    private javax.swing.JComboBox combo_comprobante;
     private javax.swing.JComboBox combo_pto_venta;
-    private javax.swing.JTextField field_buscar;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lab_ID;
-    private javax.swing.JLabel lab_buscar;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lab_mensaje;
     private javax.swing.JLabel lab_modo;
     private javax.swing.JLabel lab_orden;
     private javax.swing.JLabel lab_tipo;
     private javax.swing.JLabel lab_tipo1;
-    private javax.swing.JLabel lab_tipo_comprobante;
     private javax.swing.JLabel lab_tipo_pto_venta;
     private javax.swing.JLabel lab_tit_modo;
     private javax.swing.JLabel lab_tit_orden;
+    private javax.swing.JList listaComprobantes;
     private javax.swing.JMenu menu_alta;
     private javax.swing.JMenu menu_baja;
     private javax.swing.JMenuBar menu_interno;
-    private javax.swing.JMenu menu_mod;
     private javax.swing.JMenu menu_recorrido;
     private javax.swing.JMenu menu_salir;
     private javax.swing.JPanel panel_ayuda;
     private javax.swing.JPanel panel_datos;
-    private javax.swing.JPanel panel_desplazamiento;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
@@ -1246,5 +1024,111 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             r_con.cierraConexion();
         } 
     }
+    
+    public void cargarListaBorrar(){
+        try{                                        
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select tc_codigo,tc_descripcion,vxc_numero "
+                        + "         from punto_venta,tipo_comprobante,ptoventa_x_tipocomprobante "
+                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_codigo="+combo_pto_venta.getSelectedIndex()+1);
+            DefaultListModel modelo = new DefaultListModel();
+            while(rs.next()){       
+                String cadena=rs.getString(1)+" - "+rs.getString(2);
+                cadena=validar.soloPrimerMayus(cadena);
+                modelo.addElement(cadena);        
+            }
+            listaComprobantes.setModel(modelo);
+            
+            
+            // ##################### Multiple seleccion ####################
+            // me permite seleccionar varios elementos dentro de la lista
+            
+            listaComprobantes.setSelectionModel(new DefaultListSelectionModel() {
+            private int i0 = -1;
+            private int i1 = -1;
+            public void setSelectionInterval(int index0, int index1) {
+                if(i0 == index0 && i1 == index1){
+                    if(getValueIsAdjusting()){
+                         setValueIsAdjusting(false);
+                         setSelection(index0, index1);
+                    }
+                }else{
+                    i0 = index0;
+                    i1 = index1;
+                    setValueIsAdjusting(false);
+                    setSelection(index0, index1);
+                }
+            }
+            private void setSelection(int index0, int index1){
+                if(super.isSelectedIndex(index0)) {
+                    super.removeSelectionInterval(index0, index1);
+                }else {
+                    super.addSelectionInterval(index0, index1);
+                }
+            }
+        });
+            
+   //    ############################################################
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Asignar_Pto_Venta_Comprobante.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
+    }
+    
+    
+    
+    public void cargarListaComprobantes(){
+        try{                                        
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select * from tipo_comprobante");
+            DefaultListModel modelo = new DefaultListModel();
+            while(rs.next()){       
+                String cadena=rs.getString(1)+" - "+rs.getString(2);
+                cadena=validar.soloPrimerMayus(cadena);
+                modelo.addElement(cadena);        
+            }
+            listaComprobantes.setModel(modelo);
+            
+            
+            // ##################### Multiple seleccion ####################
+            // me permite seleccionar varios elementos dentro de la lista
+            
+            listaComprobantes.setSelectionModel(new DefaultListSelectionModel() {
+            private int i0 = -1;
+            private int i1 = -1;
+            public void setSelectionInterval(int index0, int index1) {
+                if(i0 == index0 && i1 == index1){
+                    if(getValueIsAdjusting()){
+                         setValueIsAdjusting(false);
+                         setSelection(index0, index1);
+                    }
+                }else{
+                    i0 = index0;
+                    i1 = index1;
+                    setValueIsAdjusting(false);
+                    setSelection(index0, index1);
+                }
+            }
+            private void setSelection(int index0, int index1){
+                if(super.isSelectedIndex(index0)) {
+                    super.removeSelectionInterval(index0, index1);
+                }else {
+                    super.addSelectionInterval(index0, index1);
+                }
+            }
+        });
+            
+   //    ############################################################
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Asignar_Pto_Venta_Comprobante.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
+    }
+    
 }
 
+    

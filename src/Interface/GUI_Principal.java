@@ -1113,7 +1113,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.jDesktopPane1.add(np);
-        try {        
+        try {
             np.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1139,6 +1139,25 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem30ActionPerformed
+        IGUI_Asignar_Pto_Venta_Comprobante np = new IGUI_Asignar_Pto_Venta_Comprobante(r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        y=100;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();        
+    }//GEN-LAST:event_jMenuItem30ActionPerformed
     
     
     public void abrirSesion (){
@@ -1230,11 +1249,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem29;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
