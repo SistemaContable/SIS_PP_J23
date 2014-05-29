@@ -282,6 +282,31 @@ public class Conexion{
          return v;
      }
     
+          public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
+         Vector<Vector<String>>v=new Vector();         
+         try{
+            //lass.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");             
+            //conn= DriverManager.getConnection(con1);
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("select mod_descripcion,tar_descripcion from tarea,permiso,modulo "+
+            "where mod_id_modulo=per_id_modulo and per_id_tarea=tar_id_tarea and per_id_perfil="+perfil);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int numeroColumnas = rsmd.getColumnCount();                                                
+            while(rs.next()){
+                Vector<String> arregloAux=new Vector();
+                for(int i=0;i<numeroColumnas;i++){
+                    arregloAux.add(rs.getString(i+1));                                        
+                }
+                v.add(arregloAux);                
+            }                                  
+         }
+         catch(Exception e){System.out.println(e.getMessage());
+                            e.printStackTrace();
+                            return null;
+         }
+         return v;
+     }
+     
     
 }
  

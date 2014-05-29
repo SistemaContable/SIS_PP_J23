@@ -16,8 +16,7 @@ public class GUI_Principal extends javax.swing.JFrame {
      * Creates new form GUI_Principal
      */
     public GUI_Principal() {
-        cont = getContentPane();
-        
+        cont = getContentPane();        
         initComponents();
         
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
@@ -51,6 +50,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -160,6 +161,20 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
+        jMenu4.setText("Usuarios");
+
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem9.setText("Nuevo");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem9);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -334,6 +349,22 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.requestFocus();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        GUI_Usuario guiU=new GUI_Usuario();                
+        //l.Listado_Articulos();
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - guiU.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        guiU.setLocation(x, guiU.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        guiU.setVisible(true);
+        this.jDesktopPane1.add(guiU);
+        guiU.moveToFront();
+        guiU.requestFocus();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -374,6 +405,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -383,5 +415,6 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }
