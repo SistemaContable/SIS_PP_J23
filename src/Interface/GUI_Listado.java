@@ -9,19 +9,24 @@ package Interface;
 import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
 import java.awt.print.PrinterException;
-import java.sql.ResultSet;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Vector;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JTable;
 import javax.swing.JTable.PrintMode;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
+import Clases_Auxiliares.Validaciones;
 
 /**
  *
@@ -32,13 +37,15 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private ComponentListHelp rc = new ComponentListHelp();
-    private Conexion r_con = new Conexion();
+    private Conexion r_con = new Conexion();    
+    private String consulta_Vigente;
   
     
     public GUI_Listado() {
-        initComponents();      
-       
+        initComponents();                 
+        Listado_Articulos("SELECT * FROM Articulos");
+        jCheckBox1.setSelected(true);
+        jLabel4.setVisible(false);
     }
 
     /**
@@ -62,10 +69,13 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
         jTextField2 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -75,6 +85,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setFocusable(false);
         jScrollPane1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         jTable1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -105,15 +116,15 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         jLabel1.setText("Listado:");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
-        jButton2.setText("Imprimir");
+        jButton2.setText("Imprimir Reporte");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
-        jButton3.setText("Reporte");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/previsualizar.png"))); // NOI18N
+        jButton3.setText("Visualizar Reporte");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -121,7 +132,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         });
 
         buttonGroup1.add(jCheckBox1);
-        jCheckBox1.setText("Incluir Todos");
+        jCheckBox1.setText("Todos los Valores");
         jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBox1ItemStateChanged(evt);
@@ -129,7 +140,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         });
 
         buttonGroup1.add(jCheckBox2);
-        jCheckBox2.setText("Solo uno");
+        jCheckBox2.setText("Único Valor");
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox2ActionPerformed(evt);
@@ -137,69 +148,101 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         });
 
         buttonGroup1.add(jCheckBox3);
-        jCheckBox3.setText("Rango");
+        jCheckBox3.setText(" Rango de Valores");
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox3ActionPerformed(evt);
             }
         });
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
+        jButton4.setText("Aplicar Filtro");
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Filtros:");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("-");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel4.setText("texto error");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBox2)
-                            .addComponent(jCheckBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addGap(50, 50, 50)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCheckBox3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jButton4))
+                .addGap(171, 171, 171)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(75, 75, 75))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCheckBox2)
+                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBox3)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jCheckBox3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox1))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))))
-                .addGap(32, 32, 32))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4)))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -223,33 +266,34 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JasperReport report;
-        JasperPrint print;
         try {
             // TODO add your handling code here:         
-                        
-            ResultSet rs;
-            if (jCheckBox1.isSelected()){
-                rs = r_con.Consultar("SELECT * FROM Articulos");
-            }
-            else{
-                if (jCheckBox2.isSelected()){
-                    rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo = "+jTextField1.getText());
-                } 
-                else{
-                    rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo >= "+jTextField1.getText()+" and art_codigo <= "+jTextField2.getText());
-                }
-            }
             
-            JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(rs);            
+            JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));            
+            //localizo el reporte
+            JasperReport report = JasperCompileManager.compileReport("src/Reportes/rep_articulo.jrxml");
+            //cargo los datos
+            JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
             
-            report = JasperCompileManager.compileReport("src/Reportes/rep_articulo.jrxml");
-            print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
-            
-            //report = JasperCompileManager.compileReport("src/Reportes/report2.jrxml");
+            //si se quiere pasar la conexion
             //print = JasperFillManager.fillReport(report, null,r_con.getConn());
+           
+            //creo un objeto Visor del Reporte
+            JasperViewer jviewer = new JasperViewer(print,false);
+            jviewer.setTitle("Reporte de Artículos."); 
             
-            JasperViewer.viewReport(print,false);           
+            //quito el boton de imprimir del Visor
+            JRootPane JRP = (JRootPane) jviewer.getComponent(0);           
+            JLayeredPane JLP = (JLayeredPane) JRP.getComponent(1);
+            JPanel JP = (JPanel) JLP.getComponent(0);
+            JPanel JP2 = (JPanel) JP.getComponent(0);
+            JRViewer JRV = (JRViewer) JP2.getComponent(0);
+            JPanel JP3 = (JPanel) JRV.getComponent(0);            
+            //COMPONENTE 0 es el Boton Guardar, el 1 el es de Imprimir
+            JP3.getComponent(1).setEnabled(false);
+            
+            jviewer.setVisible(true);            
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -283,6 +327,35 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        Validaciones v = new Validaciones();
+        if (jCheckBox1.isSelected()){
+            jLabel4.setVisible(false);
+            Listado_Articulos("SELECT * FROM Articulos");
+        }
+        
+        if (jCheckBox2.isSelected()){
+            if (!"".equals(jTextField1.getText())){
+                if (v.isInt(jTextField1.getText())){
+                    jLabel4.setVisible(false);
+                    Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo = "+jTextField1.getText());
+                }
+                else{
+                    jLabel4.setVisible(true);
+                    jLabel4.setText("Ingrese un valor numerico.");
+                }
+            }
+            else{ 
+                jLabel4.setVisible(true);
+                jLabel4.setText("Ingrese un valor numerico.");
+            }
+        }
+        if (jCheckBox3.isSelected()){
+            Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     
 
         
@@ -292,10 +365,14 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
@@ -303,17 +380,21 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     
-   public void Listado_Articulos (){
+   public void Listado_Articulos (String consulta){
         jLabel1.setText("Listado de Artículos: ");
         r_con.Connection();  
-        DefaultTableModel modelo=new DefaultTableModel();
-        jTable1.setModel(modelo);
+        DefaultTableModel modelo = new DefaultTableModel();
+        jTable1.setModel(modelo);       
         String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};                           
-        modelo.setColumnIdentifiers(nombre_columnas);        
-        Vector<Vector<String>>v = r_con.getContenidoTabla("Articulos");
-        for(Vector<String>a:v)
+        modelo.setColumnIdentifiers(nombre_columnas);
+        consulta_Vigente = consulta;
+        Vector <Vector<String>> v = r_con.getContenidoTabla(consulta);
+        for(Vector <String> a : v)
             modelo.addRow(a);
    }
+   
+   
+  // sadiofnhhhhhhhhhhhhhhhhhhhhfioasjfnfoiasnfioasnfiasiofnasiofnsainfiasfioasnfa
    
    public void Listado_Tasas (){
         jLabel1.setText("Listado de Tasas de IVA:");
@@ -322,10 +403,18 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         jTable1.setModel(modelo);
         String [] nombre_columnas = {"Clave de Tasa de Iva","Descripcion","Sigla"};                           
         modelo.setColumnIdentifiers(nombre_columnas);        
-        Vector<Vector<String>>v = r_con.getContenidoTabla("Tasas_IVA");
+        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from Tasas_IVA");
         for(Vector<String>a:v)
             modelo.addRow(a);
    }
+   
+   public void reiniciarJTable(JTable Tabla){
+        DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
+        while(modelo.getRowCount()>0)modelo.removeRow(0);
+ 
+        TableColumnModel modCol = Tabla.getColumnModel();
+        while(modCol.getColumnCount()>0)modCol.removeColumn(modCol.getColumn(0));
+    }
    
 
 }

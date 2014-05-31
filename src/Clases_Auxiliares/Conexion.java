@@ -258,13 +258,13 @@ public class Conexion{
          return id_columnas;
      }
      
-     public Vector<Vector<String>> getContenidoTabla(String tabla){
+     public Vector<Vector<String>> getContenidoTabla(String consulta){
          Vector<Vector<String>>v=new Vector();         
          try{
             //lass.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");             
             //conn= DriverManager.getConnection(con1);
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from "+tabla);
+            ResultSet rs = st.executeQuery(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
             int numeroColumnas = rsmd.getColumnCount();                                                
             while(rs.next()){
