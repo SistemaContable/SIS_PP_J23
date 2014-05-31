@@ -27,6 +27,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
 import Clases_Auxiliares.Validaciones;
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 /**
  *
@@ -71,7 +72,6 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
@@ -100,6 +100,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.setFocusable(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
@@ -131,6 +132,12 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             }
         });
 
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
+            }
+        });
+
         buttonGroup1.add(jCheckBox1);
         jCheckBox1.setText("Todos los Valores");
         jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
@@ -155,6 +162,13 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             }
         });
 
+        jTextField2.setNextFocusableComponent(jButton4);
+        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField2FocusLost(evt);
+            }
+        });
+
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton4.setText("Aplicar Filtro");
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -166,9 +180,6 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Filtros:");
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("-");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
@@ -184,27 +195,25 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBox2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3)))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jCheckBox3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addComponent(jButton4))
                 .addGap(171, 171, 171)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -238,8 +247,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)))
                 .addGap(30, 30, 30))
@@ -292,7 +300,9 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             //COMPONENTE 0 es el Boton Guardar, el 1 el es de Imprimir
             JP3.getComponent(1).setEnabled(false);
             
-            jviewer.setVisible(true);            
+            jviewer.setVisible(true); 
+            JasperPrintManager.printReport(print, false);          
+
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -343,18 +353,58 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 }
                 else{
                     jLabel4.setVisible(true);
+                    jTextField1.requestFocus();
+                    jTextField1.selectAll();
                     jLabel4.setText("Ingrese un valor numerico.");
                 }
             }
             else{ 
                 jLabel4.setVisible(true);
+                jTextField1.requestFocus();
                 jLabel4.setText("Ingrese un valor numerico.");
             }
         }
         if (jCheckBox3.isSelected()){
-            Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
+            if (!"".equals(jTextField1.getText()) || !"".equals(jTextField2.getText())){
+                if (v.isInt(jTextField1.getText()) && v.isInt(jTextField2.getText())){
+                    jLabel4.setVisible(false);
+                    Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
+                }
+                else{
+                    jLabel4.setVisible(true);
+                    jTextField1.requestFocus();
+                    jLabel4.setText("Ingrese valores numericos.");
+                }
+            }
+            else{ 
+                jLabel4.setVisible(true);
+                jTextField1.requestFocus();
+                jLabel4.setText("Ingrese valores numericos.");
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        // TODO add your handling code here:
+        Validaciones v = new Validaciones();
+        if ("".equals(jTextField1.getText()) || !v.isInt(jTextField1.getText())){
+           jLabel4.setVisible(true);
+           jTextField1.requestFocus();
+           jTextField1.selectAll();
+           jLabel4.setText("Ingrese un valor numerico."); 
+        }        
+    }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
+          // TODO add your handling code here:
+        Validaciones v = new Validaciones();
+        if ("".equals(jTextField2.getText()) || !v.isInt(jTextField2.getText())){
+           jLabel4.setVisible(true);
+           jTextField2.requestFocus();
+           jTextField2.selectAll();
+           jLabel4.setText("Ingrese un valor numerico.");         
+        }  
+    }//GEN-LAST:event_jTextField2FocusLost
 
     
 
@@ -371,7 +421,6 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

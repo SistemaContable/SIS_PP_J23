@@ -40,7 +40,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
 
     public void cargarComboBox(){
         jComboBox1.removeAllItems();
-        Vector<Vector<String>>v = r_con.getContenidoTabla("perfil");
+        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from perfil");
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0)+" - "+a.elementAt(1));
         }        
@@ -263,21 +263,6 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jComboBox1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox1FocusLost
-        // TODO add your handling code here:
-        Vector<Vector<String>>v = r_con.getContenidoTabla("perfil");
-        int item=jComboBox1.getSelectedIndex();
-        id_perfil=0;        
-        int i=0;
-        for(Vector<String>a:v){
-            if(i++==item){
-               id_perfil=Integer.parseInt(a.elementAt(0));               
-            }
-        }                
-        cargarTabla(id_perfil);
-        jButton1.requestFocus();
-    }//GEN-LAST:event_jComboBox1FocusLost
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String nombre,apellido,usuario,contraseña,perfil;
@@ -288,7 +273,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         char[]pas=jPasswordField1.getPassword();
         for(char c:pas)
             contraseña+=c;
-        Vector<Vector<String>>v = r_con.getContenidoTabla("usuario");
+        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from usuario");
         int id_usuario=v.size()+1;        
         System.out.println(id_usuario);
         String nuevoUsuario="insert into usuario values("+id_usuario+",'"+usuario+"','"+nombre+"','"+apellido+"','"+contraseña+"',"+id_perfil+")";
@@ -316,17 +301,32 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         jComboBox1.requestFocus();
     }//GEN-LAST:event_jPasswordField1FocusLost
 
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+    private void jComboBox1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox1FocusLost
         // TODO add your handling code here:
-        Vector<Vector<String>>v = r_con.getContenidoTabla("perfil");
+        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from perfil");
         int item=jComboBox1.getSelectedIndex();
-        id_perfil=0;        
+        id_perfil=0;
         int i=0;
         for(Vector<String>a:v){
             if(i++==item){
-               id_perfil=Integer.parseInt(a.elementAt(0));               
+                id_perfil=Integer.parseInt(a.elementAt(0));
             }
-        }                
+        }
+        cargarTabla(id_perfil);
+        jButton1.requestFocus();
+    }//GEN-LAST:event_jComboBox1FocusLost
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from perfil");
+        int item=jComboBox1.getSelectedIndex();
+        id_perfil=0;
+        int i=0;
+        for(Vector<String>a:v){
+            if(i++==item){
+                id_perfil=Integer.parseInt(a.elementAt(0));
+            }
+        }
         cargarTabla(id_perfil);
         jButton1.requestFocus();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
