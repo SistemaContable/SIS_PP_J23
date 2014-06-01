@@ -16,6 +16,7 @@
             </Property>
             <Property name="mnemonic" type="int" value="49"/>
             <Property name="text" type="java.lang.String" value="Auxiliares"/>
+            <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
           </Properties>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="jMenu3">
@@ -70,6 +71,7 @@
             </Property>
             <Property name="mnemonic" type="int" value="50"/>
             <Property name="text" type="java.lang.String" value="Art&#xed;culos"/>
+            <Property name="name" type="java.lang.String" value="M1" noResource="true"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
@@ -78,6 +80,7 @@
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alta"/>
+                <Property name="name" type="java.lang.String" value="T11" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
@@ -89,6 +92,7 @@
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Baja"/>
+                <Property name="name" type="java.lang.String" value="T12" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
@@ -100,6 +104,7 @@
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Modificaci&#xf3;n"/>
+                <Property name="name" type="java.lang.String" value="T13" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
@@ -111,6 +116,7 @@
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consulta"/>
+                <Property name="name" type="java.lang.String" value="T14" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem5ActionPerformed"/>
@@ -122,6 +128,7 @@
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Listado"/>
+                <Property name="name" type="java.lang.String" value="T15" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem6ActionPerformed"/>
@@ -135,6 +142,7 @@
               <Image iconType="3" name="/Iconos/articulo.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Usuarios"/>
+            <Property name="name" type="java.lang.String" value="M3" noResource="true"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">

@@ -164,7 +164,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
    public void Listado_Articulos (){
        jLabel1.setText("Listado de Artículos: ");
        r_con.Connection();  
-        DefaultTableModel modelo=new DefaultTableModel();
+        DefaultTableModel modelo=new DefaultTableModel();        
         jTable1.setModel(modelo);
         String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};                           
         modelo.setColumnIdentifiers(nombre_columnas);        

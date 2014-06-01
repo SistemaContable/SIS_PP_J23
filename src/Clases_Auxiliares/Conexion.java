@@ -107,8 +107,9 @@ public class Conexion{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String connectionUrl;            
             connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";
+            
             //connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
-            //connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=PP;integratedSecurity=true";
+            connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
             conn = DriverManager.getConnection(connectionUrl);            
             //JOptionPane.showMessageDialog(null,"CONEXIÓN ESTABLECIDA CON SQL-SERVER!", "Conexión Exitosa", JOptionPane.INFORMATION_MESSAGE);           
         }
@@ -236,6 +237,31 @@ public class Conexion{
         
     }
     
+    public boolean InsertarSinCartel(String inserta) {
+        try{
+            Statement st = (Statement) this.conn.createStatement();
+            st.executeUpdate(inserta);            
+            return (true);
+        }
+        catch(SQLException ex)
+        {
+            if (ex.getErrorCode()==2627){
+                    JOptionPane.showMessageDialog(null, "El campo clave del Registro ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+            if (ex.getErrorCode()==8152){
+                    JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+            if (ex.getErrorCode()==547){
+                    JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                System.err.println("Warning: " + ex.getMessage()+" - "+ex.getErrorCode());
+            }   
+            return (false);
+        }
+        
+    }
+    
     public String [] getIdentificadoresColumnas(String tabla){
          String []id_columnas;
          try{
@@ -284,15 +310,16 @@ public class Conexion{
     
           public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
          Vector<Vector<String>>v=new Vector();         
-         try{
-            //lass.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");             
-            //conn= DriverManager.getConnection(con1);
+         try{            
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select mod_descripcion,tar_descripcion from tarea,permiso,modulo "+
-            "where mod_id_modulo=per_id_modulo and per_id_tarea=tar_id_tarea and per_id_perfil="+perfil);
+            // distinct lo que hace es sacar los modulos repetidos en el campo mod_descripcion 
+            ResultSet rs = st.executeQuery(""
+          + "select distinct mod_descripcion "
+          + "from permiso,modulo "+
+            "where per_id_modulo=mod_id_modulo and per_id_perfil="+perfil);
             ResultSetMetaData rsmd = rs.getMetaData();
-            int numeroColumnas = rsmd.getColumnCount();                                                
-            while(rs.next()){
+            int numeroColumnas = rsmd.getColumnCount();
+            while(rs.next()){                
                 Vector<String> arregloAux=new Vector();
                 for(int i=0;i<numeroColumnas;i++){
                     arregloAux.add(rs.getString(i+1));                                        
@@ -307,6 +334,7 @@ public class Conexion{
          return v;
      }
      
+          
     
 }
  
