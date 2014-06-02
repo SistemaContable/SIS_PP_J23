@@ -2,6 +2,7 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
@@ -56,9 +57,14 @@ public class GUI_Principal extends javax.swing.JFrame {
     }
     
     private void habilitarMenu(boolean valor){
-        jMenu1.setEnabled(valor);
-        jMenu2.setEnabled(valor);
-        jMenu4.setEnabled(valor);
+        Component[] components = jMenuBar1.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            components[i].setEnabled(valor);
+        }
+        //jMenu1.setEnabled(valor);
+        //jMenu2.setEnabled(valor);
+        //jMenu4.setEnabled(valor);
+        //jMenu5.setEnabled(valor);
     }
     
    
