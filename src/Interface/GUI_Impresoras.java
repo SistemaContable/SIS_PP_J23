@@ -52,7 +52,6 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
@@ -74,20 +73,11 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         jLabel1.setText("Gestión de Impresoras:");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
-        jButton1.setText("Cancelar");
+        jButton1.setText("Salir");
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
-        jButton2.setText("Aceptar");
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -147,16 +137,15 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(99, 99, 99))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(233, 233, 233))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,11 +171,9 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4)
-                        .addGap(142, 142, 142)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(45, 45, 45))
+                        .addGap(145, 145, 145)))
+                .addComponent(jButton1)
+                .addGap(42, 42, 42))
         );
 
         pack();
@@ -199,10 +186,6 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         this.dispose();
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
        PrintService [] printService = PrintServiceLookup.lookupPrintServices(null, null);
@@ -220,7 +203,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
                 String sql = "INSERT INTO impresoras VALUES('"+impresora.getName()+"',"+modulo+")";            
                 r_con.Insertar(sql); 
                 listar_Impresoras ();
-                JOptionPane.showMessageDialog(null, "Asigno al Módulo "+modulo+" la Impresora "+impresora.getName(),"Aviso",JOptionPane.WARNING_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "Asigno al Módulo "+modulo+" la Impresora "+impresora.getName(),"Aviso",JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -259,7 +242,6 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
@@ -274,45 +256,7 @@ public void setTitleLabel (String t){
         this.jLabel1.setText(t);
 }
 
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
 
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void buttonEliminar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png")));
-    jButton2.setText("Eliminar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonModificar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/modificar.png")));
-    jButton2.setText("Modificar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonNuevaConsulta (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Nueva Consulta");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
-}
 
 public void listar_Impresoras (){
     String [] separada; 

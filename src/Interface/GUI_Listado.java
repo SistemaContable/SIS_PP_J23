@@ -47,12 +47,16 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
      */
     private Conexion r_con = new Conexion();    
     private String consulta_Vigente;
-    private String nombre_tabla = "Articulos";
+    private String nombre_tabla ;//= "Articulos";
+    private String nombre_reporte ;//= "rep_articulo.jrxml";
+    private String campo_clave;// = "art_codigo";
+    private String [] nombre_columnas;
+    private String id_modulo_imp;
   
     
     public GUI_Listado() {
         initComponents();                 
-        Cargar_Tabla("SELECT * FROM "+nombre_tabla);
+        //Cargar_Tabla("SELECT * FROM "+nombre_tabla);
         jCheckBox1.setSelected(true);
         jLabel4.setVisible(false);
     }
@@ -283,12 +287,12 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             
             JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));
             //localizo el reporte
-            JasperReport report = JasperCompileManager.compileReport("src/Reportes/rep_articulo.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
             //cargo los datos
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
             
             //vector con las impresoras del modulo de la base de datos
-            Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = 1");
+            Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
             //total impresoras disponibles
             PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
             //vector con las impresoras del modulo como objeto impresora (PrintService)
@@ -355,7 +359,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             
             JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));            
             //localizo el reporte
-            JasperReport report = JasperCompileManager.compileReport("src/Reportes/rep_articulo.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
             //cargo los datos
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
             
@@ -420,7 +424,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             if (!"".equals(jTextField1.getText())){
                 if (v.isInt(jTextField1.getText())){
                     jLabel4.setVisible(false);
-                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE art_codigo = "+jTextField1.getText());
+                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE "+campo_clave+" = "+jTextField1.getText());
                 }
                 else{
                     jLabel4.setVisible(true);
@@ -439,7 +443,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             if (!"".equals(jTextField1.getText()) || !"".equals(jTextField2.getText())){
                 if (v.isInt(jTextField1.getText()) && v.isInt(jTextField2.getText())){
                     jLabel4.setVisible(false);
-                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
+                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE "+campo_clave+" >= "+jTextField1.getText()+" AND "+campo_clave+" <= "+jTextField2.getText());
                 }
                 else{
                     jLabel4.setVisible(true);
@@ -502,7 +506,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         r_con.Connection();  
         DefaultTableModel modelo = new DefaultTableModel();
         jTable1.setModel(modelo);       
-        String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};                           
+        //String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};                           
         modelo.setColumnIdentifiers(nombre_columnas);
         consulta_Vigente = consulta;
         Vector <Vector<String>> v = r_con.getContenidoTabla(consulta);
@@ -517,6 +521,49 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         TableColumnModel modCol = Tabla.getColumnModel();
         while(modCol.getColumnCount()>0)modCol.removeColumn(modCol.getColumn(0));
     }
+
+    public String getNombre_tabla() {
+        return nombre_tabla;
+    }
+
+    public void setNombre_tabla(String nombre_tabla) {
+        this.nombre_tabla = nombre_tabla;
+    }
+
+    public String getNombre_reporte() {
+        return nombre_reporte;
+    }
+
+    public void setNombre_reporte(String nombre_reporte) {
+        this.nombre_reporte = nombre_reporte;
+    }
+
+    public String getCampo_clave() {
+        return campo_clave;
+    }
+
+    public void setCampo_clave(String campo_clave) {
+        this.campo_clave = campo_clave;
+    }
+
+    public String[] getNombre_columnas() {
+        return nombre_columnas;
+    }
+
+    public void setNombre_columnas(String[] nombre_columnas) {
+        this.nombre_columnas = nombre_columnas;
+    }
+
+    public String getId_modulo_imp() {
+        return id_modulo_imp;
+    }
+
+    public void setId_modulo_imp (String id_modulo_imp) {
+        this.id_modulo_imp = id_modulo_imp;
+    } 
    
+   public String getConsultaTodosElementos (){
+        return ("SELECT * FROM "+nombre_tabla);   
+   }
 
 }

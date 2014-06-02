@@ -335,7 +335,13 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
-        //l.Listado_Articulos();
+        l.setCampo_clave("art_codigo");
+        l.setNombre_tabla("Articulos");
+        l.setNombre_reporte("rep_articulo.jrxml");
+        String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};
+        l.setNombre_columnas(nombre_columnas);
+        l.setId_modulo_imp("1");
+        l.Cargar_Tabla(l.getConsultaTodosElementos());        
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
@@ -352,7 +358,14 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
-        //l.Listado_Tasas();
+        l.setCampo_clave("tasa_clave");
+        l.setNombre_tabla("Tasas_IVA");
+        l.setNombre_reporte("rep_tasas_iva.jrxml");
+        String [] nombre_columnas = {"Tasa Clave","Tasa Descripcion","Tasa Sigla"};
+        l.setNombre_columnas(nombre_columnas);
+        l.setId_modulo_imp("2");
+        l.Cargar_Tabla(l.getConsultaTodosElementos());
+       
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;

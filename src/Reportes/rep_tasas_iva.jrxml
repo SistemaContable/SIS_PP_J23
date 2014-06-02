@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="47627141-7938-46cd-b22d-6a13701fa38e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     Tasas_IVA."tasa_clave",
+     Tasas_IVA."tasa_desc",
+     Tasas_IVA."tasa_sigla"
+FROM
+    Tasas_IVA]]>
+	</queryString>
+	<field name="tasa_clave" class="java.lang.String"/>
+	<field name="tasa_desc" class="java.lang.String"/>
+	<field name="tasa_sigla" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="552" height="81" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="7d2e7782-b104-4a24-9dd4-b7164429ae02"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="15" width="552" height="66" forecolor="#000000" backcolor="#000000" uuid="c21e9e29-6e34-4d4d-831b-d69aed5b7607"/>
+					<textElement textAlignment="Center">
+						<font isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Tasas de IVA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="SubTitle" x="2" y="16" width="148" height="29" forecolor="#000000" uuid="9600b4e9-1e21-4fb1-a12e-8eeaeb4f7b0e"/>
+					<textElement>
+						<font size="18" isBold="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Nuevo Reporte:]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="10" y="82" width="552" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5692f5cf-71d7-4781-a895-d9f4b9fa0736"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="400" y="0" width="144" height="20" forecolor="#666666" uuid="9233cc8c-eeca-4d8e-b37d-e24169cec259"/>
+					<textElement textAlignment="Right">
+						<font size="12" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" mode="Transparent" x="0" y="7" width="185" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="cdb61ac1-9eb1-4455-a690-a1d1062e251a"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CLAVE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" mode="Transparent" x="185" y="7" width="185" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="3bb6efe9-f99a-4852-af2e-1df9656a1b21"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" mode="Transparent" x="370" y="7" width="185" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="a767bee8-194f-4494-a253-5dc0caf290fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[SIGLA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="6757c0ba-7cbb-4004-99d7-63701577c718"/>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="0" y="0" width="185" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="be5e4608-a260-4302-822b-567b202f10c8"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tasa_clave}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="185" y="0" width="185" height="18" uuid="bd06a2a8-5454-4200-939c-08a2a6e85f7c"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tasa_desc}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="370" y="0" width="185" height="18" uuid="739de118-d728-4d4d-9706-3dd60e06f823"/>
+					<textElement textAlignment="Center">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tasa_sigla}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="83f1747e-f498-4dc9-b4aa-3316b5cacc03"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="5ef51054-6f8c-495a-8a58-447619a3aabd"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="eeb5464c-4fa6-4a75-88ca-c8bd764a8106"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement style="Column header" mode="Transparent" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="85fa6901-1d90-44aa-bb1a-0b2b4b368d4d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
