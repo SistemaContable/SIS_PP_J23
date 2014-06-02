@@ -301,9 +301,14 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         Vector<Vector<String>>v = r_con.getContenidoTabla("select * from usuario");
         int id_usuario=v.size()+1;        
         System.out.println(id_usuario);
-        String nuevoUsuario="insert into usuario values("+id_usuario+",'"+usuario+"','"+nombre+"','"+apellido+"','"+contraseña+"',"+id_perfil+")";
-        r_con.Insertar(nuevoUsuario);
-        limpiarForm();
+        if((!usuario.equals(""))&&(!nombre.equals(""))&&(!apellido.equals(""))&&(!contraseña.equals(""))){
+            String nuevoUsuario="insert into usuario values("+id_usuario+",'"+usuario+"','"+nombre+"','"+apellido+"','"+contraseña+"',"+id_perfil+")";
+            r_con.Insertar(nuevoUsuario);
+            limpiarForm();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Debe completar todos los campos");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPasswordField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusGained

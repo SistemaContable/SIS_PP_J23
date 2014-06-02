@@ -20,6 +20,7 @@ public class GUI_Principal extends javax.swing.JFrame {
  
     private Conexion r_con=new Conexion();
     private int perfil;
+    private int usuario; 
     
     /**
      * Creates new form GUI_Principal
@@ -32,12 +33,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
         
         this.setSize(ancho,alto); 
-        setLocationRelativeTo (null);
-        
+        setLocationRelativeTo (null);        
         crearLogin();
     }
     
-    public GUI_Principal(int per) {
+    public GUI_Principal(int per,int id_usuario) {
            
         initComponents();
         perfil=per;
@@ -50,6 +50,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         setLocationRelativeTo (null);        
         habilitarMenu(true);
         habilitarFunciones(per);
+        usuario=id_usuario;
     }
     
     private void crearLogin(){            
@@ -180,6 +181,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem11 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -333,6 +336,19 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
+        jMenu6.setText("Auditoria");
+
+        jMenuItem11.setText("Listado");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem11);
+
+        jMenuBar1.add(jMenu6);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -351,7 +367,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         //creo el InternalFrame;
-        GUI_A_Articulo np = new GUI_A_Articulo();       
+        GUI_A_Articulo np = new GUI_A_Articulo(usuario);       
         np.setTitle("Alta Artículo.");
         np.setTitleLabel("Alta Artículo:");
         np.buttonAceptar();
@@ -377,7 +393,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         //creo el InternalFrame;
-        GUI_A_Articulo bp = new GUI_A_Articulo();       
+        GUI_A_Articulo bp = new GUI_A_Articulo(usuario);       
         bp.form_onlySearch();
         bp.setTitle("Baja Artículo.");
         bp.setTitleLabel("Baja Artículo:");
@@ -397,7 +413,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling codGUI_A_Articulo
-        GUI_A_Articulo bp = new GUI_A_Articulo();
+        GUI_A_Articulo bp = new GUI_A_Articulo(usuario);
         bp.form_onlySearch();
         bp.setTitle("Modificación Artículo.");
         bp.setTitleLabel("Modificación Artículo:");
@@ -417,7 +433,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handGUI_A_Articulohere:
-        GUI_A_Articulo cp = new GUI_A_Articulo();       
+        GUI_A_Articulo cp = new GUI_A_Articulo(usuario);       
         cp.form_onlySearch();
         cp.setTitle("Consulta Artículo.");
         cp.setTitleLabel("Consulta Artículo:");
@@ -555,6 +571,10 @@ public class GUI_Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -597,9 +617,11 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
