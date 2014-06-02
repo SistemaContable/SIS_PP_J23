@@ -73,35 +73,20 @@ public class GUI_Principal extends javax.swing.JFrame {
         Component[] components = jMenuBar1.getComponents();
         for (int i = 0; i < components.length; i++) {
             components[i].setEnabled(valor);
-        }
-        //jMenu1.setEnabled(valor);
-        //jMenu2.setEnabled(valor);
-        //jMenu4.setEnabled(valor);
-        //jMenu5.setEnabled(valor);
-    }
+        }    
+    }                   
     
-   
-        
-    private int getPerfil(int id_usuario){
-        int id_perfil=-1;
-        try {            
-            String consulta="select usr_id_perfil from usuario where usr_id_usuario="+id_usuario;
-            ResultSet rs=r_con.Consultar(consulta);
-            while(rs.next()){
-                id_perfil=rs.getInt("usr_id_perfil");
-            }                        
+    public void habilitarFunciones(int perfil){            
+        String consulta="select per_id_perfil,per_id_modulo,per_id_tarea from permiso where per_id_perfil="+perfil;
+        ResultSet rs=r_con.Consultar(consulta);
+        try {
+            while(rs.next()){                                
+                
+                
+            }
         } catch (SQLException ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(id_perfil);
-        return id_perfil;
-    }
-    
-    public void habilitarFunciones(int id_usuario){
-        int id_perfil=getPerfil(id_usuario);
-        Vector<String>modulos=new Vector();
-        
-        
     }    
     
     /**
