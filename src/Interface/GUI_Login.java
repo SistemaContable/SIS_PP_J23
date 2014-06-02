@@ -7,9 +7,6 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
-import java.awt.Component;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -61,6 +58,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
         setTitle("Login");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
+        setPreferredSize(new java.awt.Dimension(320, 250));
 
         jTextField1.setToolTipText("");
 
@@ -115,7 +113,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
@@ -151,7 +149,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -234,11 +232,6 @@ public class GUI_Login extends javax.swing.JInternalFrame {
        return true;      
                
     }
-    private void mostrarMSSG (Component c){
-        KeyEvent ke = new KeyEvent(c, KeyEvent.KEY_PRESSED,
-        System.currentTimeMillis(), InputEvent.CTRL_MASK, KeyEvent.VK_F1, KeyEvent.CHAR_UNDEFINED);
-        c.dispatchEvent(ke);
-    }
         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,48 +248,12 @@ public void setTitleLabel (String t){
         this.jLabel1.setText(t);
 }
 
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void buttonEliminar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png")));
-    jButton2.setText("Eliminar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonModificar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/modificar.png")));
-    jButton2.setText("Modificar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonNuevaConsulta (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Nueva Consulta");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
-}
-
 public void limpiarForm(){
     jTextField1.setText("");
+}
+
+public void focusPrincipal (){
+    this.jTextField1.requestFocus();
 }
 
 }

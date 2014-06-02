@@ -3,7 +3,6 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,55 +16,56 @@ import java.util.logging.Logger;
  */
 public class GUI_Principal extends javax.swing.JFrame {
 
-    private Container cont;
+ 
     private Conexion r_con=new Conexion();
     private int perfil;
     
     /**
      * Creates new form GUI_Principal
      */
-    public GUI_Principal() {
-        cont = getContentPane();        
-        initComponents();
-                
-        //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
+    public GUI_Principal() {      
+        initComponents();                
+        //Frame tome el tamaño de la pantalla al 95% y comienze maximizado        
         float escalar = 0.80F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
-        this.setSize(ancho,alto);        
+        
+        this.setSize(ancho,alto); 
         setLocationRelativeTo (null);
+        
         crearLogin();
     }
     
     public GUI_Principal(int per) {
-        cont = getContentPane();        
+           
         initComponents();
         perfil=per;
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
         float escalar = 0.80F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
+   
         this.setSize(ancho,alto);        
         setLocationRelativeTo (null);        
         habilitarMenu(true);
     }
     
-    public void crearLogin(){            
+    private void crearLogin(){            
         GUI_Login lo = new GUI_Login(this);               
         lo.setTitle("Login");
-        lo.setTitleLabel("Login");        
-        //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - lo.getWidth() / 2;
-        int y = (jDesktopPane1.getHeight() / 2) - lo.getHeight() / 2;
-                
-        lo.setLocation(x,lo.getLocation().y);
+        lo.setTitleLabel("Login");       
         
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        lo.setVisible(true);
         this.jDesktopPane1.add(lo);
+        lo.setVisible(true);
+       
+        int x = (this.getWidth() / 2) - (lo.getWidth() / 2);
+        int y = (this.getHeight() / 2) - (lo.getHeight() / 2);
+        
+        lo.setLocation(x,y);        
         lo.moveToFront();
         lo.requestFocus();
-        lo.nextFocus();  
+        lo.focusPrincipal();      
+        
         habilitarMenu(false);                
     }
     
@@ -73,7 +73,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         Component[] components = jMenuBar1.getComponents();
         for (int i = 0; i < components.length; i++) {
             components[i].setEnabled(valor);
-        }
+            }
+            //items = components[i](JMenu).getComponents();
+            //Component[] items = components[i].(JMenuItem).getComponents();
+                    
+        
         //jMenu1.setEnabled(valor);
         //jMenu2.setEnabled(valor);
         //jMenu4.setEnabled(valor);
@@ -142,11 +146,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
+            .addGap(0, 577, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 239, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -302,6 +306,9 @@ public class GUI_Principal extends javax.swing.JFrame {
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
         np.setLocation(x, np.getLocation().y);
+        
+        System.out.println(jDesktopPane1.getWidth()+" - "+np.getWidth());
+        System.out.println(jDesktopPane1.getHeight()+" - "+np.getHeight());
         
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
