@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JMenu;
 
 /**
  *
@@ -48,6 +49,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         this.setSize(ancho,alto);        
         setLocationRelativeTo (null);        
         habilitarMenu(true);
+        habilitarFunciones(per);
     }
     
     public void crearLogin(){            
@@ -73,21 +75,84 @@ public class GUI_Principal extends javax.swing.JFrame {
         Component[] components = jMenuBar1.getComponents();
         for (int i = 0; i < components.length; i++) {
             components[i].setEnabled(valor);
+            JMenu jaux=(JMenu)components[i];  
+            for(int ff=0;ff<jaux.getItemCount();ff++){
+                jaux.getItem(ff).setEnabled(valor);                
+                
+             /*   if(jaux.getItem(ff) instanceof JMenu){
+                    JMenu jaux2=(JMenu)jaux.getItem(ff);                
+                    for(int fff=0;fff<jaux2.getItemCount();fff++)
+                        jaux2.getItem(fff).setEnabled(valor);                
+                }*/
+            }
         }    
     }                   
-    
-    public void habilitarFunciones(int perfil){            
+    // EJ---> 
+    // Vector<Vector<Integer>>v(Vectro<modulo Tarea,...,...)    
+    //Vector=(modulo,tarea,tarea,tarea)
+    public void habilitarFunciones(int perfil){                           
         String consulta="select per_id_perfil,per_id_modulo,per_id_tarea from permiso where per_id_perfil="+perfil;
+        r_con.Connection();
         ResultSet rs=r_con.Consultar(consulta);
+        Vector<Vector<Integer>>modulosTarea=new Vector();
+        boolean existe=false;
+        int i=0;int pos=-1;
         try {
-            while(rs.next()){                                
-                
-                
+            while(rs.next()){                                                
+                int aux=rs.getInt(2);//obtengo el modulo
+                for(Vector<Integer>v1:modulosTarea){
+                    if(v1.get(0)==aux){
+                        existe=true;                        
+                        pos=i;
+                    }
+                    i++;
+                }
+                if(!existe){
+                    Vector<Integer>v=new Vector();
+                    v.add(aux);v.add(rs.getInt(3));
+                    modulosTarea.add(v);
+                }
+                else{
+                    modulosTarea.get(pos).add(rs.getInt(3));
+                }
+                existe=false;
+                i=0;
             }
         } catch (SQLException ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+        habilitarMenuPerfil(modulosTarea);
     }    
+   
+    /**
+     * Para que funcione este metodo es necesario que el nombre de cada jMenu
+     * se corresponda con el mod_id_modulo en la base de datos
+     * @param moduloTarea 
+     */
+    private void habilitarMenuPerfil(Vector<Vector<Integer>>moduloTarea){        
+        habilitarMenu(false);
+        for(Component cMenu:jMenuBar1.getComponents()){
+            for(Vector<Integer>modulo:moduloTarea){                                
+                if(cMenu.getName().equals("M"+modulo.get(0))){                    
+                    cMenu.setEnabled(true);
+                }                                    
+            }
+            JMenu maux=(JMenu)cMenu;
+            for(int i=0;i<maux.getItemCount();i++){
+                for(Vector<Integer>modulo:moduloTarea){                                
+                    if(maux.getItem(i).getName().equals("M"+modulo.get(0))){                    
+                        maux.getItem(i).setEnabled(true);
+                    }
+                    for(int z=1;z<modulo.size();z++){                        
+                        if(maux.getItem(i).getName().equals("T"+modulo.get(0)+modulo.get(z)))
+                            maux.getItem(i).setEnabled(true);
+                    }
+                }
+                // menu interno que tiene menu                                                    
+            }            
+        }
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -139,13 +204,15 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/auxiliares.png"))); // NOI18N
         jMenu1.setMnemonic('1');
         jMenu1.setText("Auxiliares");
-        jMenu1.setName("M2"); // NOI18N
+        jMenu1.setName("M5"); // NOI18N
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenu3.setText("Tasas de IVA");
+        jMenu3.setName("M2"); // NOI18N
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem7.setText("Alta");
+        jMenuItem7.setName("T21"); // NOI18N
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem7ActionPerformed(evt);
@@ -155,6 +222,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem1.setText("Baja");
+        jMenuItem1.setName("T22"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -164,6 +232,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem8.setText("Listado");
+        jMenuItem8.setName("T25"); // NOI18N
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
@@ -237,7 +306,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu4.setName("M3"); // NOI18N
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem9.setText("Nuevo");
+        jMenuItem9.setText("Alta");
+        jMenuItem9.setName("T31"); // NOI18N
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
@@ -249,9 +319,11 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
         jMenu5.setText("Impresoras");
+        jMenu5.setName("M4"); // NOI18N
 
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem10.setText("Gestionar Impresoras");
+        jMenuItem10.setText("Alta");
+        jMenuItem10.setName("T41"); // NOI18N
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -535,3 +607,23 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }
+
+
+
+
+/**
+    if(maux.getItem(i) instanceof JMenu){
+                    System.out.println("PAJERO");
+                    JMenu menuInterno=(JMenu)maux.getItem(i);
+                    System.out.println(menuInterno.getComponentCount());
+                    for(int contMI=0;contMI<menuInterno.getComponentCount();contMI++){
+                        for(Vector<Integer>vInterno:moduloTarea)
+                            for(int z=1;z<vInterno.size();z++){           
+                                System.out.println(menuInterno.getItem(contMI).getName()+" --- "+"T"+vInterno.get(0)+vInterno.get(z));
+                                if(menuInterno.getItem(contMI).getName().equals("T"+vInterno.get(0)+vInterno.get(z)))
+                                    menuInterno.getItem(contMI).setEnabled(true);
+                            }
+                    }
+                }
+    
+    */
