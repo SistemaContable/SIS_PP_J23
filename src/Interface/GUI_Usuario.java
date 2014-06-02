@@ -18,9 +18,16 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Manolo
@@ -30,12 +37,14 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     private ArrayList<String> items = new ArrayList<String>();        
     private Conexion r_con = new Conexion();
     private int id_perfil;
+    private DefaultTableModel modelo=new DefaultTableModel();
     
     public GUI_Usuario() {
         initComponents();
         r_con.Connection();
         jTextField1.requestFocus();
         cargarComboBox();
+        cargarTabla(1);
     }
 
     public void cargarComboBox(){
@@ -66,11 +75,13 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
         jComboBox1 = new javax.swing.JComboBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        jTextField4 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -134,19 +145,6 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("NUEVO USUARIO");
@@ -173,12 +171,49 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
             }
         });
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
+        jButton3.setText("Nuevo Perfil");
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jTextField4.setToolTipText("");
+        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField4FocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -199,21 +234,19 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                                     .addComponent(jTextField1)
                                     .addComponent(jTextField2)
                                     .addComponent(jTextField3)
-                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(3, 3, 3)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jLabel1)))))
-                        .addGap(0, 28, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jComboBox1, 0, 234, Short.MAX_VALUE)
+                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,34 +255,36 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1))
-                        .addGap(19, 19, 19))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -330,20 +365,157 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         cargarTabla(id_perfil);
         jButton1.requestFocus();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String nuevoPerfil=jTextField4.getText();
+        nuevoPerfil=nuevoPerfil.toUpperCase();
+        int nuevoPerfilId=-1;
+        Vector<Integer>claveFila=new Vector();
+        Vector<Integer>claveColumna=new Vector();        
+        String aux="";int clave=-1;
+                
+        String consulta="select count(prf_id_perfil) from perfil";
+        ResultSet rs=r_con.Consultar(consulta);
+        try {
+            while(rs.next()){
+                nuevoPerfilId=rs.getInt(1)+1;
+            }                
+            for(int i=0;i<modelo.getRowCount();i++){
+                aux=(String)modelo.getValueAt(i,0);            
+                consulta="select mod_id_modulo from modulo where mod_descripcion='"+aux+"'";
+                rs=r_con.Consultar(consulta);
+                clave=-1;            
+                while(rs.next()){
+                    clave=rs.getInt(1);
+                }            
+                claveFila.add(clave);
+            }
+        
+            for(int i=1;i<modelo.getColumnCount();i++){
+                aux=modelo.getColumnName(i);            
+                consulta="select tar_id_tarea from tarea where tar_descripcion='"+aux+"'";
+                rs=r_con.Consultar(consulta);
+                clave=-1;        
+                while(rs.next()){
+                    clave=rs.getInt(1);
+                }        
+                claveColumna.add(clave);
+            }
+            if(!nuevoPerfil.equals("")){
+                consulta="insert into perfil values("+nuevoPerfilId+",'"+nuevoPerfil+"')";
+                r_con.Insertar(consulta);
+                for(int i=0;i<modelo.getRowCount();i++){
+                    for(int j=1;j<modelo.getColumnCount();j++){
+                        if((boolean)modelo.getValueAt(i,j)==true){                                                      
+                            consulta="insert into permiso values("+nuevoPerfilId+","+claveFila.elementAt(i)+","+claveColumna.elementAt(j-1)+")";
+                            r_con.InsertarSinCartel(consulta);
+                        }
+                    }            
+                }
+            }
+            else
+            {JOptionPane.showMessageDialog(null,"Debe ingresar un nombre al nuevo perfil");}            
+        } 
+        catch (SQLException ex) {
+                Logger.getLogger(GUI_Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    cargarComboBox();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4FocusLost
+    /**
+     * Obtengo el nombre de las columnas
+     * @return 
+     */
+    private String[] getColumnas(){
+        Vector<Vector<String>>tareas = r_con.getContenidoTabla("tarea");
+        String []columnas=new String[tareas.size()+1];
+        columnas[0]="Modulo";
+        int i=1;
+        for(Vector<String>vv:tareas)
+            columnas[i++]=vv.elementAt(1);
+        return columnas;
+    }
+    
+    /**
+     * Obtengo el tipo de cada columna
+     * @return 
+     */
+    private Class[] getTipoColumnas(){
+        Vector<Vector<String>>tareas = r_con.getContenidoTabla("tarea");
+        final Class[] datos = new Class[tareas.size()+1];        
+        datos[0]=java.lang.String.class;
+        for(int i=1;i<tareas.size();i++)            
+            datos[i]=java.lang.Boolean.class;
+        return datos;
+    }
     
     
-    private void cargarTabla(int perfil){
-        String []id_columnas={"Modulo","Tareas"};
-        r_con.Connection();  
-        DefaultTableModel modelo=new DefaultTableModel();
-        jTable1.setModel(modelo);        
-        modelo.setColumnIdentifiers(id_columnas);        
+    private Vector<Vector<Object>> getContenidoTabla(int perfil){
         Vector<Vector<String>>v = r_con.getContenidoTablaPermisos(perfil);
-        for(Vector<String>a:v)
-            modelo.addRow(a);                
-    }                
+        Vector<Vector<String>>tareas = r_con.getContenidoTabla("tarea");
+        Vector<Vector<Object>>filas=new Vector();                
+        for(Vector<String>a:v){                                               
+            Vector f=new Vector();
+            f.add(a.elementAt(0));
+            for(int j=1;j<tareas.size()+1;j++){                                
+                boolean celda=false;
+                f.add(celda);                
+            }          
+            filas.add(f);
+        }      
+        return filas;
+    }
     
+    public void cargarTabla(int perfil){                               
+        String[] columnas=getColumnas();
+        Class[] tipoDatosColumnas=getTipoColumnas();
+        
+        Vector<Vector<Object>> contenidoTabla=getContenidoTabla(perfil);
+        for(int i=0;i<modelo.getRowCount();i++)
+            modelo.removeRow(i);
+        
+        modelo.setColumnIdentifiers(columnas);        
+        for(int i=0;i<contenidoTabla.size();i++){            
+            modelo.addRow(contenidoTabla.elementAt(i));}        
+        
+        if(modelo.getRowCount()!=contenidoTabla.size()){
+            int r=campoRepetido();     
+            while(r!=-1){                            
+                modelo.removeRow(r);            
+                r=campoRepetido();
+            }
+        }
+        jTable1.setModel(modelo);
+        for(int i=1;i<columnas.length;i++){
+            jTable1.getColumnModel().getColumn(i).setCellEditor(new Clase_CellEditor());
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(new Clase_CellRender());
+        }
+        
+    }              
     
+    /**
+     * Identifica en el modelo algun modulo que se repita
+     * (no se porque se da la repeticio) y me retorna la posicion
+     * dentro del modelo para su posterior eliminacion
+     * @return pos del modulo repetido
+     */
+    private int campoRepetido(){ 
+        int pos=-1;
+        for(int i=0;i<modelo.getRowCount();i++){            
+            for(int j=0;j<modelo.getRowCount();j++){                
+                if(i!=j){
+                    if(modelo.getValueAt(i, 0).equals(modelo.getValueAt(j,0))){                        
+                        return i;
+                    }
+                }
+            }
+        }
+        return pos;
+    }    
     
     private boolean camposNecesarios () {
        if ((jTextField1.getText().length()==0)) 
@@ -364,6 +536,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -378,6 +551,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
 public void setTitleLabel (String t){
@@ -436,4 +610,7 @@ public void limpiarForm(){
     
 }
 
+  
+
 }
+ 

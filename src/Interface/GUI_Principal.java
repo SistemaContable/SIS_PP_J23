@@ -1,8 +1,14 @@
 
 package Interface;
 
+import Clases_Auxiliares.Conexion;
 import java.awt.Container;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -11,23 +17,74 @@ import java.awt.Toolkit;
 public class GUI_Principal extends javax.swing.JFrame {
 
     private Container cont;
-   
+    private Conexion r_con=new Conexion();
+    
     /**
      * Creates new form GUI_Principal
      */
     public GUI_Principal() {
         cont = getContentPane();        
         initComponents();
-        
+                
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
         float escalar = 0.80F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
-        this.setSize(ancho,alto);
-        
+        this.setSize(ancho,alto);        
         setLocationRelativeTo (null);
+        crearLogin();
     }
-
+    
+    public void crearLogin(){
+        GUI_Login lo = new GUI_Login();       
+        lo.setTitle("Login");
+        lo.setTitleLabel("Login");        
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - lo.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - lo.getHeight() / 2;
+        
+        System.out.println(x+" - "+y);
+        lo.setLocation(x,lo.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        lo.setVisible(true);
+        this.jDesktopPane1.add(lo);
+        lo.moveToFront();
+        lo.requestFocus();
+        lo.nextFocus();  
+        habilitarMenu(false);                
+    }
+    
+    private void habilitarMenu(boolean valor){
+        jMenu1.setEnabled(valor);
+        jMenu2.setEnabled(valor);
+        jMenu4.setEnabled(valor);
+    }
+    
+   
+        
+    private int getPerfil(int id_usuario){
+        int id_perfil=-1;
+        try {            
+            String consulta="select usr_id_perfil from usuario where usr_id_usuario="+id_usuario;
+            ResultSet rs=r_con.Consultar(consulta);
+            while(rs.next()){
+                id_perfil=rs.getInt("usr_id_perfil");
+            }                        
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(id_perfil);
+        return id_perfil;
+    }
+    
+    public void habilitarFunciones(int id_usuario){
+        int id_perfil=getPerfil(id_usuario);
+        Vector<String>modulos=new Vector();
+        
+        
+    }    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,6 +135,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/auxiliares.png"))); // NOI18N
         jMenu1.setMnemonic('1');
         jMenu1.setText("Auxiliares");
+        jMenu1.setName("M2"); // NOI18N
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenu3.setText("Tasas de IVA");
@@ -116,9 +174,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         jMenu2.setMnemonic('2');
         jMenu2.setText("Artículos");
+        jMenu2.setName("M1"); // NOI18N
 
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem2.setText("Alta");
+        jMenuItem2.setName("T11"); // NOI18N
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -128,6 +188,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem3.setText("Baja");
+        jMenuItem3.setName("T12"); // NOI18N
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -137,6 +198,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem4.setText("Modificación");
+        jMenuItem4.setName("T13"); // NOI18N
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -146,6 +208,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem5.setText("Consulta");
+        jMenuItem5.setName("T14"); // NOI18N
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -155,6 +218,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem6.setText("Listado");
+        jMenuItem6.setName("T15"); // NOI18N
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
@@ -166,6 +230,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         jMenu4.setText("Usuarios");
+        jMenu4.setName("M3"); // NOI18N
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem9.setText("Nuevo");
@@ -441,7 +506,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_Principal().setVisible(true);
+                new GUI_Principal().setVisible(true);                
             }
         });
     }
