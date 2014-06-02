@@ -8,14 +8,9 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Component;
-import java.awt.PopupMenu;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.DefaultListModel;
@@ -35,8 +30,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
     
     public GUI_Impresoras() {
         initComponents();
-        r_con.Connection();
-        
+        r_con.Connection();        
         cargarComboBox();
         listar_Impresoras();
     }
@@ -221,23 +215,12 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
             separada = jComboBox1.getSelectedItem().toString().split("-"); 
             int modulo = Integer.parseInt(separada[0].trim());
             
-            //r_con.Connection();
             r_con.Borrar("DELETE FROM impresoras WHERE imp_nombre = '"+impresora+"' and imp_id_modulo = "+modulo+"");
             //r_con.cierraConexion();
-            listar_Impresoras ();
-                
-        }
-        
-        //System.out.println(jList1.getModel().getElementAt(jList1.getSelectedIndex()));
+            listar_Impresoras ();                
+        }        
         
     }//GEN-LAST:event_jButton5ActionPerformed
-    
-
-    private void mostrarMSSG (Component c){
-        KeyEvent ke = new KeyEvent(c, KeyEvent.KEY_PRESSED,
-        System.currentTimeMillis(), InputEvent.CTRL_MASK, KeyEvent.VK_F1, KeyEvent.CHAR_UNDEFINED);
-        c.dispatchEvent(ke);
-    }
         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -256,9 +239,7 @@ public void setTitleLabel (String t){
         this.jLabel1.setText(t);
 }
 
-
-
-public void listar_Impresoras (){
+private void listar_Impresoras (){
     String [] separada; 
     separada = jComboBox1.getSelectedItem().toString().split("-"); 
     int modulo = Integer.parseInt(separada[0].trim());
@@ -273,7 +254,7 @@ public void listar_Impresoras (){
    
 }
 
-public void cargarComboBox(){
+private void cargarComboBox(){
         jComboBox1.removeAllItems();
         Vector<Vector<String>>v = r_con.getContenidoTabla("select * from modulo");
         for(Vector<String>a:v){
