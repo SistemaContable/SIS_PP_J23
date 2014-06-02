@@ -167,24 +167,26 @@ public class GUI_Login extends javax.swing.JInternalFrame {
     public void asignarOyente(){        
             String usuario="";
             usuario=jTextField1.getText();
-            String pass="";
             int id_usuario=-1;
+            String pass="";
+            int id_perfil=-1;
             pass=jPasswordField1.getText();
             if((!usuario.equals(""))&&(!pass.equals(""))){
                 try {
                     String consulta="";
-                    consulta="select usr_id_perfil from usuario where usr_nombre_usuario='"+usuario+"' and usr_contraseña='"+pass+"'";
+                    consulta="select usr_id_perfil,usr_id_usuario from usuario where usr_nombre_usuario='"+usuario+"' and usr_contraseña='"+pass+"'";
                     ResultSet rs=r_con.Consultar(consulta);
                     while(rs.next()){
-                        id_usuario=rs.getInt(1);
+                        id_perfil=rs.getInt(1);
+                        id_usuario=rs.getInt(2);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(GUI_Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(id_usuario!=-1){                    
-                    perfil=id_usuario;
+                if(id_perfil!=-1){                    
+                    perfil=id_perfil;
                     guiPrincipal.dispose();
-                    new GUI_Principal(perfil).setVisible(true);
+                    new GUI_Principal(perfil,id_usuario).setVisible(true);
                     dispose();
                 }
                 else

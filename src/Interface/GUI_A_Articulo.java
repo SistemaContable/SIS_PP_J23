@@ -12,9 +12,14 @@ import Clases_Auxiliares.Validaciones;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -32,12 +37,13 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private ComponentListHelp rc = new ComponentListHelp();
     private Conexion r_con = new Conexion();
     private ArrayList<String> items = new ArrayList<String>();
+    private int usuario;
     
-    public GUI_A_Articulo() {
+    public GUI_A_Articulo(int u) {
         initComponents();
         r_con.Connection();
         prepararHelp();
-        
+        usuario=u;
         
     }
 
@@ -300,6 +306,30 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             if (r_con.Insertar(sql)){
                 limpiarForm();
             }
+            // para auditoria
+            InetAddress addr;
+            String terminal="";
+            try { 
+                addr = InetAddress.getLocalHost();
+                terminal = addr.getHostName(); 
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+            SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
+            Date fechaEntrada = new Date(); 
+            String fecha = formatEntrada.format(fechaEntrada); 
+            
+            Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
+            int cant=v.size()+1;                        
+            
+            sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+1+",'"+fecha+"','"+terminal+"',"+
+                                    jTextField1.getText()+
+                                    jTextField2.getText()+"','"+
+                                    jTextField3.getText()+"',"
+                                    +Float.parseFloat(jTextField4.getText())+","
+                                    +Integer.parseInt(jTextField5.getText())+",'"
+                                    +jTextField6.getText()+"')";                        
+            r_con.Insertar(sql);
             r_con.cierraConexion();
             
         }
