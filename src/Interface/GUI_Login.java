@@ -21,15 +21,19 @@ import javax.swing.JOptionPane;
  * @author Manolo
  */
 public class GUI_Login extends javax.swing.JInternalFrame {
-
+    private int perfil;
+    private GUI_Principal guiPrincipal;
+    
     /**
      * Creates new form GUI_A_Prod
      */
     private Conexion r_con = new Conexion();
     
-    public GUI_Login() {
+    public GUI_Login(GUI_Principal guiP) {
         initComponents();
-        r_con.Connection();  
+        r_con.Connection(); 
+        perfil=-1;
+        guiPrincipal=guiP;
     }
 
     /**
@@ -162,9 +166,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
-        // TODO add your handling code here:
-        if(evt.getKeyCode()==10){
+    public void asignarOyente(){        
             String usuario="";
             usuario=jTextField1.getText();
             String pass="";
@@ -173,7 +175,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
             if((!usuario.equals(""))&&(!pass.equals(""))){
                 try {
                     String consulta="";
-                    consulta="select usr_id_usuario from usuario where usr_nombre_usuario='"+usuario+"' and usr_contraseña='"+pass+"'";
+                    consulta="select usr_id_perfil from usuario where usr_nombre_usuario='"+usuario+"' and usr_contraseña='"+pass+"'";
                     ResultSet rs=r_con.Consultar(consulta);
                     while(rs.next()){
                         id_usuario=rs.getInt(1);
@@ -182,51 +184,37 @@ public class GUI_Login extends javax.swing.JInternalFrame {
                     Logger.getLogger(GUI_Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if(id_usuario!=-1){                    
+                    perfil=id_usuario;
+                    guiPrincipal.dispose();
+                    new GUI_Principal(perfil).setVisible(true);
                     dispose();
                 }
                 else
-                JOptionPane.showMessageDialog(null,"El usuario ingresado o la contraseña no son correctas");
+                    JOptionPane.showMessageDialog(null,"El usuario ingresado o la contraseña no son correctas");
             }
             else{
                 if(usuario.equals(""))
-                JOptionPane.showMessageDialog(null,"El campo usuario esta vacio");
+                    JOptionPane.showMessageDialog(null,"El campo usuario esta vacio");
                 else
-                JOptionPane.showMessageDialog(null,"El campo contraseña esta vacio");
+                    JOptionPane.showMessageDialog(null,"El campo contraseña esta vacio");
             }
-        }
+        
+    }
+    
+    
+    private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
+        // TODO add your handling code here:        
+        if(evt.getKeyCode()==10)
+            asignarOyente();
     }//GEN-LAST:event_jPasswordField1KeyPressed
 
+    public int getPerfil(){
+        return perfil;
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String usuario="";
-        usuario=jTextField1.getText();
-        String pass="";
-        int id_usuario=-1;
-        for(char c:jPasswordField1.getPassword())
-        pass=pass+c;
-        if((!usuario.equals(""))&&(!pass.equals(""))){
-            try {
-                String consulta="";
-                consulta="select usr_id_usuario from usuario where usr_nombre_usuario='"+usuario+"' and usr_contraseña='"+pass+"'";
-                ResultSet rs=r_con.Consultar(consulta);
-                while(rs.next()){
-                    id_usuario=rs.getInt(1);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(GUI_Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(id_usuario!=-1){                
-                dispose();
-            }
-            else
-            JOptionPane.showMessageDialog(null,"El usuario ingresado o la contraseña no son correctas");
-        }
-        else{
-            if(usuario.equals(""))
-            JOptionPane.showMessageDialog(null,"El campo usuario esta vacio");
-            else
-            JOptionPane.showMessageDialog(null,"El campo contraseña esta vacio");
-        }
+        asignarOyente();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

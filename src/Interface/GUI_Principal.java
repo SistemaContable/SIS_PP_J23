@@ -19,6 +19,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private Container cont;
     private Conexion r_con=new Conexion();
+    private int perfil;
     
     /**
      * Creates new form GUI_Principal
@@ -36,15 +37,27 @@ public class GUI_Principal extends javax.swing.JFrame {
         crearLogin();
     }
     
-    public void crearLogin(){
-        GUI_Login lo = new GUI_Login();       
+    public GUI_Principal(int per) {
+        cont = getContentPane();        
+        initComponents();
+        perfil=per;
+        //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
+        float escalar = 0.80F;
+        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
+        int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
+        this.setSize(ancho,alto);        
+        setLocationRelativeTo (null);        
+        habilitarMenu(true);
+    }
+    
+    public void crearLogin(){            
+        GUI_Login lo = new GUI_Login(this);               
         lo.setTitle("Login");
         lo.setTitleLabel("Login");        
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - lo.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - lo.getHeight() / 2;
-        
-        System.out.println(x+" - "+y);
+                
         lo.setLocation(x,lo.getLocation().y);
         
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
