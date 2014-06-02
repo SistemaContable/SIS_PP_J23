@@ -171,8 +171,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
             usuario=jTextField1.getText();
             String pass="";
             int id_usuario=-1;
-            for(char c:jPasswordField1.getPassword())
-            pass=pass+c;
+            pass=jPasswordField1.getText();
             if((!usuario.equals(""))&&(!pass.equals(""))){
                 try {
                     String consulta="";

@@ -36,7 +36,8 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     public GUI_A_Articulo() {
         initComponents();
         r_con.Connection();
-        prepararHelp();  
+        prepararHelp();
+        
         
     }
 

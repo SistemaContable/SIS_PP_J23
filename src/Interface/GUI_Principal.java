@@ -70,24 +70,14 @@ public class GUI_Principal extends javax.swing.JFrame {
     }
     
     private void habilitarMenu(boolean valor){
-        for(Component jm:jMenuBar1.getComponents())
-            jm.setEnabled(valor);        
-    }
-    
-    private void habilitarMenuPerfil(int perfil){
-        
-        try {
-            String consulta="select per_id_perfil,per_id_modulo,per_id_tarea from permiso where per_id_perfil="+perfil;
-            ResultSet rs=r_con.Consultar(consulta);
-            while(rs.next()){
-                
-                
-                
-            }
-        } 
-        catch (SQLException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        Component[] components = jMenuBar1.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            components[i].setEnabled(valor);
         }
+        //jMenu1.setEnabled(valor);
+        //jMenu2.setEnabled(valor);
+        //jMenu4.setEnabled(valor);
+        //jMenu5.setEnabled(valor);
     }
     
    
@@ -138,6 +128,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -255,7 +247,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         jMenu4.setText("Usuarios");
         jMenu4.setName("M3"); // NOI18N
 
@@ -269,6 +261,20 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu4.add(jMenuItem9);
 
         jMenuBar1.add(jMenu4);
+
+        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
+        jMenu5.setText("Impresoras");
+
+        jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem10.setText("Gestionar Impresoras");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -413,7 +419,13 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
-        l.Listado_Articulos();
+        l.setCampo_clave("art_codigo");
+        l.setNombre_tabla("Articulos");
+        l.setNombre_reporte("rep_articulo.jrxml");
+        String [] nombre_columnas = {"Codigo Articulo","Descripcion Articulo","Proveedor Articulo","Precio Articulo","Stock Articulo","Codigo Tasa IVA"};
+        l.setNombre_columnas(nombre_columnas);
+        l.setId_modulo_imp("1");
+        l.Cargar_Tabla(l.getConsultaTodosElementos());        
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
@@ -430,7 +442,14 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
-        l.Listado_Tasas();
+        l.setCampo_clave("tasa_clave");
+        l.setNombre_tabla("Tasas_IVA");
+        l.setNombre_reporte("rep_tasas_iva.jrxml");
+        String [] nombre_columnas = {"Tasa Clave","Tasa Descripcion","Tasa Sigla"};
+        l.setNombre_columnas(nombre_columnas);
+        l.setId_modulo_imp("2");
+        l.Cargar_Tabla(l.getConsultaTodosElementos());
+       
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
@@ -458,6 +477,23 @@ public class GUI_Principal extends javax.swing.JFrame {
         guiU.moveToFront();
         guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        GUI_Impresoras guiI = new GUI_Impresoras();                
+        //l.Listado_Articulos();
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - guiI.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        guiI.setLocation(x, guiI.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        guiI.setVisible(true);
+        this.jDesktopPane1.add(guiI);
+        guiI.moveToFront();
+        guiI.requestFocus();
+        
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,8 +536,10 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
