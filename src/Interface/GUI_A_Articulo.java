@@ -303,33 +303,36 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                     +Float.parseFloat(jTextField4.getText())+","
                                     +Integer.parseInt(jTextField5.getText())+",'"
                                     +jTextField6.getText()+"')";
+            //r_con.Insertar(sql);
             if (r_con.Insertar(sql)){
+                // para auditoria
+                
+                InetAddress addr;
+                String terminal="";
+                try { 
+                    addr = InetAddress.getLocalHost();
+                    terminal = addr.getHostName(); 
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
+                }            
+                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
+                Date fechaEntrada = new Date(); 
+                String fecha = formatEntrada.format(fechaEntrada); 
+
+                Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
+                int cant=v.size()+1;                        
+
+                sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+1+",'"+fecha+"','"+terminal+"','"+
+                                        jTextField1.getText()+"','"+
+                                        jTextField2.getText()+"','"+
+                                        jTextField3.getText()+"',"
+                                        +Float.parseFloat(jTextField4.getText())+","
+                                        +Integer.parseInt(jTextField5.getText())+",'"
+                                        +jTextField6.getText()+"')";                        
+                System.out.println(sql);
+                r_con.Insertar(sql);
                 limpiarForm();
             }
-            // para auditoria
-            InetAddress addr;
-            String terminal="";
-            try { 
-                addr = InetAddress.getLocalHost();
-                terminal = addr.getHostName(); 
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-            SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
-            Date fechaEntrada = new Date(); 
-            String fecha = formatEntrada.format(fechaEntrada); 
-            
-            Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
-            int cant=v.size()+1;                        
-            
-            sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+1+",'"+fecha+"','"+terminal+"',"+
-                                    jTextField1.getText()+
-                                    jTextField2.getText()+"','"+
-                                    jTextField3.getText()+"',"
-                                    +Float.parseFloat(jTextField4.getText())+","
-                                    +Integer.parseInt(jTextField5.getText())+",'"
-                                    +jTextField6.getText()+"')";                        
-            r_con.Insertar(sql);
             r_con.cierraConexion();
             
         }
@@ -392,6 +395,35 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 r_con = new Conexion();
                 r_con.Connection();
                 r_con.Borrar("DELETE FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
+
+                // para auditoria
+                
+                InetAddress addr;
+                String terminal="";
+                try { 
+                    addr = InetAddress.getLocalHost();
+                    terminal = addr.getHostName(); 
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
+                }           
+                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
+                Date fechaEntrada = new Date(); 
+                String fecha = formatEntrada.format(fechaEntrada); 
+
+                Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
+                int cant=v.size()+1;                        
+
+                String  sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+2+",'"+fecha+"','"+terminal+"','"+
+                                        jTextField1.getText()+"','"+
+                                        jTextField2.getText()+"','"+
+                                        jTextField3.getText()+"',"
+                                        +Float.parseFloat(jTextField4.getText())+","
+                                        +Integer.parseInt(jTextField5.getText())+",'"
+                                        +jTextField6.getText()+"')"; 
+                                                               
+                System.out.println(sql);
+                r_con.Insertar(sql);
+                limpiarForm();                
                 r_con.cierraConexion();               
                 this.dispose();
                 }

@@ -215,7 +215,7 @@ public class Conexion{
         try{
             Statement st = (Statement) this.conn.createStatement();
             st.executeUpdate(inserta);
-            JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         }
         catch(SQLException ex)

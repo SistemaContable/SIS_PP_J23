@@ -133,7 +133,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void habilitarMenuPerfil(Vector<Vector<Integer>>moduloTarea){        
         habilitarMenu(false);
         for(Component cMenu:jMenuBar1.getComponents()){
-            for(Vector<Integer>modulo:moduloTarea){                                
+            for(Vector<Integer>modulo:moduloTarea){ 
                 if(cMenu.getName().equals("M"+modulo.get(0))){                    
                     cMenu.setEnabled(true);
                 }                                    
@@ -338,8 +338,10 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         jMenu6.setText("Auditoria");
+        jMenu6.setName("M6"); // NOI18N
 
         jMenuItem11.setText("Listado");
+        jMenuItem11.setName("T61"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -374,11 +376,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, np.getLocation().y);
-        
-        System.out.println(jDesktopPane1.getWidth()+" - "+np.getWidth());
-        System.out.println(jDesktopPane1.getHeight()+" - "+np.getHeight());
-        
+        np.setLocation(x, np.getLocation().y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.jDesktopPane1.add(np);
@@ -495,6 +493,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
+          l.setTitulo("Articulos");
         l.setCampo_clave("art_codigo");
         l.setNombre_tabla("Articulos");
         l.setNombre_reporte("rep_articulo.jrxml");
@@ -518,6 +517,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
+        l.setTitulo("Tasas de IVA");
         l.setCampo_clave("tasa_clave");
         l.setNombre_tabla("Tasas_IVA");
         l.setNombre_reporte("rep_tasas_iva.jrxml");
@@ -573,6 +573,27 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
+         // TODO add your handling code here:
+        GUI_Listado l = new GUI_Listado();
+        l.setTitulo("Auditoria Articulos");
+        l.setCampo_clave("aud_art_codigo");
+        l.setNombre_tabla("auditoria_articulo");
+        l.setNombre_reporte("rep_audi_articulos.jrxml");
+        String [] nombre_columnas = {"ID","Usuario","Modulo","Tarea","Fecha","Terminal","Articulo Codigo","Articulo Descripcion","Articulo Proveedor","Precio","Stock","Tasa de IVA"};
+        l.setNombre_columnas(nombre_columnas);
+        l.setId_modulo_imp("6");
+        l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario");
+       
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        l.setLocation(x, l.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        l.setVisible(true);
+        this.jDesktopPane1.add(l);
+        l.moveToFront();
+        l.requestFocus();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**

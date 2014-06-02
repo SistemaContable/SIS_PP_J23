@@ -565,5 +565,13 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
    public String getConsultaTodosElementos (){
         return ("SELECT * FROM "+nombre_tabla);   
    }
+   
+   public void setConsultaEspecial (String consulta){
+       
+   }
+   
+   public void setTitulo (String name){
+       jLabel1.setText(name);
+   }
 
 }
