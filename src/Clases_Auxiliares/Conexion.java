@@ -285,7 +285,7 @@ public class Conexion{
      }
      
      public Vector<Vector<String>> getContenidoTabla(String consulta){
-         Vector<Vector<String>>v=new Vector();         
+         Vector<Vector<String>>v = new Vector();         
          try{
             //lass.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");             
             //conn= DriverManager.getConnection(con1);

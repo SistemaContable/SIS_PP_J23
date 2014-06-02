@@ -8,7 +8,6 @@ package Interface;
 
 import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
-import Clases_Auxiliares.Validaciones;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -18,15 +17,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -37,7 +28,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     private ArrayList<String> items = new ArrayList<String>();        
     private Conexion r_con = new Conexion();
     private int id_perfil;
-    private DefaultTableModel modelo=new DefaultTableModel();
+    private DefaultTableModel modelo = new DefaultTableModel();
     
     public GUI_Usuario() {
         initComponents();
@@ -454,9 +445,13 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     
     
     private Vector<Vector<Object>> getContenidoTabla(int perfil){
-        Vector<Vector<String>>v = r_con.getContenidoTablaPermisos(perfil);
-        Vector<Vector<String>>tareas = r_con.getContenidoTabla("select * from tarea ");
-        Vector<Vector<Object>>filas=new Vector();                
+        Vector<Vector<String>> v = new Vector();
+        Vector<Vector<String>>tareas = new Vector();
+        Vector<Vector<Object>>filas = new Vector();
+        v = r_con.getContenidoTablaPermisos(perfil);
+        
+        tareas = r_con.getContenidoTabla("select * from tarea ");
+        filas=new Vector();                
         for(Vector<String>a:v){                                               
             Vector f=new Vector();
             f.add(a.elementAt(0));
@@ -465,23 +460,30 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 f.add(celda);                
             }          
             filas.add(f);
-        }      
+        }    
+        
         return filas;
     }
     
     public void cargarTabla(int perfil){                               
-        String[] columnas=getColumnas();
+        String[] columnas = getColumnas();
         Class[] tipoDatosColumnas=getTipoColumnas();
         
-        Vector<Vector<Object>> contenidoTabla=getContenidoTabla(perfil);
+        Vector<Vector<Object>> contenidoTabla = new Vector();
+        contenidoTabla = getContenidoTabla(perfil);
+        
+        modelo = new DefaultTableModel();
+        
         for(int i=0;i<modelo.getRowCount();i++)
             modelo.removeRow(i);
         
         modelo.setColumnIdentifiers(columnas);        
         for(int i=0;i<contenidoTabla.size();i++){            
-            modelo.addRow(contenidoTabla.elementAt(i));}        
+            modelo.addRow(contenidoTabla.elementAt(i));
+        }        
         
         if(modelo.getRowCount()!=contenidoTabla.size()){
+            System.out.println(modelo.getRowCount() +" - "+contenidoTabla.size());
             int r=campoRepetido();     
             while(r!=-1){                            
                 modelo.removeRow(r);            
@@ -490,6 +492,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         }
         jTable1.setModel(modelo);
         for(int i=1;i<columnas.length;i++){
+            
             jTable1.getColumnModel().getColumn(i).setCellEditor(new Clase_CellEditor());
             jTable1.getColumnModel().getColumn(i).setCellRenderer(new Clase_CellRender());
         }
@@ -525,11 +528,11 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
        return true;      
                
     }
-    private void mostrarMSSG (Component c){
-        KeyEvent ke = new KeyEvent(c, KeyEvent.KEY_PRESSED,
-        System.currentTimeMillis(), InputEvent.CTRL_MASK, KeyEvent.VK_F1, KeyEvent.CHAR_UNDEFINED);
-        c.dispatchEvent(ke);
-    }
+    //private void mostrarMSSG (Component c){
+        //KeyEvent ke = new KeyEvent(c, KeyEvent.KEY_PRESSED,
+        //System.currentTimeMillis(), InputEvent.CTRL_MASK, KeyEvent.VK_F1, KeyEvent.CHAR_UNDEFINED);
+        //c.dispatchEvent(ke);
+    //}
         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
