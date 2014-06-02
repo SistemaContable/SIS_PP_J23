@@ -6,17 +6,13 @@
 
 package Interface;
 
-import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
-import java.awt.print.PrinterException;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JTable;
-import javax.swing.JTable.PrintMode;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -27,7 +23,18 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
 import Clases_Auxiliares.Validaciones;
-import net.sf.jasperreports.engine.JasperPrintManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashAttributeSet;
+import javax.print.attribute.standard.PrinterName;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 
 /**
  *
@@ -40,11 +47,12 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
      */
     private Conexion r_con = new Conexion();    
     private String consulta_Vigente;
+    private String nombre_tabla = "Articulos";
   
     
     public GUI_Listado() {
         initComponents();                 
-        Listado_Articulos("SELECT * FROM Articulos");
+        Cargar_Tabla("SELECT * FROM "+nombre_tabla);
         jCheckBox1.setSelected(true);
         jLabel4.setVisible(false);
     }
@@ -230,13 +238,14 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jCheckBox2)
-                        .addComponent(jCheckBox1)
-                        .addComponent(jCheckBox3)
-                        .addComponent(jLabel2)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jCheckBox3)
+                            .addComponent(jLabel2)))
+                    .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -263,12 +272,79 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        try {            
-             MessageFormat headerFormat = new MessageFormat(jLabel1.getText());
-             MessageFormat footerFormat = new MessageFormat("- Página {0} -");
-             jTable1.print(PrintMode.FIT_WIDTH, headerFormat, footerFormat);
-        } catch (PrinterException ex) { }
+        try {
+            //metodo de impresion anterior por JTable
+            /**try {
+                MessageFormat headerFormat = new MessageFormat(jLabel1.getText());
+                MessageFormat footerFormat = new MessageFormat("- Página {0} -");
+                jTable1.print(PrintMode.FIT_WIDTH, headerFormat, footerFormat);            
+                } catch (PrinterException ex) { }
+            **/
+            
+            JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));
+            //localizo el reporte
+            JasperReport report = JasperCompileManager.compileReport("src/Reportes/rep_articulo.jrxml");
+            //cargo los datos
+            JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
+            
+            //vector con las impresoras del modulo de la base de datos
+            Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = 1");
+            //total impresoras disponibles
+            PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
+            //vector con las impresoras del modulo como objeto impresora (PrintService)
+            Vector<PrintService>impresoras_modulo = new Vector();
+            //objeto impresora en el que se imprime
+            PrintService impresora = null;
+            
+            if (v.size()>0){
+                String nombre_imp;                
+                //caso en que sea una unica impresora por modulo
+                if(v.size()==1){
+                    nombre_imp=v.elementAt(0).firstElement();                    
+                    AttributeSet aset = new HashAttributeSet();
+                    aset.add(new PrinterName(nombre_imp, null));                   
+                    impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                    impresora = impresoras[0];                   
+                }
+                
+                //caso en que haya mas de una impresora por modulo
+                if (v.size()>1){
+                    //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
+                    for (int i = 0; i < v.size(); i++) {
+                        nombre_imp=v.elementAt(i).firstElement();
+                        AttributeSet aset = new HashAttributeSet();
+                        aset.add(new PrinterName(nombre_imp, null));
+                        impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                        impresora = impresoras[0];
+                        impresoras_modulo.add(impresora);                    
+                    }
+                    //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
+                    PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
+                    for (int i = 0; i < impresoras_modulo.size(); i++) {
+                        listado_impresoras[i]=impresoras_modulo.elementAt(i);
+                    }
+                    //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
+                    impresora = (PrintService) JOptionPane.showInputDialog(null, "Hay mas de una impresora asignada a este modulo, eliga una para imprimir:",
+                     "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
+                    }
+                
+                //mando a imprimir el reporte en la impresora 
+                if (impresora != null){
+                    JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
+                    jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );                   
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.TRUE);
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                    jrprintServiceExporter.exportReport();
+                }   
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
+                                              + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (JRException ex) {
+            Logger.getLogger(GUI_Listado.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -283,7 +359,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             //cargo los datos
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap(), resultSetDataSource);
             
-            //si se quiere pasar la conexion
+            //si se quiere pasar la conexion en lugar del resulset
             //print = JasperFillManager.fillReport(report, null,r_con.getConn());
            
             //creo un objeto Visor del Reporte
@@ -301,15 +377,10 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             JP3.getComponent(1).setEnabled(false);
             
             jviewer.setVisible(true); 
-            JasperPrintManager.printReport(print, false);          
-
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-            
-       
-        
+        }          
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
@@ -342,14 +413,14 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         Validaciones v = new Validaciones();
         if (jCheckBox1.isSelected()){
             jLabel4.setVisible(false);
-            Listado_Articulos("SELECT * FROM Articulos");
+            Cargar_Tabla("SELECT * FROM "+nombre_tabla);
         }
         
         if (jCheckBox2.isSelected()){
             if (!"".equals(jTextField1.getText())){
                 if (v.isInt(jTextField1.getText())){
                     jLabel4.setVisible(false);
-                    Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo = "+jTextField1.getText());
+                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE art_codigo = "+jTextField1.getText());
                 }
                 else{
                     jLabel4.setVisible(true);
@@ -368,7 +439,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             if (!"".equals(jTextField1.getText()) || !"".equals(jTextField2.getText())){
                 if (v.isInt(jTextField1.getText()) && v.isInt(jTextField2.getText())){
                     jLabel4.setVisible(false);
-                    Listado_Articulos("SELECT * FROM Articulos WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
+                    Cargar_Tabla("SELECT * FROM "+nombre_tabla+" WHERE art_codigo >= "+jTextField1.getText()+" AND art_codigo <= "+jTextField2.getText());
                 }
                 else{
                     jLabel4.setVisible(true);
@@ -405,10 +476,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
            jLabel4.setText("Ingrese un valor numerico.");         
         }  
     }//GEN-LAST:event_jTextField2FocusLost
-
-    
-
-        
+       
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -429,8 +497,8 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     
-   public void Listado_Articulos (String consulta){
-        jLabel1.setText("Listado de Artículos: ");
+   public void Cargar_Tabla (String consulta){
+        jLabel1.setText("Listado de "+nombre_tabla+": ");
         r_con.Connection();  
         DefaultTableModel modelo = new DefaultTableModel();
         jTable1.setModel(modelo);       
@@ -439,21 +507,6 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         consulta_Vigente = consulta;
         Vector <Vector<String>> v = r_con.getContenidoTabla(consulta);
         for(Vector <String> a : v)
-            modelo.addRow(a);
-   }
-   
-   
-  // sadiofnhhhhhhhhhhhhhhhhhhhhfioasjfnfoiasnfioasnfiasiofnasiofnsainfiasfioasnfa
-   
-   public void Listado_Tasas (){
-        jLabel1.setText("Listado de Tasas de IVA:");
-        r_con.Connection();  
-        DefaultTableModel modelo=new DefaultTableModel();
-        jTable1.setModel(modelo);
-        String [] nombre_columnas = {"Clave de Tasa de Iva","Descripcion","Sigla"};                           
-        modelo.setColumnIdentifiers(nombre_columnas);        
-        Vector<Vector<String>>v = r_con.getContenidoTabla("select * from Tasas_IVA");
-        for(Vector<String>a:v)
             modelo.addRow(a);
    }
    

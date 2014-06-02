@@ -59,6 +59,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -113,6 +114,15 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        jButton5.setText("Quitar Impresora ");
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,14 +131,14 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(107, 107, 107)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -143,6 +153,10 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(99, 99, 99))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,15 +170,17 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(86, 86, 86))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton4)
                         .addGap(142, 142, 142)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -189,22 +205,23 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       PrintService[] printService = PrintServiceLookup.lookupPrintServices(null, null);
+       PrintService [] printService = PrintServiceLookup.lookupPrintServices(null, null);
         if( printService.length>0 )//si existen impresoras
         {
             //se elige la impresora
             PrintService impresora = (PrintService) JOptionPane.showInputDialog(null, "Elija una impresora:",
                 "Asginar Impresora a Modulo", JOptionPane.QUESTION_MESSAGE, null, printService, printService[0]);
-            //String modulo =  (String) jComboBox1.getSelectedItem();
-            
+           
             String [] separada; 
             separada = jComboBox1.getSelectedItem().toString().split("-"); 
             int modulo = Integer.parseInt(separada[0].trim());
-            
-            String sql = "INSERT INTO impresoras VALUES('"+impresora.getName()+"',"+modulo+")";            
-            r_con.Insertar(sql);
-            
-            JOptionPane.showMessageDialog(null, "va a asignar al modulo: "+modulo+" la impresora :"+impresora.getName(),"Cuidado",JOptionPane.WARNING_MESSAGE);
+
+            if (impresora != null){
+                String sql = "INSERT INTO impresoras VALUES('"+impresora.getName()+"',"+modulo+")";            
+                r_con.Insertar(sql); 
+                listar_Impresoras ();
+                JOptionPane.showMessageDialog(null, "Asigno al Módulo "+modulo+" la Impresora "+impresora.getName(),"Aviso",JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -212,6 +229,25 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         listar_Impresoras();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        if (jList1.getSelectedIndex() != -1){
+            String impresora = (String) jList1.getModel().getElementAt(jList1.getSelectedIndex());
+            String [] separada; 
+            separada = jComboBox1.getSelectedItem().toString().split("-"); 
+            int modulo = Integer.parseInt(separada[0].trim());
+            
+            //r_con.Connection();
+            r_con.Borrar("DELETE FROM impresoras WHERE imp_nombre = '"+impresora+"' and imp_id_modulo = "+modulo+"");
+            //r_con.cierraConexion();
+            listar_Impresoras ();
+                
+        }
+        
+        //System.out.println(jList1.getModel().getElementAt(jList1.getSelectedIndex()));
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
     
 
     private void mostrarMSSG (Component c){
@@ -225,6 +261,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
