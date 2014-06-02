@@ -308,7 +308,7 @@ public class Conexion{
          return v;
      }
     
-          public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
+         public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
          Vector<Vector<String>>v=new Vector();         
          try{            
             Statement st = conn.createStatement();

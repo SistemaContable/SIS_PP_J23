@@ -43,7 +43,6 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         initComponents();
         r_con.Connection();
         jTextField1.requestFocus();
-   //     modelo=new DefaulTableModel();
         cargarComboBox();
         cargarTabla(1);
     }
@@ -421,7 +420,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         catch (SQLException ex) {
                 Logger.getLogger(GUI_Usuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    cargarComboBox();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusLost
