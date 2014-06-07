@@ -106,7 +106,7 @@ public class Conexion{
             //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String connectionUrl;            
-            connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";
+            //connectionUrl = "jdbc:sqlserver://10.10.10.230:1433;databaseName=Sistema;user=sa;password=sa;";
             
             //connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
             connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            

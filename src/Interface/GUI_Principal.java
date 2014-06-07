@@ -79,7 +79,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             JMenu jaux=(JMenu)components[i];  
             for(int ff=0;ff<jaux.getItemCount();ff++){
                 jaux.getItem(ff).setEnabled(valor);                
-                
+            jMenu7.setEnabled(true);
              /*   if(jaux.getItem(ff) instanceof JMenu){
                     JMenu jaux2=(JMenu)jaux.getItem(ff);                
                     for(int fff=0;fff<jaux2.getItemCount();fff++)
@@ -123,6 +123,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         habilitarMenuPerfil(modulosTarea);
+        jMenu7.setEnabled(true);
     }    
    
     /**
@@ -183,6 +184,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -350,6 +352,16 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem11);
 
         jMenuBar1.add(jMenu6);
+
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        jMenu7.setText("Cerrar Sesion");
+        jMenu7.setName("M7"); // NOI18N
+        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu7MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 
@@ -596,6 +608,14 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.requestFocus();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
+        // TODO add your handling code here:
+        
+        GUI_Principal ventana = new GUI_Principal();
+        this.dispose();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jMenu7MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -626,7 +646,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_Principal().setVisible(true);                
+               GUI_Principal ventana= new GUI_Principal();
+               ventana.setVisible(true);
             }
         });
     }
@@ -639,6 +660,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
