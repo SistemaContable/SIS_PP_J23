@@ -34,7 +34,7 @@ FROM
 	<field name="aud_id_tarea" class="java.lang.Integer"/>
 	<field name="aud_fecha" class="java.sql.Date"/>
 	<field name="aud_terminal" class="java.lang.String"/>
-	<field name="aud_art_codigo" class="java.lang.Integer"/>
+	<field name="aud_art_codigo" class="java.lang.String"/>
 	<field name="aud_art_desc" class="java.lang.String"/>
 	<field name="aud_art_proveedor" class="java.lang.String"/>
 	<field name="aud_art_precio" class="java.math.BigDecimal"/>
@@ -197,7 +197,7 @@ FROM
 					</textElement>
 					<textFieldExpression><![CDATA[$F{aud_terminal}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField isStretchWithOverflow="true" pattern="String">
 					<reportElement style="Detail" positionType="Float" x="360" y="0" width="72" height="18" uuid="fa62c3c6-acee-43c1-87a2-60a9797e6b29"/>
 					<textElement>
 						<font size="14"/>

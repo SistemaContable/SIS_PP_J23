@@ -4,6 +4,7 @@ package Interface;
 import Clases_Auxiliares.Conexion;
 import java.awt.Component;
 import java.awt.Toolkit;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -54,9 +55,11 @@ public class GUI_Principal extends javax.swing.JFrame {
     }
     
     private void crearLogin(){            
+        jMenu7.setText("Cerrar Sesión");
+        
         GUI_Login lo = new GUI_Login(this);               
         lo.setTitle("Login");
-        lo.setTitleLabel("Login");       
+        lo.setTitleLabel("Login");      
         
         this.jDesktopPane1.add(lo);
         lo.setVisible(true);
@@ -67,7 +70,13 @@ public class GUI_Principal extends javax.swing.JFrame {
         lo.setLocation(x,y);        
         lo.moveToFront();
         lo.requestFocus();
-        lo.focusPrincipal();      
+        lo.focusPrincipal(); 
+        
+        try {        
+            lo.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         habilitarMenu(false);                
     }
@@ -123,6 +132,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         habilitarMenuPerfil(modulosTarea);
+        jMenu7.setEnabled(true);
     }    
    
     /**
@@ -183,6 +193,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -351,6 +362,16 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu6);
 
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        jMenu7.setText("Cerrar Sesión");
+        jMenu7.setName("M7"); // NOI18N
+        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu7MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu7);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -380,6 +401,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         np.moveToFront();
         np.requestFocus();
         np.nextFocus();       
@@ -404,6 +430,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         bp.setVisible(true);
         this.jDesktopPane1.add(bp);
+        try {        
+            bp.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         bp.moveToFront();
         bp.requestFocus();
         bp.nextFocus();  
@@ -424,6 +455,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         bp.setVisible(true);
         this.jDesktopPane1.add(bp);
+        try {        
+            bp.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         bp.moveToFront();
         bp.requestFocus();
         bp.nextFocus();  
@@ -444,6 +480,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         cp.setVisible(true);
         this.jDesktopPane1.add(cp);
+        try {        
+            cp.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         cp.moveToFront();
         cp.requestFocus();
         cp.nextFocus();
@@ -464,6 +505,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         np.moveToFront();
         np.requestFocus();
         np.nextFocus();
@@ -485,6 +531,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         bp.setVisible(true);
         this.jDesktopPane1.add(bp);
+        try {        
+            bp.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         bp.moveToFront();
         bp.requestFocus();
         bp.nextFocus();
@@ -509,6 +560,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         l.setVisible(true);
         this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         l.moveToFront();
         l.requestFocus();
         
@@ -534,6 +590,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         l.setVisible(true);
         this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         l.moveToFront();
         l.requestFocus();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
@@ -550,6 +611,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         guiU.setVisible(true);
         this.jDesktopPane1.add(guiU);
+        try {        
+            guiU.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         guiU.moveToFront();
         guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -566,6 +632,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         guiI.setVisible(true);
         this.jDesktopPane1.add(guiI);
+        try {        
+            guiI.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         guiI.moveToFront();
         guiI.requestFocus();
         
@@ -583,7 +654,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.setNombre_columnas(nombre_columnas);
         l.setId_modulo_imp("6");
         l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario");
-       
+        //select aud_id_auditoria,usr_nombre_usuario as 'aud_id_usuario',mod_descripcion as 'aud_id_modulo',tar_descripcion as 'aud_id_tarea',aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
@@ -592,10 +663,32 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         l.setVisible(true);
         this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         l.moveToFront();
         l.requestFocus();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
+        // TODO add your handling code here:
+        if ("Iniciar Sesión".equals(jMenu7.getText())){
+            this.crearLogin();
+        }
+        else{
+            GUI_Principal ventana = new GUI_Principal();
+            this.dispose();
+            ventana.setVisible(true);
+        }                
+    }//GEN-LAST:event_jMenu7MouseClicked
+    
+    public void abrirSesion (){
+        jMenu7.setText("Iniciar Sesión");
+        jMenu7.setEnabled(true);
+    }   
+    
     /**
      * @param args the command line arguments
      */
@@ -626,7 +719,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_Principal().setVisible(true);                
+                GUI_Principal ventana= new GUI_Principal();
+                ventana.setVisible(true);                
             }
         });
     }
@@ -639,6 +733,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;

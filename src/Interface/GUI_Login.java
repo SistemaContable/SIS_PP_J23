@@ -221,6 +221,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         this.dispose();
         r_con.cierraConexion();
+        guiPrincipal.abrirSesion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
