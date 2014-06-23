@@ -8,19 +8,14 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Component;
-import java.awt.List;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 /**
