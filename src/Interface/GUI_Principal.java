@@ -35,7 +35,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         
         this.setSize(ancho,alto); 
         setLocationRelativeTo (null);        
-        crearLogin();
+        //crearLogin();
     }
     
     public GUI_Principal(int per,int id_usuario) {
@@ -193,6 +193,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -359,6 +360,14 @@ public class GUI_Principal extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem11);
+
+        jMenuItem12.setText("back");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem12);
 
         jMenuBar1.add(jMenu6);
 
@@ -683,6 +692,27 @@ public class GUI_Principal extends javax.swing.JFrame {
             ventana.setVisible(true);
         }                
     }//GEN-LAST:event_jMenu7MouseClicked
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+        GUI_BackUp guiI = new GUI_BackUp();                
+        //l.Listado_Articulos();
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - guiI.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        guiI.setLocation(x, guiI.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        guiI.setVisible(true);
+        this.jDesktopPane1.add(guiI);
+        try {        
+            guiI.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        guiI.moveToFront();
+        guiI.requestFocus();
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
     
     public void abrirSesion (){
         jMenu7.setText("Iniciar Sesión");
@@ -738,6 +768,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
