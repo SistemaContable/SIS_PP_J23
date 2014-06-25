@@ -300,7 +300,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel12.setForeground(java.awt.Color.red);
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setLabelFor(jButton1);
         jLabel12.setText(" ");
 
@@ -458,11 +458,12 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        if (jTextField5.getText()!=""){
+        if (!"".equals(jTextField5.getText())){
             jTextField5.requestFocus();
             jLabel12.setText("Ingrese un Nombre para la Carpeta");
         }
         else{
+            jLabel12.setText(" ");
             if (jCheckBox1.isSelected()){
         
             }
