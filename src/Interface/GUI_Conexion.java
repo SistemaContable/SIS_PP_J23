@@ -548,6 +548,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             }
             r_con.Connection();
             r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
+            validarConexion ();
             /**
              * r_con.Insertar("CREATE DATABASE [nombredelaBD]" + "ON PRIMARY" +
              * "( NAME = N'nombredelaBD', " + "FILENAME =
