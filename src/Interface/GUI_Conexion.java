@@ -23,17 +23,17 @@ public class GUI_Conexion extends javax.swing.JFrame {
      */
     private Conexion r_con = new Conexion();
     private GUI_Principal ppal;
-    private String nombre_carpeta_BD = "database";
+    private String nombre_BD_Sistema = "BD_Sistema";
     
-    public GUI_Conexion(GUI_Principal p) {
-        ppal = p;
+    public GUI_Conexion() {
+        //ppal = p;
         initComponents();
         setDefaultCloseOperation(0);
         setLocationRelativeTo(null);
         setResizable(false);
         
         //deshabilito todo el panel y solo dejo abrir los que den error
-        jTabbedPane1.setEnabled(false);
+        //jTabbedPane1.setEnabled(false);
         //para panel 1
         jRadioButton1.setSelected(true);        
         jButton2.setEnabled(false);
@@ -388,12 +388,16 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     public void validarConexion (){
         deshabilitarPaneles();
-        jTabbedPane1.setEnabled(false);
+        //jTabbedPane1.setEnabled(false);
         Conexion r_con = new Conexion();
         if (! r_con.existeConexion()) {
             jTabbedPane1.setEnabledAt(0, true);
             jTabbedPane1.setSelectedIndex(0);
         }
+        else{
+            r_con.existeDatabase(nombre_BD_Sistema);
+        }
+        
     }
     
     private void deshabilitarPaneles (){
@@ -501,7 +505,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 carpeta.getName();
             }
             r_con.Connection();
-            r_con.crearDatabase_DIR("BD_Sistema", carpeta.getPath());
+            r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
             /**
              * r_con.Insertar("CREATE DATABASE [nombredelaBD]" + "ON PRIMARY" +
              * "( NAME = N'nombredelaBD', " + "FILENAME =

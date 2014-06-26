@@ -801,11 +801,12 @@ public class GUI_Principal extends javax.swing.JFrame {
             public void run() {
                 //1º creo una conexion para validar que el sistema se puede conectar
                 //Conexion r_con = new Conexion();
-                GUI_Principal ventana= new GUI_Principal();
+                //GUI_Principal ventana= new GUI_Principal();
                 
                 //si no existe el archivo de conexion llamo a la interface resposable
                 //if (! r_con.existeConexion()) {
-                    GUI_Conexion gui = new GUI_Conexion(ventana);
+                    //GUI_Conexion gui = new GUI_Conexion(ventana);
+                    GUI_Conexion gui = new GUI_Conexion();
                     gui.validarConexion ();
                     gui.setVisible(true);                    
                 //}

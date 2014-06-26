@@ -22,6 +22,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
  
 public class Conexion{
@@ -188,6 +190,22 @@ public class Conexion{
         else
             return false;
      }
+    
+    public boolean existeDatabase (String nombre){
+        boolean existe = false;
+        try {            
+            stnt  = conn.createStatement();
+            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases" +
+                                       "WHERE [NAME] = '"+nombre+"'");
+            rslset.next();
+            System.out.println(rslset.getString(1));
+            existe = ("1".equals(rslset.getString(1)));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return existe;
+    }
     
     public void leerConexion () {
         File archivo = null;
