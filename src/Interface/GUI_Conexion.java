@@ -57,6 +57,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -91,6 +94,40 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Configuración de Conexión del Sistema:");
+
+        jLabel13.setText("Felicitaciones, no hay error");
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
+        jButton7.setText("Salir");
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addContainerGap(262, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+                .addComponent(jButton7)
+                .addGap(36, 36, 36))
+        );
+
+        jTabbedPane1.addTab("Inicio de Sesion", jPanel3);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("URL:");
@@ -268,11 +305,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
         buttonGroup2.add(jCheckBox1);
         jCheckBox1.setText("Almacenar las Bases de Datos en el mismo Directorio del Aplicativo");
-        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBox1ItemStateChanged(evt);
-            }
-        });
 
         buttonGroup2.add(jCheckBox2);
         jCheckBox2.setText("Especificar un Directorio de creación");
@@ -391,14 +423,18 @@ public class GUI_Conexion extends javax.swing.JFrame {
         //jTabbedPane1.setEnabled(false);
         Conexion r_con = new Conexion();
         if (! r_con.existeConexion()) {
-            jTabbedPane1.setEnabledAt(0, true);
-            jTabbedPane1.setSelectedIndex(0);
+            jTabbedPane1.setEnabledAt(1, true);
+            jTabbedPane1.setSelectedIndex(1);
         }
         else{
             r_con.Connection();
             if (! r_con.existeDatabase(nombre_BD_Sistema)){
-                jTabbedPane1.setEnabledAt(1, true);
-                jTabbedPane1.setSelectedIndex(1);
+                jTabbedPane1.setEnabledAt(2, true);
+                jTabbedPane1.setSelectedIndex(2);
+            }
+            else{
+                jTabbedPane1.setEnabledAt(0, true);
+                jTabbedPane1.setSelectedIndex(0);
             }
         }
         
@@ -468,6 +504,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             r_con.grabarConexion(r_con);
             
             limpiarPanelConexion();
+            validarConexion ();
             //this.dispose();
             //ppal.setVisible(true);
         } else {
@@ -538,12 +575,10 @@ public class GUI_Conexion extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jCheckBox2ItemStateChanged
 
-    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        if (jCheckBox1.isSelected()){
-            jTextField5.setEnabled(false);
-        }
-    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+        System.exit(0);
+    }//GEN-LAST:event_jButton7ActionPerformed
     
     private void limpiarPanelConexion() {
         jTextField1.setText(null);
@@ -564,12 +599,14 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -580,6 +617,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTabbedPane jTabbedPane1;

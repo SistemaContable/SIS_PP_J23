@@ -198,16 +198,14 @@ public class Conexion{
     public boolean existeDatabase (String nombre){
         boolean existe = false;
         try {            
+            //creo el statament (antes conectar a la bd)
             stnt  = conn.createStatement();
+            //consulto, cuenta si existe una bd con ese nombre, devuelve 1 si existe, 0 sino
             rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +
                                        "WHERE [NAME] = '"+nombre+"';");
-            while (rslset.next()){
-                existe = ("1".equals(rslset.getString(1)));
-                System.out.println(rslset.getString(1));
-                System.out.println(existe);
-            }
-            
-           
+            rslset.next();
+            existe = ("1".equals(rslset.getString(1)));
+            System.out.println("existe db sistema: "+existe);
             
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
