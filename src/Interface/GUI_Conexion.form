@@ -423,6 +423,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Almacenar las Bases de Datos en el mismo Directorio del Aplicativo"/>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCheckBox1ItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox2">
               <Properties>
@@ -431,6 +434,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Especificar un Directorio de creaci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jCheckBox2ItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton5">
               <Properties>

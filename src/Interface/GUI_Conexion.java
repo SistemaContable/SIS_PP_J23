@@ -267,9 +267,19 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
         buttonGroup2.add(jCheckBox1);
         jCheckBox1.setText("Almacenar las Bases de Datos en el mismo Directorio del Aplicativo");
+        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox1ItemStateChanged(evt);
+            }
+        });
 
         buttonGroup2.add(jCheckBox2);
         jCheckBox2.setText("Especificar un Directorio de creación");
+        jCheckBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox2ItemStateChanged(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton5.setText("Crear y Continuar");
@@ -475,7 +485,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 carpeta.getName();
             }
             r_con.Connection();
-            r_con.crearDatabase_DIR("prueba", carpeta.getPath());
+            r_con.crearDatabase_DIR("BD_Sistema", carpeta.getPath());
             /**
              * r_con.Insertar("CREATE DATABASE [nombredelaBD]" + "ON PRIMARY" +
              * "( NAME = N'nombredelaBD', " + "FILENAME =
@@ -493,6 +503,22 @@ public class GUI_Conexion extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jCheckBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox2ItemStateChanged
+        // TODO add your handling code here:
+        if (jCheckBox2.isSelected()){
+            jTextField5.setEnabled(true);
+            jTextField5.requestFocus();
+        }
+        
+    }//GEN-LAST:event_jCheckBox2ItemStateChanged
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        // TODO add your handling code here:
+        if (jCheckBox1.isSelected()){
+            jTextField5.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
     
     private void limpiarPanelConexion() {
         jTextField1.setText(null);

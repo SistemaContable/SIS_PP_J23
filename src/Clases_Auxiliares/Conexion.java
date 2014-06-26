@@ -313,14 +313,14 @@ public class Conexion{
     public void crearDatabase_DIR (String name, String directorio){
         try{
             Statement st = (Statement) this.conn.createStatement();
-            st.executeUpdate("CREATE DATABASE [nombredelaBD]" +
+            st.executeUpdate("CREATE DATABASE ["+name+"]" +
                             "ON  PRIMARY" +
-                            "( NAME = N'nombredelaBD', " +
+                            "( NAME = N'"+name+"', " +
                             "FILENAME = N'"+directorio+"\\"+name+".mdf' , " +
                             "SIZE = 3072KB , " +
                             "FILEGROWTH = 1024KB )" +
                             "LOG ON " +
-                            "( NAME = N'nombredelaBD_log', " +
+                            "( NAME = N'"+name+"_log', " +
                             "FILENAME = N'"+directorio+"\\"+name+"_log.ldf' , " +
                             "SIZE = 1024KB , \n" +
                             "FILEGROWTH = 10%)");
@@ -329,6 +329,9 @@ public class Conexion{
         catch(SQLException ex)
         {
             JOptionPane.showMessageDialog(null, "OCURRIO UN PROBLEMA, CODIGO: "+ex.getErrorCode(),"Atención",JOptionPane.WARNING_MESSAGE);
+            if (ex.getErrorCode()==1801) {
+                JOptionPane.showMessageDialog(null, "La Base de Datos ya está registrada en el SGBD.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
         }
     
     }
