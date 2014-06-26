@@ -29,17 +29,17 @@ public class GUI_Conexion extends javax.swing.JFrame {
         ppal = p;
         initComponents();
         setDefaultCloseOperation(0);
-        setLocationRelativeTo (null);
+        setLocationRelativeTo(null);
         setResizable(false);
-        
+
         //para panel 1
         jRadioButton1.setSelected(true);
         jTabbedPane1.setEnabledAt(0, true);
         jButton2.setEnabled(false);
-        
+
         //para panel 2
         jCheckBox1.setSelected(true);
-        
+
         //r_con.Connection();  
     }
 
@@ -375,10 +375,10 @@ public class GUI_Conexion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    
+
     private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged
         // TODO add your handling code here:
-        if (jRadioButton2.isSelected()){            
+        if (jRadioButton2.isSelected()) {            
             jTextField3.setEnabled(true);
             jTextField4.setEnabled(true);
         }
@@ -386,7 +386,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void jRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton1ItemStateChanged
         // TODO add your handling code here:
-         if (jRadioButton1.isSelected()){
+        if (jRadioButton1.isSelected()) {
             jTextField3.setText("");
             jTextField4.setText("");
             jTextField3.setEnabled(false);
@@ -399,16 +399,14 @@ public class GUI_Conexion extends javax.swing.JFrame {
         boolean rta = false;
         if (jRadioButton1.isSelected()) {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), true, jTextField3.getText(), jTextField4.getText());
-        }
-        else{
+        } else {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), false, jTextField3.getText(), jTextField4.getText());
         }
         
-        if (rta){
+        if (rta) {
             msj_conexion_Exito();
             jButton2.setEnabled(true);
-        }
-        else{
+        } else {
             msj_conexion_Error();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -417,32 +415,29 @@ public class GUI_Conexion extends javax.swing.JFrame {
         boolean rta = false;
         if (jRadioButton1.isSelected()) {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), true, jTextField3.getText(), jTextField4.getText());
-        }
-        else{
+        } else {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), false, jTextField3.getText(), jTextField4.getText());
         }
-        if (rta){
-                r_con.setUrl(jTextField1.getText());
-                if (!"".equals(jTextField2.getText())){
-                    r_con.setPort(jTextField2.getText());
-                }
-                if (jRadioButton1.isSelected()) {
-                    r_con.setSeguridad_integrada(true);                    
-                }
-                else{
-                    r_con.setSeguridad_integrada(false);
-                }       
-                r_con.setUsuario(jTextField3.getText());
-                r_con.setClave(jTextField4.getText());
-                r_con.grabarConexion(r_con);
-                
-                limpiarPanelConexion ();
-                this.dispose();
-                ppal.setVisible(true);
-         }
-        else{
+        if (rta) {
+            r_con.setUrl(jTextField1.getText());
+            if (!"".equals(jTextField2.getText())) {
+                r_con.setPort(jTextField2.getText());
+            }
+            if (jRadioButton1.isSelected()) {
+                r_con.setSeguridad_integrada(true);                
+            } else {
+                r_con.setSeguridad_integrada(false);
+            }            
+            r_con.setUsuario(jTextField3.getText());
+            r_con.setClave(jTextField4.getText());
+            r_con.grabarConexion(r_con);
+            
+            limpiarPanelConexion();
+            //this.dispose();
+            ppal.setVisible(true);
+        } else {
             msj_conexion_Error();
-            JOptionPane.showMessageDialog(null, "Se ha modifificado algún parametro y la conexion ya no es valida.","Ups!",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se ha modifificado algún parametro y la conexion ya no es valida.", "Ups!", JOptionPane.INFORMATION_MESSAGE);
             jTextField1.requestFocus();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -455,31 +450,42 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         String ruta_aplic = System.getProperty("user.dir");
-        if ("".equals(jTextField5.getText())){
+        if ("".equals(jTextField5.getText())) {
             jTextField5.requestFocus();
             jLabel12.setText("Ingrese un Nombre para la Carpeta");
-        }
-        else{
+        } else {
             jLabel12.setText(" ");
+            File carpeta;
             String nombre_carpeta = jTextField5.getText();
-            if (jCheckBox1.isSelected()){
-                File carpeta = new File(ruta_aplic+"\\"+nombre_carpeta);
+            if (jCheckBox1.isSelected()) {
+                carpeta = new File(ruta_aplic + "\\" + nombre_carpeta);
                 carpeta.mkdir();
-            }
-            else{
+            } else {
                 JFileChooser directorio = new JFileChooser();
                 directorio.setCurrentDirectory(new File(ruta_aplic));
                 directorio.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int result = directorio.showDialog(null,"Seleccione la ruta");
+                int result = directorio.showDialog(null, "Seleccione la ruta");
                 String ruta = null;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    ruta = directorio.getSelectedFile().getPath();           
+                    ruta = directorio.getSelectedFile().getPath();                    
                 }
-                File carpeta = new File(ruta+"\\"+nombre_carpeta);
-                carpeta.mkdir();          
-                System.out.println(carpeta);
+                carpeta = new File(ruta + "\\" + nombre_carpeta);
+                carpeta.mkdirs();                
+                System.out.println(carpeta.getAbsolutePath() + " - " + carpeta.getPath());
+                carpeta.getName();
             }
-        }       
+            r_con.Connection();
+            r_con.crearDatabase_DIR("prueba", carpeta.getPath());
+            /**
+             * r_con.Insertar("CREATE DATABASE [nombredelaBD]" + "ON PRIMARY" +
+             * "( NAME = N'nombredelaBD', " + "FILENAME =
+             * N'"+carpeta.getPath()+"\\"+"nombredelaBD.mdf' , " + "SIZE =
+             * 3072KB , " + "FILEGROWTH = 1024KB )" + "LOG ON " + "( NAME =
+             * N'nombredelaBD_log', " + "FILENAME =
+             * N'"+carpeta.getPath()+"\\"+"nombredelaBD_log.ldf' , " + "SIZE =
+             * 1024KB , \n" + "FILEGROWTH = 10%)");*
+             */
+        }        
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -488,7 +494,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton6ActionPerformed
     
-    private void limpiarPanelConexion (){
+    private void limpiarPanelConexion() {
         jTextField1.setText(null);
         jTextField2.setText(null);
         jTextField3.setText(null);
@@ -497,7 +503,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jRadioButton1.setSelected(true);
         jButton2.setEnabled(false);
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -533,22 +539,22 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 
-public void setTitleLabel (String t){
+    public void setTitleLabel(String t) {
         this.jLabel1.setText(t);
-}
-
-private void vaciarMensaje (){
-    jLabel8.setText(" ");
-}
-
-private void msj_conexion_Exito (){
-    jLabel8.setText("CONEXIÓN EXITOSA");
-    jLabel8.setForeground(new java.awt.Color(0, 153, 51));
-}
-
-private void  msj_conexion_Error (){
-    jLabel8.setText("CONEXIÓN FALLIDA");
-    jLabel8.setForeground(Color.RED);
-}
-
+    }
+    
+    private void vaciarMensaje() {
+        jLabel8.setText(" ");
+    }
+    
+    private void msj_conexion_Exito() {
+        jLabel8.setText("CONEXIÓN EXITOSA");
+        jLabel8.setForeground(new java.awt.Color(0, 153, 51));
+    }
+    
+    private void msj_conexion_Error() {
+        jLabel8.setText("CONEXIÓN FALLIDA");
+        jLabel8.setForeground(Color.RED);
+    }
+    
 }

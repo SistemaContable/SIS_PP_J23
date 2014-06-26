@@ -46,7 +46,8 @@ public class Conexion{
         this.jdbc = "jdbc:sqlserver://";
         this.url = "localhost";
         this.port = ":1433";
-        this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";        
+        this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
+        
     }
  
     //metodos para recuperar los datos de conexion
@@ -308,6 +309,29 @@ public class Conexion{
         //this.estancia = (Statement) conn.createStatement();
         //return this.estancia.executeQuery(consulta);
     //}
+    
+    public void crearDatabase_DIR (String name, String directorio){
+        try{
+            Statement st = (Statement) this.conn.createStatement();
+            st.executeUpdate("CREATE DATABASE [nombredelaBD]" +
+                            "ON  PRIMARY" +
+                            "( NAME = N'nombredelaBD', " +
+                            "FILENAME = N'"+directorio+"\\"+name+".mdf' , " +
+                            "SIZE = 3072KB , " +
+                            "FILEGROWTH = 1024KB )" +
+                            "LOG ON " +
+                            "( NAME = N'nombredelaBD_log', " +
+                            "FILENAME = N'"+directorio+"\\"+name+"_log.ldf' , " +
+                            "SIZE = 1024KB , \n" +
+                            "FILEGROWTH = 10%)");
+            
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, "OCURRIO UN PROBLEMA, CODIGO: "+ex.getErrorCode(),"Atención",JOptionPane.WARNING_MESSAGE);
+        }
+    
+    }
     
     public ResultSet Consultar (String consulta) {        
         try
