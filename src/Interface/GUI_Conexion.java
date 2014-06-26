@@ -373,7 +373,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         .addComponent(jButton5)
                         .addGap(52, 52, 52)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(161, 161, 161))))
+                        .addGap(172, 172, 172))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -419,9 +419,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void validarConexion (){
+        System.out.println("-> entre a controlar el algoritmo de conexion:");
         deshabilitarPaneles();
-        //jTabbedPane1.setEnabled(false);
-        Conexion r_con = new Conexion();
         if (! r_con.existeConexion()) {
             jTabbedPane1.setEnabledAt(1, true);
             jTabbedPane1.setSelectedIndex(1);
@@ -436,9 +435,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(0, true);
                 jTabbedPane1.setSelectedIndex(0);
             }
-        }
-        
-        //r_con.existeDatabase(nombre_BD_Sistema);
+             r_con.cierraConexion();
+        }      
     }
     
     private void deshabilitarPaneles (){
@@ -543,7 +541,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 }
                 carpeta = new File(ruta + "\\" + nombre_carpeta);
                 carpeta.mkdirs();                
-                System.out.println(carpeta.getAbsolutePath() + " - " + carpeta.getPath());
                 carpeta.getName();
             }
             r_con.Connection();

@@ -806,6 +806,7 @@ public class GUI_Principal extends javax.swing.JFrame {
                 //si no existe el archivo de conexion llamo a la interface resposable
                 //if (! r_con.existeConexion()) {
                     //GUI_Conexion gui = new GUI_Conexion(ventana);
+                    System.out.println("ARRANQUE:");
                     GUI_Conexion gui = new GUI_Conexion();
                     gui.validarConexion ();
                     gui.setVisible(true);                    

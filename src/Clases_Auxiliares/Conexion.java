@@ -8,7 +8,6 @@ package Clases_Auxiliares;
  * que seria conveniente usar una sola conexion, abrirla y cerrarla.
  */
 
-import Interface.GUI_Conexion;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -42,76 +41,79 @@ public class Conexion{
     private ResultSet rslset;
     private String nombre_archivo = "dat_conexion.dat";
  
-//CONSTRUCTORES
-     
+//CONSTRUCTORES:
+    
     public Conexion() {
-        this.jdbc = "jdbc:sqlserver://";
-        this.url = "localhost";
-        this.port = ":1433";
+        //asigno parametros basicos, ya que los valores los leo del archivo
         this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
-        
-    }
- 
-    //metodos para recuperar los datos de conexion
+        this.jdbc = "jdbc:sqlserver://";
+        this.port = "1433";
+        this.url = "";
+        this.seguridad_integrada = true;
+        this.usuario="";
+        this.clave="";
+    }      
+    
+//GETTERS:
+    
     public String getUrl() {
         return url;
-    }
-    
+    }    
     public String getPort() {
         return port;
-    }   
-
+    }  
     public boolean getSeguridad_integrada() {
         return seguridad_integrada;
     }
-
     public String getUsuario() {
         return usuario;
-    }
-    
+    }    
     public String getClave() {
         return clave;
-    }    
- 
+    }  
     public Connection getConn() {
         return conn;
-    }
- 
+    } 
     public String getDriverClassName() {
         return driverClassName;
     }
  
-    //metodos para establecer los valores de conexion 
+//SETTERS:
+    
     public void setUrl(String url) {
         this.url = url;
-    }
-    
+    }    
      public void setPort(String port) {
         this.port = port;
-    }
-     
+    }     
     public void setSeguridad_integrada(boolean seguridad_integrada) {
         this.seguridad_integrada = seguridad_integrada;
-    }
- 
+    } 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
-    }
-    
+    }    
     public void setClave(String clave) {
         this.clave = clave;
-    }
- 
+    } 
     public void setConn(Connection conn) {
         this.conn = conn;
-    }
- 
+    } 
     public void setDriverClassName(String driverClassName) {
         this.driverClassName = driverClassName;
     }
  
-//la conexion propiamente dicha
+//METODOS:
     
+    /**
+     * El siguiente metodo, tiene por finalidad validar si los parametros pasados
+     * sirven para gestionar una conexion a un SGBD. Decuelve true si lo logra.
+     * @param n_url url de la conexion ej:localhost
+     * @param n_port puerto abierto de conexion
+     * @param seg_int true indica que se utilizara seguridad integrada
+     * @param n_usu usuario de conexion, en caso se no usar seguridad integrada
+     * @param n_cla clave, idem usuario.
+     * @return 
+     */
     public boolean validarConexion (String n_url, String n_port, boolean seg_int, String n_usu, String n_cla){
         boolean valida = false;
         
@@ -120,10 +122,9 @@ public class Conexion{
         }
         else{
             port = "1433";
-        }
+        }    
         
-        String urlConexion = jdbc+n_url+":"+port+";";
-        
+        String urlConexion = jdbc+n_url+":"+port+";";        
         if (seg_int){
             urlConexion +="integratedSecurity=true;";
         }
@@ -134,8 +135,10 @@ public class Conexion{
         try {
             conn = DriverManager.getConnection(urlConexion);
             valida = true;
+            conn.close();
         } catch (SQLException ex) {
-            //corto el mensaje del error
+            //corto la longitud del mensaje y muestro el error
+            //para informar por que no puede conectarce a la BD 
             String error = "";            
             String[] palabras = ex.getMessage().split(" ");
             int i = 0;
@@ -155,64 +158,48 @@ public class Conexion{
         return valida;
     }
     
+    /**
+     * Este metodo se utiliza para grabar en un archivo los parametros de conexion.
+     * Se recomienda antes validar la conexion mediante el metodo validarConexion() 
+     * @param c objeto de conexion para obtener los parametros
+     */
     public void grabarConexion (Conexion c){        
         File archivo = null;
-        FileWriter fichero = null;
+        FileWriter fr = null;
         PrintWriter pw = null;
         try
         {
             archivo = new File (nombre_archivo);
-            fichero = new FileWriter(archivo);
-            pw = new PrintWriter(fichero);
+            fr = new FileWriter(archivo);
+            pw = new PrintWriter(fr);
             
             pw.println(c.getUrl());
             pw.println(c.getPort());
             pw.println(c.getSeguridad_integrada());
             pw.println(c.getUsuario());
             pw.println(c.getClave());
+            
             pw.flush();
             pw.close();
  
         } catch (Exception e) {
              JOptionPane.showMessageDialog(null,"       ERROR al abrir el archivo Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
-        } finally {
-           try {
-           // Nuevamente aprovechamos el finally para  asegurarnos que se cierra el fichero.
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
+        } 
+        finally {
+            try {
+                if (null != fr)
+                    fr.close();
+            }catch (Exception e2) {
+                System.out.println("Error al cerrar el archivo de Conexion.");
+            }
         }       
     }
     
-    public boolean existeConexion (){
-        String sFichero = nombre_archivo;
-        File fichero = new File(sFichero);
-        if (fichero.exists())
-            return true;
-        else
-            return false;
-     }
-    
-    public boolean existeDatabase (String nombre){
-        boolean existe = false;
-        try {            
-            //creo el statament (antes conectar a la bd)
-            stnt  = conn.createStatement();
-            //consulto, cuenta si existe una bd con ese nombre, devuelve 1 si existe, 0 sino
-            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +
-                                       "WHERE [NAME] = '"+nombre+"';");
-            rslset.next();
-            existe = ("1".equals(rslset.getString(1)));
-            System.out.println("existe db sistema: "+existe);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return existe;
-    }
-    
+    /**
+     * Este metodo lee los parametros desde el archivo para establecer la conexion 
+     * y los settea al objeto. Se recomienda antes consultar si existe el archivo 
+     * con el metodo existeConexion();
+     */
     public void leerConexion () {
         File archivo = null;
         FileReader fr = null;
@@ -224,47 +211,103 @@ public class Conexion{
            archivo = new File (nombre_archivo);
            fr = new FileReader (archivo);
            br = new BufferedReader(fr);
-
-           // Lectura del fichero
-           String linea;
            
            this.url=br.readLine();
            this.port=br.readLine();
            this.seguridad_integrada=Boolean.parseBoolean(br.readLine());
            this.usuario=br.readLine();
-           this.clave=br.readLine();
-           
-            
-           fr.close();           
-           br.close();
-           //armo el url
-           
+           this.clave=br.readLine();    
+                       
+           br.close();           
         }
         catch(Exception e){
-            //si no existe el fichero llamo a la interface responsable
-            //GUI_Conexion gui = new GUI_Conexion();
-            //gui.setVisible(true);
-            e.printStackTrace();
-        }finally{
-           // En el finally cerramos el fichero
-           try{                    
-              if( null != fr ){   
-                 fr.close();     
-              }                  
-           }catch (Exception e2){ 
-              e2.printStackTrace();
-           }
+            JOptionPane.showMessageDialog(null,"       ERROR al cerrar el archivo Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
         }
-    } 
+        finally{
+            try{
+                if( null != fr ){   
+                    fr.close();     
+                }                  
+            }catch (Exception e2){ 
+                System.out.println("Error al cerrar el archivo de Conexion.");
+            }
+        }
+    }
     
+    /**
+     * metodo que devuelve true si existe un archivo con los parametros de conexion
+     * llamado como "nombre_archivo"
+     * @return boolean
+     */
+    public boolean existeConexion (){
+        String sFichero = nombre_archivo;
+        File fichero = new File(sFichero);
+        if (fichero.exists())
+            return true;
+        else
+            return false;
+     }
+    
+    /**
+     * metodo que devuelve true si existe en el SGBD una Base de Datos con el nombre
+     * pasado por parametro
+     * @param nombre nombre de la Base de Datos a saber si existe
+     * @return boolean
+     */
+    public boolean existeDatabase (String nombre){
+        boolean existe = false;
+        try {            
+            //creo el statament (antes conectar a la bd)
+            stnt  = conn.createStatement();
+            //consulto, cuenta si existe una bd con ese nombre, devuelve 1 si existe, 0 sino
+            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +
+                                       "WHERE [NAME] = '"+nombre+"';");
+            rslset.next();
+            existe = ("1".equals(rslset.getString(1)));
+            System.out.println("    existe Sistema_DB en el SGDB: "+existe);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return existe;
+    }
+    
+    /**
+     * metodo que genera el String de Conexion necesesario para establecer una
+     * conexion con el SGBD.
+     * Si detecta que el URL no fue asignado, entonces si existe el archivo de Conexion
+     * lee los parametros y arma el URL, caso contrario, avisa que el archivo no existe
+     * @return String
+     */
     private String getUrlConexion (){        
-        String urlConexion = jdbc+url+":"+port+";databaseName=Sistema;";        
+        String urlConexion = "";
+        
+        //pregunto si el url es vacio, quiere decir que se intento extablecer una 
+        //conexion por primera vez, por eso, leo los parametros del archivo de Conexion
+        if ("".equals(this.url)){
+            if  (existeConexion ()) {
+                //si existe el achivo ahora si leo los parametros, sino, aviso
+                System.out.println("    !!! lei los parametros desde el archivo");
+                leerConexion();
+            }
+            else{
+                String msj = ("El Sistema no encuentra el archivo con los parametros "
+                           + "necesarios para establecer una Conexión con el SGBD, "
+                           + "por favor póngase en contacto con el administrador para "
+                           + "que el mismo sea generado.");
+                JOptionPane.showMessageDialog(null, "Error de Conexión",msj, JOptionPane.ERROR_MESSAGE);
+            }            
+        }
+        
+        //si url no es vacio, los parametros ya fueron leidos del archivo        
+        urlConexion = jdbc+url+":"+port+";databaseName=Sistema;";        
         if (seguridad_integrada){
             urlConexion +="integratedSecurity=true;";
         }
         else{
-             urlConexion +="user="+usuario+";password="+clave+";";
-        }
+            urlConexion +="user="+usuario+";password="+clave+";";
+         }
+        
         return urlConexion;
     }
         
@@ -272,21 +315,16 @@ public class Conexion{
    public void Connection ()
     {     
         try
-        {   
-            leerConexion();            
+        {                           
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             //String connectionUrl;            
-            //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";
-            
+            //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";            
             //connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
             //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
-            System.out.println(getUrlConexion());
             conn = DriverManager.getConnection(getUrlConexion());            
-            //JOptionPane.showMessageDialog(null,"CONEXIÓN ESTABLECIDA CON SQL-SERVER!", "Conexión Exitosa", JOptionPane.INFORMATION_MESSAGE);           
         }
         catch(ClassNotFoundException ex)
-        {
-            
+        {            
             JOptionPane.showMessageDialog(null, ex, "Error Tipo 1 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conn=null;
         }
@@ -321,7 +359,9 @@ public class Conexion{
         }
    }
    
-   //Cerrar la conexion
+   /**
+    * metodo utilizado para liberar la Conexion con el SGBD
+    */
     public void cierraConexion() {
         try {
             this.conn.close();
