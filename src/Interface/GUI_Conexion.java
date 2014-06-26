@@ -8,9 +8,6 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -458,7 +455,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        if (!"".equals(jTextField5.getText())){
+        if ("".equals(jTextField5.getText())){
             jTextField5.requestFocus();
             jLabel12.setText("Ingrese un Nombre para la Carpeta");
         }
