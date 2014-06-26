@@ -156,11 +156,13 @@ public class Conexion{
     }
     
     public void grabarConexion (Conexion c){        
+        File archivo = null;
         FileWriter fichero = null;
         PrintWriter pw = null;
         try
         {
-            fichero = new FileWriter(nombre_archivo);
+            archivo = new File (nombre_archivo);
+            fichero = new FileWriter(archivo);
             pw = new PrintWriter(fichero);
             
             pw.println(c.getUrl());
@@ -168,6 +170,8 @@ public class Conexion{
             pw.println(c.getSeguridad_integrada());
             pw.println(c.getUsuario());
             pw.println(c.getClave());
+            pw.flush();
+            pw.close();
  
         } catch (Exception e) {
              JOptionPane.showMessageDialog(null,"       ERROR al abrir el archivo Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
@@ -195,11 +199,15 @@ public class Conexion{
         boolean existe = false;
         try {            
             stnt  = conn.createStatement();
-            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases" +
-                                       "WHERE [NAME] = '"+nombre+"'");
-            rslset.next();
-            System.out.println(rslset.getString(1));
-            existe = ("1".equals(rslset.getString(1)));
+            rslset = stnt.executeQuery("SELECT COUNT(*) FROM sys.databases " +
+                                       "WHERE [NAME] = '"+nombre+"';");
+            while (rslset.next()){
+                existe = ("1".equals(rslset.getString(1)));
+                System.out.println(rslset.getString(1));
+                System.out.println(existe);
+            }
+            
+           
             
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
@@ -228,6 +236,9 @@ public class Conexion{
            this.usuario=br.readLine();
            this.clave=br.readLine();
            
+            
+           fr.close();           
+           br.close();
            //armo el url
            
         }

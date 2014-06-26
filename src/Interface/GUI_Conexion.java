@@ -395,9 +395,14 @@ public class GUI_Conexion extends javax.swing.JFrame {
             jTabbedPane1.setSelectedIndex(0);
         }
         else{
-            r_con.existeDatabase(nombre_BD_Sistema);
+            r_con.Connection();
+            if (! r_con.existeDatabase(nombre_BD_Sistema)){
+                jTabbedPane1.setEnabledAt(1, true);
+                jTabbedPane1.setSelectedIndex(1);
+            }
         }
         
+        //r_con.existeDatabase(nombre_BD_Sistema);
     }
     
     private void deshabilitarPaneles (){
@@ -464,7 +469,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             
             limpiarPanelConexion();
             //this.dispose();
-            ppal.setVisible(true);
+            //ppal.setVisible(true);
         } else {
             msj_conexion_Error();
             JOptionPane.showMessageDialog(null, "Se ha modifificado algún parametro y la conexion ya no es valida.", "Ups!", JOptionPane.INFORMATION_MESSAGE);

@@ -745,7 +745,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem13ActionPerformed
     
     public void armarGUI_Database (){
-        GUI_Conexion guiI = new GUI_Conexion(this); 
+        GUI_Conexion guiI = new GUI_Conexion(); 
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - guiI.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
