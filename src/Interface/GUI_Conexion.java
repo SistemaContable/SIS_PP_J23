@@ -387,12 +387,19 @@ public class GUI_Conexion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void validarConexion (){
-        //validar que se puede conectar
+        deshabilitarPaneles();
         jTabbedPane1.setEnabled(false);
         Conexion r_con = new Conexion();
         if (! r_con.existeConexion()) {
             jTabbedPane1.setEnabledAt(0, true);
+            jTabbedPane1.setSelectedIndex(0);
         }
+    }
+    
+    private void deshabilitarPaneles (){
+        for (int i = 0; i < jTabbedPane1.getComponentCount(); i++) {
+            jTabbedPane1.setEnabledAt(i, false);
+        }        
     }
 
     private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged

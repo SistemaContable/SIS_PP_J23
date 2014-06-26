@@ -807,7 +807,7 @@ public class GUI_Principal extends javax.swing.JFrame {
                 //if (! r_con.existeConexion()) {
                     GUI_Conexion gui = new GUI_Conexion(ventana);
                     gui.validarConexion ();
-                    gui.setVisible(true);
+                    gui.setVisible(true);                    
                 //}
                 //else{
                     //sino, continuo con el programa                   
