@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -275,8 +276,24 @@ public class Conexion{
         }
     }
       
-    //Cerrar la conexion
- 
+   
+   public void ejecutarScript () {
+        try {
+            String line;
+            Process p = Runtime.getRuntime().exec
+              ("psql -U username -d dbname -h serverhost -f scripfile.sql");
+            BufferedReader input = new BufferedReader (new InputStreamReader(p.getInputStream()));
+            while ((line = input.readLine()) != null) {
+              System.out.println(line);
+            }
+            input.close();
+        }
+        catch (Exception err) {
+              err.printStackTrace();
+        }
+   }
+   
+   //Cerrar la conexion
     public void cierraConexion() {
         try {
             this.conn.close();
