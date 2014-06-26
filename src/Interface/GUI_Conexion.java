@@ -31,10 +31,11 @@ public class GUI_Conexion extends javax.swing.JFrame {
         setDefaultCloseOperation(0);
         setLocationRelativeTo(null);
         setResizable(false);
-
+        
+        //deshabilito todo el panel y solo dejo abrir los que den error
+        jTabbedPane1.setEnabled(false);
         //para panel 1
-        jRadioButton1.setSelected(true);
-        jTabbedPane1.setEnabledAt(0, true);
+        jRadioButton1.setSelected(true);        
         jButton2.setEnabled(false);
 
         //para panel 2
@@ -384,7 +385,15 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
+    public void validarConexion (){
+        //validar que se puede conectar
+        jTabbedPane1.setEnabled(false);
+        Conexion r_con = new Conexion();
+        if (! r_con.existeConexion()) {
+            jTabbedPane1.setEnabledAt(0, true);
+        }
+    }
 
     private void jRadioButton2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton2ItemStateChanged
         // TODO add your handling code here:

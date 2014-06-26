@@ -800,18 +800,19 @@ public class GUI_Principal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 //1º creo una conexion para validar que el sistema se puede conectar
-                Conexion r_con = new Conexion();
+                //Conexion r_con = new Conexion();
                 GUI_Principal ventana= new GUI_Principal();
                 
                 //si no existe el archivo de conexion llamo a la interface resposable
-                if (! r_con.existeConexion()) {
+                //if (! r_con.existeConexion()) {
                     GUI_Conexion gui = new GUI_Conexion(ventana);
+                    gui.validarConexion ();
                     gui.setVisible(true);
-                }
-                else{
+                //}
+                //else{
                     //sino, continuo con el programa                   
-                    ventana.setVisible(true); 
-                }                
+                    //ventana.setVisible(true); 
+                //}                
             }
         });
     }
