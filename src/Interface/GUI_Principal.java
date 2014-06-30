@@ -19,7 +19,7 @@ import javax.swing.JMenu;
 public class GUI_Principal extends javax.swing.JFrame {
 
  
-    private Conexion r_con = new Conexion();
+    private final Conexion r_con = new Conexion();
     private int perfil;
     private int usuario; 
     
@@ -780,15 +780,36 @@ public class GUI_Principal extends javax.swing.JFrame {
             public void run() {
                 //1º creo una conexion para validar que el sistema se puede conectar
                 //Conexion r_con = new Conexion();
-                GUI_Principal ventana= new GUI_Principal();
-                
+                //GUI_Principal ventana= new GUI_Principal();
+               //GUI_Inicio_Sesion gui;
+               //gui = new GUI_Inicio_Sesion(r_con);
+               //gui.setVisible(true);
                 //si no existe el archivo de conexion llamo a la interface resposable
                 //if (! r_con.existeConexion()) {
-                    //GUI_Conexion gui = new GUI_Conexion(ventana);
-                    System.out.println("ARRANQUE:");
-                    GUI_Conexion gui = new GUI_Conexion();
-                    gui.validarConexion ();
-                    gui.setVisible(true);                    
+                    
+                
+                System.out.println("COMENZO EL PROGRAMA");
+                GUI_Conexion gui = new GUI_Conexion();
+                System.out.println("TERMINE LA GUI CONEXION");
+                    //GUI_Conexion gui = new GUI_Conexion();
+                    if (gui.chequearConexion()){
+                        
+                        
+                        Conexion r_con = gui.getConexion();
+                        gui.dispose();
+                        gui=null;
+                        GUI_Inicio_Sesion IS = new GUI_Inicio_Sesion(r_con);
+                        IS.setVisible(true);
+                    }
+                    else{
+                        //gui = new GUI_Conexion();
+                        gui.setVisible(true);
+                        gui.validarConexion ();                        
+                    }
+                    //gui.setVisible(true);
+                   
+                    //gui.validarConexion ();
+
                 //}
                 //else{
                     //sino, continuo con el programa                   
