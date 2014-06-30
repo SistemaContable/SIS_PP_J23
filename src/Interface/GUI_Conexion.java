@@ -21,15 +21,18 @@ public class GUI_Conexion extends javax.swing.JFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private final Conexion r_con = new Conexion();
+    private final Conexion r_con;
     private final String nombre_BD_Sistema = "BD_Sistema";
-    private final String script_BD_Sistema = "SQLQuery_Load_Empresa.sql";
+    private final String script_BD_Sistema = "SQLQuery_Load_DB_Sistema.sql";
     
     public GUI_Conexion() {
         initComponents();
         setDefaultCloseOperation(0);
         setLocationRelativeTo(null);
         setResizable(false);
+        
+        r_con = new Conexion();
+        r_con.setBase_datos(nombre_BD_Sistema);
 
         //para panel 1
         jRadioButton1.setSelected(true);        

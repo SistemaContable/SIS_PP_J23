@@ -8,12 +8,12 @@ package Clases_Auxiliares;
  * que seria conveniente usar una sola conexion, abrirla y cerrarla.
  */
 
-import groovy.lang.Script;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,6 +36,7 @@ public class Conexion{
     private String usuario;
     private String clave;    
     private String driverClassName;
+    private String base_datos;
     
     private Connection conn = null;
     private Statement stnt;
@@ -45,7 +46,7 @@ public class Conexion{
 //CONSTRUCTORES:
     
     public Conexion() {
-        //asigno parametros basicos, ya que los valores los leo del archivo
+        //asigno parametros basicos, ya que los valores los leo del archivo        
         this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
         this.jdbc = "jdbc:sqlserver://";
         this.port = "1433";
@@ -53,6 +54,7 @@ public class Conexion{
         this.seguridad_integrada = true;
         this.usuario="";
         this.clave="";
+        this.base_datos="";
     }      
     
 //GETTERS:
@@ -78,6 +80,9 @@ public class Conexion{
     public String getDriverClassName() {
         return driverClassName;
     }
+    public String getBase_datos() {
+        return base_datos;
+    }
  
 //SETTERS:
     
@@ -101,6 +106,9 @@ public class Conexion{
     } 
     public void setDriverClassName(String driverClassName) {
         this.driverClassName = driverClassName;
+    }
+    public void setBase_datos(String base_datos) {
+        this.base_datos = base_datos;
     }
  
 //METODOS:
@@ -184,7 +192,7 @@ public class Conexion{
             pw.close();
  
         } catch (Exception e) {
-             JOptionPane.showMessageDialog(null,"       ERROR al abrir el archivo Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
+             JOptionPane.showMessageDialog(null,"       ERROR al abrir el archivo de Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
         } 
         finally {
             try {
@@ -221,15 +229,15 @@ public class Conexion{
                        
            br.close();           
         }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null,"       ERROR al cerrar el archivo Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
+        catch(IOException e){
+            JOptionPane.showMessageDialog(null,"       ERROR al cerrar el archivo de Conexion","Error Grave", JOptionPane.INFORMATION_MESSAGE);
         }
         finally{
             try{
                 if( null != fr ){   
                     fr.close();     
                 }                  
-            }catch (Exception e2){ 
+            }catch (IOException e2){ 
                 System.out.println("Error al cerrar el archivo de Conexion.");
             }
         }
@@ -301,7 +309,7 @@ public class Conexion{
         }
         
         //si url no es vacio, los parametros ya fueron leidos del archivo        
-        urlConexion = jdbc+url+":"+port+";databaseName=Sistema;";        
+        urlConexion = jdbc+url+":"+port+";databaseName="+base_datos+";";        
         if (seguridad_integrada){
             urlConexion +="integratedSecurity=true;";
         }
@@ -310,6 +318,73 @@ public class Conexion{
          }
         
         return urlConexion;
+    }
+    
+    /**
+     * metodo cuya finalidad es la de ejecutar un script sobre la base de datos actual
+     * de la conexion. Si desea ejecutarlo sobre una otra base de datos, primero utilize el 
+     * setter setBase_datos(base_datos) para cambiar la base de datos.
+     * @param ScriptFilePath  ruta del archivo, debe incluir el nombre del mismo ej:...\X.sql
+     * @return 
+     */
+    public boolean executeScripts(String ScriptFilePath) {
+        boolean isScriptExecuted = false;
+        try {
+            File fichero = new File(ScriptFilePath);
+            if (fichero.exists()){               
+                BufferedReader br = new BufferedReader(new FileReader(ScriptFilePath));
+                String str;
+                StringBuffer sb;
+                sb = new StringBuffer();
+                while ((str = br.readLine()) != null) {
+                    sb.append(str + "\n ");
+                }
+                Statement st = (Statement) this.conn.createStatement();
+                st.executeUpdate(sb.toString());
+                isScriptExecuted = true;
+            }
+            else{
+                String msj = ("El Sistema no encuentra el archivo con el script "
+                           + "'SQLQuery_Load_DB_Sistema.sql' necesario para cargar"
+                           + "la base de datos del Sistema por favor póngase en"
+                           + "contacto con el administrador para solucionar el problema.");
+                JOptionPane.showMessageDialog(null, "Error de Conexión",msj, JOptionPane.ERROR_MESSAGE);
+            }            
+        } catch (HeadlessException | IOException | SQLException e) {
+            System.err.println("Fallo al ejecutar" + ScriptFilePath +". Error: "+ e.getMessage());
+        } 
+        return isScriptExecuted;
+    }
+ 
+    /**
+     * este metodo crea una nueva Base de Datos, en el directorio especificado 
+     * con el nombre especificado
+     * @param name nombre de la base de datos
+     * @param directorio directorio de creacion de la base de datos
+     */
+    public void crearDatabase_DIR (String name, String directorio){
+        try{
+            Statement st = (Statement) this.conn.createStatement();
+            st.executeUpdate("CREATE DATABASE ["+name+"]" +
+                            "ON  PRIMARY" +
+                            "( NAME = N'"+name+"', " +
+                            "FILENAME = N'"+directorio+"\\"+name+".mdf' , " +
+                            "SIZE = 3072KB , " +
+                            "FILEGROWTH = 1024KB )" +
+                            "LOG ON " +
+                            "( NAME = N'"+name+"_log', " +
+                            "FILENAME = N'"+directorio+"\\"+name+"_log.ldf' , " +
+                            "SIZE = 1024KB , \n" +
+                            "FILEGROWTH = 10%)");
+            
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, "OCURRIO UN PROBLEMA, CODIGO: "+ex.getErrorCode(),"Atención",JOptionPane.WARNING_MESSAGE);
+            if (ex.getErrorCode()==1801) {
+                JOptionPane.showMessageDialog(null, "La Base de Datos ya está registrada en el SGBD.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+        }    
     }
         
    //renombrar a abrir_Conexion
@@ -342,34 +417,6 @@ public class Conexion{
             conn=null;
         }
     }
-      
-   public boolean executeScripts(String ScriptFilePath) {
-        boolean isScriptExecuted = false;
-        try {
-            File fichero = new File(ScriptFilePath);
-            System.out.println(ScriptFilePath);
-            if (fichero.exists()){               
-                BufferedReader br = new BufferedReader(new FileReader(ScriptFilePath));
-                String str;
-                StringBuffer sb;
-                sb = new StringBuffer();
-                while ((str = br.readLine()) != null) {
-                    sb.append(str + "\n ");
-                }
-                System.out.println("sadsad");
-                conn.setCatalog("BD_Sistema");
-                Statement st = (Statement) this.conn.createStatement();
-                st.executeUpdate(sb.toString());
-                isScriptExecuted = true;
-            }
-            else{
-                System.out.println("no se encontro el Script");
-            }            
-        } catch (Exception e) {
-            System.err.println("Fallo al ejecutar" + ScriptFilePath +". Error: "+ e.getMessage());
-        } 
-        return isScriptExecuted;
-    }
    
    /**
     * metodo utilizado para liberar la Conexion con el SGBD
@@ -383,37 +430,7 @@ public class Conexion{
     }
  
 //METODOS PARA TRABAJAR CON LA BASE DE DATOS
- 
-    //public ResultSet consulta(String consulta) throws SQLException {
-        //this.estancia = (Statement) conn.createStatement();
-        //return this.estancia.executeQuery(consulta);
-    //}
-    
-    public void crearDatabase_DIR (String name, String directorio){
-        try{
-            Statement st = (Statement) this.conn.createStatement();
-            st.executeUpdate("CREATE DATABASE ["+name+"]" +
-                            "ON  PRIMARY" +
-                            "( NAME = N'"+name+"', " +
-                            "FILENAME = N'"+directorio+"\\"+name+".mdf' , " +
-                            "SIZE = 3072KB , " +
-                            "FILEGROWTH = 1024KB )" +
-                            "LOG ON " +
-                            "( NAME = N'"+name+"_log', " +
-                            "FILENAME = N'"+directorio+"\\"+name+"_log.ldf' , " +
-                            "SIZE = 1024KB , \n" +
-                            "FILEGROWTH = 10%)");
-            
-        }
-        catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(null, "OCURRIO UN PROBLEMA, CODIGO: "+ex.getErrorCode(),"Atención",JOptionPane.WARNING_MESSAGE);
-            if (ex.getErrorCode()==1801) {
-                JOptionPane.showMessageDialog(null, "La Base de Datos ya está registrada en el SGBD.","Atención",JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    
-    }
+
     
     public ResultSet Consultar (String consulta) {        
         try
