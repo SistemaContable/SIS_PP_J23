@@ -523,7 +523,7 @@ public class Conexion{
             stnt = (Statement) this.conn.createStatement();
             stnt.executeUpdate(inserta);
             System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
-            stnt.close();
+            //stnt.close();
             //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         }
