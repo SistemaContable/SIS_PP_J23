@@ -29,7 +29,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     
     public GUI_Conexion() {
         initComponents();
-        //setDefaultCloseOperation(0);
+        setDefaultCloseOperation(0);
         setLocationRelativeTo(null);
         setResizable(false);
         
@@ -540,6 +540,10 @@ public class GUI_Conexion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    /**
+     * metodo que se usa en caso de entrar por el loggin y no por el
+     * algoritomo de control de conexion
+     */
     public void GUI_configuracion (){
         r_con.setBase_datos(nombre_BD_Sistema);                
         r_con.Connection();
@@ -547,8 +551,12 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jButton5.setText("Salir");
     }
     
+    /**
+     * metodo principal cuyo proposito es controlar que todos los elementos
+     * necesarios para la conexion existar, caso contrario oblida a crearlos
+     * (archivo de conexion, BD Sistema, Usuarios del Sistema)
+     */
     public void validarConexion (){
-        System.out.println("-> entre a controlar el algoritmo de conexion:");
         deshabilitarPaneles();
         //caso en que no existe el archivo con los parametros de Conexion
         if (! r_con.existeConexion()) {
@@ -569,6 +577,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 //al seleccionar el 3er panel va a listar los usuarios y cierra la conexion
                 jTabbedPane1.setEnabledAt(2, true);
                 jTabbedPane1.setSelectedIndex(2);
+                //vuelvo a abrir la conexion
                 r_con.Connection();
                 if (r_con.cantidadRegistros("Usuarios")>0){                     
                     jButton5.setText("Salir");                    
@@ -582,6 +591,11 @@ public class GUI_Conexion extends javax.swing.JFrame {
         }       
     }
     
+    /**
+     * metodo que controla si todos los elementos necesarios para el funcionamiento del
+     * sistema existen, devuelve true si existen todos.
+     * @return true si existe el archivo de conexion, la BD del sistema y al menos 1 usuario
+     */
     public boolean chequearConexion (){
         boolean rta = false;
          if (r_con.existeConexion()) {
@@ -597,6 +611,10 @@ public class GUI_Conexion extends javax.swing.JFrame {
          return (rta);
     }
     
+    /**
+     * devuelve la conexion
+     * @return objeto Conexion
+     */
     public Conexion getConexion (){
         return (r_con);
     }
