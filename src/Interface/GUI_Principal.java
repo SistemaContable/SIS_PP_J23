@@ -577,7 +577,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado();
-          l.setTitulo("Articulos");
+        l.setTitulo("Articulos");
         l.setCampo_clave("art_codigo");
         l.setNombre_tabla("Articulos");
         l.setNombre_reporte("rep_articulo.jrxml");
