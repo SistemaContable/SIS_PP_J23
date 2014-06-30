@@ -467,8 +467,7 @@ public class Conexion{
         try 
         {  
             stnt  = conn.createStatement(); 
-            rslset = stnt.executeQuery(consulta);  
-            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
+            rslset = stnt.executeQuery(consulta);
             stnt.close();
         }
         catch (SQLException e)
@@ -482,7 +481,6 @@ public class Conexion{
         try {
             stnt = (Statement) conn.createStatement();
             stnt.executeUpdate(actualiza);
-            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
             stnt.close();
             JOptionPane.showMessageDialog(null, "El Registro se actualizo correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
@@ -505,7 +503,6 @@ public class Conexion{
         try {
             stnt  = conn.createStatement();
             int numResultado = stnt.executeUpdate(borra);
-            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
             stnt.close();            
             JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
@@ -524,7 +521,6 @@ public class Conexion{
         try{
             stnt = (Statement) this.conn.createStatement();
             stnt.executeUpdate(inserta);
-            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
             //stnt.close();
             //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
