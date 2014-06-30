@@ -103,6 +103,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jCheckBox4 = new javax.swing.JCheckBox();
         jButton4 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
 
         setTitle("[Titutlo]");
         setBackground(new java.awt.Color(204, 204, 204));
@@ -484,6 +485,11 @@ public class GUI_Conexion extends javax.swing.JFrame {
             }
         });
 
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 153, 51));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText(" ");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -496,9 +502,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(414, 414, 414)
+                        .addGap(438, 438, 438)
                         .addComponent(jCheckBox3)
-                        .addGap(70, 70, 70)
+                        .addGap(46, 46, 46)
                         .addComponent(jCheckBox4))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(376, 376, 376)
@@ -531,6 +537,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton9)
                 .addGap(278, 278, 278))
+            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -544,9 +551,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jCheckBox3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -558,7 +565,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(jButton4))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jLabel19)
+                .addGap(18, 18, 18)
                 .addComponent(jButton9)
                 .addGap(20, 20, 20))
         );
@@ -603,18 +612,18 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(3, true);
                 jTabbedPane1.setSelectedIndex(3);
                 //seteo el nombre de la base de datos del sistema
-                r_con.setBase_datos(nombre_BD_Sistema);
-                if (r_con.cantidadRegistros("Usuarios")>0){                    
-                    cargarUsuarios ();
+                r_con.setBase_datos(nombre_BD_Sistema);                
+                if (r_con.cantidadRegistros("Usuarios")>0){                     
                     jButton9.setEnabled(true);
-                    System.out.println("cantidad de usuarios: "+r_con.cantidadRegistros("Usuarios"));
                 } 
                 else{
+                    this.msj_usuario_Error("Registre al menos un Usuario en el Sistema.");
                     jButton9.setEnabled(false);
                 }
+                cargarUsuarios ();
             }
-        }
-        r_con.cierraConexion();
+             r_con.cierraConexion();
+        }       
     }
     
     private void deshabilitarPaneles (){
@@ -662,7 +671,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
         boolean rta = false;
         if (jRadioButton1.isSelected()) {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), true, jTextField3.getText(), jTextField4.getText());
-        } else {
+        } 
+        else {
             rta = r_con.validarConexion(jTextField1.getText(), jTextField2.getText(), false, jTextField3.getText(), jTextField4.getText());
         }
         if (rta) {
@@ -681,9 +691,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
             
             limpiarPanelConexion();
             validarConexion ();
-            //this.dispose();
-            //ppal.setVisible(true);
-        } else {
+        } 
+        else {
             msj_conexion_Error();
             JOptionPane.showMessageDialog(null, "Se ha modifificado algún parametro y la conexion ya no es valida.", "Ups!", JOptionPane.INFORMATION_MESSAGE);
             jTextField1.requestFocus();
@@ -796,19 +805,39 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        r_con.Connection();
-        if (jCheckBox3.isSelected()){
-            r_con.Insertar("INSERT INTO Usuarios VALUES ("
-                    + "'"+jTextField6.getText()+"','"+jTextField7.getText()+"');");
+        if (("".equals(jTextField6.getText()))){
+             this.msj_usuario_Error("Complete TODOS los Campos.");
         }
         else{
-            r_con.Borrar("DELETE FROM Usuarios WHERE usr_nombre_usuario = '"+jTextField6.getText()+"'");
-        }
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField6.requestFocus();
-        r_con.cierraConexion();
-        this.validarConexion();
+            r_con.Connection();
+            if (jCheckBox3.isSelected()){
+                boolean rta = r_con.Insertar("INSERT INTO Usuarios VALUES ("
+                              + "'"+jTextField6.getText()+"','"+jTextField7.getText()+"');");
+                if (rta){
+                    this.msj_usuario_Exito("Alta Correcto.");
+                }
+            }
+            else{
+                boolean rta = r_con.Borrar("DELETE FROM Usuarios WHERE usr_nombre_usuario = '"+jTextField6.getText()+"'");
+                if (rta){
+                    this.msj_usuario_Exito("Baja Correcto.");
+                }
+            }
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField6.requestFocus();       
+
+            //controlo que haya usuarios para no volver a llamar a Validar (tiempo de ejecucion)
+            if (r_con.cantidadRegistros("Usuarios")>0){                     
+                jButton9.setEnabled(true);
+            } 
+            else{
+                this.msj_usuario_Error("Registre al menos un Usuario en el Sistema.");
+                jButton9.setEnabled(false);
+            }
+            cargarUsuarios ();
+            r_con.cierraConexion();
+        }        
     }//GEN-LAST:event_jButton4ActionPerformed
     
     private void limpiarPanelConexion() {
@@ -848,6 +877,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -879,7 +909,17 @@ public class GUI_Conexion extends javax.swing.JFrame {
     }
     
     private void vaciarMensaje() {
-        jLabel8.setText(" ");
+        jLabel19.setText(" ");
+    }
+    
+    private void msj_usuario_Exito(String msj) {
+        jLabel19.setText(msj);
+        jLabel19.setForeground(new java.awt.Color(0, 153, 51));
+    }
+    
+    private void msj_usuario_Error(String msj) {
+        jLabel19.setText(msj);
+        jLabel19.setForeground(Color.RED);
     }
     
     private void msj_conexion_Exito() {
@@ -896,14 +936,13 @@ public class GUI_Conexion extends javax.swing.JFrame {
         r_con.Connection();  
         DefaultTableModel modelo = new DefaultTableModel();
         String [] nombre_columnas = {"Usuario","Contraseña"};                           
-        modelo.setColumnIdentifiers(nombre_columnas);
-               
+        modelo.setColumnIdentifiers(nombre_columnas);               
         Vector <Vector<String>> v = r_con.getContenidoTabla("SELECT * FROM Usuarios");
         for(Vector <String> a : v)
             modelo.addRow(a);
         
         jTable1.setModel(modelo);
-        //r_con.cierraConexion();
+        r_con.cierraConexion();
     }
     
 }

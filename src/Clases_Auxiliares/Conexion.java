@@ -501,13 +501,14 @@ public class Conexion{
         
     }
  
-    public void Borrar(String borra) {
+    public boolean Borrar(String borra) {
         try {
             stnt  = conn.createStatement();
             int numResultado = stnt.executeUpdate(borra);
             System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
-            stnt.close();
+            stnt.close();            
             JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
+            return (true);
         } catch (SQLException ex) {
              if (ex.getErrorCode()==547){
                     JOptionPane.showMessageDialog(null, "Integridad Refencial: Esta intentando eliminar un Registro que es utilizado por otros!","Atención",JOptionPane.WARNING_MESSAGE);
@@ -515,7 +516,8 @@ public class Conexion{
              else{
                 System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
              }
-        }
+             return false;
+        }       
     }
  
     public boolean Insertar(String inserta) {
