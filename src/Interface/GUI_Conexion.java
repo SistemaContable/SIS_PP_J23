@@ -444,21 +444,11 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 jTabbedPane1.setSelectedIndex(2);
             }
             else{                 
-                //seteo el nombre de la base de datos del sistema
-                r_con.setBase_datos(nombre_BD_Sistema);
-                boolean existeScript = r_con.executeScripts(script_BD_Sistema);
-                //caso en que no existe el script para cargar las tablas del sistema
-                if (!existeScript){
-                    String msj = ("El Sistema no encuentra el archivo con el script "
-                           + "'"+script_BD_Sistema+"' necesario para  \ncargar"
-                           + "las tablas de la base de datos del Sistema por favor póngase en \n"
-                           + "contacto con el Administrador para solucionar el problema.");
-                    JOptionPane.showMessageDialog(null, msj, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
-                }
-                else{
+                
+                
                     jTabbedPane1.setEnabledAt(0, true);
                     jTabbedPane1.setSelectedIndex(0);
-                }                
+                              
             }
              r_con.cierraConexion();
         }      
@@ -543,36 +533,55 @@ public class GUI_Conexion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        String ruta_aplic = System.getProperty("user.dir");
-        if ("".equals(jTextField5.getText())) {
-            jTextField5.requestFocus();
-            jLabel12.setText("Ingrese un Nombre para la Carpeta");
-        } else {
-            jLabel12.setText(" ");
-            File carpeta;
-            String nombre_carpeta = jTextField5.getText();
-            if (jCheckBox1.isSelected()) {
-                carpeta = new File(ruta_aplic + "\\" + nombre_carpeta);
-                carpeta.mkdir();
+        File fichero = new File(script_BD_Sistema);
+        //como voy a crear la BD Sistema, me fijo si existe el script de creacion de las tablas
+        if (fichero.exists()){
+            String ruta_aplic = System.getProperty("user.dir");
+            if ("".equals(jTextField5.getText())) {
+                jTextField5.requestFocus();
+                jLabel12.setText("Ingrese un Nombre para la Carpeta");
             } else {
-                JFileChooser directorio = new JFileChooser();
-                directorio.setCurrentDirectory(new File(ruta_aplic));
-                directorio.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int result = directorio.showDialog(null, "Seleccione la ruta");
-                String ruta = null;
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    ruta = directorio.getSelectedFile().getPath();                    
+                jLabel12.setText(" ");
+                File carpeta;
+                String nombre_carpeta = jTextField5.getText();
+                if (jCheckBox1.isSelected()) {
+                    carpeta = new File(ruta_aplic + "\\" + nombre_carpeta);
+                    carpeta.mkdir();
+                } else {
+                    JFileChooser directorio = new JFileChooser();
+                    directorio.setCurrentDirectory(new File(ruta_aplic));
+                    directorio.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    int result = directorio.showDialog(null, "Seleccione la ruta");
+                    String ruta = null;
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        ruta = directorio.getSelectedFile().getPath();                    
+                    }
+                    carpeta = new File(ruta + "\\" + nombre_carpeta);
+                    carpeta.mkdirs();                
+                    carpeta.getName();
                 }
-                carpeta = new File(ruta + "\\" + nombre_carpeta);
-                carpeta.mkdirs();                
-                carpeta.getName();
+                //conecto
+                r_con.Connection();
+                //creo la base de datos del sistema
+                r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
+                //cierro la conexion ya que ahora existe la BD del Sistema
+                r_con.cierraConexion();
+                //seteo el nombre de la base de datos del sistema
+                r_con.setBase_datos(nombre_BD_Sistema);
+                //abro la nueva Conexion
+                r_con.Connection();
+                //ejecuto el script para cargar las tablas
+                r_con.executeScripts(script_BD_Sistema);
             }
-            r_con.Connection();
-            r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
-            validarConexion ();
-        }        
-        
+        }
+        else{
+            String msj = ("El Sistema no encuentra el archivo con el script "
+                               + "'"+script_BD_Sistema+"' necesario para  \ncargar"
+                               + "las tablas de la base de datos del Sistema por favor póngase en \n"
+                               + "contacto con el Administrador para solucionar el problema.");
+            JOptionPane.showMessageDialog(null, msj, "Falta fichero del Sistema", JOptionPane.ERROR_MESSAGE);
+        }                
+            validarConexion ();        
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

@@ -386,6 +386,29 @@ public class Conexion{
             }
         }    
     }
+    
+    /**
+     * metodo que elimina una base de datos del sistema
+     * @param name nombre de la base de datos a eliminar
+     * @return true o false si se pudo eliminar
+     */
+    public boolean eliminarDatabase (String name){
+        try{
+            Statement st = (Statement) this.conn.createStatement();
+            st.executeUpdate("DROP DATABASE "+name+";");
+            return (true);
+        }
+        catch(SQLException ex)
+        {
+            if (ex.getErrorCode()==3701){
+                    System.err.println("La base de datos que se intenta eliminar no existe.");
+            }
+            else{
+                System.err.println("Error desconocido: " + ex.getMessage()+" - "+ex.getErrorCode());
+            }   
+            return (false);
+        }
+    }
         
    //renombrar a abrir_Conexion
    public void Connection ()
