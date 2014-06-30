@@ -7,7 +7,12 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
+import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +21,8 @@ import java.util.Vector;
 public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
     private Conexion r_con;
+    private final String nombre_BD_Sistema = "BD_Sistema";
+    private ResultSet rsl;
     
     public GUI_Inicio_Sesion(Conexion con) {
         initComponents();
@@ -23,6 +30,8 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         setResizable(false);
         
         r_con = con;
+        r_con.setBase_datos(nombre_BD_Sistema);
+        r_con.Connection();
         cargarComboBox();        
     }
 
@@ -42,10 +51,10 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Iniciar Sesion");
@@ -65,16 +74,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Empresa:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBox1ItemStateChanged(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel7.setText("Usuario del Sistema:");
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "item" }));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Salir");
@@ -95,45 +95,65 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
             }
         });
 
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 153, 51));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText(" ");
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/configuracion.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField3)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(53, 53, 53)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(54, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField3)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(108, 108, 108))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(220, 220, 220))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(184, 184, 184))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7)
-                    .addComponent(jCheckBox1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(jLabel19)
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,24 +162,17 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton5))
-                .addGap(31, 31, 31))
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
-        if (jCheckBox1.isSelected()){
-            this.jComboBox1.setEnabled(false);
-        }
-        else{
-            this.jComboBox1.setEnabled(true);
-        }
-    }//GEN-LAST:event_jCheckBox1ItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -167,13 +180,117 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if (jCheckBox1.isSelected()){
-            this.dispose();
-            GUI_Conexion gui = new GUI_Conexion();
-            gui.GUI_configuracion();
-            gui.setVisible(true);
+        if ("".equals(jTextField3.getText())){
+            msj_usuario_Error("Ingrese un Usuario, por favor.");
+        }
+        else{        
+            if (jComboBox1.getSelectedItem().toString().equals("< Nueva_Empresa >")){
+                try {
+                this.vaciarMensaje();
+                r_con.setBase_datos(nombre_BD_Sistema);
+                r_con.Connection();
+                rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
+                                jTextField3.getText()+"' AND usr_contrasenia = '"+
+                                jPasswordField1.getText()+"';");
+                rsl.next();
+                int existe = Integer.parseInt(rsl.getString(1));
+                if (existe > 0){
+                    this.dispose();
+                    GUI_Empresa gui = new GUI_Empresa(this.r_con);                    
+                    gui.setVisible(true);
+                }
+                else{
+                    msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
+                }
+                rsl.close();                    
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+            else{
+                try {
+                    this.vaciarMensaje();
+                    r_con.setBase_datos(nombre_BD_Sistema);
+                    r_con.Connection();
+                    String empresa = jComboBox1.getSelectedItem().toString();
+                    //rsl.close();
+                    rsl = r_con.Consultar("SELECT denominacion_interna FROM Empresas WHERE razon_social = '"+
+                                            ""+empresa+"';");
+                    rsl.next();
+                    String nameinterno = rsl.getString(1);
+                    rsl.close();
+                    r_con.cierraConexion();
+                    r_con.setBase_datos(nameinterno);
+                    r_con.Connection();
+                    
+                    try {
+                        this.vaciarMensaje(); 
+                        
+                        String consulta="";
+                        consulta="SELECT usr_id_perfil, usr_nombre_usuario FROM usuario WHERE usr_nombre_usuario='"+
+                                jTextField3.getText()+"' and usr_contrasenia='"+
+                                jPasswordField1.getText()+"';";
+                        
+                        rsl=r_con.Consultar(consulta);
+                        int id_perfil = -1;
+                        String nombre_usr ="";
+                        while(rsl.next()){
+                            id_perfil=rsl.getInt(1);
+                            nombre_usr=rsl.getString(2);
+                        }
+
+                        if(id_perfil!=-1){
+                            r_con.setRazon_social(empresa);
+                            r_con.setBase_datos(nameinterno);
+                            r_con.Connection();
+                            this.dispose();
+                            GUI_Principal pri = new GUI_Principal(id_perfil,nombre_usr,r_con);
+                            pri.setVisible(true);
+                        }                            
+                        else{
+                            msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
+                        }
+                        rsl.close();                    
+                        } catch (SQLException ex) {
+                            Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if ("".equals(jTextField3.getText())){
+            msj_usuario_Error("Ingrese un Usuario del Sistema, por favor.");
+        }
+        else{        
+            try {
+                this.vaciarMensaje();
+                r_con.setBase_datos(nombre_BD_Sistema);
+                r_con.Connection();
+                ResultSet rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
+                            jTextField3.getText()+"' AND usr_contrasenia = '"+
+                            jPasswordField1.getText()+"';");
+                rsl.next();
+                int existe = Integer.parseInt(rsl.getString(1));
+                if (existe > 0){
+                    this.dispose();
+                    GUI_Conexion gui = new GUI_Conexion();
+                    gui.GUI_configuracion();
+                    gui.setVisible(true);
+                }
+                else{
+                    msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
+                }
+                rsl.close();                    
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     private void cargarComboBox(){
         r_con.Connection();
@@ -182,21 +299,36 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0));
         }    
-        jComboBox1.addItem("< Nueva Empresa >");
+        jComboBox1.addItem("< Nueva_Empresa >");
         r_con.cierraConexion();
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    private void vaciarMensaje() {
+        jLabel19.setText(" ");
+    }
+    
+    private void msj_usuario_Exito(String msj) {
+        jLabel19.setText(msj);
+        jLabel19.setForeground(new java.awt.Color(0, 153, 51));
+    }
+    
+    private void msj_usuario_Error(String msj) {
+        jLabel19.setText(msj);
+        jLabel19.setForeground(Color.RED);
+    }
 }

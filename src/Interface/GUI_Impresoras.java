@@ -26,11 +26,12 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private Conexion r_con = new Conexion();
+    private Conexion r_con;
     
-    public GUI_Impresoras() {
+    public GUI_Impresoras(Conexion con) {
         initComponents();
-        r_con.Connection();        
+        r_con=con;  
+        r_con.Connection();
         cargarComboBox();
         listar_Impresoras();
     }

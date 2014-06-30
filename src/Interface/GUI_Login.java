@@ -186,7 +186,7 @@ public class GUI_Login extends javax.swing.JInternalFrame {
                 if(id_perfil!=-1){                    
                     perfil=id_perfil;
                     guiPrincipal.dispose();
-                    new GUI_Principal(perfil,id_usuario).setVisible(true);
+                    //new GUI_Principal(perfil,id_usuario).setVisible(true);
                     dispose();
                 }
                 else

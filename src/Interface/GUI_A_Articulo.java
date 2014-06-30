@@ -35,13 +35,13 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
      * Creates new form GUI_A_Articulo
      */
     private ComponentListHelp rc = new ComponentListHelp();
-    private Conexion r_con = new Conexion();
+    private Conexion r_con;
     private ArrayList<String> items = new ArrayList<String>();
-    private int usuario;
+    private String usuario;
     
-    public GUI_A_Articulo(int u) {
+    public GUI_A_Articulo(String u, Conexion con) {
         initComponents();
-        r_con.Connection();
+        r_con=con;
         prepararHelp();
         usuario=u;
         
@@ -256,6 +256,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
     private void prepararHelp(){
         rc.convertirComponente(jTextField6);       
+        r_con.Connection();
         ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA");        
         items.add("");
         try {
@@ -293,7 +294,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
-            r_con = new Conexion();
+            //r_con = new Conexion();
             r_con.Connection();
  
             String sql = "INSERT INTO Articulos "
@@ -315,14 +316,14 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 } catch (UnknownHostException ex) {
                     Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
                 }            
-                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
+                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
                 Date fechaEntrada = new Date(); 
                 String fecha = formatEntrada.format(fechaEntrada); 
 
                 Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
                 int cant=v.size()+1;                        
 
-                sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+1+",'"+fecha+"','"+terminal+"','"+
+                sql="insert into auditoria_articulo values("+cant+",'"+usuario+"',"+1+","+1+",'"+fecha+"','"+terminal+"','"+
                                         jTextField1.getText()+"','"+
                                         jTextField2.getText()+"','"+
                                         jTextField3.getText()+"',"
@@ -340,7 +341,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             if (("Buscar".equals(this.jButton2.getText()))){
                 
                 boolean existe = false;
-                r_con = new Conexion();
+                //r_con = new Conexion();
                 r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
                 try {
@@ -392,7 +393,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             }
             else{
                 if (("Eliminar".equals(this.jButton2.getText()))){               
-                r_con = new Conexion();
+                //r_con = new Conexion();
                 r_con.Connection();
                 r_con.Borrar("DELETE FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
 
@@ -435,7 +436,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                      }
                      else{
                          if (("Modificar".equals(this.jButton2.getText()))&& (camposNecesarios())){
-                                    r_con = new Conexion();
+                                   // r_con = new Conexion();
                                     r_con.Connection();
 
                                     
@@ -584,7 +585,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
 private boolean muestraValor (String cod){
     boolean existe = false;
-    r_con = new Conexion();
+    //r_con = new Conexion();
     r_con.Connection();
     ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+cod+"'");
     try {

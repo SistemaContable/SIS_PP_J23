@@ -45,7 +45,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private Conexion r_con = new Conexion();    
+    private Conexion r_con;    
     private String consulta_Vigente;
     private String nombre_tabla ;//= "Articulos";
     private String nombre_reporte ;//= "rep_articulo.jrxml";
@@ -54,9 +54,10 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     private String id_modulo_imp;
   
     
-    public GUI_Listado() {
+    public GUI_Listado(Conexion con) {
         initComponents();                 
         //Cargar_Tabla("SELECT * FROM "+nombre_tabla);
+        r_con=con;
         jCheckBox1.setSelected(true);
         jLabel4.setVisible(false);
     }

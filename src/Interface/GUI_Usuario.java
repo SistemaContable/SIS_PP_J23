@@ -26,12 +26,13 @@ import javax.swing.table.DefaultTableModel;
 public class GUI_Usuario extends javax.swing.JInternalFrame {
     private ComponentListHelp rc = new ComponentListHelp();    
     private ArrayList<String> items = new ArrayList<String>();        
-    private Conexion r_con = new Conexion();
+    private Conexion r_con;
     private int id_perfil;
     private DefaultTableModel modelo = new DefaultTableModel();
     
-    public GUI_Usuario() {
+    public GUI_Usuario(Conexion con) {
         initComponents();
+        r_con=con;
         r_con.Connection();
         jTextField1.requestFocus();
         cargarComboBox();
@@ -302,7 +303,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         int id_usuario=v.size()+1;        
         System.out.println(id_usuario);
         if((!usuario.equals(""))&&(!nombre.equals(""))&&(!apellido.equals(""))&&(!contraseña.equals(""))){
-            String nuevoUsuario="insert into usuario values("+id_usuario+",'"+usuario+"','"+nombre+"','"+apellido+"','"+contraseña+"',"+id_perfil+")";
+            String nuevoUsuario="insert into usuario values('"+usuario+"','"+nombre+"','"+apellido+"','"+contraseña+"',"+id_perfil+","+1+")";
             r_con.Insertar(nuevoUsuario);
             limpiarForm();
         }

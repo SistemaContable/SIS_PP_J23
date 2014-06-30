@@ -37,6 +37,7 @@ public class Conexion{
     private String clave;    
     private String driverClassName;
     private String base_datos;
+    private String razon_social;
     
     private Connection conn = null;
     private Statement stnt;
@@ -55,6 +56,7 @@ public class Conexion{
         this.usuario="";
         this.clave="";
         this.base_datos="";
+        this.razon_social="";
     }      
     
 //GETTERS:
@@ -83,7 +85,10 @@ public class Conexion{
     public String getBase_datos() {
         return base_datos;
     }
- 
+    public String getRazon_social() {
+        return razon_social;
+    }   
+    
 //SETTERS:
     
     public void setUrl(String url) {
@@ -109,6 +114,9 @@ public class Conexion{
     }
     public void setBase_datos(String base_datos) {
         this.base_datos = base_datos;
+    }
+    public void setRazon_social(String razon_social) {
+        this.razon_social = razon_social;
     }
  
 //METODOS:
@@ -468,13 +476,32 @@ public class Conexion{
         {  
             stnt  = conn.createStatement(); 
             rslset = stnt.executeQuery(consulta);
-            stnt.close();
         }
         catch (SQLException e)
         {            
             System.err.println("Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
         }
         return rslset;         
+    }
+    
+    public boolean Existe (String consulta){
+        boolean existe = false;
+        try 
+        {  
+            stnt  = conn.createStatement(); 
+            rslset = stnt.executeQuery(consulta);
+            stnt.close();
+            rslset.next();
+            int elementos = Integer.parseInt(rslset.getString(1));
+            if (elementos > 0){
+                existe = true;
+            }
+        }
+        catch (SQLException e)
+        {            
+            System.err.println("Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
+        }
+        return existe;
     }
  
     public boolean Actualizar(String actualiza)  {
@@ -521,7 +548,7 @@ public class Conexion{
         try{
             stnt = (Statement) this.conn.createStatement();
             stnt.executeUpdate(inserta);
-            //stnt.close();
+            stnt.close();
             //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         }

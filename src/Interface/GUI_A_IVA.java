@@ -28,12 +28,12 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
      * Creates new form GUI_A_Prod
      */
     private ComponentListHelp rc = new ComponentListHelp();
-    private Conexion r_con = new Conexion();
+    private Conexion r_con;
     private ArrayList<String> items = new ArrayList<String>();
     
-    public GUI_A_IVA() {
+    public GUI_A_IVA(Conexion con) {
         initComponents();
-        r_con.Connection();  
+        r_con=con;  
     }
 
     /**
@@ -172,7 +172,6 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
-            r_con = new Conexion();
             r_con.Connection();
              
             String sql = "INSERT INTO Tasas_IVA "
@@ -189,7 +188,6 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
             if (("Buscar".equals(this.jButton2.getText()))){
                 
                 boolean existe = false;
-                r_con = new Conexion();
                 r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");
                 try {
@@ -235,8 +233,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                 }
             }
             else{
-                if (("Eliminar".equals(this.jButton2.getText()))){               
-                r_con = new Conexion();
+                if (("Eliminar".equals(this.jButton2.getText()))){
                 r_con.Connection();
                 r_con.Borrar("DELETE FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");
                 r_con.cierraConexion();               
