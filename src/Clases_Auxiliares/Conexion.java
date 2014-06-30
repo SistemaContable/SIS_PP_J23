@@ -8,6 +8,7 @@ package Clases_Auxiliares;
  * que seria conveniente usar una sola conexion, abrirla y cerrarla.
  */
 
+import groovy.lang.Script;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -342,22 +343,33 @@ public class Conexion{
         }
     }
       
-   
-   public void ejecutarScript () {
+   public boolean executeScripts(String ScriptFilePath) {
+        boolean isScriptExecuted = false;
         try {
-            String line;
-            Process p = Runtime.getRuntime().exec
-              ("psql -U username -d dbname -h serverhost -f scripfile.sql");
-            BufferedReader input = new BufferedReader (new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
-              System.out.println(line);
+            File fichero = new File(ScriptFilePath);
+            System.out.println(ScriptFilePath);
+            if (fichero.exists()){               
+                BufferedReader br = new BufferedReader(new FileReader(ScriptFilePath));
+                String str;
+                StringBuffer sb;
+                sb = new StringBuffer();
+                while ((str = br.readLine()) != null) {
+                    sb.append(str + "\n ");
+                }
+                System.out.println("sadsad");
+                conn.setCatalog("BD_Sistema");
+                Statement st = (Statement) this.conn.createStatement();
+                st.executeUpdate(sb.toString());
+                isScriptExecuted = true;
             }
-            input.close();
-        }
-        catch (Exception err) {
-              err.printStackTrace();
-        }
-   }
+            else{
+                System.out.println("no se encontro el Script");
+            }            
+        } catch (Exception e) {
+            System.err.println("Fallo al ejecutar" + ScriptFilePath +". Error: "+ e.getMessage());
+        } 
+        return isScriptExecuted;
+    }
    
    /**
     * metodo utilizado para liberar la Conexion con el SGBD

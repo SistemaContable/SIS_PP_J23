@@ -21,27 +21,21 @@ public class GUI_Conexion extends javax.swing.JFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private Conexion r_con = new Conexion();
-    private GUI_Principal ppal;
-    private String nombre_BD_Sistema = "BD_Sistema";
+    private final Conexion r_con = new Conexion();
+    private final String nombre_BD_Sistema = "BD_Sistema";
+    private final String script_BD_Sistema = "SQLQuery_Load_Empresa.sql";
     
     public GUI_Conexion() {
-        //ppal = p;
         initComponents();
         setDefaultCloseOperation(0);
         setLocationRelativeTo(null);
         setResizable(false);
-        
-        //deshabilito todo el panel y solo dejo abrir los que den error
-        //jTabbedPane1.setEnabled(false);
+
         //para panel 1
         jRadioButton1.setSelected(true);        
         jButton2.setEnabled(false);
-
         //para panel 2
-        jCheckBox1.setSelected(true);
-
-        //r_con.Connection();  
+        jCheckBox1.setSelected(true); 
     }
 
     /**
@@ -545,16 +539,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
             }
             r_con.Connection();
             r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
+            r_con.executeScripts(script_BD_Sistema);
             validarConexion ();
-            /**
-             * r_con.Insertar("CREATE DATABASE [nombredelaBD]" + "ON PRIMARY" +
-             * "( NAME = N'nombredelaBD', " + "FILENAME =
-             * N'"+carpeta.getPath()+"\\"+"nombredelaBD.mdf' , " + "SIZE =
-             * 3072KB , " + "FILEGROWTH = 1024KB )" + "LOG ON " + "( NAME =
-             * N'nombredelaBD_log', " + "FILENAME =
-             * N'"+carpeta.getPath()+"\\"+"nombredelaBD_log.ldf' , " + "SIZE =
-             * 1024KB , \n" + "FILEGROWTH = 10%)");*
-             */
         }        
         
     }//GEN-LAST:event_jButton5ActionPerformed

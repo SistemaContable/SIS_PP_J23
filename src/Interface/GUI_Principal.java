@@ -5,8 +5,6 @@ import Clases_Auxiliares.Conexion;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -741,28 +739,9 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        armarGUI_Database();
+        
     }//GEN-LAST:event_jMenuItem13ActionPerformed
     
-    public void armarGUI_Database (){
-        GUI_Conexion guiI = new GUI_Conexion(); 
-         //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - guiI.getWidth() / 2;
-        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
-        guiI.setLocation(x, guiI.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        guiI.setVisible(true);
-        //this.jDesktopPane1.add(guiI);
-        //try {        
-            //guiI.setSelected(true);
-        //} catch (PropertyVetoException ex) {
-            //Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        //}
-        //guiI.moveToFront();
-        guiI.requestFocus();
-        guiI.nextFocus();    
-    }
     
     public void abrirSesion (){
         jMenu7.setText("Iniciar Sesión");
