@@ -32,7 +32,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
         setResizable(false);
         
         r_con = new Conexion();
-        r_con.setBase_datos(nombre_BD_Sistema);
 
         //para panel 1
         jRadioButton1.setSelected(true);        
@@ -84,6 +83,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
 
         setTitle("[Titutlo]");
         setBackground(new java.awt.Color(204, 204, 204));
@@ -112,7 +112,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(272, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +210,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,7 +352,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBox2)
                             .addComponent(jCheckBox1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(26, 26, 26)
@@ -396,11 +396,24 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Directorio BD", jPanel2);
 
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 652, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 341, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Usuarios del Sistema", jPanel5);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
             .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
@@ -418,19 +431,34 @@ public class GUI_Conexion extends javax.swing.JFrame {
     public void validarConexion (){
         System.out.println("-> entre a controlar el algoritmo de conexion:");
         deshabilitarPaneles();
+        //caso en que no existe el archivo con los parametros de Conexion
         if (! r_con.existeConexion()) {
             jTabbedPane1.setEnabledAt(1, true);
             jTabbedPane1.setSelectedIndex(1);
         }
         else{
             r_con.Connection();
+            //caso en que no existe la base de datos del Sistema
             if (! r_con.existeDatabase(nombre_BD_Sistema)){
                 jTabbedPane1.setEnabledAt(2, true);
                 jTabbedPane1.setSelectedIndex(2);
             }
-            else{
-                jTabbedPane1.setEnabledAt(0, true);
-                jTabbedPane1.setSelectedIndex(0);
+            else{                 
+                //seteo el nombre de la base de datos del sistema
+                r_con.setBase_datos(nombre_BD_Sistema);
+                boolean existeScript = r_con.executeScripts(script_BD_Sistema);
+                //caso en que no existe el script para cargar las tablas del sistema
+                if (!existeScript){
+                    String msj = ("El Sistema no encuentra el archivo con el script "
+                           + "'"+script_BD_Sistema+"' necesario para  \ncargar"
+                           + "las tablas de la base de datos del Sistema por favor póngase en \n"
+                           + "contacto con el Administrador para solucionar el problema.");
+                    JOptionPane.showMessageDialog(null, msj, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+                }
+                else{
+                    jTabbedPane1.setEnabledAt(0, true);
+                    jTabbedPane1.setSelectedIndex(0);
+                }                
             }
              r_con.cierraConexion();
         }      
@@ -542,7 +570,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
             }
             r_con.Connection();
             r_con.crearDatabase_DIR(nombre_BD_Sistema, carpeta.getPath());
-            r_con.executeScripts(script_BD_Sistema);
             validarConexion ();
         }        
         
@@ -605,6 +632,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTabbedPane jTabbedPane1;

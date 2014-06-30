@@ -792,7 +792,7 @@ public class GUI_Principal extends javax.swing.JFrame {
                 //}
                 //else{
                     //sino, continuo con el programa                   
-                    ventana.setVisible(true); 
+                    //ventana.setVisible(true); 
                 //}                
             }
         });

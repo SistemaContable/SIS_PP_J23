@@ -293,7 +293,7 @@ public class Conexion{
         
         //pregunto si el url es vacio, quiere decir que se intento extablecer una 
         //conexion por primera vez, por eso, leo los parametros del archivo de Conexion
-        if ("".equals(this.url)){
+        if ("".equals(url)){
             if  (existeConexion ()) {
                 //si existe el achivo ahora si leo los parametros, sino, aviso
                 System.out.println("    !!! lei los parametros desde el archivo");
@@ -301,22 +301,26 @@ public class Conexion{
             }
             else{
                 String msj = ("El Sistema no encuentra el archivo con los parametros "
-                           + "necesarios para establecer una Conexión con el SGBD, "
-                           + "por favor póngase en contacto con el administrador para "
+                           + "necesarios para establecer \nuna Conexión con el SGBD, "
+                           + "por favor póngase en contacto con el Administrador \npara "
                            + "que el mismo sea generado.");
-                JOptionPane.showMessageDialog(null, "Error de Conexión",msj, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, msj, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
             }            
         }
         
         //si url no es vacio, los parametros ya fueron leidos del archivo        
-        urlConexion = jdbc+url+":"+port+";databaseName="+base_datos+";";        
+        urlConexion = jdbc+url+":"+port+";";
+        
+        if (!"".equals(base_datos)){
+            urlConexion +="databaseName="+base_datos+";";
+        }             
         if (seguridad_integrada){
             urlConexion +="integratedSecurity=true;";
         }
         else{
             urlConexion +="user="+usuario+";password="+clave+";";
          }
-        
+        System.out.println("CONEXION: "+urlConexion);
         return urlConexion;
     }
     
@@ -344,11 +348,7 @@ public class Conexion{
                 isScriptExecuted = true;
             }
             else{
-                String msj = ("El Sistema no encuentra el archivo con el script "
-                           + "'SQLQuery_Load_DB_Sistema.sql' necesario para cargar"
-                           + "la base de datos del Sistema por favor póngase en"
-                           + "contacto con el administrador para solucionar el problema.");
-                JOptionPane.showMessageDialog(null, "Error de Conexión",msj, JOptionPane.ERROR_MESSAGE);
+                System.out.println("no se encuentra el Script que se quiso ejecutar.");
             }            
         } catch (HeadlessException | IOException | SQLException e) {
             System.err.println("Fallo al ejecutar" + ScriptFilePath +". Error: "+ e.getMessage());
