@@ -443,12 +443,10 @@ public class GUI_Conexion extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(2, true);
                 jTabbedPane1.setSelectedIndex(2);
             }
-            else{                 
-                
-                
-                    jTabbedPane1.setEnabledAt(0, true);
-                    jTabbedPane1.setSelectedIndex(0);
-                              
+            else{                                 
+                System.out.println("cantidad de usuarios: "+r_con.cantidadRegistros('Usuarios'));
+                jTabbedPane1.setEnabledAt(0, true);
+                jTabbedPane1.setSelectedIndex(0);                              
             }
              r_con.cierraConexion();
         }      
@@ -576,9 +574,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
         }
         else{
             String msj = ("El Sistema no encuentra el archivo con el script "
-                               + "'"+script_BD_Sistema+"' necesario para  \ncargar"
-                               + "las tablas de la base de datos del Sistema por favor póngase en \n"
-                               + "contacto con el Administrador para solucionar el problema.");
+                        + " '"+script_BD_Sistema+"'  necesario \npara cargar"
+                        + "las tablas de la base de datos del Sistema por favor póngase en"
+                        + "contacto con \nel Administrador para solucionar el problema.");
             JOptionPane.showMessageDialog(null, msj, "Falta fichero del Sistema", JOptionPane.ERROR_MESSAGE);
         }                
             validarConexion ();        

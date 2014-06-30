@@ -251,10 +251,7 @@ public class Conexion{
     public boolean existeConexion (){
         String sFichero = nombre_archivo;
         File fichero = new File(sFichero);
-        if (fichero.exists())
-            return true;
-        else
-            return false;
+        return fichero.exists();
      }
     
     /**
@@ -276,7 +273,7 @@ public class Conexion{
             System.out.println("    existe Sistema_DB en el SGDB: "+existe);
             
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
         }
         return existe;
     }
@@ -379,10 +376,12 @@ public class Conexion{
             
         }
         catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(null, "OCURRIO UN PROBLEMA, CODIGO: "+ex.getErrorCode(),"Atención",JOptionPane.WARNING_MESSAGE);
+        {            
             if (ex.getErrorCode()==1801) {
                 JOptionPane.showMessageDialog(null, "La Base de Datos ya está registrada en el SGBD.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
             }
         }    
     }
@@ -401,13 +400,28 @@ public class Conexion{
         catch(SQLException ex)
         {
             if (ex.getErrorCode()==3701){
-                    System.err.println("La base de datos que se intenta eliminar no existe.");
+                System.err.println("La base de datos que se intenta eliminar no existe.");
             }
             else{
-                System.err.println("Error desconocido: " + ex.getMessage()+" - "+ex.getErrorCode());
+                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());    
             }   
             return (false);
         }
+    }
+    
+    public int cantidadRegistros (String nametable){
+        int elementos = 0;
+        try{
+            stnt = (Statement) this.conn.createStatement();
+            rslset = stnt.executeQuery("SELECT COUNT(*) FROM "+nametable+";");
+            rslset.next();
+            elementos = Integer.parseInt(rslset.getString(1));
+        }
+        catch(SQLException ex)
+        {
+            System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+        }
+        return (elementos);
     }
         
    //renombrar a abrir_Conexion
@@ -433,12 +447,6 @@ public class Conexion{
             JOptionPane.showMessageDialog(null, ex, "Error Tipo 2 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
             conn=null;
         }
-        catch(Exception ex)
-        {
-            
-            JOptionPane.showMessageDialog(null, ex, "Error Tipo 3 en la Conexión con la BD: "+"\n"+ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            conn=null;
-        }
     }
    
    /**
@@ -455,34 +463,27 @@ public class Conexion{
 //METODOS PARA TRABAJAR CON LA BASE DE DATOS
 
     
-    public ResultSet Consultar (String consulta) {        
-        try
-        {
-            stnt  = conn.createStatement(); 
-        }
-        catch (Exception e)
-        {  
-            JOptionPane.showMessageDialog(null," Error: createStatement: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-        }  
-        
+    public ResultSet Consultar (String consulta) {                
         try 
-        { 
-            // Mostramos por pantalla todos las asignaturas de la tabla  
-            rslset = stnt.executeQuery(consulta);  
-
-        }
-        catch (Exception e)
         {  
-           
-            System.err.println("Warning: " + e.getMessage());   
+            stnt  = conn.createStatement(); 
+            rslset = stnt.executeQuery(consulta);  
+            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
+            stnt.close();
         }
-         return rslset;         
+        catch (SQLException e)
+        {            
+            System.err.println("Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
+        }
+        return rslset;         
     }
  
     public boolean Actualizar(String actualiza)  {
         try {
-            this.stnt = (Statement) conn.createStatement();
+            stnt = (Statement) conn.createStatement();
             stnt.executeUpdate(actualiza);
+            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
+            stnt.close();
             JOptionPane.showMessageDialog(null, "El Registro se actualizo correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         } catch (SQLException ex) {            
@@ -493,33 +494,36 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                System.err.println("Warning: " + ex.getMessage()+" - "+ex.getErrorCode());
-            }   
+                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+            }            
             return (false);
         }
         
     }
  
     public void Borrar(String borra) {
-        Statement st;
         try {
-            st = (Statement) this.conn.createStatement();
-            int numResultado = st.executeUpdate(borra);
+            stnt  = conn.createStatement();
+            int numResultado = stnt.executeUpdate(borra);
+            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
+            stnt.close();
             JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
              if (ex.getErrorCode()==547){
                     JOptionPane.showMessageDialog(null, "Integridad Refencial: Esta intentando eliminar un Registro que es utilizado por otros!","Atención",JOptionPane.WARNING_MESSAGE);
             }
              else{
-                System.err.println("Warning: " + ex.getMessage()+" code "+ex.getErrorCode());
+                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
              }
         }
     }
  
     public boolean Insertar(String inserta) {
         try{
-            Statement st = (Statement) this.conn.createStatement();
-            st.executeUpdate(inserta);
+            stnt = (Statement) this.conn.createStatement();
+            stnt.executeUpdate(inserta);
+            System.out.println("Timeout de consulta: "+stnt.getQueryTimeout()+" sg");
+            stnt.close();
             //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         }
@@ -535,7 +539,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                System.err.println("Warning: " + ex.getMessage()+" - "+ex.getErrorCode());
+                    System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }   
             return (false);
         }
@@ -544,8 +548,8 @@ public class Conexion{
     
     public boolean InsertarSinCartel(String inserta) {
         try{
-            Statement st = (Statement) this.conn.createStatement();
-            st.executeUpdate(inserta);            
+            stnt = (Statement) this.conn.createStatement();
+            stnt.executeUpdate(inserta);            
             return (true);
         }
         catch(SQLException ex)
@@ -560,7 +564,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                System.err.println("Warning: " + ex.getMessage()+" - "+ex.getErrorCode());
+                    System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }   
             return (false);
         }
