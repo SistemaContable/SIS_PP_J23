@@ -26,39 +26,12 @@ public class GUI_Principal extends javax.swing.JFrame {
     /**
      * Creates new form GUI_Principal
      */
-    public GUI_Principal() {      
-        initComponents();                
-        //Frame tome el tamaño de la pantalla al 95% y comienze maximizado        
-        float escalar = 0.80F;
-        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
-        int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
-        
-        this.setSize(ancho,alto); 
-        setLocationRelativeTo (null); 
-        
-        //String curDir = System.getProperty("user.dir");
-        //curDir=curDir+"\\Bases_de_Datos";
-        
-        //File directorio = new File(curDir);
-        //directorio.mkdir();       
-        
-        //System.out.println(curDir);
-        
-        //primero que nada pruebo de que exista el archivo conexion
-        //if (!r_con.existeConexion()){
-            //armarGUI_Database();
-        //}
-
-        //crearLogin();
-        
-    }
     
-    public GUI_Principal(int per,String id_usuario, Conexion con) {
-           
+    public GUI_Principal(int per, String id_usr, Conexion con) {           
         initComponents();
         r_con = con;
         r_con.Connection();
-        perfil=per;
+        
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
         float escalar = 0.80F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
@@ -66,37 +39,11 @@ public class GUI_Principal extends javax.swing.JFrame {
    
         this.setSize(ancho,alto);        
         setLocationRelativeTo (null);        
+        perfil=per;
         habilitarMenu(true);
         habilitarFunciones(per);
-        usuario=id_usuario;
+        usuario=id_usr;
        
-    }
-    
-    private void crearLogin(){            
-        jMenu7.setText("Cerrar Sesión");
-        
-        GUI_Login lo = new GUI_Login(this);               
-        lo.setTitle("Login");
-        lo.setTitleLabel("Login");      
-        
-        this.jDesktopPane1.add(lo);
-        lo.setVisible(true);
-       
-        int x = (this.getWidth() / 2) - (lo.getWidth() / 2);
-        int y = (this.getHeight() / 2) - (lo.getHeight() / 2);
-        
-        lo.setLocation(x,y);        
-        lo.moveToFront();
-        lo.requestFocus();
-        lo.focusPrincipal(); 
-        
-        try {        
-            lo.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        habilitarMenu(false);                
     }
     
     private void habilitarMenu(boolean valor){
@@ -114,10 +61,11 @@ public class GUI_Principal extends javax.swing.JFrame {
                 }*/
             }
         }    
-    }                   
+    }
+    
     // EJ---> 
     // Vector<Vector<Integer>>v(Vectro<modulo Tarea,...,...)    
-    //Vector=(modulo,tarea,tarea,tarea)
+    // Vector=(modulo,tarea,tarea,tarea)
     public void habilitarFunciones(int perfil){                           
         String consulta="select per_id_perfil,per_id_modulo,per_id_tarea from permiso where per_id_perfil="+perfil;
         r_con.Connection();
@@ -180,8 +128,7 @@ public class GUI_Principal extends javax.swing.JFrame {
                 // menu interno que tiene menu                                                    
             }            
         }
-    }
-    
+    }    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -211,14 +158,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -369,6 +314,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.setText("Auditoria");
         jMenu6.setName("M6"); // NOI18N
 
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem11.setText("Listado");
         jMenuItem11.setName("T61"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
@@ -379,6 +325,32 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem11);
 
         jMenuBar1.add(jMenu6);
+
+        jMenu8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/back.png"))); // NOI18N
+        jMenu8.setText("Respaldo");
+        jMenu8.setName("M7"); // NOI18N
+
+        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem12.setText("Hacer Copia de Seguridad");
+        jMenuItem12.setName("T71"); // NOI18N
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem12);
+
+        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem13.setText("Restaurar");
+        jMenuItem13.setName("T74"); // NOI18N
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem13);
+
+        jMenuBar1.add(jMenu8);
 
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
         jMenu7.setText("Cerrar Sesión");
@@ -428,10 +400,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.requestFocus();
         np.nextFocus();       
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         //creo el InternalFrame;
@@ -697,6 +665,40 @@ public class GUI_Principal extends javax.swing.JFrame {
        se.setVisible(true);
                        
     }//GEN-LAST:event_jMenu7MouseClicked
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+ 
+        
+        // TODO add your handling code here:
+        GUI_BackUp guiU=new GUI_BackUp(r_con);                
+        //l.Listado_Articulos();
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - guiU.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        guiU.setLocation(x, guiU.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        guiU.setVisible(true);
+        this.jDesktopPane1.add(guiU);
+        try {        
+            guiU.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        guiU.moveToFront();
+        guiU.requestFocus();
+        
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+      
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        this.dispose();        
+        GUI_Restore guiU=new GUI_Restore(r_con.getBase_datos());                
+        guiU.setVisible(true);
+        r_con.cierraConexion();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
     
     
     public void abrirSesion (){
@@ -733,44 +735,21 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //1º creo una conexion para validar que el sistema se puede conectar
-                //Conexion r_con = new Conexion();
-                //GUI_Principal ventana= new GUI_Principal();
-               //GUI_Inicio_Sesion gui;
-               //gui = new GUI_Inicio_Sesion(r_con);
-               //gui.setVisible(true);
-                //si no existe el archivo de conexion llamo a la interface resposable
-                //if (! r_con.existeConexion()) {
-                    
-                
+            public void run() {               
                 System.out.println("COMENZO EL PROGRAMA");
                 GUI_Conexion gui = new GUI_Conexion();
-                //System.out.println("TERMINE LA GUI CONEXION");
-                    //GUI_Conexion gui = new GUI_Conexion();
-                    if (gui.chequearConexion()){
-                        
-                        
+                
+                if (gui.validarConexion()){                      
                         Conexion r_con = gui.getConexion();
                         gui.dispose();
                         gui=null;
                         GUI_Inicio_Sesion IS = new GUI_Inicio_Sesion(r_con);
                         IS.setVisible(true);
-                    }
-                    else{
-                        //gui = new GUI_Conexion();
-                        gui.setVisible(true);
-                        gui.validarConexion ();                        
-                    }
-                    //gui.setVisible(true);
-                   
-                    //gui.validarConexion ();
-
-                //}
-                //else{
-                    //sino, continuo con el programa                   
-                    //ventana.setVisible(true); 
-                //}                
+                }
+                else{
+                    gui.setVisible(true);
+                    gui.generarConexion ();                        
+                }             
             }
         });
     }
@@ -784,10 +763,13 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -798,10 +780,6 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }
-
-
-
-
 /**
     if(maux.getItem(i) instanceof JMenu){
                     System.out.println("PAJERO");

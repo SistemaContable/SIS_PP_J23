@@ -31,7 +31,6 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
     public GUI_Impresoras(Conexion con) {
         initComponents();
         r_con=con;  
-        r_con.Connection();
         cargarComboBox();
         listar_Impresoras();
     }
@@ -196,7 +195,9 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
 
             if (impresora != null){
                 String sql = "INSERT INTO impresoras VALUES('"+impresora.getName()+"',"+modulo+")";            
-                r_con.Insertar(sql); 
+                r_con.Connection();
+                r_con.Insertar(sql);
+                r_con.cierraConexion();
                 listar_Impresoras ();
                 //JOptionPane.showMessageDialog(null, "Asigno al Módulo "+modulo+" la Impresora "+impresora.getName(),"Aviso",JOptionPane.WARNING_MESSAGE);
             }
@@ -215,9 +216,9 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
             String [] separada; 
             separada = jComboBox1.getSelectedItem().toString().split("-"); 
             int modulo = Integer.parseInt(separada[0].trim());
-            
+            r_con.Connection();
             r_con.Borrar("DELETE FROM impresoras WHERE imp_nombre = '"+impresora+"' and imp_id_modulo = "+modulo+"");
-            //r_con.cierraConexion();
+            r_con.cierraConexion();
             listar_Impresoras ();                
         }        
         
@@ -244,23 +245,27 @@ private void listar_Impresoras (){
     String [] separada; 
     separada = jComboBox1.getSelectedItem().toString().split("-"); 
     int modulo = Integer.parseInt(separada[0].trim());
-    
+    r_con.Connection();
     Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+modulo);
     DefaultListModel modelo = new DefaultListModel();
     for(Vector<String>a:v){
         modelo.addElement(a.elementAt(0));
         //jComboBox1.addItem(a.elementAt(0)+" - "+a.elementAt(1));
     }
-    jList1.setModel(modelo);
-   
+    v=null;
+    r_con.cierraConexion();
+    jList1.setModel(modelo);   
 }
 
 private void cargarComboBox(){
         jComboBox1.removeAllItems();
+        r_con.Connection();
         Vector<Vector<String>>v = r_con.getContenidoTabla("select * from modulo");
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0)+" - "+a.elementAt(1));
-        }        
+        } 
+        v=null;
+        r_con.cierraConexion();
     }
 
 

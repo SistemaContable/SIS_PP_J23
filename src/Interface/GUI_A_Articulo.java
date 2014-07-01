@@ -43,8 +43,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
         initComponents();
         r_con=con;
         prepararHelp();
-        usuario=u;
-        
+        usuario=u;        
     }
 
     /**
@@ -265,15 +264,16 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 String nue = (rs.getString(1)+" - "+rs.getString(2));
                 items.add(nue);
             }
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
         }
         rc.asignarLista(jTextField6, items);
+        r_con.cierraConexion();
     }
     
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.dispose();
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -294,7 +294,6 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
-            //r_con = new Conexion();
             r_con.Connection();
  
             String sql = "INSERT INTO Articulos "
@@ -304,10 +303,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                     +Float.parseFloat(jTextField4.getText())+","
                                     +Integer.parseInt(jTextField5.getText())+",'"
                                     +jTextField6.getText()+"')";
-            //r_con.Insertar(sql);
-            if (r_con.Insertar(sql)){
-                // para auditoria
-                
+            if (r_con.Insertar(sql)){                
                 InetAddress addr;
                 String terminal="";
                 try { 
@@ -338,16 +334,13 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             
         }
         else{
-            if (("Buscar".equals(this.jButton2.getText()))){
-                
+            if (("Buscar".equals(this.jButton2.getText()))){                
                 boolean existe = false;
-                //r_con = new Conexion();
                 r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
                 try {
                      
-                     while (rs.next())
-                    {     
+                     while (rs.next()){     
                         if ("Baja Artículo:".equals(jLabel1.getText())){
                             jTextField1.setEnabled(false);
                         }
@@ -366,7 +359,8 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                         muestraValor(jTextField6.getText());
                         
                         existe = true;
-                    } 
+                    }
+                    rs.close();
                 } catch (SQLException ex) {
 
                     Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
@@ -585,19 +579,17 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
 private boolean muestraValor (String cod){
     boolean existe = false;
-    //r_con = new Conexion();
     r_con.Connection();
     ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+cod+"'");
     try {
-             while (rs.next())
-            {
-                jLabel8.setText(rs.getString(2));
-                existe = true;
-            } 
-    } catch (SQLException ex) {
-            
+        while (rs.next()){
+            jLabel8.setText(rs.getString(2));
+            existe = true;
+        }
+        rs.close();
+    } catch (SQLException ex) {            
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    }    
     r_con.cierraConexion();
     return existe;
 }

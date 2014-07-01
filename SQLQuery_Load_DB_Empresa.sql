@@ -41,6 +41,7 @@ insert into modulo values(3,'USUARIO');
 insert into modulo values(4,'ADMINISTRADOR IMPRESORA');
 insert into modulo values(5,'AUXILIARES');
 insert into modulo values(6,'AUDITORIA');
+insert into modulo values(7,'RESPALDO');
 
 CREATE TABLE tarea
 (
@@ -111,6 +112,9 @@ insert into permiso values(1,4,1);
 insert into permiso values(1,5,5);
 insert into permiso values(1,6,1);
 
+insert into permiso values(1,7,1);
+insert into permiso values(1,7,4);
+
 insert into permiso values(2,5,5);
 insert into permiso values(2,3,1);
 insert into permiso values(2,1,1);
@@ -118,14 +122,18 @@ insert into permiso values(2,1,2);
 insert into permiso values(2,1,3);
 insert into permiso values(2,1,4);
 insert into permiso values(2,1,5);
+insert into permiso values(2,7,1);
 
 insert into permiso values(3,5,5);
 insert into permiso values(3,1,1);
 insert into permiso values(3,1,3);
 insert into permiso values(3,1,4);
 insert into permiso values(3,1,5);
+insert into permiso values(3,7,1);
 
 insert into permiso values(4,6,1);
+insert into permiso values(4,7,1);
+
 
 CREATE TABLE impresoras
 (

@@ -285,6 +285,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 jTable1.print(PrintMode.FIT_WIDTH, headerFormat, footerFormat);            
                 } catch (PrinterException ex) { }
             **/
+            r_con.Connection();
             
             JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));
             //localizo el reporte
@@ -304,16 +305,16 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             if (v.size()>0){
                 String nombre_imp;                
                 //caso en que sea una unica impresora por modulo
-                if(v.size()==1){
-                    nombre_imp=v.elementAt(0).firstElement();                    
-                    AttributeSet aset = new HashAttributeSet();
-                    aset.add(new PrinterName(nombre_imp, null));                   
-                    impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                    impresora = impresoras[0];                   
-                }
+                //if(v.size()==1){
+                    //nombre_imp=v.elementAt(0).firstElement();                    
+                    //AttributeSet aset = new HashAttributeSet();
+                    //aset.add(new PrinterName(nombre_imp, null));                   
+                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                    //impresora = impresoras[0];                   
+                //}
                 
                 //caso en que haya mas de una impresora por modulo
-                if (v.size()>1){
+                if (v.size()>=1){
                     //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
                     for (int i = 0; i < v.size(); i++) {
                         nombre_imp=v.elementAt(i).firstElement();
@@ -329,7 +330,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                         listado_impresoras[i]=impresoras_modulo.elementAt(i);
                     }
                     //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
-                    impresora = (PrintService) JOptionPane.showInputDialog(null, "Hay mas de una impresora asignada a este modulo, eliga una para imprimir:",
+                    impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
                      "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
                     }
                 
@@ -347,6 +348,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
                                               + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
             }
+            r_con.cierraConexion();
         } catch (JRException ex) {
             Logger.getLogger(GUI_Listado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -357,7 +359,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             // TODO add your handling code here:         
-            
+            r_con.Connection();
             JRResultSetDataSource resultSetDataSource = new JRResultSetDataSource(r_con.Consultar(consulta_Vigente));            
             //localizo el reporte
             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -381,8 +383,9 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             //COMPONENTE 0 es el Boton Guardar, el 1 el es de Imprimir
             JP3.getComponent(1).setEnabled(false);
             
-            jviewer.setVisible(true); 
+            jviewer.setVisible(true);
             
+            r_con.cierraConexion();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }          
@@ -513,6 +516,8 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         Vector <Vector<String>> v = r_con.getContenidoTabla(consulta);
         for(Vector <String> a : v)
             modelo.addRow(a);
+        v=null;
+        r_con.cierraConexion();
    }
    
    public void reiniciarJTable(JTable Tabla){

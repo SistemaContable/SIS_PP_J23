@@ -7,26 +7,27 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.PreparedStatement;
 import javax.swing.JFileChooser;
 
 /**
  *
  * @author Manolo
  */
-public class GUI_BackUp extends javax.swing.JInternalFrame {
+public class GUI_Restore extends javax.swing.JFrame  {
 
     /**
      * Creates new form GUI_A_Prod
      */
-    private Conexion r_con = new Conexion();
+    //private Conexion r_con = new Conexion();
     private String direccion = "";
+    private String nameBD;
     
-    public GUI_BackUp(Conexion con) {
+    public GUI_Restore(String bd) {
+        //this.r_con = new Conexion();
         initComponents();
-        r_con = con;
-        r_con.Connection();  
+        String nameBD = bd;
+       //r_con.Connection();  
         
     }
 
@@ -45,18 +46,12 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        setIconifiable(true);
-        setMaximizable(true);
         setResizable(true);
         setTitle("[Titutlo]");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
-        setInheritsPopupMenu(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Respaldo de Información:");
+        jLabel1.setText("Restauración de Información:");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Cancelar");
@@ -86,7 +81,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel3.setText("Seleccione la ruta donde alojar el Back Up");
+        jLabel3.setText("Seleccione la ruta del Back Up");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,23 +94,23 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(105, 105, 105))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(155, 155, 155))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105)
+                .addGap(99, 99, 99)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -130,13 +125,13 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        r_con.cierraConexion();
+        //r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         JFileChooser directorio = new JFileChooser();
-        directorio.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        directorio.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int result = directorio.showDialog(null,"Seleccione la ruta");
         String ruta = null;
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -148,17 +143,29 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      
         
-        SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss"); 
-        Date fechaEntrada = new Date(); 
-        String fecha = formatEntrada.format(fechaEntrada);
+        Conexion r_con = new Conexion ();
+        //r_con.setBase_datos("master");
+        r_con.Connection();
         
         
-        String nombre = r_con.getBase_datos()+"__"+fecha+".bak";
+        //direccion+="\\";
+        //r_con.Consultar("DROP DATABASE "+nameBD);
+        //System.out.println(direccion);
+        //r_con.cierraConexion();
         
-        direccion+="\\"+nombre;
-        System.out.println(direccion);
-        r_con.Insertar("BACKUP DATABASE ["+r_con.getBase_datos()+"] TO  DISK = N'"+direccion+"'  WITH NOFORMAT, NOINIT,  NAME = N'Completa', SKIP, NOREWIND, NOUNLOAD,  STATS = 10");
+        //r_con = new Conexion();
+        //r_con.Connection();
+
+        
+        String sql = "alter database" + nameBD + "set offline with rollback immediate;"; 
+        sql += "restore database" + nameBD + "from disk = '" + direccion + "'"; 
+        sql += "with replace";
+        sql += "alter database" + nameBD + "set onLine with rollback immediate;"; 
+
+        r_con.Insertar("RESTORE DATABASE ['"+nameBD+"'] FROM  DISK = N'"+direccion+"' WITH  REPLACE;");
+        //r_con.Insertar(sql);
         this.dispose();
         //aca debo capturar la ruta del jtree
         //destino = "C:\\Documents and Settings\\Victoria\\Escritorio\\TP3\\dist\\";
@@ -174,6 +181,31 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
   
     
+public static boolean hfData (String path, String bk_name, String db_name) 
+{ 
+    boolean result = false; 
+    PreparedStatement stmt = null; 
+    String sql = ""; 
+    try 
+    { 
+        sql = "alter database" + db_name + "set offline with rollback immediate;"; 
+        sql += "restore database" + db_name + "from disk = '" + path + bk_name + "'"; 
+        sql += "with replace";
+        sql += "alter database" + db_name + "set onLine with rollback immediate;"; 
+        //stmt = conn.prepareStatement (sql); 
+        stmt.executeUpdate (); 
+        result = true; 
+    } 
+    catch (Exception e) 
+    { 
+        e.printStackTrace (); 
+    } 
+    finally 
+    { 
+        try {stmt.close ();} catch (Exception e) {} 
+    }         
+    return result; 
+} 
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -227,5 +259,45 @@ public void form_onlySearch (){
 public void form_Complete (){
     //this.jTextField2.setEnabled(true);
 }
+
+
+
+
+/**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GUI_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GUI_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GUI_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GUI_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GUI_Restore re = new GUI_Restore ("Empresa_1");
+                re.setVisible(true);
+            }
+        });
+    }
+
 
 }

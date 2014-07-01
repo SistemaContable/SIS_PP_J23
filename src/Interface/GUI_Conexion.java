@@ -33,6 +33,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         
+        //creo la conexion
         r_con = new Conexion();
         
         //para panel 1
@@ -42,7 +43,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jCheckBox1.setSelected(true);
         //para panel 3
         jCheckBox3.setSelected(true);
-        //jButton9.setEnabled(false);
     }
 
     /**
@@ -546,17 +546,17 @@ public class GUI_Conexion extends javax.swing.JFrame {
      */
     public void GUI_configuracion (){
         r_con.setBase_datos(nombre_BD_Sistema);                
-        r_con.Connection();
+        //r_con.Connection();
         jTabbedPane1.setEnabledAt(1, false);
         jButton5.setText("Salir");
     }
     
     /**
      * metodo principal cuyo proposito es controlar que todos los elementos
-     * necesarios para la conexion existar, caso contrario oblida a crearlos
+     * necesarios para la conexion existar, caso contrario obliga a crearlos
      * (archivo de conexion, BD Sistema, Usuarios del Sistema)
      */
-    public void validarConexion (){
+    public void generarConexion (){
         deshabilitarPaneles();
         //caso en que no existe el archivo con los parametros de Conexion
         if (! r_con.existeConexion()) {
@@ -596,7 +596,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
      * sistema existen, devuelve true si existen todos.
      * @return true si existe el archivo de conexion, la BD del sistema y al menos 1 usuario
      */
-    public boolean chequearConexion (){
+    public boolean validarConexion (){
         boolean rta = false;
          if (r_con.existeConexion()) {
              r_con.Connection();
@@ -619,6 +619,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
         return (r_con);
     }
     
+    /**
+     * deshabilita todos los paneles de jTabbedPane1
+     */
     private void deshabilitarPaneles (){
         for (int i = 0; i < jTabbedPane1.getComponentCount(); i++) {
             jTabbedPane1.setEnabledAt(i, false);
@@ -635,9 +638,14 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jButton2.setEnabled(false);
     }    
     
+    /**
+     * oyenye del boton salir, si sale por cancelar (en el intento de configurar)
+     * cierra el form, sino, abre el inicio de Sesion
+     * @param evt 
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if("Salir".equals(jButton5.getText())){
-            this.dispose(); 
+            this.dispose();
             GUI_Inicio_Sesion IS = new GUI_Inicio_Sesion(r_con);
             IS.setVisible(true);
         }
@@ -672,6 +680,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
 
             //controlo que haya usuarios para no volver a llamar a Validar (tiempo de ejecucion)
             if (r_con.cantidadRegistros("Usuarios")>0){
+                jButton5.setText("Salir");
                 jButton5.setEnabled(true);
             }
             else{
@@ -746,6 +755,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         //guardo el directorio elegido en la tabla Directorios del Sistema
                         r_con.Insertar("INSERT INTO Directorios VALUES "
                             + "('Directorio_Database_Sistema','"+carpeta.getAbsolutePath()+"');");
+                        r_con.cierraConexion();
                     }
                 }
                 else{

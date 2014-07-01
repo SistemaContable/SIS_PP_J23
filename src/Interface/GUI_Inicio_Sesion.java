@@ -31,8 +31,9 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         
         r_con = con;
         r_con.setBase_datos(nombre_BD_Sistema);
-        r_con.Connection();
-        cargarComboBox();        
+        //r_con.Connection();
+        cargarComboBox();
+        jTextField3.requestFocus();
     }
 
     /**
@@ -61,7 +62,6 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/login.png"))); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(121, 121));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Usuario:");
@@ -139,15 +139,12 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(184, 184, 184))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2)
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -182,80 +179,79 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if ("".equals(jTextField3.getText())){
             msj_usuario_Error("Ingrese un Usuario, por favor.");
+            jTextField3.requestFocus();
         }
         else{        
+            this.vaciarMensaje();
             if (jComboBox1.getSelectedItem().toString().equals("< Nueva_Empresa >")){
                 try {
-                this.vaciarMensaje();
-                r_con.setBase_datos(nombre_BD_Sistema);
-                r_con.Connection();
-                rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
-                                jTextField3.getText()+"' AND usr_contrasenia = '"+
-                                jPasswordField1.getText()+"';");
-                rsl.next();
-                int existe = Integer.parseInt(rsl.getString(1));
-                if (existe > 0){
-                    this.dispose();
-                    GUI_Empresa gui = new GUI_Empresa(this.r_con);                    
-                    gui.setVisible(true);
+                    r_con.setBase_datos(nombre_BD_Sistema);
+                    r_con.Connection();
+                    rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
+                                    jTextField3.getText()+"' AND usr_contrasenia = '"+
+                                    jPasswordField1.getText()+"';");
+                    rsl.next();
+                    int existe = Integer.parseInt(rsl.getString(1));
+                    if (existe > 0){
+                        this.dispose();
+                        GUI_Empresa gui = new GUI_Empresa(this.r_con);                    
+                        gui.setVisible(true);
+                    }
+                    else{
+                        msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
+                        jTextField3.requestFocus();
+                    }
+                    rsl.close();
+                    r_con.cierraConexion();
+                } 
+                catch (SQLException ex) {
+                    Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                else{
-                    msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
-                }
-                rsl.close();                    
-            } catch (SQLException ex) {
-                Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
-            }
             }
             else{
                 try {
-                    this.vaciarMensaje();
                     r_con.setBase_datos(nombre_BD_Sistema);
                     r_con.Connection();
-                    String empresa = jComboBox1.getSelectedItem().toString();
-                    //rsl.close();
+                    String empresa = jComboBox1.getSelectedItem().toString();                   
                     rsl = r_con.Consultar("SELECT denominacion_interna FROM Empresas WHERE razon_social = '"+
                                             ""+empresa+"';");
-                    rsl.next();
-                    String nameinterno = rsl.getString(1);
+                    rsl.next();                    
+                        String nameinterno = rsl.getString(1);                    
                     rsl.close();
+                    
                     r_con.cierraConexion();
                     r_con.setBase_datos(nameinterno);
-                    r_con.Connection();
+                    r_con.Connection();                    
                     
-                    try {
-                        this.vaciarMensaje(); 
-                        
-                        String consulta="";
-                        consulta="SELECT usr_id_perfil, usr_nombre_usuario FROM usuario WHERE usr_nombre_usuario='"+
+                    String consulta="";
+                    consulta=("SELECT usr_id_perfil, usr_nombre_usuario FROM usuario WHERE usr_nombre_usuario='"+
                                 jTextField3.getText()+"' and usr_contrasenia='"+
-                                jPasswordField1.getText()+"';";
+                                jPasswordField1.getText()+"';");
                         
-                        rsl=r_con.Consultar(consulta);
-                        int id_perfil = -1;
-                        String nombre_usr ="";
-                        while(rsl.next()){
-                            id_perfil=rsl.getInt(1);
-                            nombre_usr=rsl.getString(2);
-                        }
+                    rsl=r_con.Consultar(consulta);
+                    int id_perfil = -1;
+                    String nombre_usr ="";
+                    while(rsl.next()){
+                        id_perfil=rsl.getInt(1);
+                        nombre_usr=rsl.getString(2);
+                    }
 
-                        if(id_perfil!=-1){
-                            r_con.setRazon_social(empresa);
-                            r_con.setBase_datos(nameinterno);
-                            r_con.Connection();
-                            this.dispose();
-                            GUI_Principal pri = new GUI_Principal(id_perfil,nombre_usr,r_con);
-                            pri.setVisible(true);
-                        }                            
-                        else{
-                            msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
-                        }
-                        rsl.close();                    
-                        } catch (SQLException ex) {
-                            Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    
-                } catch (SQLException ex) {
+                    if(id_perfil!=-1){
+                        r_con.setRazon_social(empresa);
+                        r_con.setBase_datos(nameinterno);
+                        r_con.cierraConexion();
+                        this.dispose();
+                        GUI_Principal pri = new GUI_Principal(id_perfil,nombre_usr,r_con);
+                        pri.setVisible(true);
+                    }                            
+                    else{
+                        r_con.cierraConexion();
+                        msj_usuario_Error("Usuario de la Empresa o Contraseña INCORRECTOS.");
+                        jTextField3.requestFocus();
+                    }
+                    rsl.close();                    
+                } 
+                catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -265,17 +261,19 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if ("".equals(jTextField3.getText())){
             msj_usuario_Error("Ingrese un Usuario del Sistema, por favor.");
+            jTextField3.requestFocus();
         }
         else{        
             try {
                 this.vaciarMensaje();
                 r_con.setBase_datos(nombre_BD_Sistema);
                 r_con.Connection();
-                ResultSet rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
+                rsl = r_con.Consultar("SELECT COUNT(*) FROM Usuarios WHERE usr_nombre_usuario = '"+
                             jTextField3.getText()+"' AND usr_contrasenia = '"+
                             jPasswordField1.getText()+"';");
                 rsl.next();
                 int existe = Integer.parseInt(rsl.getString(1));
+                rsl.close();
                 if (existe > 0){
                     this.dispose();
                     GUI_Conexion gui = new GUI_Conexion();
@@ -283,9 +281,9 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     gui.setVisible(true);
                 }
                 else{
-                    msj_usuario_Error("Usuario o Contraseña INCORRECTOS.");
-                }
-                rsl.close();                    
+                    msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
+                    jTextField3.requestFocus();
+                }                    
             } catch (SQLException ex) {
                 Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -295,11 +293,12 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     private void cargarComboBox(){
         r_con.Connection();
         jComboBox1.removeAllItems();
-        Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM Empresas");
+        Vector<Vector<String>> v = r_con.getContenidoTabla("SELECT * FROM Empresas");
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0));
         }    
         jComboBox1.addItem("< Nueva_Empresa >");
+        v=null;
         r_con.cierraConexion();
     }
     

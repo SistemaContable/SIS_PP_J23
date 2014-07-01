@@ -207,7 +207,8 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                         jTextField2.setText(rs.getString(2));
                         jTextField3.setText(rs.getString(3));                        
                         existe = true;
-                    } 
+                    }
+                     rs.close();
                 } catch (SQLException ex) {
 
                     Logger.getLogger(GUI_A_IVA.class.getName()).log(Level.SEVERE, null, ex);

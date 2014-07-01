@@ -156,21 +156,19 @@ public class GUI_Empresa extends javax.swing.JFrame {
                 this.msj_Error("Ingrese un Usuario Inicial.");
                 jTextField4.requestFocus();
             }
-            else{
-                this.vaciarMensaje();
+            else{                
                 if (r_con.existeDatabase(jTextField3.getText())){
                     this.msj_Error("Razón Social ya Registrada.");
                     jTextField3.requestFocus();
                 }
                 else{
-                    this.vaciarMensaje();
                     ResultSet rsl = r_con.Consultar("SELECT * FROM Directorios");                    
                     try {
+                        r_con.setBase_datos(nombre_BD_Sistema);
                         r_con.Connection();
                         rsl.next();
                         String directorio = rsl.getString(2);
-                        String nuevadatabase = jTextField3.getText();
-                        
+                        String nuevadatabase = jTextField3.getText();                        
                         rsl.close();
                         rsl = r_con.Consultar("SELECT COUNT (*) FROM Empresas");
                         rsl.next();
@@ -190,14 +188,15 @@ public class GUI_Empresa extends javax.swing.JFrame {
                                         + "'Administrador_Inicial','"+
                                         jTextField5.getText()+"',1,1);");
                         
-                        
+                        rsl.close();
+                        r_con.cierraConexion();
                         this.dispose();
                         GUI_Inicio_Sesion gui = new GUI_Inicio_Sesion(r_con);
                         gui.setVisible(true);                       
-                    } catch (SQLException ex) {
+                    } 
+                    catch (SQLException ex) {
                         Logger.getLogger(GUI_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                                        
                 }
             }
         }
