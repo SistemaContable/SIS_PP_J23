@@ -737,9 +737,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         this.dispose();        
-        GUI_Restore guiU=new GUI_Restore(r_con.getBase_datos());                
-        guiU.setVisible(true);
+        String name=r_con.getBase_datos();
         r_con.cierraConexion();
+        r_con=null;
+        GUI_Restore guiU=new GUI_Restore(name);                
+        guiU.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed

@@ -6,10 +6,15 @@
 
 package Interface;
 
-import Clases_Auxiliares.Conexion;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -28,8 +33,9 @@ public class GUI_Restore extends javax.swing.JFrame  {
     public GUI_Restore(String bd) {
         //this.r_con = new Conexion();
         initComponents();
-        String nameBD = bd;
+        nameBD = bd;
        //r_con.Connection();  
+         setLocationRelativeTo (null);
         
     }
 
@@ -145,8 +151,9 @@ public class GUI_Restore extends javax.swing.JFrame  {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      
-
+        restoreBD();
+        System.out.println("Exito al restaurar la BD "+nameBD);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
   
     
@@ -229,30 +236,45 @@ public void form_Complete (){
     //this.jTextField2.setEnabled(true);
 }
 
- public void crearBackup(String baseDatos,String direccion,String nuevaBD) throws SQLException{       
-       Conexion con=new Conexion();
-       con.Connection();
-    // restore database Sistema from disk = 'D:\SistemasIII.Bak' with file=1, norecovery;
-       String consulta="backup database "+baseDatos+" to disk = '"+direccion+"\\"+nuevaBD+"' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
-       //String consulta="backup database Sistema to disk = 'D:\\SistemasVI.Bak' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
-       Statement stnt  = con.getStatement(); 
-       stnt.execute(consulta);
-       System.out.println("El backup se realizo con exito");
-   }   
-   
+  
+    
+
+
    public void restoreBD(){
         try 
         {
-            cierraConexion();
-            Connection("bd_prueba");
-            String consulta="RESTORE DATABASE [practica_p]"+
-                    "FROM DISK = N'D:\\practica_p2.bak'" +
+             Connection conn = null;                     
+            try {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GUI_Restore.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //String connectionUrl;            
+            //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";            
+            String connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
+            //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
+            conn = DriverManager.getConnection(connectionUrl);            
+            Statement j=conn.createStatement();
+            
+            
+            //Conexion con=new Conexion();
+            //con.Connection();
+            //con.setBase_datos("BD_Sistema");
+            //con.Connection();
+            
+            String consulta="RESTORE DATABASE ["+nameBD+"]"+
+                    "FROM DISK = N'"+direccion+"'" +
                     "WITH RECOVERY, FILE = 1, NOUNLOAD, REPLACE, STATS = 10";
-            stnt  = conn.createStatement();
-            stnt.execute(consulta);
+            
+             String consulta2="DROP DATABASE "+ nameBD;
+            
+            j.executeUpdate(consulta2);
+            j.executeUpdate(consulta);
+            //conn.Consultar(consulta);
          
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
+
         }
    }
          
@@ -288,7 +310,7 @@ public void form_Complete (){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GUI_Restore re = new GUI_Restore ("Empresa_1");
+                GUI_Restore re = new GUI_Restore ("Empresa_2");
                 re.setVisible(true);
             }
         });

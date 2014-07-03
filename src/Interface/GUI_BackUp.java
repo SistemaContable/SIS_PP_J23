@@ -7,8 +7,12 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -147,29 +151,39 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         direccion=ruta;
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void crearBackup(String baseDatos,String direccion,String nuevaBD) throws SQLException{       
+       Conexion con=new Conexion();
+       con.Connection();
+    // restore database Sistema from disk = 'D:\SistemasIII.Bak' with file=1, norecovery;
+       String consulta="backup database "+baseDatos+" to disk = '"+direccion+"\\"+nuevaBD+"' with format, name = 'Full Backup';";
+       //String consulta="backup database Sistema to disk = 'D:\\SistemasVI.Bak' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
+       Statement stnt  = con.getStatement(); 
+       stnt.execute(consulta);
+       System.out.println("El backup se realizo con exito");
+   }  
+    
+    
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss");
+            Date fechaEntrada = new Date();
+            String fecha = formatEntrada.format(fechaEntrada);
+            
+            
+            String nombre = r_con.getBase_datos()+"__"+fecha+".bak";
+            
+            // direccion+="\\"+nombre;
+            System.out.println(direccion);
+            
+            crearBackup(r_con.getBase_datos(),direccion,nombre);
+            
+            // r_con.Insertar("BACKUP DATABASE ["+r_con.getBase_datos()+"] TO  DISK = N'"+direccion+"'  WITH NOFORMAT, NOINIT,  NAME = N'Completa', SKIP, NOREWIND, NOUNLOAD,  STATS = 10");
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_BackUp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss"); 
-        Date fechaEntrada = new Date(); 
-        String fecha = formatEntrada.format(fechaEntrada);
-        
-        
-        String nombre = r_con.getBase_datos()+"__"+fecha+".bak";
-        
-        direccion+="\\"+nombre;
-        System.out.println(direccion);
-        r_con.Insertar("BACKUP DATABASE ["+r_con.getBase_datos()+"] TO  DISK = N'"+direccion+"'  WITH NOFORMAT, NOINIT,  NAME = N'Completa', SKIP, NOREWIND, NOUNLOAD,  STATS = 10");
-        this.dispose();
-        //aca debo capturar la ruta del jtree
-        //destino = "C:\\Documents and Settings\\Victoria\\Escritorio\\TP3\\dist\\";
-           
-        
-        
-        //Object [] sel = jList1.getSelectedValues();
-        
-        //for (int i = 0; i < sel.length; i++) {
-            //System.out.println(sel[i].toString());
-        //}      
         
     }//GEN-LAST:event_jButton2ActionPerformed
   
