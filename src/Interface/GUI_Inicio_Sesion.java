@@ -7,12 +7,15 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
+import Colecciones.Usuarios;
+import Objetos.Usuario;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -76,6 +79,17 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel6.setText("Contraseña:");
+
+        jPasswordField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPasswordField1FocusGained(evt);
+            }
+        });
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordField1KeyPressed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Empresa:");
@@ -214,7 +228,11 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if ("".equals(jTextField3.getText())){
+        iniciarSesion();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    public void iniciarSesion(){
+                if ("".equals(jTextField3.getText())){
             msj_usuario_Error("Ingrese un Usuario, por favor.");
             jTextField3.requestFocus();
         }
@@ -260,45 +278,58 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                         r_con.setBase_datos(nameinterno);
                         r_con.Connection();                    
                     
-                        String consulta="";
-                        consulta=("SELECT usr_id_perfil, usr_nombre_usuario FROM usuario WHERE usr_nombre_usuario='"+
-                                jTextField3.getText()+"' and usr_contrasenia='"+
-                                jPasswordField1.getText()+"';");
                         
-                        rsl=r_con.Consultar(consulta);
-                        int id_perfil = -1;
-                        String nombre_usr ="";
-                        while(rsl.next()){
-                            id_perfil=rsl.getInt(1);
-                            nombre_usr=rsl.getString(2);
-                        }
+                        
+                        
+                        String usuario="";
+                        usuario=jTextField3.getText();
+                       // usuario=usuario.toUpperCase();
 
-                        if(id_perfil!=-1){
-                            r_con.setRazon_social(empresa);
-                            r_con.setBase_datos(nameinterno);
-                            r_con.cierraConexion();
-                            this.dispose();
-                            GUI_Principal pri = new GUI_Principal(id_perfil,nombre_usr,r_con);
-                            pri.setVisible(true);
-                        }                            
-                        else{
-                            r_con.cierraConexion();
-                            msj_usuario_Error("Usuario de la Empresa o Contraseña INCORRECTOS.");
-                            jTextField3.requestFocus();
+                        String pass="";
+
+                        pass=jPasswordField1.getText();
+                        //pass=pass.toUpperCase();
+                        if((!usuario.equals(""))&&(!pass.equals(""))){
+                            Usuarios usuarios=new Usuarios(r_con);
+                            Usuario u=usuarios.getUsuario(usuario);
+                            if(u!=null){
+                                if(!u.getExiste())
+                                {
+                                    msj_usuario_Error("El Usuario esta dado de baja.");
+                                }
+                                else
+                                {
+                                    if(u.getContraseña().equals(pass)){                                        
+                                        this.dispose();                    
+                                        new GUI_Principal(u,r_con).setVisible(true);
+                                        dispose();
+                                    }
+                                    else
+                                    {
+                                        msj_usuario_Error("La Contraseña no es correcta.");
+                                    }
+                                }
+                            }                                                
+                            else
+                                msj_usuario_Error("El Usuario ingresado no existe.");
                         }
-                        rsl.close();
+                          
                     }
                     else{                                
                         msj_usuario_Error("No hay Empresas Registradas.");
                     }
+                    
+                    
+                    
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
+    }
+    
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if ("".equals(jTextField3.getText())){
             msj_usuario_Error("Ingrese un Usuario del Sistema, por favor.");
@@ -353,6 +384,17 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         GUI_Empresa gui = new GUI_Empresa(this.r_con);                    
         gui.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==10)
+            iniciarSesion();        
+    }//GEN-LAST:event_jPasswordField1KeyPressed
+
+    private void jPasswordField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1FocusGained
+        // TODO add your handling code here:
+        jPasswordField1.setText("");
+    }//GEN-LAST:event_jPasswordField1FocusGained
     
     private void cargarComboBox(){
         r_con.Connection();

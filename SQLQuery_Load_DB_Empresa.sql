@@ -108,12 +108,18 @@ insert into permiso values(1,2,4);
 insert into permiso values(1,2,5);
 
 insert into permiso values(1,3,1);
+insert into permiso values(1,3,2);
+insert into permiso values(1,3,3);
+
 insert into permiso values(1,4,1);
+
 insert into permiso values(1,5,5);
+
 insert into permiso values(1,6,1);
 
 insert into permiso values(1,7,1);
 insert into permiso values(1,7,4);
+
 
 insert into permiso values(2,5,5);
 insert into permiso values(2,3,1);
@@ -168,3 +174,43 @@ CREATE TABLE auditoria_articulo
 CREATE INDEX IX_id_aud ON auditoria_articulo (aud_id_auditoria);
 CREATE INDEX IX_id_usuario ON auditoria_articulo (aud_id_usuario);
 CREATE INDEX IX_aud_terminal ON auditoria_articulo (aud_terminal);
+
+create table auditoria_perfiles(
+aup_id int not null,
+aup_usuario varchar(50),
+aup_perfil_id int,
+aup_perfil_desc varchar(50),
+ati_tarea varchar(50),
+ati_fecha datetime,
+ati_terminal varchar(50),
+primary key (aup_id),
+foreign key (aup_usuario) references usuario(usr_nombre_usuario)
+);
+
+create table auditoria_tasa_iva(
+ati_id int not null,
+ati_usuario varchar(50),
+ati_tasa_clave int,
+ati_tasa_desc varchar(50),
+ati_tasa_sigla varchar(5),
+ati_tarea varchar(50),
+ati_fecha datetime,
+ati_terminal varchar(50),
+primary key (ati_id),
+foreign key (ati_usuario) references usuario(usr_nombre_usuario)
+);
+
+create table auditoria_usuarios(
+auu_id int not null,
+auu_usuario_admin varchar(50),
+auu_usuario_nuevo varchar(50),
+auu_usuario_nombre varchar(50),
+auu_usuario_apellido varchar(50),
+auu_usuario_perfil int,
+auu_usuario_existe bit,
+auu_tarea varchar(50),
+auu_fecha datetime,
+auu_terminal varchar(50),
+primary key (auu_id),
+foreign key (auu_usuario_admin) references usuario(usr_nombre_usuario)
+)

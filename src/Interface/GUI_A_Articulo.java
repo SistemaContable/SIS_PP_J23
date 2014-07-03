@@ -9,6 +9,8 @@ package Interface;
 import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Validaciones;
+import Objetos.Auditoria;
+import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -37,13 +39,15 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private ComponentListHelp rc = new ComponentListHelp();
     private Conexion r_con;
     private ArrayList<String> items = new ArrayList<String>();
-    private String usuario;
+    private Usuario usuario;
     
-    public GUI_A_Articulo(String u, Conexion con) {
+    public GUI_A_Articulo(Usuario u,Conexion con) {
         initComponents();
         r_con=con;
-        prepararHelp();
-        usuario=u;        
+        r_con.Connection();
+        prepararHelp();        
+        usuario=u;
+        
     }
 
     /**
@@ -255,7 +259,6 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
     private void prepararHelp(){
         rc.convertirComponente(jTextField6);       
-        r_con.Connection();
         ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA");        
         items.add("");
         try {
@@ -264,16 +267,15 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 String nue = (rs.getString(1)+" - "+rs.getString(2));
                 items.add(nue);
             }
-            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
         }
         rc.asignarLista(jTextField6, items);
-        r_con.cierraConexion();
     }
     
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
         this.dispose();
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -291,9 +293,12 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
         }
         return true;        
     }
+    
+   
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
+            
             r_con.Connection();
  
             String sql = "INSERT INTO Articulos "
@@ -303,44 +308,26 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                     +Float.parseFloat(jTextField4.getText())+","
                                     +Integer.parseInt(jTextField5.getText())+",'"
                                     +jTextField6.getText()+"')";
-            if (r_con.Insertar(sql)){                
-                InetAddress addr;
-                String terminal="";
-                try { 
-                    addr = InetAddress.getLocalHost();
-                    terminal = addr.getHostName(); 
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-                }            
-                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
-                Date fechaEntrada = new Date(); 
-                String fecha = formatEntrada.format(fechaEntrada); 
-
-                Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
-                int cant=v.size()+1;                        
-
-                sql="insert into auditoria_articulo values("+cant+",'"+usuario+"',"+1+","+1+",'"+fecha+"','"+terminal+"','"+
-                                        jTextField1.getText()+"','"+
-                                        jTextField2.getText()+"','"+
-                                        jTextField3.getText()+"',"
-                                        +Float.parseFloat(jTextField4.getText())+","
-                                        +Integer.parseInt(jTextField5.getText())+",'"
-                                        +jTextField6.getText()+"')";                        
-                System.out.println(sql);
-                r_con.Insertar(sql);
+            //r_con.Insertar(sql);
+            if (r_con.Insertar(sql)){
+                // para auditoria                
+                Auditoria auditoria=new Auditoria(r_con);
+                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),jTextField4.getText(),jTextField5.getText(),jTextField6.getText(),1);                                
                 limpiarForm();
             }
-            r_con.cierraConexion();
-            
+            r_con.cierraConexion();            
         }
         else{
-            if (("Buscar".equals(this.jButton2.getText()))){                
+            if (("Buscar".equals(this.jButton2.getText()))){
+                
                 boolean existe = false;
+               
                 r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
                 try {
                      
-                     while (rs.next()){     
+                     while (rs.next())
+                    {     
                         if ("Baja Artículo:".equals(jLabel1.getText())){
                             jTextField1.setEnabled(false);
                         }
@@ -359,8 +346,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                         muestraValor(jTextField6.getText());
                         
                         existe = true;
-                    }
-                    rs.close();
+                    } 
                 } catch (SQLException ex) {
 
                     Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
@@ -381,43 +367,21 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                      }
                      if ("Consulta Artículo:".equals(jLabel1.getText())){
                          buttonNuevaConsulta();
-                     }
-                     
+                     }                    
                 }
             }
-            else{
+            else
+            {
                 if (("Eliminar".equals(this.jButton2.getText()))){               
-                //r_con = new Conexion();
+                
                 r_con.Connection();
                 r_con.Borrar("DELETE FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
 
                 // para auditoria
-                
-                InetAddress addr;
-                String terminal="";
-                try { 
-                    addr = InetAddress.getLocalHost();
-                    terminal = addr.getHostName(); 
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-                }           
-                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.S"); 
-                Date fechaEntrada = new Date(); 
-                String fecha = formatEntrada.format(fechaEntrada); 
-
-                Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
-                int cant=v.size()+1;                        
-
-                String  sql="insert into auditoria_articulo values("+cant+","+usuario+","+1+","+2+",'"+fecha+"','"+terminal+"','"+
-                                        jTextField1.getText()+"','"+
-                                        jTextField2.getText()+"','"+
-                                        jTextField3.getText()+"',"
-                                        +Float.parseFloat(jTextField4.getText())+","
-                                        +Integer.parseInt(jTextField5.getText())+",'"
-                                        +jTextField6.getText()+"')"; 
-                                                               
-                System.out.println(sql);
-                r_con.Insertar(sql);
+                                                                              
+                Auditoria auditoria=new Auditoria(r_con);
+                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),2);
+                                
                 limpiarForm();                
                 r_con.cierraConexion();               
                 this.dispose();
@@ -430,9 +394,8 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                      }
                      else{
                          if (("Modificar".equals(this.jButton2.getText()))&& (camposNecesarios())){
-                                   // r_con = new Conexion();
+                                    
                                     r_con.Connection();
-
                                     
                                     String sql =  "UPDATE Articulos SET "
                                                 + "art_desc = '"+jTextField2.getText()+"', "
@@ -442,18 +405,17 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                                 + "art_cod_tasa_iva = '"+jTextField6.getText()+"' WHERE "
                                                 + "art_codigo = '"+jTextField1.getText()+"';";
                                     if (r_con.Actualizar(sql)){
+                                        Auditoria auditoria=new Auditoria(r_con);
+                                        auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),3);
                                         limpiarForm();
                                         form_onlySearch();        
                                         buttonBuscar();
                                     }
-                                    r_con.cierraConexion();
-
-                             
+                                    r_con.cierraConexion();                            
                          }
                      }
                 }
-            }
-          
+            }          
         }
        
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -579,17 +541,19 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
 private boolean muestraValor (String cod){
     boolean existe = false;
+    
     r_con.Connection();
     ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+cod+"'");
     try {
-        while (rs.next()){
-            jLabel8.setText(rs.getString(2));
-            existe = true;
-        }
-        rs.close();
-    } catch (SQLException ex) {            
+             while (rs.next())
+            {
+                jLabel8.setText(rs.getString(2));
+                existe = true;
+            } 
+    } catch (SQLException ex) {
+            
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-    }    
+    }
     r_con.cierraConexion();
     return existe;
 }

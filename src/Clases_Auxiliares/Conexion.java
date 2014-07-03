@@ -668,6 +668,14 @@ public class Conexion{
          return v;
      }
      
+          public Statement getStatement(){
+        try { 
+            return conn.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
           
     
 }

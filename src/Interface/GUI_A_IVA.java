@@ -8,6 +8,8 @@ package Interface;
 
 import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
+import Objetos.Auditoria;
+import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -30,10 +32,14 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
     private ComponentListHelp rc = new ComponentListHelp();
     private Conexion r_con;
     private ArrayList<String> items = new ArrayList<String>();
+    private Usuario usuario;
     
-    public GUI_A_IVA(Conexion con) {
+    public GUI_A_IVA(Usuario u,Conexion con) {
         initComponents();
-        r_con=con;  
+        r_con=con;
+        r_con.Connection(); 
+        usuario=u;
+        
     }
 
     /**
@@ -172,13 +178,16 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
      
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
+            
             r_con.Connection();
              
             String sql = "INSERT INTO Tasas_IVA "
                         + "VALUES('"+jTextField1.getText()+"','"
                                     +jTextField2.getText()+"','"
                                     +jTextField3.getText()+"')";
-            if (r_con.Insertar(sql)){
+            if (r_con.Insertar(sql)){                
+                Auditoria auditoria=new Auditoria(r_con);                   
+                auditoria.insertarTasaIva(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),"Alta");                    
                 limpiarForm();
             }
             r_con.cierraConexion();
@@ -188,6 +197,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
             if (("Buscar".equals(this.jButton2.getText()))){
                 
                 boolean existe = false;
+                
                 r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");
                 try {
@@ -207,8 +217,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                         jTextField2.setText(rs.getString(2));
                         jTextField3.setText(rs.getString(3));                        
                         existe = true;
-                    }
-                     rs.close();
+                    } 
                 } catch (SQLException ex) {
 
                     Logger.getLogger(GUI_A_IVA.class.getName()).log(Level.SEVERE, null, ex);
@@ -234,11 +243,14 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                 }
             }
             else{
-                if (("Eliminar".equals(this.jButton2.getText()))){
-                r_con.Connection();
-                r_con.Borrar("DELETE FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");
-                r_con.cierraConexion();               
-                this.dispose();
+                if (("Eliminar".equals(this.jButton2.getText()))){               
+                    
+                    r_con.Connection();
+                    Auditoria auditoria=new Auditoria(r_con);                   
+                    auditoria.insertarTasaIva(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),"Baja");                    
+                    r_con.Borrar("DELETE FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");                    
+                    r_con.cierraConexion();               
+                    this.dispose();
                 }
                 
             }
