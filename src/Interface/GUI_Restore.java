@@ -8,6 +8,8 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JFileChooser;
 
 /**
@@ -144,40 +146,7 @@ public class GUI_Restore extends javax.swing.JFrame  {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
       
-        
-        Conexion r_con = new Conexion ();
-        //r_con.setBase_datos("master");
-        r_con.Connection();
-        
-        
-        //direccion+="\\";
-        //r_con.Consultar("DROP DATABASE "+nameBD);
-        //System.out.println(direccion);
-        //r_con.cierraConexion();
-        
-        //r_con = new Conexion();
-        //r_con.Connection();
 
-        
-        String sql = "alter database" + nameBD + "set offline with rollback immediate;"; 
-        sql += "restore database" + nameBD + "from disk = '" + direccion + "'"; 
-        sql += "with replace";
-        sql += "alter database" + nameBD + "set onLine with rollback immediate;"; 
-
-        r_con.Insertar("RESTORE DATABASE ['"+nameBD+"'] FROM  DISK = N'"+direccion+"' WITH  REPLACE;");
-        //r_con.Insertar(sql);
-        this.dispose();
-        //aca debo capturar la ruta del jtree
-        //destino = "C:\\Documents and Settings\\Victoria\\Escritorio\\TP3\\dist\\";
-           
-        
-        
-        //Object [] sel = jList1.getSelectedValues();
-        
-        //for (int i = 0; i < sel.length; i++) {
-            //System.out.println(sel[i].toString());
-        //}      
-        
     }//GEN-LAST:event_jButton2ActionPerformed
   
     
@@ -260,7 +229,33 @@ public void form_Complete (){
     //this.jTextField2.setEnabled(true);
 }
 
-
+ public void crearBackup(String baseDatos,String direccion,String nuevaBD) throws SQLException{       
+       Conexion con=new Conexion();
+       con.Connection();
+    // restore database Sistema from disk = 'D:\SistemasIII.Bak' with file=1, norecovery;
+       String consulta="backup database "+baseDatos+" to disk = '"+direccion+"\\"+nuevaBD+"' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
+       //String consulta="backup database Sistema to disk = 'D:\\SistemasVI.Bak' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
+       Statement stnt  = con.getStatement(); 
+       stnt.execute(consulta);
+       System.out.println("El backup se realizo con exito");
+   }   
+   
+   public void restoreBD(){
+        try 
+        {
+            cierraConexion();
+            Connection("bd_prueba");
+            String consulta="RESTORE DATABASE [practica_p]"+
+                    "FROM DISK = N'D:\\practica_p2.bak'" +
+                    "WITH RECOVERY, FILE = 1, NOUNLOAD, REPLACE, STATS = 10";
+            stnt  = conn.createStatement();
+            stnt.execute(consulta);
+         
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+         
 
 
 /**
@@ -301,3 +296,42 @@ public void form_Complete (){
 
 
 }
+
+
+
+/*
+        
+        Conexion r_con = new Conexion ();
+        //r_con.setBase_datos("master");
+        r_con.Connection();
+        
+        
+        //direccion+="\\";
+        //r_con.Consultar("DROP DATABASE "+nameBD);
+        //System.out.println(direccion);
+        //r_con.cierraConexion();
+        
+        //r_con = new Conexion();
+        //r_con.Connection();
+
+        
+        String sql = "alter database" + nameBD + "set offline with rollback immediate;"; 
+        sql += "restore database" + nameBD + "from disk = '" + direccion + "'"; 
+        sql += "with replace";
+        sql += "alter database" + nameBD + "set onLine with rollback immediate;"; 
+
+        r_con.Insertar("RESTORE DATABASE ['"+nameBD+"'] FROM  DISK = N'"+direccion+"' WITH  REPLACE;");
+        //r_con.Insertar(sql);
+        this.dispose();
+        //aca debo capturar la ruta del jtree
+        //destino = "C:\\Documents and Settings\\Victoria\\Escritorio\\TP3\\dist\\";
+           
+        
+        
+        //Object [] sel = jList1.getSelectedValues();
+        
+        //for (int i = 0; i < sel.length; i++) {
+            //System.out.println(sel[i].toString());
+        //}              
+
+*/

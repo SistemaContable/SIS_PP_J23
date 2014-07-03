@@ -767,7 +767,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
         // TODO add your handling code here:
          // TODO add your handling code here:
-        GUI_Usuario guiU=new GUI_Usuario("Modificar",usuario,r_con);                
+        GUI_Usuario guiU=new GUI_Usuario("Alta",usuario,r_con);                
         //l.Listado_Articulos();
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - guiU.getWidth() / 2;
