@@ -351,6 +351,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             r_con.cierraConexion();
         } catch (JRException ex) {
             Logger.getLogger(GUI_Listado.class.getName()).log(Level.SEVERE, null, ex);
+            r_con.cierraConexion();
         }
         
         
@@ -385,10 +386,11 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             
             jviewer.setVisible(true);
             
-            r_con.cierraConexion();
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }          
+        r_con.cierraConexion();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged

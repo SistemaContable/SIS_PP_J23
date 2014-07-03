@@ -31,8 +31,7 @@ private Conexion r_con;
     public Auditoria(Conexion con){
         InetAddress addr;
         try { 
-            r_con=con;
-            r_con.Connection();
+            r_con=con;            
             addr = InetAddress.getLocalHost();
             terminal = addr.getHostName(); 
             } 
@@ -42,6 +41,7 @@ private Conexion r_con;
     }
     
     public void insertarArticulo(String usr,String codigo,String descripcion,String proveedor,String precio,String stock,String codTasaIva,int tarea){
+                r_con.Connection();
                 SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
                 Date fechaEntrada = new Date(); 
                 String fecha = formatEntrada.format(fechaEntrada);                 
@@ -57,12 +57,12 @@ private Conexion r_con;
                                         +codTasaIva+"')"; 
                                                                        
                 r_con.Insertar(sql);
-        
+                r_con.cierraConexion();
     }
     
     public void insertarUsuario(String usuarioAdmin,Usuario usuarioAux,String tarea){
     try {
-        
+        r_con.Connection();
         SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S");
         Date fechaEntrada = new Date();
         String fecha = formatEntrada.format(fechaEntrada); 
@@ -74,15 +74,18 @@ private Conexion r_con;
         String nuevo=cont+",'"+usuarioAdmin+"','"+usuarioAux.getUsuario()+"','"+usuarioAux.getNombre()+"','"+usuarioAux.getApellido()+"','"+usuarioAux.getIdPerfil().getId()+"',"+existe+",'"+tarea+"','"+fecha+"','"+terminal+"'";
         String datos="insert into "+tablaUsuario+" values("+nuevo+")";
         r_con.Insertar(datos);
+        r_con.cierraConexion();
     } catch (SQLException ex) {
         Logger.getLogger(Auditoria.class.getName()).log(Level.SEVERE, null, ex);
+        r_con.cierraConexion();
     }
                 
     }
     
     
     public void insertarTasaIva(String usr,String t_clave,String tasa_desc,String sigla,String tarea){
-                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
+        r_con.Connection();
+        SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
                 Date fechaEntrada = new Date(); 
                 String fecha = formatEntrada.format(fechaEntrada); 
                 Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_tasa_iva");
@@ -91,17 +94,20 @@ private Conexion r_con;
                 String  sql="insert into auditoria_tasa_iva values("+cant+",'"+usr+"',"+tasa_clave+",'"+tasa_desc+"','"+sigla+"','"+tarea+"','"+fecha+"','"+terminal+"')";
                                         
                 r_con.Insertar(sql);                
+                r_con.cierraConexion();
     }
     
     public void insertarPerfiles(String usr,Perfil p,String tarea){
-                SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss"); 
+        r_con.Connection();
+        SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss"); 
                 Date fechaEntrada = new Date(); 
                 String fecha = formatEntrada.format(fechaEntrada);                 
                 System.out.println(fecha);
                 Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_perfiles");
                 int cant=v.size()+1;                                                        
                 String  sql="insert into auditoria_perfiles values("+cant+",'"+usr+"',"+p.getId()+",'"+p.getDescripcion()+"','"+tarea+"','"+fecha+"','"+terminal+"')";                                                
-                r_con.Insertar(sql);                        
+                r_con.Insertar(sql);   
+                r_con.cierraConexion();
     }
     
     
