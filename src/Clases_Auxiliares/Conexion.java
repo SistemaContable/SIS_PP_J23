@@ -281,7 +281,7 @@ public class Conexion{
             System.out.println("    existe Sistema_DB en el SGDB: "+existe);
             
         } catch (SQLException ex) {
-            System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
+            System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
         }
         return existe;
     }
@@ -389,7 +389,7 @@ public class Conexion{
                 JOptionPane.showMessageDialog(null, "La Base de Datos ya está registrada en el SGBD.","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
+                System.err.println("2. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
             }
         }    
     }
@@ -411,7 +411,7 @@ public class Conexion{
                 System.err.println("La base de datos que se intenta eliminar no existe.");
             }
             else{
-                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());    
+                System.err.println("3. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());    
             }   
             return (false);
         }
@@ -427,7 +427,7 @@ public class Conexion{
         }
         catch(SQLException ex)
         {
-            System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+            System.err.println("4. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
         }
         return (elementos);
     }
@@ -479,7 +479,7 @@ public class Conexion{
         }
         catch (SQLException e)
         {            
-            System.err.println("Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
+            System.err.println("5. Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
         }
         return rslset;         
     }
@@ -499,7 +499,7 @@ public class Conexion{
         }
         catch (SQLException e)
         {            
-            System.err.println("Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
+            System.err.println("6. Error Codigo: "+e.getErrorCode()+"\nError Mensaje: " +e.getMessage());
         }
         return existe;
     }
@@ -519,7 +519,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+                System.err.println("7. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }            
             return (false);
         }
@@ -538,7 +538,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Integridad Refencial: Esta intentando eliminar un Registro que es utilizado por otros!","Atención",JOptionPane.WARNING_MESSAGE);
             }
              else{
-                System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+                System.err.println("8. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
              }
              return false;
         }       
@@ -564,7 +564,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                    System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+                    System.err.println("9. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }   
             return (false);
         }
@@ -589,7 +589,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                    System.err.println("Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+                    System.err.println("10. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }   
             return (false);
         }

@@ -156,16 +156,16 @@ public class GUI_Empresa extends javax.swing.JFrame {
                 this.msj_Error("Ingrese un Usuario Inicial.");
                 jTextField4.requestFocus();
             }
-            else{                
+            else{ 
+                r_con.setBase_datos(nombre_BD_Sistema);
+                r_con.Connection();
                 if (r_con.existeDatabase(jTextField3.getText())){
                     this.msj_Error("Razón Social ya Registrada.");
                     jTextField3.requestFocus();
                 }
-                else{
-                    ResultSet rsl = r_con.Consultar("SELECT * FROM Directorios");                    
+                else{                                       
                     try {
-                        r_con.setBase_datos(nombre_BD_Sistema);
-                        r_con.Connection();
+                        ResultSet rsl = r_con.Consultar("SELECT * FROM Directorios"); 
                         rsl.next();
                         String directorio = rsl.getString(2);
                         String nuevadatabase = jTextField3.getText();                        
@@ -173,7 +173,6 @@ public class GUI_Empresa extends javax.swing.JFrame {
                         rsl = r_con.Consultar("SELECT COUNT (*) FROM Empresas");
                         rsl.next();
                         String nameinterno = "Empresa_"+(rsl.getInt(1)+1);
-                        
                         r_con.Insertar("INSERT INTO Empresas VALUES ('"+nuevadatabase+"',"
                                      + "'"+nameinterno+"');");
                         
@@ -197,6 +196,7 @@ public class GUI_Empresa extends javax.swing.JFrame {
                     catch (SQLException ex) {
                         Logger.getLogger(GUI_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    r_con.cierraConexion();
                 }
             }
         }

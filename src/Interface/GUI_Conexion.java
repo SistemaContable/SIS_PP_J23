@@ -765,7 +765,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                         + "contacto con \nel Administrador para solucionar el problema.");
                     JOptionPane.showMessageDialog(null, msj, "Falta fichero del Sistema", JOptionPane.ERROR_MESSAGE);
                 }
-                validarConexion ();
+                generarConexion ();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jCheckBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox2ItemStateChanged
@@ -800,7 +800,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
             r_con.grabarConexion(r_con);
 
             limpiarPanelConexion();
-            validarConexion ();
+            generarConexion ();
         }
         else {
             msj_conexion_Error();
