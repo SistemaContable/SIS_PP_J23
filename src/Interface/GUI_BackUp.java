@@ -7,6 +7,7 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -26,12 +27,13 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
      */
     private Conexion r_con = new Conexion();
     private String direccion = "";
+    private ResultSet rslset;
     
     public GUI_BackUp(Conexion con) {
         initComponents();
         r_con = con;
-        r_con.Connection();  
-        
+        //r_con.Connection(); 
+        jButton2.setEnabled(false);        
     }
 
     /**
@@ -48,6 +50,10 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -92,34 +98,64 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("Seleccione la ruta donde alojar el Back Up");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel4.setText("Al seleccionar una ruta, se realizara un Backup de su Empresa. Es altamente");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setText("Restaurado por algun Administrador de su Empresa.");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel6.setText("recomendable  realizarlo periodicamente. Dicho respaldo solo podrá ser ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(54, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(49, 49, 49)
+                        .addComponent(jButton1)
+                        .addGap(156, 156, 156))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50))))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(49, 49, 49)
-                .addComponent(jButton1)
-                .addGap(156, 156, 156))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -148,18 +184,29 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
             //habilitarOpciones(true);
         }
         System.out.println(ruta);
-        direccion=ruta;
+        if (ruta!=null){
+            direccion=ruta;
+            jButton2.setEnabled(true);           
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public void crearBackup(String baseDatos,String direccion,String nuevaBD) throws SQLException{       
-       Conexion con=new Conexion();
-       con.Connection();
-    // restore database Sistema from disk = 'D:\SistemasIII.Bak' with file=1, norecovery;
-       String consulta="backup database "+baseDatos+" to disk = '"+direccion+"\\"+nuevaBD+"' with format, name = 'Full Backup';";
+        // Conexion con=new Conexion();        
+        //con.Connection();
+        // restore database Sistema from disk = 'D:\SistemasIII.Bak' with file=1, norecovery;
+        r_con.Connection();
+        String razon_social = r_con.getRazon_social();
+        //rslset =  r_con.Consultar("RESTORE HEADERONLY FROM DISK = '"+direccion+"'"); 
+        //rslset.next();
+        //String empresa_real = r.getString("BackupDescription");
+        //System.out.println(empresa_real);
+        //empresa_real=empresa_real.trim();      
+       String consulta = "BACKUP DATABASE "+baseDatos+" TO DISK = '"+direccion+"\\"+nuevaBD+"' WITH DESCRIPTION = N'"+razon_social+"', FORMAT, NAME = 'Full Backup';";
        //String consulta="backup database Sistema to disk = 'D:\\SistemasVI.Bak' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
-       Statement stnt  = con.getStatement(); 
+       Statement stnt  = r_con.getStatement(); 
        stnt.execute(consulta);
        System.out.println("El backup se realizo con exito");
+       r_con.cierraConexion();
    }  
     
     
@@ -168,10 +215,9 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         try {
             SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss");
             Date fechaEntrada = new Date();
-            String fecha = formatEntrada.format(fechaEntrada);
+            String fecha = formatEntrada.format(fechaEntrada);        
             
-            
-            String nombre = r_con.getBase_datos()+"__"+fecha+".bak";
+            String nombre = r_con.getRazon_social()+"__"+fecha+".bak";
             
             // direccion+="\\"+nombre;
             System.out.println(direccion);
@@ -196,6 +242,10 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
 public void setTitleLabel (String t){

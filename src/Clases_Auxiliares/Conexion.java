@@ -87,7 +87,19 @@ public class Conexion{
     }
     public String getRazon_social() {
         return razon_social;
-    }   
+    }
+    public String getUrl_Conexion_Sistema (){
+        String urlConexion = jdbc+url+":"+port+";"; 
+              
+        if (seguridad_integrada){
+            urlConexion +="integratedSecurity=true;";
+        }
+        else{
+            urlConexion +="user="+usuario+";password="+clave+";";
+         }
+       
+        return urlConexion;       
+    }
     
 //SETTERS:
     
@@ -278,11 +290,13 @@ public class Conexion{
                                        "WHERE [NAME] = '"+nombre+"';");
             rslset.next();
             existe = ("1".equals(rslset.getString(1)));
+            stnt.close();
+            rslset.close();
             System.out.println("    existe Sistema_DB en el SGDB: "+existe);
             
         } catch (SQLException ex) {
             System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
-        }
+        } 
         return existe;
     }
     
@@ -350,6 +364,7 @@ public class Conexion{
                 }
                 Statement st = (Statement) this.conn.createStatement();
                 st.executeUpdate(sb.toString());
+                st.close();
                 isScriptExecuted = true;
             }
             else{
@@ -381,7 +396,7 @@ public class Conexion{
                             "FILENAME = N'"+directorio+"\\"+name+"_log.ldf' , " +
                             "SIZE = 1024KB , \n" +
                             "FILEGROWTH = 10%)");
-            
+            st.close();           
         }
         catch(SQLException ex)
         {            
@@ -403,6 +418,7 @@ public class Conexion{
         try{
             Statement st = (Statement) this.conn.createStatement();
             st.executeUpdate("DROP DATABASE "+name+";");
+            st.close();
             return (true);
         }
         catch(SQLException ex)
@@ -424,6 +440,8 @@ public class Conexion{
             rslset = stnt.executeQuery("SELECT COUNT(*) FROM "+nametable+";");
             rslset.next();
             elementos = Integer.parseInt(rslset.getString(1));
+            stnt.close();
+            rslset.close();
         }
         catch(SQLException ex)
         {
@@ -476,6 +494,7 @@ public class Conexion{
         {  
             stnt  = conn.createStatement(); 
             rslset = stnt.executeQuery(consulta);
+            
         }
         catch (SQLException e)
         {            
@@ -496,6 +515,8 @@ public class Conexion{
             if (elementos > 0){
                 existe = true;
             }
+            stnt.close();
+            rslset.close();
         }
         catch (SQLException e)
         {            
@@ -530,7 +551,8 @@ public class Conexion{
         try {
             stnt  = conn.createStatement();
             int numResultado = stnt.executeUpdate(borra);
-            stnt.close();            
+            stnt.close();  
+            stnt.close();
             JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         } catch (SQLException ex) {
@@ -574,7 +596,8 @@ public class Conexion{
     public boolean InsertarSinCartel(String inserta) {
         try{
             stnt = (Statement) this.conn.createStatement();
-            stnt.executeUpdate(inserta);            
+            stnt.executeUpdate(inserta); 
+            stnt.close();
             return (true);
         }
         catch(SQLException ex)
@@ -609,7 +632,9 @@ public class Conexion{
             id_columnas=new String[numeroColumnas];
             for (int i = 1; i <= numeroColumnas; i++) {                
                 id_columnas[i-1]=rsmd.getColumnName(i);                        
-            }                      
+            }  
+            st.close();
+            rs.close();
          }
          catch(Exception e){JOptionPane.showMessageDialog(null,e.getMessage());
                             e.printStackTrace();
@@ -633,7 +658,9 @@ public class Conexion{
                     arregloAux.add(rs.getString(i+1));                                        
                 }
                 v.add(arregloAux);                
-            }                                  
+            }
+            st.close();
+            rs.close();
          }
          catch(Exception e){System.out.println(e.getMessage());
                             e.printStackTrace();
@@ -659,7 +686,9 @@ public class Conexion{
                     arregloAux.add(rs.getString(i+1));                                        
                 }
                 v.add(arregloAux);                
-            }                                  
+            }  
+            st.close();
+            rs.close();
          }
          catch(Exception e){System.out.println(e.getMessage());
                             e.printStackTrace();

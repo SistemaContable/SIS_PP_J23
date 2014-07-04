@@ -36,8 +36,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         perfil=usuario.getIdPerfil().getId();
         
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
-        float escalar = 0.80F;
-        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
+        float escalar = 0.90F;
+        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width);
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
    
         this.setSize(ancho,alto);        
@@ -737,12 +737,14 @@ public class GUI_Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         this.dispose();        
-        String name=r_con.getBase_datos();
+        String name_interno = r_con.getBase_datos();
+        String razon_soc = r_con.getRazon_social();
+        String url = r_con.getUrl_Conexion_Sistema();
         r_con.cierraConexion();
-        r_con=null;
-        GUI_Restore guiU=new GUI_Restore(name);                
-        guiU.setVisible(true);
+        GUI_Restore guiU=new GUI_Restore(name_interno,razon_soc,url); 
         
+        //r_con=null;
+        guiU.setVisible(true);        
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed

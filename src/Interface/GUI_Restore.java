@@ -8,9 +8,11 @@ package Interface;
 
 
 
+import Clases_Auxiliares.Conexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -26,17 +28,21 @@ public class GUI_Restore extends javax.swing.JFrame  {
     /**
      * Creates new form GUI_A_Prod
      */
-    //private Conexion r_con = new Conexion();
-    private String direccion = "";
-    private String nameBD;
     
-    public GUI_Restore(String bd) {
-        //this.r_con = new Conexion();
+    private ResultSet rslset;
+    private String direccion = "";
+    private final String name_interno_BD;
+    private final String razon_social;
+    private final String url_conexion_dat_sis;
+    
+    public GUI_Restore(String bd_name_int, String bd_razon_soc, String url) {
         initComponents();
-        nameBD = bd;
-       //r_con.Connection();  
-         setLocationRelativeTo (null);
-        
+        this.name_interno_BD=bd_name_int;
+        this.razon_social=bd_razon_soc;
+        this.url_conexion_dat_sis = url;
+        setLocationRelativeTo (null);
+        jButton2.setEnabled(false);
+        generarCaptcha ();        
     }
 
     /**
@@ -53,9 +59,14 @@ public class GUI_Restore extends javax.swing.JFrame  {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
-        setResizable(true);
         setTitle("[Titutlo]");
+        setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -89,7 +100,21 @@ public class GUI_Restore extends javax.swing.JFrame  {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel3.setText("Seleccione la ruta del Back Up");
+        jLabel3.setText("Seleccione la ruta del Back Up:");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.red);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("CÓDIGO");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Ingrese el código que de Seguridad:");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel5.setForeground(java.awt.Color.red);
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,23 +127,44 @@ public class GUI_Restore extends javax.swing.JFrame  {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(105, 105, 105))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(155, 155, 155))
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(256, 256, 256)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(99, 99, 99)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addGap(47, 47, 47)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -128,12 +174,20 @@ public class GUI_Restore extends javax.swing.JFrame  {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    @SuppressWarnings("empty-statement")
+    private void generarCaptcha (){
+        String Captcha = "";
+        String [] abecedario = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        for (int i = 0; i < 4; i++) {
+            int numRandon = (int) Math.round(Math.random()*25 ) ;
+            Captcha += abecedario[numRandon];
+        }
+        jLabel2.setText(Captcha);
+    }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        //r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -147,41 +201,40 @@ public class GUI_Restore extends javax.swing.JFrame  {
             //habilitarOpciones(true);
         }
         System.out.println(ruta);
-        direccion=ruta;
+        if (ruta!=null){
+            direccion=ruta;
+            jButton2.setEnabled(true);       
+            jTextField1.requestFocus();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        restoreBD();
-        System.out.println("Exito al restaurar la BD "+nameBD);
-        this.dispose();
+        jLabel5.setText(" ");
+        
+        if ((jTextField1.getText().toUpperCase()).equals(jLabel2.getText())){
+            if (perteneBackUp()){
+                restoreBD();
+                System.out.println("Exito al restaurar la BD "+razon_social);
+                this.dispose();
+                Conexion r_con = new Conexion();
+                GUI_Inicio_Sesion gui = new GUI_Inicio_Sesion(r_con);
+                gui.setVisible(true);
+            }
+            else{
+                jLabel5.setText("el BackUp que intenta Restaurar no pertenece a su Empresa!.");
+            }
+        }
+        else{
+            jTextField1.requestFocus();
+            jTextField1.selectAll();
+            if (jTextField1.getText().equalsIgnoreCase("")){
+                jLabel5.setText("por favor, ingrese el código de seguridad.");
+            }
+            else{
+                jLabel5.setText("el código ingresado no coincide.");
+            }
+        }              
     }//GEN-LAST:event_jButton2ActionPerformed
-  
-    
-public static boolean hfData (String path, String bk_name, String db_name) 
-{ 
-    boolean result = false; 
-    PreparedStatement stmt = null; 
-    String sql = ""; 
-    try 
-    { 
-        sql = "alter database" + db_name + "set offline with rollback immediate;"; 
-        sql += "restore database" + db_name + "from disk = '" + path + bk_name + "'"; 
-        sql += "with replace";
-        sql += "alter database" + db_name + "set onLine with rollback immediate;"; 
-        //stmt = conn.prepareStatement (sql); 
-        stmt.executeUpdate (); 
-        result = true; 
-    } 
-    catch (Exception e) 
-    { 
-        e.printStackTrace (); 
-    } 
-    finally 
-    { 
-        try {stmt.close ();} catch (Exception e) {} 
-    }         
-    return result; 
-} 
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -189,92 +242,64 @@ public static boolean hfData (String path, String bk_name, String db_name)
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
-public void setTitleLabel (String t){
+    public void setTitleLabel (String t){
         this.jLabel1.setText(t);
-}
+    }
 
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
+    private boolean perteneBackUp (){
+        boolean pertenece = false;
+        try {
+            Conexion con = new Conexion();
+            con.Connection();
+            con.Connection();
+            rslset =  con.Consultar("RESTORE HEADERONLY FROM DISK = '"+direccion+"'");
+            rslset.next();
+            String empresa_real = rslset.getString("BackupDescription");
 
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
+            if (empresa_real.equals(this.razon_social)){
+                pertenece = true;
+            }
+            con.cierraConexion();
+            con=null;            
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_Restore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return(pertenece);
+    }
 
-public void buttonEliminar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png")));
-    jButton2.setText("Eliminar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonModificar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/modificar.png")));
-    jButton2.setText("Modificar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonNuevaConsulta (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Nueva Consulta");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
-}
-
-  
-    
-
-
-   public void restoreBD(){
+    public void restoreBD(){
         try 
         {
-             Connection conn = null;                     
-            try {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(GUI_Restore.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            //String connectionUrl;            
-            //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";            
-            String connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
-            //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
+            Connection conn = null;                     
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            
+            String connectionUrl = this.url_conexion_dat_sis;
             conn = DriverManager.getConnection(connectionUrl);            
-            Statement j=conn.createStatement();
+            Statement st =conn.createStatement();
             
-            
-            //Conexion con=new Conexion();
-            //con.Connection();
-            //con.setBase_datos("BD_Sistema");
-            //con.Connection();
-            
-            String consulta="RESTORE DATABASE ["+nameBD+"]"+
+            String consulta="RESTORE DATABASE ["+this.name_interno_BD+"]"+
                     "FROM DISK = N'"+direccion+"'" +
                     "WITH RECOVERY, FILE = 1, NOUNLOAD, REPLACE, STATS = 10";
             
-             String consulta2="DROP DATABASE "+ nameBD;
+            String consulta2="DROP DATABASE "+ this.name_interno_BD;
             
-            j.executeUpdate(consulta2);
-            j.executeUpdate(consulta);
-            //conn.Consultar(consulta);
+            st.executeUpdate(consulta2);
+            st.executeUpdate(consulta);
+            st.close();
          
         } catch (SQLException ex) {
             System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
 
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI_Restore.class.getName()).log(Level.SEVERE, null, ex);
         }
    }
          
@@ -310,7 +335,7 @@ public void form_Complete (){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GUI_Restore re = new GUI_Restore ("Empresa_2");
+                GUI_Restore re = new GUI_Restore ("Empresa_2"," "," ");
                 re.setVisible(true);
             }
         });
@@ -319,41 +344,12 @@ public void form_Complete (){
 
 }
 
-
-
-/*
-        
-        Conexion r_con = new Conexion ();
-        //r_con.setBase_datos("master");
-        r_con.Connection();
-        
-        
-        //direccion+="\\";
-        //r_con.Consultar("DROP DATABASE "+nameBD);
-        //System.out.println(direccion);
-        //r_con.cierraConexion();
-        
-        //r_con = new Conexion();
-        //r_con.Connection();
-
-        
-        String sql = "alter database" + nameBD + "set offline with rollback immediate;"; 
-        sql += "restore database" + nameBD + "from disk = '" + direccion + "'"; 
-        sql += "with replace";
-        sql += "alter database" + nameBD + "set onLine with rollback immediate;"; 
-
-        r_con.Insertar("RESTORE DATABASE ['"+nameBD+"'] FROM  DISK = N'"+direccion+"' WITH  REPLACE;");
-        //r_con.Insertar(sql);
-        this.dispose();
-        //aca debo capturar la ruta del jtree
-        //destino = "C:\\Documents and Settings\\Victoria\\Escritorio\\TP3\\dist\\";
-           
-        
-        
-        //Object [] sel = jList1.getSelectedValues();
-        
-        //for (int i = 0; i < sel.length; i++) {
-            //System.out.println(sel[i].toString());
-        //}              
-
-*/
+/**
+    sql = "alter database" + db_name + "set offline with rollback immediate;"; 
+    sql += "restore database" + db_name + "from disk = '" + path + bk_name + "'"; 
+    sql += "with replace";
+    sql += "alter database" + db_name + "set onLine with rollback immediate;"; 
+    stmt = conn.prepareStatement (sql); 
+    stmt.executeUpdate (); 
+    result = true; 
+ **/

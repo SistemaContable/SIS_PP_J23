@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -95,6 +94,11 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         jLabel5.setText("Empresa:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "item" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Salir");
@@ -232,7 +236,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     public void iniciarSesion(){
-                if ("".equals(jTextField3.getText())){
+        if ("".equals(jTextField3.getText())){
             msj_usuario_Error("Ingrese un Usuario, por favor.");
             jTextField3.requestFocus();
         }
@@ -248,6 +252,9 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     rsl.next();
                     int existe = Integer.parseInt(rsl.getString(1));
                     if (existe > 0){
+                        jTextField3.setEnabled(false);
+                        jPasswordField1.setEnabled(false);
+                        jButton5.setEnabled(false);
                         jButton2.setEnabled(true);
                         jButton3.setEnabled(true);                        
                     }
@@ -268,34 +275,30 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                         r_con.setBase_datos(nombre_BD_Sistema);
                         r_con.Connection();
                         String empresa = jComboBox1.getSelectedItem().toString();                   
-                        rsl = r_con.Consultar("SELECT denominacion_interna FROM Empresas WHERE razon_social = '"+
+                        rsl = r_con.Consultar("SELECT * FROM Empresas WHERE razon_social = '"+
                                             ""+empresa+"';");
-                        rsl.next();                    
-                        String nameinterno = rsl.getString(1);                    
+                        rsl.next();       
+                            String razon_social = rsl.getString(1);    
+                            String nameinterno = rsl.getString(2);
                         rsl.close();
                     
                         r_con.cierraConexion();
                         r_con.setBase_datos(nameinterno);
-                        r_con.Connection();                    
-                    
-                        
-                        
+                        r_con.setRazon_social(razon_social);
+                        r_con.Connection();                     
                         
                         String usuario="";
                         usuario=jTextField3.getText();
-                       // usuario=usuario.toUpperCase();
-
                         String pass="";
-
                         pass=jPasswordField1.getText();
-                        //pass=pass.toUpperCase();
+                        
                         if((!usuario.equals(""))&&(!pass.equals(""))){
                             Usuarios usuarios=new Usuarios(r_con);
                             Usuario u=usuarios.getUsuario(usuario);
                             if(u!=null){
                                 if(!u.getExiste())
                                 {
-                                    msj_usuario_Error("El Usuario esta dado de baja.");
+                                    msj_usuario_Error("El Usuario de la Empresa esta dado de Baja.");
                                 }
                                 else
                                 {
@@ -306,21 +309,18 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                                     }
                                     else
                                     {
-                                        msj_usuario_Error("La Contraseña no es correcta.");
+                                        msj_usuario_Error("La Contraseña no es Correcta.");
                                     }
                                 }
                             }                                                
                             else
-                                msj_usuario_Error("El Usuario ingresado no existe.");
+                                msj_usuario_Error("El Usuario ingresado no Existe.");
                         }
                           
                     }
                     else{                                
                         msj_usuario_Error("No hay Empresas Registradas.");
-                    }
-                    
-                    
-                    
+                    }   
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
@@ -395,6 +395,11 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPasswordField1.setText("");
     }//GEN-LAST:event_jPasswordField1FocusGained
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+        jTextField3.requestFocus();
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
     
     private void cargarComboBox(){
         r_con.Connection();

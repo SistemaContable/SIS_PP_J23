@@ -10,16 +10,12 @@ import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
 import Colecciones.*;
 import Objetos.*;
-import java.awt.Component;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
