@@ -305,7 +305,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             if (r_con.Insertar(sql)){
                 // para auditoria                
                 Auditoria auditoria = new Auditoria(r_con);
-                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),jTextField4.getText(),jTextField5.getText(),jTextField6.getText(),1);                                
+                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),jTextField4.getText(),jTextField5.getText(),jTextField6.getText(),"Alta");                                
                 limpiarForm();
             }
             //r_con.cierraConexion();            
@@ -373,7 +373,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 // para auditoria
                                                                               
                 Auditoria auditoria=new Auditoria(r_con);
-                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),2);
+                auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),"Baja");
                                 
                 limpiarForm();                
                 //r_con.cierraConexion();               
@@ -398,7 +398,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                                 + "art_codigo = '"+jTextField1.getText()+"';";
                                     if (r_con.Actualizar(sql)){
                                         Auditoria auditoria=new Auditoria(r_con);
-                                        auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),3);
+                                        auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),"Modificación");
                                         limpiarForm();
                                         form_onlySearch();        
                                         buttonBuscar();

@@ -155,7 +155,7 @@ CREATE TABLE auditoria_articulo
 	aud_id_auditoria int not null,
 	aud_id_usuario varchar(50) not null,
 	aud_id_modulo int not null,
-	aud_id_tarea int not null,
+	auu_tarea varchar(50),
 	aud_fecha datetime not null,
 	aud_terminal varchar(50) not null,
 	aud_art_codigo varchar(15),
@@ -167,8 +167,7 @@ CREATE TABLE auditoria_articulo
 
 	CONSTRAINT PK_Auditoria_Articulo primary key (aud_id_auditoria),
 	CONSTRAINT FK_Auditoria_Articulo_id_usuario foreign key (aud_id_usuario)references usuario(usr_nombre_usuario),
-	CONSTRAINT FK_Auditoria_Articulo_id_modulo foreign key (aud_id_modulo)references modulo(mod_id_modulo),
-	CONSTRAINT FK_Auditoria_Articulo_id_tarea foreign key (aud_id_tarea)references tarea(tar_id_tarea)
+	CONSTRAINT FK_Auditoria_Articulo_id_modulo foreign key (aud_id_modulo)references modulo(mod_id_modulo)
 );
 
 CREATE INDEX IX_id_aud ON auditoria_articulo (aud_id_auditoria);

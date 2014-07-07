@@ -36,7 +36,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         perfil=usuario.getIdPerfil().getId();
         
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
-        float escalar = 0.90F;
+        float escalar = 0.91F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width);
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);
    
@@ -388,6 +388,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem16.setText("Tasa Iva");
         jMenuItem16.setName("T61"); // NOI18N
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem16);
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
@@ -398,6 +403,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem18.setText("Usuario");
         jMenuItem18.setName("T61"); // NOI18N
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem18);
 
         jMenuBar1.add(jMenu6);
@@ -708,14 +718,15 @@ public class GUI_Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
          // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado(r_con);
-        l.setTitulo("Auditoria Articulos");
-        l.setCampo_clave("aud_art_codigo");
+        l.setTitulo("Auditoria Articulos:");
+        l.setCampo_clave("aud_id_auditoria");
         l.setNombre_tabla("auditoria_articulo");
-        l.setNombre_reporte("rep_audi_articulos.jrxml");
+        l.setNombre_reporte("report_audi_art.jrxml");
         String [] nombre_columnas = {"ID","Usuario","Modulo","Tarea","Fecha","Terminal","Articulo Codigo","Articulo Descripcion","Articulo Proveedor","Precio","Stock","Tasa de IVA"};
         l.setNombre_columnas(nombre_columnas);
         l.setId_modulo_imp("6");
-        l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_nombre_usuario=aud_id_usuario");
+        l.Cargar_Tabla("SELECT * FROM auditoria_articulo");
+        //l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_nombre_usuario=aud_id_usuario");
         //select aud_id_auditoria,usr_nombre_usuario as 'aud_id_usuario',mod_descripcion as 'aud_id_modulo',tar_descripcion as 'aud_id_tarea',aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario
          //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
@@ -824,6 +835,41 @@ public class GUI_Principal extends javax.swing.JFrame {
         guiU.moveToFront();
         guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        // TODO add your handling code here:
+        GUI_Listado l = new GUI_Listado(r_con);
+        l.setTitulo("Auditoria Usuarios:");
+        l.setCampo_clave("auditoria_usuarios");
+        l.setNombre_tabla("Auditoria Usuarios");
+        l.setNombre_reporte("report_audi_usr.jrxml");
+        String [] nombre_columnas = {"ID","Usuario","Usr","Nombre","Apellido","Perfil","Estado","Tarea","Fecha","Terminal"};
+        l.setNombre_columnas(nombre_columnas);
+        //para buscar las impresoras
+        l.setId_modulo_imp("6");
+        l.Cargar_Tabla("SELECT * FROM auditoria_usuarios");
+        //l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_nombre_usuario=aud_id_usuario");
+        //select aud_id_auditoria,usr_nombre_usuario as 'aud_id_usuario',mod_descripcion as 'aud_id_modulo',tar_descripcion as 'aud_id_tarea',aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario
+         //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        l.setLocation(x, l.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        l.setVisible(true);
+        this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        l.moveToFront();
+        l.requestFocus();        
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
     
     
     public void abrirSesion (){

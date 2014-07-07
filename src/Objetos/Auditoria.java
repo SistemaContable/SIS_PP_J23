@@ -39,7 +39,7 @@ private Conexion r_con;
         }
     }
     
-    public void insertarArticulo(String usr,String codigo,String descripcion,String proveedor,String precio,String stock,String codTasaIva,int tarea){
+    public void insertarArticulo(String usr,String codigo,String descripcion,String proveedor,String precio,String stock,String codTasaIva,String tarea){
                 r_con.Connection();
                 SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
                 Date fechaEntrada = new Date(); 
@@ -47,7 +47,7 @@ private Conexion r_con;
                 Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_articulo");
                 int cant=v.size()+1;                        
 
-                String  sql="insert into auditoria_articulo values("+cant+",'"+usr+"',"+1+","+tarea+",'"+fecha+"','"+terminal+"','"+
+                String  sql="insert into auditoria_articulo values("+cant+",'"+usr+"',"+1+",'"+tarea+"','"+fecha+"','"+terminal+"','"+
                                         codigo+"','"+
                                         descripcion+"','"+
                                         proveedor+"',"
