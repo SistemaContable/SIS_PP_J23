@@ -51,7 +51,7 @@ FROM
 				<staticText>
 					<reportElement style="Title" x="0" y="15" width="552" height="66" forecolor="#000000" backcolor="#000000" uuid="c45a651a-8b9e-4e0f-8ac4-ba999148e9b8"/>
 					<textElement textAlignment="Center">
-						<font isBold="false" isUnderline="true"/>
+						<font fontName="Arial" isBold="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[Artículos]]></text>
 				</staticText>

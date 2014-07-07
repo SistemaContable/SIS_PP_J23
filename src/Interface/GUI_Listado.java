@@ -634,5 +634,10 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
    public void setTitulo (String name){
        jLabel1.setText(name);
    }
+   
+   public void deshabilitarImpresion (){
+       jButton2.setEnabled(false);
+       jButton3.setEnabled(false);
+   }
 
 }

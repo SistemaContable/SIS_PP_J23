@@ -398,6 +398,11 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
         jMenuItem17.setText("Perfil");
         jMenuItem17.setName("T61"); // NOI18N
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem17);
 
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
@@ -838,6 +843,32 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         // TODO add your handling code here:
+        GUI_Listado l = new GUI_Listado(r_con);
+        l.setTitulo("Auditoria Tasa de IVA:");
+        l.setCampo_clave("ati_id");
+        l.setNombre_tabla("auditoria_tasa_iva");
+        l.setNombre_reporte("report_audi_tasa_iva.jrxml");
+        String [] nombre_columnas = {"ID","Usuario","Tasa Clave","Tasa Descripcion","Sigla","Tarea","Fecha","Terminal"};
+        l.setNombre_columnas(nombre_columnas);
+        //para buscar las impresoras
+        l.setId_modulo_imp("6");
+        l.Cargar_Tabla("SELECT * FROM auditoria_tasa_iva");
+        
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        l.setLocation(x, l.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        l.setVisible(true);
+        this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        l.moveToFront();
+        l.requestFocus(); 
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
@@ -852,9 +883,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         //para buscar las impresoras
         l.setId_modulo_imp("6");
         l.Cargar_Tabla("SELECT * FROM auditoria_usuarios");
-        //l.Cargar_Tabla("select aud_id_auditoria,usr_nombre_usuario,mod_descripcion,tar_descripcion,aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_nombre_usuario=aud_id_usuario");
-        //select aud_id_auditoria,usr_nombre_usuario as 'aud_id_usuario',mod_descripcion as 'aud_id_modulo',tar_descripcion as 'aud_id_tarea',aud_fecha,aud_terminal,aud_art_codigo,aud_art_desc,aud_art_proveedor,aud_art_precio,aud_art_stock,aud_art_cod_tasa_iva from auditoria_articulo,modulo,tarea,usuario where aud_id_modulo=mod_id_modulo and aud_id_tarea=tar_id_tarea and usr_id_usuario=aud_id_usuario
-         //lo centro respecto a x
+        
+        //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
         l.setLocation(x, l.getLocation().y);
@@ -870,6 +900,37 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.moveToFront();
         l.requestFocus();        
     }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        // TODO add your handling code here:
+        GUI_Listado l = new GUI_Listado(r_con);
+        l.setTitulo("Auditoria Perfiles:");
+        l.setCampo_clave("aup_id");
+        l.setNombre_tabla("auditoria_perfiles");
+        l.setNombre_reporte("report_audi_tasa_iva.jrxml");
+        String [] nombre_columnas = {"ID","Usuario","ID Perfil","Perfil Desc.","Tarea","Fecha","Terminal"};
+        l.setNombre_columnas(nombre_columnas);
+        //para buscar las impresoras
+        l.setId_modulo_imp("6");
+        l.Cargar_Tabla("SELECT * FROM auditoria_perfiles");
+        l.deshabilitarImpresion();
+        
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
+        l.setLocation(x, l.getLocation().y);
+        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        l.setVisible(true);
+        this.jDesktopPane1.add(l);
+        try {        
+            l.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        l.moveToFront();
+        l.requestFocus();
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
     
     
     public void abrirSesion (){

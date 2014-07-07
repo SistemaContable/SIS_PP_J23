@@ -380,18 +380,20 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
             p.setId(Integer.parseInt(vv.elementAt(item).elementAt(0)));
             p.setDescripcion(perfiles.getDescripcion(p.getId()));
             u.setPerfil(p);                                                    
-        }                    
-        if(contraseña.equals(rep_contraseña)){ 
+                           
+            if(contraseña.equals(rep_contraseña)){ 
                 u.setContraseña(jPasswordField2.getText());
-                usuarios.insertar(u);                                
-                Auditoria auditoria=new Auditoria(r_con);
-                auditoria.insertarUsuario(usuarioLogueado,u,"alta");
+                if (usuarios.insertar(u)){                                
+                    Auditoria auditoria=new Auditoria(r_con);
+                    auditoria.insertarUsuario(usuarioLogueado,u,"alta");
+                }
                 limpiarForm();                        
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null,"La contraseña debe coincidir");
-        }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,"La contraseña debe coincidir");
+            }
+        } 
     }
     
     public void baja(){
@@ -747,33 +749,41 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }    
     
     private boolean camposNecesarios () {
+       boolean rta;
        if ((jTextField1.getText().equals("")))
        {
             JOptionPane.showMessageDialog(null, "Complete el campo nombre!","Atención",JOptionPane.WARNING_MESSAGE);
             jTextField1.requestFocus();
-            return false;
+            rta = false;
        }
-       if ((jTextField2.getText().equals("")))
-       {
-           jTextField2.requestFocus();
-           JOptionPane.showMessageDialog(null, "Complete el campo apellido!","Atención",JOptionPane.WARNING_MESSAGE);
-           return false;
-       }
-       if ((jTextField3.getText().equals("")))
-       {
-           jTextField3.requestFocus();
-           JOptionPane.showMessageDialog(null, "Complete el campo usuario!","Atención",JOptionPane.WARNING_MESSAGE);
-           return false;
-       }
-        if (((jPasswordField1.getText().equals("")))||((jPasswordField2.getText().equals(""))))
-       {
-           jTextField3.requestFocus();
-           JOptionPane.showMessageDialog(null, "Complete el campo contraseña!","Atención",JOptionPane.WARNING_MESSAGE);
-           return false;
-       }
-       
-       return true;      
-               
+       else{
+            if ((jTextField2.getText().equals("")))
+            {
+                jTextField2.requestFocus();
+                JOptionPane.showMessageDialog(null, "Complete el campo apellido!","Atención",JOptionPane.WARNING_MESSAGE);
+                rta = false;
+            }
+            else{
+                if ((jTextField3.getText().equals("")))
+                {
+                    jTextField3.requestFocus();
+                    JOptionPane.showMessageDialog(null, "Complete el campo usuario!","Atención",JOptionPane.WARNING_MESSAGE);
+                    rta = false;
+                }
+                else{
+                    if (((jPasswordField1.getText().equals("")))||((jPasswordField2.getText().equals(""))))
+                    {
+                        jTextField3.requestFocus();
+                        JOptionPane.showMessageDialog(null, "Complete el campo contraseña!","Atención",JOptionPane.WARNING_MESSAGE);
+                        rta = false;
+                     }
+                    else{
+                        rta = true;
+                    }
+                }
+            }
+       }      
+       return rta;             
     }
 
         

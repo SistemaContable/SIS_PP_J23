@@ -97,7 +97,8 @@ public class Usuarios {
         }
     }
     
-    public void insertar(Usuario u){
+    public boolean insertar(Usuario u){
+        boolean inserto = false;
         try {
             r_con.Connection();
             PreparedStatement consultaAlta;
@@ -111,13 +112,16 @@ public class Usuarios {
             consultaAlta.setInt(5, u.getIdPerfil().getId());
             consultaAlta.setBoolean(6, u.getExiste());
             consultaAlta.executeUpdate();
+            inserto = true;
             consultaAlta.close();
             r_con.cierraConexion();                                            
         
         } catch (SQLException ex) {
+            inserto = false;
             System.out.println("Error Interno: Usuarios - insertar");
             r_con.cierraConexion();
         }
+        return inserto;
     }
     
     public void modificar(Usuario u){
