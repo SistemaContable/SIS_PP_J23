@@ -89,7 +89,7 @@ public class Conexion{
         return razon_social;
     }
     public String getUrl_Conexion_Sistema (){
-        String urlConexion = jdbc+url+":"+port+";"; 
+        String urlConexion = jdbc+url+":"+port+";";       
               
         if (seguridad_integrada){
             urlConexion +="integratedSecurity=true;";
@@ -339,7 +339,7 @@ public class Conexion{
         else{
             urlConexion +="user="+usuario+";password="+clave+";";
          }
-        System.out.println("CONEXION: "+urlConexion);
+        //System.out.println("CONEXION: "+urlConexion);
         return urlConexion;
     }
     
@@ -460,7 +460,10 @@ public class Conexion{
             //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";            
             //connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
             //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
-            conn = DriverManager.getConnection(getUrlConexion());            
+            this.conn = DriverManager.getConnection(getUrlConexion()); 
+            
+            System.out.println("<<<<<<<<<<<<<<<<< CONECTEEEEEEE!!!!!!!!!!!!!!!! >>>>>>>>>>>>>>");
+            
         }
         catch(ClassNotFoundException ex)
         {            
@@ -480,6 +483,7 @@ public class Conexion{
     */
     public void cierraConexion() {
         try {
+            System.out.println("[[[[[[[[[[[[[[[[[[[[[[[ CEEEEERRRREEEE  ]]]]]]]]]]]]]]]]]]]");
             this.conn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al intenter cerrar la conexion","Atención",JOptionPane.WARNING_MESSAGE);
@@ -551,7 +555,6 @@ public class Conexion{
         try {
             stnt  = conn.createStatement();
             int numResultado = stnt.executeUpdate(borra);
-            stnt.close();  
             stnt.close();
             JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
@@ -618,30 +621,7 @@ public class Conexion{
         }
         
     }
-    
-    public String [] getIdentificadoresColumnas(String tabla){
-         String []id_columnas;
-         try{
-            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");             
-            //con= DriverManager.getConnection(con1);
-            
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from "+tabla);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int numeroColumnas = rsmd.getColumnCount();
-            id_columnas=new String[numeroColumnas];
-            for (int i = 1; i <= numeroColumnas; i++) {                
-                id_columnas[i-1]=rsmd.getColumnName(i);                        
-            }  
-            st.close();
-            rs.close();
-         }
-         catch(Exception e){JOptionPane.showMessageDialog(null,e.getMessage());
-                            e.printStackTrace();
-                            return null;
-         }         
-         return id_columnas;
-     }
+ 
      
      public Vector<Vector<String>> getContenidoTabla(String consulta){
          Vector<Vector<String>>v = new Vector();         
@@ -662,42 +642,17 @@ public class Conexion{
             st.close();
             rs.close();
          }
-         catch(Exception e){System.out.println(e.getMessage());
+         catch(Exception e){
+             System.out.println(e.getMessage());
                             e.printStackTrace();
                             return null;
          }
          return v;
      }
     
-         public Vector<Vector<String>> getContenidoTablaPermisos(int perfil){
-         Vector<Vector<String>>v=new Vector();         
-         try{            
-            Statement st = conn.createStatement();
-            // distinct lo que hace es sacar los modulos repetidos en el campo mod_descripcion 
-            ResultSet rs = st.executeQuery(""
-          + "select distinct mod_descripcion "
-          + "from permiso,modulo "+
-            "where per_id_modulo=mod_id_modulo and per_id_perfil="+perfil);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int numeroColumnas = rsmd.getColumnCount();
-            while(rs.next()){                
-                Vector<String> arregloAux=new Vector();
-                for(int i=0;i<numeroColumnas;i++){
-                    arregloAux.add(rs.getString(i+1));                                        
-                }
-                v.add(arregloAux);                
-            }  
-            st.close();
-            rs.close();
-         }
-         catch(Exception e){System.out.println(e.getMessage());
-                            e.printStackTrace();
-                            return null;
-         }
-         return v;
-     }
+         
      
-          public Statement getStatement(){
+    public Statement getStatement(){
         try { 
             return conn.createStatement();
         } catch (SQLException ex) {

@@ -9,9 +9,9 @@ package Interface;
 
 
 import Clases_Auxiliares.Conexion;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,8 +65,9 @@ public class GUI_Restore extends javax.swing.JFrame  {
         jLabel5 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setTitle("[Titutlo]");
+        setTitle("Restauración");
         setBackground(new java.awt.Color(204, 204, 204));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("_icono.png") );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -256,22 +257,36 @@ public class GUI_Restore extends javax.swing.JFrame  {
 
     private boolean perteneBackUp (){
         boolean pertenece = false;
-        try {
-            Conexion con = new Conexion();
-            con.Connection();
-            con.Connection();
-            rslset =  con.Consultar("RESTORE HEADERONLY FROM DISK = '"+direccion+"'");
+        try 
+        {
+            Connection conn = null;                     
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            System.out.println(url_conexion_dat_sis);
+            String connectionUrl = this.url_conexion_dat_sis;
+            conn = DriverManager.getConnection("jdbc:sqlserver://localhost;integratedSecurity=true");            
+            
+            Statement st =conn.createStatement();
+            
+            rslset = st.executeQuery("RESTORE HEADERONLY FROM DISK = '"+direccion+"'");
             rslset.next();
+
             String empresa_real = rslset.getString("BackupDescription");
 
             if (empresa_real.equals(this.razon_social)){
                 pertenece = true;
             }
-            con.cierraConexion();
-            con=null;            
+            st.close();
+            this.rslset.close();
+            conn.close();
+            conn=null;                       
+         
         } catch (SQLException ex) {
+            System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
+
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(GUI_Restore.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return(pertenece);
     }
 
@@ -282,7 +297,7 @@ public class GUI_Restore extends javax.swing.JFrame  {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
             String connectionUrl = this.url_conexion_dat_sis;
-            conn = DriverManager.getConnection(connectionUrl);            
+            conn = DriverManager.getConnection("jdbc:sqlserver://localhost;integratedSecurity=true");            
             Statement st =conn.createStatement();
             
             String consulta="RESTORE DATABASE ["+this.name_interno_BD+"]"+

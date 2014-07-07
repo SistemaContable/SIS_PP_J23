@@ -32,7 +32,6 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     public GUI_BackUp(Conexion con) {
         initComponents();
         r_con = con;
-        //r_con.Connection(); 
         jButton2.setEnabled(false);        
     }
 
@@ -60,7 +59,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("[Titutlo]");
+        setTitle("Respaldo de Información");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -206,6 +205,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
        Statement stnt  = r_con.getStatement(); 
        stnt.execute(consulta);
        System.out.println("El backup se realizo con exito");
+       stnt.close();
        r_con.cierraConexion();
    }  
     
@@ -213,7 +213,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss");
+            SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyy-MM-dd_kk.mm.ss");
             Date fechaEntrada = new Date();
             String fecha = formatEntrada.format(fechaEntrada);        
             
@@ -250,46 +250,6 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
 
 public void setTitleLabel (String t){
         this.jLabel1.setText(t);
-}
-
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void buttonEliminar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png")));
-    jButton2.setText("Eliminar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonModificar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/modificar.png")));
-    jButton2.setText("Modificar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonNuevaConsulta (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Nueva Consulta");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
 }
 
 }

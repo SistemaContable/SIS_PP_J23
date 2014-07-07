@@ -14,14 +14,9 @@ import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -42,12 +37,10 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private Usuario usuario;
     
     public GUI_A_Articulo(Usuario u,Conexion con) {
-        initComponents();
-        r_con=con;
-        r_con.Connection();
-        prepararHelp();        
-        usuario=u;
-        
+        initComponents();        
+        r_con=con; 
+        prepararHelp();
+        usuario=u;     
     }
 
     /**
@@ -258,6 +251,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void prepararHelp(){
+        r_con.Connection();
         rc.convertirComponente(jTextField6);       
         ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA");        
         items.add("");
@@ -271,13 +265,14 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
         }
         rc.asignarLista(jTextField6, items);
+        r_con.cierraConexion();
     }
     
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        r_con.cierraConexion();
+        //r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private boolean camposNecesarios () {
@@ -296,11 +291,9 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     
    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     
-        if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
-            
-            r_con.Connection();
- 
+        r_con.Connection();
+        if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){            
+            //r_con.Connection(); 
             String sql = "INSERT INTO Articulos "
                         + "VALUES('"+jTextField1.getText()+"','"
                                     +jTextField2.getText()+"','"
@@ -308,27 +301,26 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                     +Float.parseFloat(jTextField4.getText())+","
                                     +Integer.parseInt(jTextField5.getText())+",'"
                                     +jTextField6.getText()+"')";
-            //r_con.Insertar(sql);
+           
             if (r_con.Insertar(sql)){
                 // para auditoria                
-                Auditoria auditoria=new Auditoria(r_con);
+                Auditoria auditoria = new Auditoria(r_con);
                 auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),jTextField4.getText(),jTextField5.getText(),jTextField6.getText(),1);                                
                 limpiarForm();
             }
-            r_con.cierraConexion();            
+            //r_con.cierraConexion();            
         }
         else{
-            if (("Buscar".equals(this.jButton2.getText()))){
-                
-                boolean existe = false;
-               
-                r_con.Connection();
+            if (("Buscar".equals(this.jButton2.getText()))){                
+                boolean existe = false;               
+                //r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
-                try {
-                     
-                     while (rs.next())
-                    {     
-                        if ("Baja Artículo:".equals(jLabel1.getText())){
+                try {                     
+                     //while (rs.next())
+                    //{     
+                    
+                    if (rs.next()){
+                    if ("Baja Artículo:".equals(jLabel1.getText())){
                             jTextField1.setEnabled(false);
                         }
                         if ("Modificación Artículo:".equals(jLabel1.getText())){
@@ -345,13 +337,14 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                         jTextField6.setText(rs.getString(6));
                         muestraValor(jTextField6.getText());
                         
-                        existe = true;
+                        existe = true;                        
+                    //}
                     } 
+                    rs.close();
                 } catch (SQLException ex) {
-
                     Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                r_con.cierraConexion();
+                }                
+                //r_con.cierraConexion();
                 if (!existe){
                     jTextField1.setEnabled(true);
                     jTextField1.requestFocus();
@@ -374,7 +367,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
             {
                 if (("Eliminar".equals(this.jButton2.getText()))){               
                 
-                r_con.Connection();
+               // r_con.Connection();
                 r_con.Borrar("DELETE FROM Articulos WHERE art_codigo = '"+jTextField1.getText()+"'");
 
                 // para auditoria
@@ -383,7 +376,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                 auditoria.insertarArticulo(usuario.getUsuario(),jTextField1.getText(), jTextField2.getText(), jTextField3.getText(),jTextField4.getText() , jTextField5.getText(), jTextField6.getText(),2);
                                 
                 limpiarForm();                
-                r_con.cierraConexion();               
+                //r_con.cierraConexion();               
                 this.dispose();
                 }
                 else{
@@ -395,8 +388,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                      else{
                          if (("Modificar".equals(this.jButton2.getText()))&& (camposNecesarios())){
                                     
-                                    r_con.Connection();
-                                    
+                                    //r_con.Connection();                                    
                                     String sql =  "UPDATE Articulos SET "
                                                 + "art_desc = '"+jTextField2.getText()+"', "
                                                 + "art_proveedor = '"+jTextField3.getText()+"', "
@@ -411,13 +403,13 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
                                         form_onlySearch();        
                                         buttonBuscar();
                                     }
-                                    r_con.cierraConexion();                            
+                                    //r_con.cierraConexion();                            
                          }
                      }
                 }
             }          
         }
-       
+        r_con.cierraConexion();   
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void mostrarMSSG (Component c){
@@ -550,8 +542,8 @@ private boolean muestraValor (String cod){
                 jLabel8.setText(rs.getString(2));
                 existe = true;
             } 
-    } catch (SQLException ex) {
-            
+            rs.close();
+    } catch (SQLException ex) {            
             Logger.getLogger(GUI_A_Articulo.class.getName()).log(Level.SEVERE, null, ex);
     }
     r_con.cierraConexion();

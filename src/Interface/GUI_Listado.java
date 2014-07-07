@@ -92,7 +92,8 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Listado");
+        setTitle("Listado.");
+        setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -388,6 +389,7 @@ public class GUI_Listado extends javax.swing.JInternalFrame {
             
             
         } catch (Exception e) {
+            r_con.cierraConexion();
             System.out.println(e.getMessage());
         }          
         r_con.cierraConexion();

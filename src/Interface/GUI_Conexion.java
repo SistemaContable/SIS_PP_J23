@@ -8,6 +8,7 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.Vector;
 import javax.swing.JFileChooser;
@@ -100,12 +101,13 @@ public class GUI_Conexion extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
 
-        setTitle("[Titutlo]");
+        setTitle("Configuración del Sistema");
         setBackground(new java.awt.Color(204, 204, 204));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("_icono.png"));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Configuración de Conexión del Sistema:");
+        jLabel1.setText("Configuración del Sistema:");
 
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(115, 60));
         jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -316,11 +318,8 @@ public class GUI_Conexion extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox2)
-                            .addComponent(jCheckBox1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBox2)
+                    .addComponent(jCheckBox1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(26, 26, 26)
@@ -546,7 +545,6 @@ public class GUI_Conexion extends javax.swing.JFrame {
      */
     public void GUI_configuracion (){
         r_con.setBase_datos(nombre_BD_Sistema);                
-        //r_con.Connection();
         jTabbedPane1.setEnabledAt(1, false);
         jButton5.setText("Salir");
     }
@@ -586,6 +584,7 @@ public class GUI_Conexion extends javax.swing.JFrame {
                     this.msj_usuario_Error("Registre al menos un Usuario en el Sistema.");
                 }
                 cargarUsuarios ();
+                r_con.cierraConexion();
             }
              r_con.cierraConexion();
         }       
@@ -606,7 +605,9 @@ public class GUI_Conexion extends javax.swing.JFrame {
                  if (r_con.cantidadRegistros("Usuarios")>0){
                      rta = true;
                  }
+                 r_con.cierraConexion();
              }
+             r_con.cierraConexion();
          }
          return (rta);
     }

@@ -31,7 +31,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     public GUI_Principal(Usuario u, Conexion con) {           
         initComponents();
         r_con = con;
-        r_con.Connection();
+        //r_con.Connection();
         usuario=u;
         perfil=usuario.getIdPerfil().getId();
         
@@ -44,8 +44,16 @@ public class GUI_Principal extends javax.swing.JFrame {
         setLocationRelativeTo (null);                
         habilitarMenu(true);
         habilitarFunciones(perfil);
+        infoEstado();     
+    }
+    
+    private void infoEstado(){
         
-       
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/empresa_ico.png")));
+        jLabel3.setText(": "+r_con.getRazon_social());
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png")));
+        jLabel2.setText(": "+(r_con.getUsuario())+" ");
+        //jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("usuario.png")));
     }
     
     private void habilitarMenu(boolean valor){
@@ -101,6 +109,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         }
         habilitarMenuPerfil(modulosTarea);
         jMenu7.setEnabled(true);
+        r_con.cierraConexion();
     }    
    
     /**
@@ -142,6 +151,8 @@ public class GUI_Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -171,17 +182,40 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistema Contable");
+        setIconImage(Toolkit.getDefaultToolkit().getImage("_icono.png"));
+
+        jLabel2.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("NOMBRE USUARIO");
+
+        jLabel3.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 204));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("NOMBRE EMPRESA");
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addGap(0, 255, Short.MAX_VALUE)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -741,9 +775,9 @@ public class GUI_Principal extends javax.swing.JFrame {
         String razon_soc = r_con.getRazon_social();
         String url = r_con.getUrl_Conexion_Sistema();
         r_con.cierraConexion();
+        r_con=null;
+        System.gc(); 
         GUI_Restore guiU=new GUI_Restore(name_interno,razon_soc,url); 
-        
-        //r_con=null;
         guiU.setVisible(true);        
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
@@ -847,6 +881,8 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

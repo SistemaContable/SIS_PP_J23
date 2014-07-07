@@ -88,8 +88,8 @@ private Conexion r_con;
         SimpleDateFormat formatEntrada = new SimpleDateFormat("yyyyMMdd kk:mm:ss.S"); 
                 Date fechaEntrada = new Date(); 
                 String fecha = formatEntrada.format(fechaEntrada); 
-                Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_tasa_iva");
-                int cant=v.size()+1;                        
+                //Vector<Vector<String>>v = r_con.getContenidoTabla("select * from auditoria_tasa_iva");
+                int cant=r_con.cantidadRegistros("auditoria_tasa_iva")+1;                        
                 int tasa_clave=Integer.parseInt(t_clave);                
                 String  sql="insert into auditoria_tasa_iva values("+cant+",'"+usr+"',"+tasa_clave+",'"+tasa_desc+"','"+sigla+"','"+tarea+"','"+fecha+"','"+terminal+"')";
                                         

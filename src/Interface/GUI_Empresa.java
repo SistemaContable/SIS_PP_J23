@@ -8,6 +8,7 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -50,6 +51,8 @@ public class GUI_Empresa extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Empreas del Sistema");
+        setIconImage(Toolkit.getDefaultToolkit().getImage("_icono.png"));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/empresa.png"))); // NOI18N
@@ -194,6 +197,7 @@ public class GUI_Empresa extends javax.swing.JFrame {
                         gui.setVisible(true);                       
                     } 
                     catch (SQLException ex) {
+                        r_con.cierraConexion();
                         Logger.getLogger(GUI_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     r_con.cierraConexion();

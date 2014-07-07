@@ -10,6 +10,7 @@ import Clases_Auxiliares.Conexion;
 import Colecciones.Usuarios;
 import Objetos.Usuario;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -67,6 +68,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Iniciar Sesion");
+        setIconImage(Toolkit.getDefaultToolkit().getImage("_icono.png"));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/u_emp.png"))); // NOI18N
@@ -251,6 +253,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                                     jPasswordField1.getText()+"';");
                     rsl.next();
                     int existe = Integer.parseInt(rsl.getString(1));
+                    rsl.close();
                     if (existe > 0){
                         jTextField3.setEnabled(false);
                         jPasswordField1.setEnabled(false);
@@ -262,7 +265,6 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                         msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
                         jTextField3.requestFocus();
                     }
-                    rsl.close();
                     r_con.cierraConexion();
                 } 
                 catch (SQLException ex) {
@@ -304,6 +306,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                                 {
                                     if(u.getContraseña().equals(pass)){                                        
                                         this.dispose();                    
+                                        r_con.setUsuario(u.getUsuario());
                                         new GUI_Principal(u,r_con).setVisible(true);
                                         dispose();
                                     }
@@ -320,10 +323,13 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                     }
                     else{                                
                         msj_usuario_Error("No hay Empresas Registradas.");
-                    }   
+                    }
+                    r_con.cierraConexion();
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    r_con.cierraConexion();
                 }
             }
         }
@@ -355,7 +361,8 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                 else{
                     msj_usuario_Error("Usuario del Sistema o Contraseña INCORRECTOS.");
                     jTextField3.requestFocus();
-                }                    
+                }
+                r_con.cierraConexion();
             } catch (SQLException ex) {
                 Logger.getLogger(GUI_Inicio_Sesion.class.getName()).log(Level.SEVERE, null, ex);
             }

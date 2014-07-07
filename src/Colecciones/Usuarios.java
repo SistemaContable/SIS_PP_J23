@@ -25,28 +25,35 @@ public class Usuarios {
     private Conexion r_con;
     
     public Usuarios(Conexion con){
+        
+        System.out.println("entre en usuarios");
         r_con=con;
-        r_con.Connection();
         tabla="usuario";
     }
     
     public boolean existe(String usr){
+        boolean exis = false;
         try {
+            r_con.Connection();
             String consulta="select * from "+tabla+" where usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();
             ResultSet rs;
             rs=stmt.executeQuery(consulta);
             while(rs.next())
-                return true;
-            return false;
+                exis = true;
+            stmt.close();
+            rs.close();
+            r_con.cierraConexion();
         } catch (SQLException ex) {
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);return false;
         }
+        return exis;
     }
 
     public Usuario getUsuario(String usr){
         Usuario u=new Usuario();
         try {
+            r_con.Connection();
             String consulta="select * from "+tabla+" where usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();
             ResultSet rs;
@@ -61,27 +68,41 @@ public class Usuarios {
                 u.setPerfil(p);                
                 u.setExiste(rs.getBoolean(6));
             }
-            else
+            else{
+                stmt.close();
+                rs.close();
+                r_con.cierraConexion();
                 return null;
+            }
+            stmt.close();
+            rs.close();
+            r_con.cierraConexion();
             
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);return null;
         }
+        
         return u;
     }
     
     public void eliminar(String usr){
         try {
+            r_con.Connection();
             String consulta="update "+tabla+" set usr_existe=0 where usr_nombre_usuario='"+usr+"'";
             Statement stmt=r_con.getStatement();            
             stmt.executeUpdate(consulta);
+            stmt.close();
+            r_con.cierraConexion();
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void insertar(Usuario u){
         try {
+            r_con.Connection();
             PreparedStatement consultaAlta;
             String alta="insert into "+tabla+" values (?,?,?,?,?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
@@ -93,15 +114,19 @@ public class Usuarios {
             consultaAlta.setInt(5, u.getIdPerfil().getId());
             consultaAlta.setBoolean(6, u.getExiste());
             consultaAlta.executeUpdate();// insert update delete
+            consultaAlta.close();
+            r_con.cierraConexion();
                                             
         
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void modificar(Usuario u){
         try {
+            r_con.Connection();
             PreparedStatement consultaModificar;
             String mod="update "+tabla+" set usr_nombre_usuario=?,usr_nombre=?,usr_apellido=?,usr_contraseña=?,usr_id_perfil=?,usr_existe=? where usr_nombre_usuario='"+u.getUsuario()+"'";
             consultaModificar=r_con.getConn().prepareStatement(mod);
@@ -113,9 +138,12 @@ public class Usuarios {
             consultaModificar.setInt(5, u.getIdPerfil().getId());
             consultaModificar.setBoolean(6, u.getExiste());
             consultaModificar.executeUpdate();// insert update delete
-                                            
+            
+            consultaModificar.close();
+            r_con.cierraConexion();                                       
         
         } catch (SQLException ex) {
+            r_con.cierraConexion(); 
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
         

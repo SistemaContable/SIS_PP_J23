@@ -37,9 +37,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
     public GUI_A_IVA(Usuario u,Conexion con) {
         initComponents();
         r_con=con;
-        r_con.Connection(); 
-        usuario=u;
-        
+        usuario=u;        
     }
 
     /**
@@ -64,7 +62,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setIconifiable(true);
-        setTitle("Tasas de IVA");
+        setTitle("Tasas de IVA.");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -176,11 +174,10 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     
+        r_con.Connection();
         if (("Aceptar".equals(this.jButton2.getText())) && (camposNecesarios())){
             
-            r_con.Connection();
-             
+            //r_con.Connection();             
             String sql = "INSERT INTO Tasas_IVA "
                         + "VALUES('"+jTextField1.getText()+"','"
                                     +jTextField2.getText()+"','"
@@ -190,7 +187,7 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                 auditoria.insertarTasaIva(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),"Alta");                    
                 limpiarForm();
             }
-            r_con.cierraConexion();
+            //r_con.cierraConexion();
             
         }
         else{
@@ -198,11 +195,11 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                 
                 boolean existe = false;
                 
-                r_con.Connection();
+                //r_con.Connection();
                 ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");
                 try {
                      
-                     while (rs.next())
+                     if (rs.next())
                     {     
                         if ("Baja Tasa de IVA:".equals(jLabel1.getText())){
                             jTextField1.setEnabled(false);
@@ -216,13 +213,15 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
                         
                         jTextField2.setText(rs.getString(2));
                         jTextField3.setText(rs.getString(3));                        
+                        
                         existe = true;
-                    } 
+                    }
+                     rs.close();
                 } catch (SQLException ex) {
 
                     Logger.getLogger(GUI_A_IVA.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                r_con.cierraConexion();
+                //r_con.cierraConexion();
                 if (!existe){
                     jTextField1.setEnabled(true);
                     jTextField1.requestFocus();
@@ -245,18 +244,18 @@ public class GUI_A_IVA extends javax.swing.JInternalFrame {
             else{
                 if (("Eliminar".equals(this.jButton2.getText()))){               
                     
-                    r_con.Connection();
+                    //r_con.Connection();
                     Auditoria auditoria=new Auditoria(r_con);                   
-                    auditoria.insertarTasaIva(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),"Baja");                    
+                                        
                     r_con.Borrar("DELETE FROM Tasas_IVA WHERE tasa_clave = '"+jTextField1.getText()+"'");                    
-                    r_con.cierraConexion();               
+                    auditoria.insertarTasaIva(usuario.getUsuario(),jTextField1.getText(),jTextField2.getText(),jTextField3.getText(),"Baja");             
                     this.dispose();
                 }
                 
             }
           
         }
-       
+        r_con.cierraConexion(); 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void mostrarMSSG (Component c){

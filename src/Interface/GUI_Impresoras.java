@@ -58,7 +58,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Gestión de Impresoras");
+        setTitle("Gestión de Impresoras.");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 

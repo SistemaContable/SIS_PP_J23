@@ -22,8 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Manolo
  */
-public class GUI_Usuario extends javax.swing.JInternalFrame {
-    private ComponentListHelp rc = new ComponentListHelp();    
+public class GUI_Usuario extends javax.swing.JInternalFrame {   
     private ArrayList<String> items = new ArrayList<String>();        
     private Conexion r_con;
     private Usuarios usuarios;
@@ -36,7 +35,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     public GUI_Usuario(String modo,Usuario usr,Conexion con) {
         initComponents();        
         r_con=con;
-        r_con.Connection();
+        //r_con.Connection();
         perfiles=new Perfiles(r_con);
         usuarios=new Usuarios(r_con);
         jTextField1.requestFocus();
@@ -84,11 +83,13 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }
     
     public void cargarComboBox(){
+         System.out.println("EEEE"); 
         jComboBox1.removeAllItems();        
         Vector<Vector<String>>v = perfiles.getTablaPerfiles();
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0)+" - "+a.elementAt(1));
-        }        
+        }   
+        System.out.println("EEEE fin"); 
     }
         
     /**
@@ -128,7 +129,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("NUEVO USUARIO");
+        setTitle("Usuarios.");
+        setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -486,7 +488,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:        
+    // TODO add your handling code here: 
+    r_con.Connection();
     if(jButton3.getText().equals("Nuevo Perfil")){
         jTable1.setEnabled(true);   
         jButton3.setText("Crear Perfil");
@@ -545,10 +548,12 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 }
                 else
                 {JOptionPane.showMessageDialog(null,"Debe ingresar un nombre al nuevo perfil");}            
+            rs.close();
             } 
             catch (SQLException ex) {
                     Logger.getLogger(GUI_Usuario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }        
+        r_con.cierraConexion();
         cargarComboBox();
         jComboBox1.setSelectedIndex(jComboBox1.getItemCount()-1);
     }
@@ -640,13 +645,17 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     
     
     private Vector<Vector<Object>> getContenidoTabla(int perfil){
+        //r_con.Connection();
         Tareas t=new Tareas(r_con);
-        Vector<Vector<String>> v = r_con.getContenidoTablaPermisos(perfil);
+        Permisos p=new Permisos(r_con);
+        Vector<Vector<String>> v = p.getContenidoTablaPermisos(perfil);
         Vector<Vector<String>>tareas = t.getDescripcionTareas();
+        
         Vector<Vector<Object>>matriz = new Vector();        
         Vector<Object>fila;
         int id_modulo,id_tarea;id_modulo=-1;id_tarea=-1;
-        ResultSet rs;
+        r_con.Connection();
+        ResultSet rs;        
         try{
             for(Vector<String>modulos:v){
                 fila=new Vector();
@@ -666,10 +675,13 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                         fila.add(true);
                     else
                         fila.add(false);                    
-                } 
+                }
+                rs.close();
                 matriz.add(fila);
-            }   
-        }catch(Exception e){}
+            } 
+        
+        r_con.cierraConexion();
+        }catch(Exception e){r_con.cierraConexion();}
         return matriz;
     }
     
@@ -785,46 +797,6 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
 
 public void setTitleLabel (String t){
         this.jLabel1.setText(t);
-}
-
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void buttonEliminar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png")));
-    jButton2.setText("Eliminar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonModificar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/modificar.png")));
-    jButton2.setText("Modificar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
-
-public void buttonNuevaConsulta (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Nueva Consulta");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
 }
 
 public void limpiarForm(){
