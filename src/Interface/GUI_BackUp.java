@@ -204,7 +204,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
        //String consulta="backup database Sistema to disk = 'D:\\SistemasVI.Bak' with format, medianame = 'Z_SQLServerBackups', name = 'Full Backup of Sistema';";
        Statement stnt  = r_con.getStatement(); 
        stnt.execute(consulta);
-       System.out.println("El backup se realizo con exito");
+       //System.out.println("El backup se realizo con exito");
        stnt.close();
        r_con.cierraConexion();
    }  
@@ -220,7 +220,7 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
             String nombre = r_con.getRazon_social()+"__"+fecha+".bak";
             
             // direccion+="\\"+nombre;
-            System.out.println(direccion);
+            //System.out.println(direccion);
             
             crearBackup(r_con.getBase_datos(),direccion,nombre);
             

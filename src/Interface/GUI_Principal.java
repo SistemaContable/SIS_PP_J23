@@ -29,9 +29,9 @@ public class GUI_Principal extends javax.swing.JFrame {
      */
     
     public GUI_Principal(Usuario u, Conexion con) {           
-        initComponents();
+        initComponents();        
+        setDefaultCloseOperation(0);
         r_con = con;
-        //r_con.Connection();
         usuario=u;
         perfil=usuario.getIdPerfil().getId();
         
