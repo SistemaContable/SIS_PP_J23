@@ -14,7 +14,10 @@ public class Perfil {
     private int id;
     private String descripcion;
     
-    public Perfil(){}
+    public Perfil(){
+        this.descripcion="";
+        this.id=-1;
+    }
     
     public void setId(int i){
         id=i;

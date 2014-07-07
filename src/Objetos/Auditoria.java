@@ -10,7 +10,6 @@ import Clases_Auxiliares.Conexion;
 import Interface.GUI_A_Articulo;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

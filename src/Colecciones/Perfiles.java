@@ -14,8 +14,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,9 +24,7 @@ public class Perfiles {
     private Conexion r_con;
 
     public Perfiles(Conexion con){
-        System.out.println("entre en perfiles");
-        r_con=con;
-        //r_con.Connection();
+        r_con = con;
     }
     
     /**
@@ -41,38 +37,28 @@ public class Perfiles {
         String res="";
         try {            
             Statement stmt=r_con.getStatement();
-            String consulta="select prf_descripcion from "+tabla+" where prf_id_perfil="+perfil;
+            String consulta="SELECT prf_descripcion FROM "+tabla+" WHERE prf_id_perfil="+perfil;
             ResultSet rs=stmt.executeQuery(consulta);
             while(rs.next())
-                res=rs.getString(1);
-            
+                res=rs.getString(1);            
             stmt.close();
             rs.close();            
             r_con.cierraConexion();           
         } catch (SQLException ex) {
-            System.out.println("OJO");
+            System.out.println("Error Interno: Perfiles - getDescripcion");
             r_con.cierraConexion();            
         }
-         return res;
+        return res;
     }
     
     public Vector<Vector<String>> getTablaPerfiles(){        
-        System.out.println("3");
         Vector<Vector<String>>v = new Vector();         
          try{
             r_con.Connection();
-            String consulta="select * from "+tabla;
-            System.out.println("st");
-            //Statement st = r_con.getStatement();
+            String consulta="SELECT * FROM "+tabla;
             ResultSet rs=r_con.Consultar(consulta);
-            System.out.println("st fin");
-            System.out.println("rs");
-           // ResultSet rs = st.executeQuery(consulta);
-            System.out.println("rs fin");
-            System.out.println("meta");
             ResultSetMetaData rsmd = rs.getMetaData();
             int numeroColumnas = rsmd.getColumnCount(); 
-            System.out.println("meta fin");
             while(rs.next()){
                 Vector<String> arregloAux=new Vector();
                 for(int i=0;i<numeroColumnas;i++){
@@ -80,16 +66,14 @@ public class Perfiles {
                 }
                 v.add(arregloAux);                
             }  
-          //  st.close();
             rs.close();
             r_con.cierraConexion();
          }
          catch(Exception e){
-             System.out.println("OJO 2");
+             System.out.println("Error Interno: Perfiles - getTablaPerfiles");
              r_con.cierraConexion();
              return null;
          }
-         System.out.println("3 fin");
          return v;             
     }
     
@@ -97,16 +81,17 @@ public class Perfiles {
         try {
             r_con.Connection();
             PreparedStatement consultaAlta;
-            String alta="insert into "+tabla+" values (?,?)";
+            String alta="INSERT INTO "+tabla+" VALUES (?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);            
             consultaAlta.setInt(1, p.getId());
             consultaAlta.setString(2, p.getDescripcion());            
-            consultaAlta.executeUpdate();// insert update delete
+            consultaAlta.executeUpdate();
             consultaAlta.close();
             r_con.cierraConexion();
                                                     
         } catch (SQLException ex) {
-            System.out.println("OJO 3");
+            r_con.cierraConexion();
+            System.out.println("Error Interno: Perfiles - insertar");           
         }
     }
     
@@ -114,7 +99,7 @@ public class Perfiles {
         Perfil p=new Perfil();
         try{
             r_con.Connection();
-            String consulta="select * from "+tabla+" where prf_id_perfil="+id_perfil;
+            String consulta="SELECT * FROM "+tabla+" WHERE prf_id_perfil="+id_perfil;
             Statement stmt=r_con.getStatement();
             ResultSet rs;
             rs=stmt.executeQuery(consulta);
@@ -128,7 +113,7 @@ public class Perfiles {
         catch (SQLException ex) 
         {
             r_con.cierraConexion();
-            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);return null;
+            System.out.println("Error Interno: Perfiles - insertar");
         }        
         return p;
     }

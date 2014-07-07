@@ -18,7 +18,11 @@ public class Usuario {
     private boolean existe;
     
     public Usuario(){        
-        existe=true;        
+        this.nombre="";
+        this.apellido="";
+        this.usuario="";
+        this.contraseña="";
+        this.existe=true;        
     }
     
     public void setNombre(String n){

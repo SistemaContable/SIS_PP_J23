@@ -14,20 +14,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Banegas Rodrigo
  */
 public class Permisos {
-    private String tabla;
+    private String tabla="permiso";
     private Conexion r_con;    
     
     public Permisos(Conexion con){
-        System.out.println("entre en permisos");
-        tabla="permiso";
         r_con=con;
     }
     
@@ -35,7 +31,7 @@ public class Permisos {
          Vector<Vector<String>>v = new Vector();         
          try{
             r_con.Connection();
-            String consulta="select * from "+tabla;
+            String consulta="SELECT * FROM "+tabla;
             Statement st = r_con.getStatement();
             ResultSet rs = st.executeQuery(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -52,7 +48,7 @@ public class Permisos {
             r_con.cierraConexion();
          }
          catch(Exception e){
-             System.out.println("OJO 4");
+             System.out.println("Error Interno: Permisos - getTablaPermisos"); 
              r_con.cierraConexion();
              return null;
          }
@@ -64,7 +60,7 @@ public class Permisos {
         try {
             r_con.Connection();
             PreparedStatement consultaAlta;
-            String alta="insert into "+tabla+" values (?,?,?)";
+            String alta="INSERT INTO "+tabla+" VALUES (?,?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
             
             consultaAlta.setInt(1, p.getPerfil());
@@ -76,7 +72,7 @@ public class Permisos {
             r_con.cierraConexion();                                           
         
         } catch (SQLException ex) {
-            System.out.println("OJO 5");
+            System.out.println("Error Interno: Permisos - insertar");
             r_con.cierraConexion(); 
         }
         
@@ -106,10 +102,10 @@ public class Permisos {
             rs.close();
             r_con.cierraConexion();
          }
-         catch(Exception e){System.out.println(e.getMessage());
-                            e.printStackTrace();
-                            r_con.cierraConexion();
-                            return null;
+         catch(Exception e){
+             System.out.println("Error Interno: Permisos - getContenidoTablaPermisos");
+             r_con.cierraConexion();
+             return null;
          }
          return v;
      }

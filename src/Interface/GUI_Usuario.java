@@ -6,7 +6,6 @@
 
 package Interface;
 
-import Clases_Auxiliares.ComponentListHelp;
 import Clases_Auxiliares.Conexion;
 import Colecciones.*;
 import Objetos.*;
@@ -35,13 +34,12 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     public GUI_Usuario(String modo,Usuario usr,Conexion con) {
         initComponents();        
         r_con=con;
-        //r_con.Connection();
-        perfiles=new Perfiles(r_con);
-        usuarios=new Usuarios(r_con);
+        perfiles = new Perfiles(r_con);
+        usuarios = new Usuarios(r_con);
         jTextField1.requestFocus();
-        usuarioLogueado=usr.getUsuario();
+        usuarioLogueado=r_con.getUsuario();
         cargarComboBox();
-        cargarTabla(1);
+        //cargarTabla(1);
         jTable1.setEnabled(false);        
         jTextField4.setEnabled(false);
         this.modo=modo;
@@ -49,8 +47,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }
        
     private void completarCampos(String usr){        
-        Usuarios usuarios=new Usuarios(r_con);
-        Usuario u=usuarios.getUsuario(usr);
+        Usuarios usuarios = new Usuarios(r_con);
+        Usuario u = usuarios.getUsuario(usr);
         
         jTextField1.setText(u.getNombre());
         jTextField2.setText(u.getApellido());             
@@ -83,13 +81,14 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }
     
     public void cargarComboBox(){
-         System.out.println("EEEE"); 
+        
         jComboBox1.removeAllItems();        
         Vector<Vector<String>>v = perfiles.getTablaPerfiles();
+        
         for(Vector<String>a:v){
             jComboBox1.addItem(a.elementAt(0)+" - "+a.elementAt(1));
-        }   
-        System.out.println("EEEE fin"); 
+            
+        }       
     }
         
     /**
@@ -363,7 +362,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        r_con.cierraConexion();
+        //r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void alta(){
@@ -389,7 +388,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 auditoria.insertarUsuario(usuarioLogueado,u,"alta");
                 limpiarForm();                        
         }
-            else
+        else
         {
             JOptionPane.showMessageDialog(null,"La contraseña debe coincidir");
         }
@@ -468,7 +467,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 id_perfil=Integer.parseInt(a.elementAt(0));
             }
         }
-        cargarTabla(id_perfil);
+        //cargarTabla(id_perfil);
         jButton1.requestFocus();
     }//GEN-LAST:event_jComboBox1FocusLost
 
@@ -496,12 +495,14 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         jTextField4.setEnabled(true);
     }        
     else{
+             
             String nuevoPerfil=jTextField4.getText();
             nuevoPerfil=nuevoPerfil.toUpperCase();
             int nuevoPerfilId=-1;
             Vector<Integer>claveFila=new Vector();
             Vector<Integer>claveColumna=new Vector();        
-            String aux="";int clave=-1;
+            String aux="";
+            int clave=-1;
 
             String consulta="select count(prf_id_perfil) from perfil";
             ResultSet rs=r_con.Consultar(consulta);
@@ -520,7 +521,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                     claveFila.add(clave);
                 }
 
-                for(int i=1;i<modelo.getColumnCount();i++){
+                for(int i=1;i<=modelo.getColumnCount();i++){
+                    
                     aux=modelo.getColumnName(i);            
                     consulta="select tar_id_tarea from tarea where tar_descripcion='"+aux+"'";
                     rs=r_con.Consultar(consulta);
@@ -537,12 +539,15 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                     auditoria.insertarPerfiles(usuarioLogueado,p,"Alta");
                     for(int i=0;i<modelo.getRowCount();i++){
                         for(int j=1;j<modelo.getColumnCount();j++){
-                            if((boolean)modelo.getValueAt(i,j)==true){                                
+                            
+                            if((boolean)modelo.getValueAt(i,j)==true){ 
+                                System.out.println("i: "+i+" j: "+j);
                                 Permiso per=new Permiso(nuevoPerfilId,claveFila.elementAt(i),claveColumna.elementAt(j-1));
                                 Permisos prs=new Permisos(r_con);prs.insertar(per);
                                 //consulta="insert into permiso values("+nuevoPerfilId+","+claveFila.elementAt(i)+","+claveColumna.elementAt(j-1)+")";
                                 //r_con.InsertarSinCartel(consulta);
                             }
+                            else{System.out.println(" FALSO i: "+i+" j: "+j);}
                         }            
                     }
                 }
@@ -686,6 +691,7 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
     }
     
     public void cargarTabla(int perfil){                               
+        System.out.println("tabla");
         String[] columnas = getColumnas();
         Class[] tipoDatosColumnas=getTipoColumnas();
         
@@ -697,7 +703,8 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         for(int i=0;i<modelo.getRowCount();i++)
             modelo.removeRow(i);
         
-        modelo.setColumnIdentifiers(columnas);        
+        modelo.setColumnIdentifiers(columnas); 
+        
         for(int i=0;i<contenidoTabla.size();i++){            
             modelo.addRow(contenidoTabla.elementAt(i));
         }        
@@ -709,9 +716,10 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
                 r=campoRepetido();
             }
         }
+        
         jTable1.setModel(modelo);
-        for(int i=1;i<columnas.length;i++){
-            
+        
+        for(int i=1;i<columnas.length;i++){            
             jTable1.getColumnModel().getColumn(i).setCellEditor(new Clase_CellEditor());
             jTable1.getColumnModel().getColumn(i).setCellRenderer(new Clase_CellRender());
         }
@@ -813,8 +821,7 @@ public void limpiarForm(){
     jTable1.removeAll();
     jComboBox1.setSelectedIndex(0);
     jButton3.setText("Nuevo Perfil");
-    cargarTabla(-1);
-    
+    cargarTabla(-1);    
 }
 
   private void habilitarCampos(boolean valor){

@@ -14,7 +14,9 @@ public class Tarea {
     private String descripcion;
     private int id;
     
-    public Tarea(){                
+    public Tarea(){ 
+        this.descripcion="";
+        this.id=-1;
     }
     
     public void setId(int i){

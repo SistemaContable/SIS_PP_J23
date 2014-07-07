@@ -14,32 +14,24 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Banegas Rodrigo
  */
 public class Tareas {
-    private String tabla;
+    private String tabla="tarea";
     private Conexion r_con;    
     
     public Tareas(Conexion con){
-        System.out.println("entre en tareas");
-        tabla="tarea";
         r_con=con;
-        //r_con.Connection();
     }
     
     public Vector<Vector<String>> getDescripcionTareas(){        
-        System.out.println("2"); 
         Vector<Vector<String>>v = new Vector();         
          try{
             r_con.Connection();
-            String consulta="select tar_descripcion from "+tabla;
-            //Statement st = r_con.getStatement();
-           // ResultSet rs = st.executeQuery(consulta);
+            String consulta="SELECT tar_descripcion FROM "+tabla;
             ResultSet rs=r_con.Consultar(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
             int numeroColumnas = rsmd.getColumnCount();                                                
@@ -50,26 +42,23 @@ public class Tareas {
                 }
                 v.add(arregloAux);                
             }
-           // st.close();
             rs.close();
             r_con.cierraConexion();
          }
          catch(Exception e){
-             System.out.println("OJO 6");
-                            r_con.cierraConexion();
-                            return null;
+             System.out.println("Error Interno: Tareas - getDescripcionTareas");
+             r_con.cierraConexion();
+             return null;
          }
-         System.out.println("2 fin"); 
          return v;             
     }
     
     
     public Vector<Vector<String>> getTablaTareas(){        
-        System.out.println("1");
         Vector<Vector<String>>v = new Vector();         
          try{
             r_con.Connection();
-            String consulta="select * from "+tabla;
+            String consulta="SELECT * FROM "+tabla;
             Statement st = r_con.getStatement();
             ResultSet rs = st.executeQuery(consulta);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -86,11 +75,10 @@ public class Tareas {
             r_con.cierraConexion();
          }
          catch(Exception e){
-             System.out.println("OJO 7");
-                            r_con.cierraConexion();
-                            return null;
+            System.out.println("Error Interno: Tareas - getTablaTareas");
+            r_con.cierraConexion();
+            return null;
          }
-         System.out.println("1 fin");
          return v;             
     }
     
@@ -99,19 +87,19 @@ public class Tareas {
         try {
             r_con.Connection();
             PreparedStatement consultaAlta;
-            String alta="insert into "+tabla+" values (?,?)";
+            String alta="INSERT INTO "+tabla+" VALUES (?,?)";
             consultaAlta=r_con.getConn().prepareStatement(alta);
             
             consultaAlta.setInt(1, t.getId());
             consultaAlta.setString(2, t.gerDescripcion());
             
-            consultaAlta.executeUpdate();// insert update delete
+            consultaAlta.executeUpdate();
             
             consultaAlta.close();
             r_con.cierraConexion();                                            
         
         } catch (SQLException ex) {
-            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error Interno: Tareas - insertar");
             r_con.cierraConexion();   
         }
     }

@@ -291,9 +291,7 @@ public class Conexion{
             rslset.next();
             existe = ("1".equals(rslset.getString(1)));
             stnt.close();
-            rslset.close();
-            System.out.println("    existe Sistema_DB en el SGDB: "+existe);
-            
+            rslset.close();            
         } catch (SQLException ex) {
             System.err.println("1. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());
         } 
@@ -315,7 +313,6 @@ public class Conexion{
         if ("".equals(url)){
             if  (existeConexion ()) {
                 //si existe el achivo ahora si leo los parametros, sino, aviso
-                System.out.println("    !!! lei los parametros desde el archivo");
                 leerConexion();
             }
             else{
@@ -462,7 +459,7 @@ public class Conexion{
             //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
             this.conn = DriverManager.getConnection(getUrlConexion()); 
             
-            System.out.println("<<<<<<<<<<<<<<<<< CONECTEEEEEEE!!!!!!!!!!!!!!!! >>>>>>>>>>>>>>");
+            //System.out.println("<<<<<<<<<<<<<<<<< CONECTEEEEEEE!!!!!!!!!!!!!!!! >>>>>>>>>>>>>>");
             
         }
         catch(ClassNotFoundException ex)
@@ -483,7 +480,7 @@ public class Conexion{
     */
     public void cierraConexion() {
         try {
-            System.out.println("[[[[[[[[[[[[[[[[[[[[[[[ CEEEEERRRREEEE  ]]]]]]]]]]]]]]]]]]]");
+            //System.out.println("[[[[[[[[[[[[[[[[[[[[[[[ CEEEEERRRREEEE  ]]]]]]]]]]]]]]]]]]]");
             this.conn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al intenter cerrar la conexion","Atención",JOptionPane.WARNING_MESSAGE);
@@ -534,11 +531,11 @@ public class Conexion{
             stnt = (Statement) conn.createStatement();
             stnt.executeUpdate(actualiza);
             stnt.close();
-            JOptionPane.showMessageDialog(null, "El Registro se actualizo correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se actualizo Correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         } catch (SQLException ex) {            
              if (ex.getErrorCode()==2627){
-                    JOptionPane.showMessageDialog(null, "El campo clave del Registro ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             if (ex.getErrorCode()==8152){
                     JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
@@ -556,11 +553,11 @@ public class Conexion{
             stnt  = conn.createStatement();
             int numResultado = stnt.executeUpdate(borra);
             stnt.close();
-            JOptionPane.showMessageDialog(null, "El Registro se elimino correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se elimino Correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);
             return (true);
         } catch (SQLException ex) {
              if (ex.getErrorCode()==547){
-                    JOptionPane.showMessageDialog(null, "Integridad Refencial: Esta intentando eliminar un Registro que es utilizado por otros!","Atención",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se pudo concretar, ya que el Registro que intentanda eliminar es utilizado por Otros!","Atención",JOptionPane.WARNING_MESSAGE);
             }
              else{
                 System.err.println("8. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
@@ -580,7 +577,7 @@ public class Conexion{
         catch(SQLException ex)
         {
             if (ex.getErrorCode()==2627){
-                    JOptionPane.showMessageDialog(null, "El campo clave del Registro ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             if (ex.getErrorCode()==8152){
                     JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
@@ -594,34 +591,7 @@ public class Conexion{
             return (false);
         }
         
-    }
-    
-    public boolean InsertarSinCartel(String inserta) {
-        try{
-            stnt = (Statement) this.conn.createStatement();
-            stnt.executeUpdate(inserta); 
-            stnt.close();
-            return (true);
-        }
-        catch(SQLException ex)
-        {
-            if (ex.getErrorCode()==2627){
-                    JOptionPane.showMessageDialog(null, "El campo clave del Registro ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
-            }
-            if (ex.getErrorCode()==8152){
-                    JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
-            }
-            if (ex.getErrorCode()==547){
-                    JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
-            }
-            else{
-                    System.err.println("10. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
-            }   
-            return (false);
-        }
-        
-    }
- 
+    } 
      
      public Vector<Vector<String>> getContenidoTabla(String consulta){
          Vector<Vector<String>>v = new Vector();         
@@ -643,20 +613,17 @@ public class Conexion{
             rs.close();
          }
          catch(Exception e){
-             System.out.println(e.getMessage());
-                            e.printStackTrace();
-                            return null;
+             System.err.println("11. Error Mensaje: " +e.getMessage());     
+             return null;
          }
          return v;
-     }
-    
-         
+     }       
      
     public Statement getStatement(){
         try { 
             return conn.createStatement();
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("12. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             return null;
         }
     }
