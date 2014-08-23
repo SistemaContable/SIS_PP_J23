@@ -42,6 +42,7 @@ insert into modulo values(4,'ADMINISTRADOR IMPRESORA');
 insert into modulo values(5,'AUXILIARES');
 insert into modulo values(6,'AUDITORIA');
 insert into modulo values(7,'RESPALDO');
+insert into modulo values(8,'CONTABILIDAD');
 
 CREATE TABLE tarea
 (
@@ -120,6 +121,8 @@ insert into permiso values(1,6,1);
 insert into permiso values(1,7,1);
 insert into permiso values(1,7,4);
 
+insert into permiso values(1,8,1);
+
 
 insert into permiso values(2,5,5);
 insert into permiso values(2,3,1);
@@ -139,6 +142,8 @@ insert into permiso values(3,7,1);
 
 insert into permiso values(4,6,1);
 insert into permiso values(4,7,1);
+
+
 
 
 CREATE TABLE impresoras
@@ -212,4 +217,103 @@ auu_fecha datetime,
 auu_terminal varchar(50),
 primary key (auu_id),
 foreign key (auu_usuario_admin) references usuario(usr_nombre_usuario)
-)
+);
+
+create table plan_cuentas(
+pc_codigo_plan_cuenta varchar(30) not null,
+pc_nro_cuenta int not null,
+pc_nombre_cuenta varchar(30),
+pc_imputable bit,
+primary key (pc_nro_cuenta)
+);
+
+CREATE INDEX IX_nro_cuenta ON plan_cuentas (pc_nro_cuenta);
+CREATE INDEX IX_codigo_plan_cuenta ON plan_cuentas (pc_codigo_plan_cuenta);
+
+insert into plan_cuentas values('1',1,'ACTIVO',0);
+insert into plan_cuentas values('1.1',2,'ACTIVO CORRIENTE',0);
+insert into plan_cuentas values('1.1.01',3,'DISPONIBILIDADES',0);
+insert into plan_cuentas values('1.1.01.01',4,'CAJA',1);
+insert into plan_cuentas values('1.1.01.02',5,'BANCOS',0);
+insert into plan_cuentas values('1.1.01.02.01',6,'Banco provincia c.c.',1);
+insert into plan_cuentas values('1.1.01.03',66,'Valores a depositar',1);
+insert into plan_cuentas values('1.1.02',8,'CUENTAS POR COBRAR',0);
+insert into plan_cuentas values('1.1.02.01',9,'Deudores en c.c.',1);
+insert into plan_cuentas values('1.1.02.02',10,'Documentos a cobrar',1);
+insert into plan_cuentas values('1.1.02.03',11,'Iva credito fiscal',1);
+insert into plan_cuentas values('1.1.02.04',85,'AFIP-Iva a favor',1);
+insert into plan_cuentas values('1.1.02.05',88,'CLIENTES-CUENTAS CORRIENTES',1);
+insert into plan_cuentas values('1.1.02.06',93,'SOCIOS - CUENTA SOCIAL',1);
+insert into plan_cuentas values('1.1.03',12,'BIENES DE CAMBIO',0);
+insert into plan_cuentas values('1.1.03.01',13,'Mercaderias',1);
+insert into plan_cuentas values('1.1.04',14,'INVERSIONES',0);
+insert into plan_cuentas values('1.1.05',62,'OTROS CREDITOS',0);
+insert into plan_cuentas values('1.1.05.01',63,'Socio Gomez Emanuel',1);
+insert into plan_cuentas values('1.1.05.02',64,'Socio Banegas Rodrigo',1);
+insert into plan_cuentas values('1.2',15,'ACTIVO NO CORRIENTE',0);
+insert into plan_cuentas values('1.2.01',16,'BIENES DE USO',0);
+insert into plan_cuentas values('1.2.01.01',17,'Rodados',1);
+insert into plan_cuentas values('1.2.01.02',18,'Muebles y utiles',1);
+insert into plan_cuentas values('2',19,'PASIVO',0);
+insert into plan_cuentas values('2.1',20,'PASIVO CORRIENTE',0);
+insert into plan_cuentas values('2.1.01',21,'DEUDAS',0);
+insert into plan_cuentas values('2.1.01.01',22,'Deudas comerciales',0);
+insert into plan_cuentas values('2.1.01.01.01',23,'Proveedores',1);
+insert into plan_cuentas values('2.1.01.01.02',24,'Obligaciones a pagar',1);
+insert into plan_cuentas values('2.1.01.02',25,'Deudas fiscales',0);
+insert into plan_cuentas values('2.1.01.02.01',26,'Iva debito fiscal',1);
+insert into plan_cuentas values('2.1.01.02.02',27,'Iva perc. no insc.',1);
+insert into plan_cuentas values('2.1.01.02.03',28,'Ingresos brutos a pagar',1);
+insert into plan_cuentas values('2.1.01.02.04',83,'Tasa Insp Segur e Hig a pagar',1);
+insert into plan_cuentas values('2.1.01.02.05',84,'AFIP-IVA a pagar',1);
+insert into plan_cuentas values('2.1.01.03',29,'DEUDAS LABORALES Y PREV.',0);
+insert into plan_cuentas values('2.1.01.03.01',30,'Sueldos a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02',31,'DEUDAS POR CARGAS SOCIALES',0);
+insert into plan_cuentas values('2.1.01.03.02.01',67,'Jubilacion a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.02',68,'I.N.S.S.J.P. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.03',69,'Obra social a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.04',70,'A.N.S.S.A.L. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.05',71,'Ex-cajas subs. fam. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.06',72,'F.N.E. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.07',73,'A.E.C. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.08',74,'Cuota sindical a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.09',75,'F.A.E.C.Y.S. a pagar',1);
+insert into plan_cuentas values('2.1.01.03.02.10',76,'La estrella a pagar',1);
+insert into plan_cuentas values('2.1.01.03.03',77,'Cargas sociales a pagar',1);
+insert into plan_cuentas values('2.1.01.04',32,'Deudas bancarias',0);
+insert into plan_cuentas values('2.2',33,'PASIVO NO CORRIENTE',0);
+insert into plan_cuentas values('3',34,'PATRIMONIO NETO',0);
+insert into plan_cuentas values('3.1',35,'CAPITAL',0);
+insert into plan_cuentas values('3.1.01',36,'Capital Social',1);
+insert into plan_cuentas values('3.2',37,'RESERVAS',0);
+insert into plan_cuentas values('3.3',38,'RESULTADOS ACUMULADOS',0);
+insert into plan_cuentas values('3.3.01',39,'Resultados del ej. anterior',1);
+insert into plan_cuentas values('4',40,'RESULTADO POSITIVO',0);
+insert into plan_cuentas values('4.1',41,'INGRESOS ORDINARIOS',0);
+insert into plan_cuentas values('4.1.01',42,'Ventas',1);
+insert into plan_cuentas values('4.1.02',43,'Ingresos obtenidos',1);
+insert into plan_cuentas values('4.1.03',44,'Descuentos obtenidos',1);
+insert into plan_cuentas values('4.1.04',89,'Ingresos por serv. prestados',1);
+insert into plan_cuentas values('4.1.05',90,'Ingresos por fletes',1);
+insert into plan_cuentas values('4.2',45,'INGRESOS EXTRAORDINARIOS',0);
+insert into plan_cuentas values('5',46,'RESULTADO NEGATIVO',0);
+insert into plan_cuentas values('5.1',47,'GASTOS DE COMERCIALIZACION',0);
+insert into plan_cuentas values('5.1.01',48,'Costo de venta',1);
+insert into plan_cuentas values('5.2',49,'GASTOS ADMINISTRATIVOS',0);
+insert into plan_cuentas values('5.2.01',50,'Impuestos nacionales',1);
+insert into plan_cuentas values('5.2.02',51,'Agua, luz y gas',1);
+insert into plan_cuentas values('5.2.03',52,'Telefono',1);
+insert into plan_cuentas values('5.2.04',65,'Alquileres cedidos',1);
+insert into plan_cuentas values('5.2.05',86,'Ingresos Brutos',1);
+insert into plan_cuentas values('5.2.06',87,'Tasa por Insp. Seg. e Hig',1);
+insert into plan_cuentas values('5.3',53,'GASTOS EN PERSONAL',0);
+insert into plan_cuentas values('5.3.01',54,'Sueldos y jornales',1);
+insert into plan_cuentas values('5.3.02',55,'Cargas sociales',1);
+insert into plan_cuentas values('5.4',56,'GASTOS FINANCIEROS',0);
+insert into plan_cuentas values('5.4.01',57,'Intereses cedidos',1);
+insert into plan_cuentas values('5.4.02',58,'Descuentos cedidos',1);
+insert into plan_cuentas values('5.4.03',59,'Gastos bancarios',1);
+insert into plan_cuentas values('5.5',60,'OTROS GASTOS',0);
+insert into plan_cuentas values('5.5.01',61,'Fletes pagados',1);
+insert into plan_cuentas values('5.5.02',82,'Conservacion y mantenimiento',1);
+

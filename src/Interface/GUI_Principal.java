@@ -3,6 +3,7 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import Objetos.Usuario;
+import Contabilidad.GUI_Plan_Cuentas;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
@@ -165,6 +166,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
@@ -202,9 +205,9 @@ public class GUI_Principal extends javax.swing.JFrame {
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,6 +321,22 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/contabilidad.png"))); // NOI18N
+        jMenu9.setText("Contabilidad");
+        jMenu9.setName("M8"); // NOI18N
+
+        jMenuItem19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem19.setText("Gestión Plan de Cuentas");
+        jMenuItem19.setName("T81"); // NOI18N
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem19);
+
+        jMenuBar1.add(jMenu9);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         jMenu4.setText("Usuarios");
@@ -931,6 +950,27 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.moveToFront();
         l.requestFocus();
     }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        //creo el InternalFrame;
+        GUI_Plan_Cuentas np = new GUI_Plan_Cuentas(usuario,r_con);       
+
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, np.getLocation().y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus(); 
+        
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
     
     
     public void abrirSesion (){
@@ -998,6 +1038,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -1009,6 +1050,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
