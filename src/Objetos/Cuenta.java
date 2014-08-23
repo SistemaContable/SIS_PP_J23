@@ -16,16 +16,20 @@ public class Cuenta {
     private int numero_C;
     private String nombre_C;
     private boolean imputable_C;
+    private int numero_padre_C;
 
     public Cuenta(){
     }
-    
-    public Cuenta(String codigo_PC, int numero_C, String nombre_C, boolean imputable_C) {
+
+    public Cuenta(String codigo_PC, int numero_C, String nombre_C, boolean imputable_C, int numero_padre_C) {
         this.codigo_PC = codigo_PC;
         this.numero_C = numero_C;
         this.nombre_C = nombre_C;
         this.imputable_C = imputable_C;
+        this.numero_padre_C = numero_padre_C;
     }
+    
+  
 
     public String getCodigo_PC() {
         return codigo_PC;
@@ -43,6 +47,10 @@ public class Cuenta {
         return imputable_C;
     }
 
+    public int getNumero_Padre_C() {
+        return numero_padre_C;
+    }    
+
     public void setCodigo_PC(String codigo_PC) {
         this.codigo_PC = codigo_PC;
     }
@@ -59,6 +67,11 @@ public class Cuenta {
         this.imputable_C = imputable_C;
     }
 
+    public void setNumero_Padre_C(int numero_padre_C) {
+        this.numero_padre_C = numero_padre_C;
+    }
+    
+    
     @Override
     public String toString() {
         return (codigo_PC + " - " + nombre_C);
