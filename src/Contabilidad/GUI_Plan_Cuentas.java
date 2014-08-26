@@ -34,7 +34,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private DefaultMutableTreeNode root1 = null;
     private DefaultMutableTreeNode parent1 = null;
     private DefaultMutableTreeNode childnode = null;
-    private int posLoad=0;
     
     private Conexion r_con;
     private Usuario usr;
