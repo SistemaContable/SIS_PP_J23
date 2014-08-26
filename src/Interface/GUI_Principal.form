@@ -15,7 +15,7 @@
               <Image iconType="3" name="/Iconos/auxiliares.png"/>
             </Property>
             <Property name="mnemonic" type="int" value="49"/>
-            <Property name="text" type="java.lang.String" value="Auxiliares"/>
+            <Property name="text" type="java.lang.String" value="1. Auxiliares"/>
             <Property name="name" type="java.lang.String" value="M5" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -24,6 +24,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Tasas de IVA"/>
                 <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
               </Properties>
@@ -33,6 +34,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/Iconos/item.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="49"/>
                     <Property name="text" type="java.lang.String" value="Alta"/>
                     <Property name="name" type="java.lang.String" value="T21" noResource="true"/>
                   </Properties>
@@ -45,6 +47,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/Iconos/item.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="50"/>
                     <Property name="text" type="java.lang.String" value="Baja"/>
                     <Property name="name" type="java.lang.String" value="T22" noResource="true"/>
                   </Properties>
@@ -57,6 +60,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/Iconos/item.png"/>
                     </Property>
+                    <Property name="mnemonic" type="int" value="51"/>
                     <Property name="text" type="java.lang.String" value="Listado"/>
                     <Property name="name" type="java.lang.String" value="T25" noResource="true"/>
                   </Properties>
@@ -74,7 +78,7 @@
               <Image iconType="3" name="/Iconos/articulo.png"/>
             </Property>
             <Property name="mnemonic" type="int" value="50"/>
-            <Property name="text" type="java.lang.String" value="Art&#xed;culos"/>
+            <Property name="text" type="java.lang.String" value="2. Art&#xed;culos"/>
             <Property name="name" type="java.lang.String" value="M1" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -83,6 +87,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Alta"/>
                 <Property name="name" type="java.lang.String" value="T11" noResource="true"/>
               </Properties>
@@ -95,6 +100,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="50"/>
                 <Property name="text" type="java.lang.String" value="Baja"/>
                 <Property name="name" type="java.lang.String" value="T12" noResource="true"/>
               </Properties>
@@ -107,6 +113,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="51"/>
                 <Property name="text" type="java.lang.String" value="Modificaci&#xf3;n"/>
                 <Property name="name" type="java.lang.String" value="T13" noResource="true"/>
               </Properties>
@@ -119,6 +126,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="52"/>
                 <Property name="text" type="java.lang.String" value="Consulta"/>
                 <Property name="name" type="java.lang.String" value="T14" noResource="true"/>
               </Properties>
@@ -131,6 +139,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="53"/>
                 <Property name="text" type="java.lang.String" value="Listado"/>
                 <Property name="name" type="java.lang.String" value="T15" noResource="true"/>
               </Properties>
@@ -145,7 +154,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/contabilidad.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Contabilidad"/>
+            <Property name="mnemonic" type="int" value="51"/>
+            <Property name="text" type="java.lang.String" value="3. Contabilidad"/>
             <Property name="name" type="java.lang.String" value="M8" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -154,6 +164,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Plan de Cuentas"/>
                 <Property name="name" type="java.lang.String" value="T81" noResource="true"/>
               </Properties>
@@ -168,7 +179,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/usuario.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Usuarios"/>
+            <Property name="mnemonic" type="int" value="52"/>
+            <Property name="text" type="java.lang.String" value="4. Usuarios"/>
             <Property name="name" type="java.lang.String" value="M3" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -177,6 +189,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Alta"/>
                 <Property name="name" type="java.lang.String" value="T31" noResource="true"/>
               </Properties>
@@ -189,6 +202,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="50"/>
                 <Property name="text" type="java.lang.String" value="Baja"/>
                 <Property name="name" type="java.lang.String" value="T32" noResource="true"/>
               </Properties>
@@ -201,6 +215,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="51"/>
                 <Property name="text" type="java.lang.String" value="Modificar"/>
                 <Property name="name" type="java.lang.String" value="T33" noResource="true"/>
               </Properties>
@@ -215,7 +230,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/print.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Impresoras"/>
+            <Property name="mnemonic" type="int" value="53"/>
+            <Property name="text" type="java.lang.String" value="5. Impresoras"/>
             <Property name="name" type="java.lang.String" value="M4" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -224,7 +240,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Alta"/>
+                <Property name="mnemonic" type="int" value="49"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Impresoras"/>
                 <Property name="name" type="java.lang.String" value="T41" noResource="true"/>
               </Properties>
               <Events>
@@ -238,7 +255,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/usuario.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Auditoria"/>
+            <Property name="mnemonic" type="int" value="54"/>
+            <Property name="text" type="java.lang.String" value="6.Auditoria"/>
             <Property name="name" type="java.lang.String" value="M6" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -247,6 +265,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Articulos"/>
                 <Property name="name" type="java.lang.String" value="T61" noResource="true"/>
               </Properties>
@@ -259,6 +278,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="50"/>
                 <Property name="text" type="java.lang.String" value="Tasa Iva"/>
                 <Property name="name" type="java.lang.String" value="T61" noResource="true"/>
               </Properties>
@@ -271,6 +291,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="51"/>
                 <Property name="text" type="java.lang.String" value="Perfil"/>
                 <Property name="name" type="java.lang.String" value="T61" noResource="true"/>
               </Properties>
@@ -283,6 +304,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="52"/>
                 <Property name="text" type="java.lang.String" value="Usuario"/>
                 <Property name="name" type="java.lang.String" value="T61" noResource="true"/>
               </Properties>
@@ -297,7 +319,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/back.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Respaldo"/>
+            <Property name="mnemonic" type="int" value="55"/>
+            <Property name="text" type="java.lang.String" value="7.Respaldo"/>
             <Property name="name" type="java.lang.String" value="M7" noResource="true"/>
           </Properties>
           <SubComponents>
@@ -306,6 +329,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="49"/>
                 <Property name="text" type="java.lang.String" value="Hacer Copia de Seguridad"/>
                 <Property name="name" type="java.lang.String" value="T71" noResource="true"/>
               </Properties>
@@ -318,6 +342,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="50"/>
                 <Property name="text" type="java.lang.String" value="Restaurar"/>
                 <Property name="name" type="java.lang.String" value="T74" noResource="true"/>
               </Properties>
@@ -332,6 +357,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Iconos/eliminar.png"/>
             </Property>
+            <Property name="mnemonic" type="int" value="48"/>
             <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
             <Property name="name" type="java.lang.String" value="M7" noResource="true"/>
           </Properties>

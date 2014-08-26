@@ -226,14 +226,16 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/auxiliares.png"))); // NOI18N
         jMenu1.setMnemonic('1');
-        jMenu1.setText("Auxiliares");
+        jMenu1.setText("1. Auxiliares");
         jMenu1.setName("M5"); // NOI18N
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenu3.setMnemonic('1');
         jMenu3.setText("Tasas de IVA");
         jMenu3.setName("M2"); // NOI18N
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem7.setMnemonic('1');
         jMenuItem7.setText("Alta");
         jMenuItem7.setName("T21"); // NOI18N
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -244,6 +246,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem7);
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem1.setMnemonic('2');
         jMenuItem1.setText("Baja");
         jMenuItem1.setName("T22"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -254,6 +257,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem1);
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem8.setMnemonic('3');
         jMenuItem8.setText("Listado");
         jMenuItem8.setName("T25"); // NOI18N
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -269,10 +273,11 @@ public class GUI_Principal extends javax.swing.JFrame {
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         jMenu2.setMnemonic('2');
-        jMenu2.setText("Artículos");
+        jMenu2.setText("2. Artículos");
         jMenu2.setName("M1"); // NOI18N
 
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem2.setMnemonic('1');
         jMenuItem2.setText("Alta");
         jMenuItem2.setName("T11"); // NOI18N
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -283,6 +288,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem2);
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem3.setMnemonic('2');
         jMenuItem3.setText("Baja");
         jMenuItem3.setName("T12"); // NOI18N
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -293,6 +299,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem4.setMnemonic('3');
         jMenuItem4.setText("Modificación");
         jMenuItem4.setName("T13"); // NOI18N
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -303,6 +310,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem5.setMnemonic('4');
         jMenuItem5.setText("Consulta");
         jMenuItem5.setName("T14"); // NOI18N
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -313,6 +321,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem5);
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem6.setMnemonic('5');
         jMenuItem6.setText("Listado");
         jMenuItem6.setName("T15"); // NOI18N
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
@@ -325,10 +334,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/contabilidad.png"))); // NOI18N
-        jMenu9.setText("Contabilidad");
+        jMenu9.setMnemonic('3');
+        jMenu9.setText("3. Contabilidad");
         jMenu9.setName("M8"); // NOI18N
 
         jMenuItem19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem19.setMnemonic('1');
         jMenuItem19.setText("Gestión Plan de Cuentas");
         jMenuItem19.setName("T81"); // NOI18N
         jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
@@ -341,10 +352,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu9);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
-        jMenu4.setText("Usuarios");
+        jMenu4.setMnemonic('4');
+        jMenu4.setText("4. Usuarios");
         jMenu4.setName("M3"); // NOI18N
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem9.setMnemonic('1');
         jMenuItem9.setText("Alta");
         jMenuItem9.setName("T31"); // NOI18N
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
@@ -355,6 +368,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu4.add(jMenuItem9);
 
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem14.setMnemonic('2');
         jMenuItem14.setText("Baja");
         jMenuItem14.setName("T32"); // NOI18N
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
@@ -365,6 +379,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu4.add(jMenuItem14);
 
         jMenuItem15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem15.setMnemonic('3');
         jMenuItem15.setText("Modificar");
         jMenuItem15.setName("T33"); // NOI18N
         jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
@@ -377,11 +392,13 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu4);
 
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
-        jMenu5.setText("Impresoras");
+        jMenu5.setMnemonic('5');
+        jMenu5.setText("5. Impresoras");
         jMenu5.setName("M4"); // NOI18N
 
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem10.setText("Alta");
+        jMenuItem10.setMnemonic('1');
+        jMenuItem10.setText("Gestión de Impresoras");
         jMenuItem10.setName("T41"); // NOI18N
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,10 +410,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu5);
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
-        jMenu6.setText("Auditoria");
+        jMenu6.setMnemonic('6');
+        jMenu6.setText("6.Auditoria");
         jMenu6.setName("M6"); // NOI18N
 
         jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem11.setMnemonic('1');
         jMenuItem11.setText("Articulos");
         jMenuItem11.setName("T61"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
@@ -407,6 +426,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem11);
 
         jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem16.setMnemonic('2');
         jMenuItem16.setText("Tasa Iva");
         jMenuItem16.setName("T61"); // NOI18N
         jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
@@ -417,6 +437,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem16);
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem17.setMnemonic('3');
         jMenuItem17.setText("Perfil");
         jMenuItem17.setName("T61"); // NOI18N
         jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
@@ -427,6 +448,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu6.add(jMenuItem17);
 
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem18.setMnemonic('4');
         jMenuItem18.setText("Usuario");
         jMenuItem18.setName("T61"); // NOI18N
         jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
@@ -439,10 +461,12 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu6);
 
         jMenu8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/back.png"))); // NOI18N
-        jMenu8.setText("Respaldo");
+        jMenu8.setMnemonic('7');
+        jMenu8.setText("7.Respaldo");
         jMenu8.setName("M7"); // NOI18N
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem12.setMnemonic('1');
         jMenuItem12.setText("Hacer Copia de Seguridad");
         jMenuItem12.setName("T71"); // NOI18N
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
@@ -453,6 +477,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu8.add(jMenuItem12);
 
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem13.setMnemonic('2');
         jMenuItem13.setText("Restaurar");
         jMenuItem13.setName("T74"); // NOI18N
         jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
@@ -465,6 +490,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu8);
 
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        jMenu7.setMnemonic('0');
         jMenu7.setText("Cerrar Sesión");
         jMenu7.setName("M7"); // NOI18N
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
