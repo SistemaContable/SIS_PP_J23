@@ -7,6 +7,7 @@
 package Contabilidad;
 
 import Clases_Auxiliares.Conexion;
+import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     /**
      * Creates new form GUI_A_Prod
      */
-    private Vector<Contabilidad.Cuenta2> vecChildren = new Vector<Contabilidad.Cuenta2>();
+    private Vector<Cuenta> vecChildren = new Vector<Cuenta>();
     private int cant_count=0;
     private DefaultTreeModel modelo1 = null;
     private DefaultMutableTreeNode root1 = null;
@@ -42,7 +43,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         usr = u;
         r_con=con;     
         initComponents();
-        inicializarArbol();
         cargarArbol();         
     }
 
@@ -258,17 +258,17 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private void JTreeContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeContaMouseClicked
       if(evt.getClickCount()==2){
         DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
-        Cuenta2 loadcuenta;
+        Cuenta loadcuenta;
             if (node == null) //Nothing is selected.
             {
                 return;
             }
             else{
                 Object nodeInfo = node.getUserObject();
-                loadcuenta = (Cuenta2) nodeInfo;
-                this.jLabel6.setText(loadcuenta.getId());
-                this.jTextField1.setText(loadcuenta.getDescrip());
-                this.jTextField2.setText(loadcuenta.getCodCuenta());
+                loadcuenta = (Cuenta) nodeInfo;
+                this.jLabel6.setText(""+loadcuenta.getNumero_C());
+                this.jTextField1.setText(loadcuenta.getNombre_C());
+                this.jTextField2.setText(loadcuenta.getCodigo_PC());
                 //JOptionPane.showMessageDialog(this, loadcuenta.getDescrip());
             }
       }
@@ -306,30 +306,27 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
-public void cargarArbol() {
+
+    /**
+     * Metodo que carga los hijos de las cuentas inicializadas, Activo, Pasivo, etc
+     */
+    public void cargarArbol() {
+        //inicializo el arbol
+        inicializarArbol();
+        
+        //cargo las cuentas hijo
         r_con.Connection();
         int count = 0;
-        int aux = 1;
+        int aux = 0;
         Enumeration e = root1.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             parent1 = (DefaultMutableTreeNode) e.nextElement();
-            if (count >= aux) {
+            if (count > aux) {
                 try {
-                    Contabilidad.Cuenta2 objChildren = (Contabilidad.Cuenta2) parent1.getUserObject();
-                    /**
-                    //consigo los hijos de idparent (metodo anterior MAYOR tiempo de ejecucion)
-                    vecChildren = getHijos(objChildren.Id);
-                    for (int k = 0; k < vecChildren.size(); k++) {
-                    Contabilidad.Cuenta2 hijo = (Contabilidad.Cuenta2) vecChildren.get(k);
-                    hijo.setDescrip(hijo.getCodCuenta2()+"-"+hijo.getDescrip());
-                    childnode = new DefaultMutableTreeNode(hijo);
-                    modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());
-                    }
-                    **/
-                    System.out.println(objChildren.getDescrip());
-                    ResultSet res = r_con.Consultar("select id_cta,idpadre_cta,nombre_cta,cod_cta,orden_cta from sys_cuenta where idpadre_cta="+objChildren.Id);
+                    Cuenta objChildren = (Cuenta) parent1.getUserObject();
+                    ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C());
                     while (res.next()) {
-                        Contabilidad.Cuenta2 hijo = new Contabilidad.Cuenta2(res.getString(1), res.getString(2), res.getString(3),res.getString(4),res.getInt(5));
+                        Cuenta hijo = new Cuenta (res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5));
                         childnode = new DefaultMutableTreeNode(hijo);
                         modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());                        
                     }
@@ -342,9 +339,8 @@ public void cargarArbol() {
             if (e.hasMoreElements() == false) {
                 int toEle = totalElementos(root1.breadthFirstEnumeration());
                 if (cant_count < toEle) {
-                    System.out.println("-----------------");
                     aux = count;
-                    count = -2;
+		    count = -1;                    
                     e = root1.breadthFirstEnumeration();
                     cant_count = toEle;
                 } else {
@@ -358,22 +354,29 @@ public void cargarArbol() {
         r_con.cierraConexion();
     }
 
-   private void inicializarArbol() {
-        Contabilidad.Cuenta2 obj = (Contabilidad.Cuenta2) getHijos("0").get(0);
+   
+    /**
+     * Metodo PRIVADO de cargarArbol que inicializa el Arbol con las primeras cuentas, Activo, Pasivo, etc
+     */
+    private void inicializarArbol() {
+        //pido el objeto -1 por que es el Plan de Cuentas
+        Cuenta obj = (Cuenta) getHijos(-1).get(0);
         root1 = new DefaultMutableTreeNode(obj);
         modelo1 = new DefaultTreeModel(root1);
         Enumeration e = root1.breadthFirstEnumeration();
         parent1 = (DefaultMutableTreeNode) e.nextElement();
-        Contabilidad.Cuenta2 objChildren = (Contabilidad.Cuenta2) parent1.getUserObject();
+        Cuenta objChildren = (Cuenta) parent1.getUserObject();
         
         //consigo los hijos de idparent
-        vecChildren = getHijos(objChildren.Id);
+        vecChildren = getHijos(objChildren.getNumero_C());
 
         for (int k = 0; k < vecChildren.size(); k++) {
             cant_count++;
-            Contabilidad.Cuenta2 hijo = (Contabilidad.Cuenta2) vecChildren.get(k);
+            Cuenta hijo;
+            hijo = (Cuenta) vecChildren.get(k);
             modelo1.insertNodeInto(new DefaultMutableTreeNode(hijo), parent1, parent1.getChildCount());
         }
+        this.JTreeConta.setModel(modelo1);
     }
 
    public int totalElementos(Enumeration e) {
@@ -391,14 +394,14 @@ public void cargarArbol() {
      * @param Id
      * @return
      */
-    public Vector getHijos (String Id) {
+    public Vector getHijos (int Id) {
         r_con.Connection();
-        Vector<Contabilidad.Cuenta2> data = new Vector<Contabilidad.Cuenta2>();
+        Vector<Cuenta> data = new Vector<Cuenta>();
         try {            
-            ResultSet res = r_con.Consultar("select id_cta,idpadre_cta,nombre_cta,cod_cta,orden_cta from sys_cuenta where idpadre_cta="+Id);
+            ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+Id);
 
             while (res.next()) {
-                data.addElement(new Contabilidad.Cuenta2(res.getString(1), res.getString(2), res.getString(3),res.getString(4),res.getInt(5)));
+                data.addElement(new Cuenta(res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5)));
             }
             res.close();
         } catch (SQLException e) {
@@ -410,31 +413,25 @@ public void cargarArbol() {
     }
     
     /**
-    * True si el padre tiene hijos
-    * False si no tiene hijos
+    * Cuenta la cantidad de Hijos que tiene una cuenta, su proposito es brindar
+    * la proxima enumeracion del hijo y/o saber si el padre tiene hijos cuando cantidad es 0
     * @param Idparent
     * @return
     */
-    public boolean getTieneHijos(String Id) {
+    public int getCantidadHijos(String Id) {
         r_con.Connection();
-        boolean bt = false;
+        int numhijos = 0;
         try {
-            ResultSet res = r_con.Consultar("Select (count(1)+1) from sys_cuenta where idpadre_cta=" + Id);
+            ResultSet res = r_con.Consultar("Select (count(1)) from plan_cuentas where pc_id_padre=" + Id);
             res.next();
-            int numhijos = res.getInt(1)-1;
-            if (numhijos != 0) {
-                bt = true;
-            } else {
-                bt = false;
-            }
-
+            numhijos = res.getInt(1);
             res.close();
         } catch (SQLException e) {
             r_con.cierraConexion();
             System.out.println(e);
         }
         r_con.cierraConexion();
-        return bt;
+        return numhijos;
     }   
     
     public void setTitleLabel (String t){

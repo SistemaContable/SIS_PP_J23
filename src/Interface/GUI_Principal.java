@@ -3,8 +3,8 @@ package Interface;
 
 import Clases_Auxiliares.Conexion;
 import Objetos.Usuario;
+import _Pruebas.GUI_Plan_Cuenta;
 import Contabilidad.GUI_Plan_Cuentas;
-import Contabilidad.GUI_Plan_Cuentas_Final;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
@@ -14,6 +14,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenu;
+import _Pruebas.Main_Conta;
 
 /**
  *
@@ -954,7 +955,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
         //creo el InternalFrame;
-        GUI_Plan_Cuentas_Final np = new GUI_Plan_Cuentas_Final(usuario,r_con);       
+        GUI_Plan_Cuentas np = new GUI_Plan_Cuentas(usuario,r_con);       
 
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;

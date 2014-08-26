@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 
-package Contabilidad;
+package _Pruebas;
 
 import Clases_Auxiliares.Conexion;
-import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,12 +22,12 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * @author Manolo
  */
-public class GUI_Plan_Cuentas_Final extends javax.swing.JInternalFrame {
+public class GUI_Plan_Cuenta extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GUI_A_Prod
      */
-    private Vector<Cuenta> vecChildren = new Vector<Cuenta>();
+    private Vector<_Pruebas.Cuenta2> vecChildren = new Vector<_Pruebas.Cuenta2>();
     private int cant_count=0;
     private DefaultTreeModel modelo1 = null;
     private DefaultMutableTreeNode root1 = null;
@@ -39,7 +38,7 @@ public class GUI_Plan_Cuentas_Final extends javax.swing.JInternalFrame {
     private Conexion r_con;
     private Usuario usr;
     
-    public GUI_Plan_Cuentas_Final(Usuario u, Conexion con) {
+    public GUI_Plan_Cuenta(Usuario u, Conexion con) {
         usr = u;
         r_con=con;     
         initComponents();
@@ -259,17 +258,17 @@ public class GUI_Plan_Cuentas_Final extends javax.swing.JInternalFrame {
     private void JTreeContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeContaMouseClicked
       if(evt.getClickCount()==2){
         DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
-        Cuenta loadcuenta;
+        Cuenta2 loadcuenta;
             if (node == null) //Nothing is selected.
             {
                 return;
             }
             else{
                 Object nodeInfo = node.getUserObject();
-                loadcuenta = (Cuenta) nodeInfo;
-                this.jLabel6.setText(""+loadcuenta.getNumero_C());
-                this.jTextField1.setText(loadcuenta.getNombre_C());
-                this.jTextField2.setText(loadcuenta.getCodigo_PC());
+                loadcuenta = (Cuenta2) nodeInfo;
+                this.jLabel6.setText(loadcuenta.getId());
+                this.jTextField1.setText(loadcuenta.getDescrip());
+                this.jTextField2.setText(loadcuenta.getCodCuenta());
                 //JOptionPane.showMessageDialog(this, loadcuenta.getDescrip());
             }
       }
@@ -311,35 +310,32 @@ public void cargarArbol() {
         r_con.Connection();
         int count = 0;
         int aux = 1;
-        int entre=0;
         Enumeration e = root1.breadthFirstEnumeration();
         while (e.hasMoreElements()) {
             parent1 = (DefaultMutableTreeNode) e.nextElement();
             if (count >= aux) {
                 try {
-                    Cuenta objChildren = (Cuenta) parent1.getUserObject();
+                    _Pruebas.Cuenta2 objChildren = (_Pruebas.Cuenta2) parent1.getUserObject();
                     /**
                     //consigo los hijos de idparent (metodo anterior MAYOR tiempo de ejecucion)
-                    vecChildren = getHijos(objChildren.getNumero_C());
+                    vecChildren = getHijos(objChildren.Id);
                     for (int k = 0; k < vecChildren.size(); k++) {
-                    Cuenta hijo = (Cuenta) vecChildren.get(k);
-                    //hijo.setDescrip(hijo.getCodCuenta()+"-"+hijo.getDescrip());
+                    Contabilidad.Cuenta2 hijo = (Contabilidad.Cuenta2) vecChildren.get(k);
+                    hijo.setDescrip(hijo.getCodCuenta2()+"-"+hijo.getDescrip());
                     childnode = new DefaultMutableTreeNode(hijo);
                     modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());
                     }
                     **/
-                    System.out.println(objChildren.getNombre_C());
-                    ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C());
-                    //System.out.println(objChildren.getNumero_C());
+                    System.out.println(objChildren.getDescrip());
+                    ResultSet res = r_con.Consultar("select id_cta,idpadre_cta,nombre_cta,cod_cta,orden_cta from sys_cuenta where idpadre_cta="+objChildren.Id);
                     while (res.next()) {
-                        Cuenta hijo = new Cuenta (res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5));
+                        _Pruebas.Cuenta2 hijo = new _Pruebas.Cuenta2(res.getString(1), res.getString(2), res.getString(3),res.getString(4),res.getInt(5));
                         childnode = new DefaultMutableTreeNode(hijo);
-                        //System.out.println(childnode);
                         modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());                        
                     }
                     res.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(GUI_Plan_Cuentas_Final.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GUI_Plan_Cuenta.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             //Pregunto si llego al fin.
@@ -348,18 +344,8 @@ public void cargarArbol() {
                 if (cant_count < toEle) {
                     System.out.println("-----------------");
                     aux = count;
-                    
+                    count = -2;
                     e = root1.breadthFirstEnumeration();
-                    if (entre==0){
-                        count = -2;
-                        entre+=1;
-                    }
-                    else{
-                       
-                        count = -2;
-                        parent1 = (DefaultMutableTreeNode) e.nextElement();
-                        parent1 = (DefaultMutableTreeNode) e.nextElement();
-                    }
                     cant_count = toEle;
                 } else {
                     break;
@@ -373,24 +359,21 @@ public void cargarArbol() {
     }
 
    private void inicializarArbol() {
-        //pido el objeto -1 por que es el Plan de Cuentas
-        Cuenta obj = (Cuenta) getHijos(0).get(0);
+        _Pruebas.Cuenta2 obj = (_Pruebas.Cuenta2) getHijos("0").get(0);
         root1 = new DefaultMutableTreeNode(obj);
         modelo1 = new DefaultTreeModel(root1);
         Enumeration e = root1.breadthFirstEnumeration();
         parent1 = (DefaultMutableTreeNode) e.nextElement();
-        Cuenta objChildren = (Cuenta) parent1.getUserObject();
+        _Pruebas.Cuenta2 objChildren = (_Pruebas.Cuenta2) parent1.getUserObject();
         
         //consigo los hijos de idparent
-        vecChildren = getHijos(objChildren.getNumero_C());
+        vecChildren = getHijos(objChildren.Id);
 
         for (int k = 0; k < vecChildren.size(); k++) {
             cant_count++;
-            Cuenta hijo;
-            hijo = (Cuenta) vecChildren.get(k);
+            _Pruebas.Cuenta2 hijo = (_Pruebas.Cuenta2) vecChildren.get(k);
             modelo1.insertNodeInto(new DefaultMutableTreeNode(hijo), parent1, parent1.getChildCount());
         }
-        this.JTreeConta.setModel(modelo1);
     }
 
    public int totalElementos(Enumeration e) {
@@ -408,14 +391,14 @@ public void cargarArbol() {
      * @param Id
      * @return
      */
-    public Vector getHijos (int Id) {
+    public Vector getHijos (String Id) {
         r_con.Connection();
-        Vector<Cuenta> data = new Vector<Cuenta>();
+        Vector<_Pruebas.Cuenta2> data = new Vector<_Pruebas.Cuenta2>();
         try {            
-            ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+Id);
+            ResultSet res = r_con.Consultar("select id_cta,idpadre_cta,nombre_cta,cod_cta,orden_cta from sys_cuenta where idpadre_cta="+Id);
 
             while (res.next()) {
-                data.addElement(new Cuenta(res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5)));
+                data.addElement(new _Pruebas.Cuenta2(res.getString(1), res.getString(2), res.getString(3),res.getString(4),res.getInt(5)));
             }
             res.close();
         } catch (SQLException e) {
@@ -436,7 +419,7 @@ public void cargarArbol() {
         r_con.Connection();
         boolean bt = false;
         try {
-            ResultSet res = r_con.Consultar("Select (count(1)+1) from plan_cuentas where pc_id_padre=" + Id);
+            ResultSet res = r_con.Consultar("Select (count(1)+1) from sys_cuenta where idpadre_cta=" + Id);
             res.next();
             int numhijos = res.getInt(1)-1;
             if (numhijos != 0) {

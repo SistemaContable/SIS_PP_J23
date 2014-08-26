@@ -1,17 +1,15 @@
-package Contabilidad;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-
+package _Pruebas;
 
 /**
  *
  * @author Wilfo
  */
-public class Cuenta2 {
+public class CLS_ITEM_CONTA {
 
     public String Id;
     public String Idparent;
@@ -20,7 +18,7 @@ public class Cuenta2 {
     public int Orden;
 
 
-    public Cuenta2(String Id, String Idparent,String Descrip,String CodCuenta,int Orden) {
+    public CLS_ITEM_CONTA(String Id, String Idparent,String Descrip,String CodCuenta,int Orden) {
         this.Id = Id;
         this.Idparent=Idparent;
         this.Descripcion = Descrip;
@@ -61,6 +59,6 @@ public class Cuenta2 {
     }
 
     public String toString(){
-        return CodCuenta+"-"+Descripcion;
+        return  Id +"- "+Descripcion;
     }
 }
