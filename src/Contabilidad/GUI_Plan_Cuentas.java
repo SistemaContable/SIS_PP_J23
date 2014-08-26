@@ -16,8 +16,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -42,22 +45,25 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         usr = u;
         r_con=con;     
         initComponents();
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
         cargarArbol();         
     }
 
     
     private void actualizarArbol(){        
+        
         vecChildren = new Vector<Cuenta>();
-        int cant_count=0;
+        cant_count=0;
         modelo1=null;
         root1 = null;
         parent1 = null;
-        childnode = null;
+        childnode = null; 
+        
         this.JTreeConta.setModel(modelo1);
-        //initComponents();
-        cargarArbol();        
+        cargarArbol(); 
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,7 +146,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 .addComponent(jButton2)
                 .addGap(27, 27, 27)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addGap(22, 22, 22))
         );
@@ -159,7 +165,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         jLabel2.setText("Título:");
 
         jTextField1.setToolTipText("");
-        jTextField1.setEnabled(false);
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Título");
@@ -174,12 +179,12 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         jLabel4.setText("Numero:");
 
         jTextField2.setToolTipText("");
-        jTextField2.setEnabled(false);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel5.setText("ID:");
+        jLabel5.setText("Numero de Cuenta:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("-");
 
         jTextField3.setToolTipText("");
@@ -209,40 +214,34 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jRadioButton1)
-                        .addGap(33, 33, 33)
-                        .addComponent(jRadioButton2)
-                        .addGap(128, 128, 128))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(12, 12, 12)
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addGap(76, 76, 76)
-                                            .addComponent(jLabel5))
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(41, Short.MAX_VALUE))))
+                                .addGap(24, 24, 24)
+                                .addComponent(jRadioButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButton2)
+                                .addGap(27, 27, 27)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +263,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
@@ -272,7 +271,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         JTreeConta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -288,7 +287,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 29, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,8 +333,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JTreeContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeContaMouseClicked
-     
-        if(evt.getClickCount()==2){
+        
         DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
         Cuenta loadcuenta;
             if (node == null) //Nothing is selected.
@@ -343,7 +341,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 return;
             }
             else{
-            try {
+            
                 Object nodeInfo = node.getUserObject();
                 loadcuenta = (Cuenta) nodeInfo;
                 this.jLabel6.setText(""+loadcuenta.getNumero_C());
@@ -354,6 +352,29 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 else
                     jRadioButton2.setSelected(true);
                 
+                //jTextField4.setEnabled(true);
+                //JTreeConta.setEnabled(false);
+            }
+        
+        if(evt.getClickCount()==2){
+        node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+        //Cuenta loadcuenta;
+            if (node == null) //Nothing is selected.
+            {
+                return;
+            }
+            else{
+            try {
+                /**Object nodeInfo = node.getUserObject();
+                loadcuenta = (Cuenta) nodeInfo;
+                this.jLabel6.setText(""+loadcuenta.getNumero_C());
+                this.jTextField1.setText(loadcuenta.getNombre_C());
+                this.jTextField2.setText(loadcuenta.getCodigo_PC());
+                if(loadcuenta.isImputable_C())
+                    jRadioButton1.setSelected(true);
+                else
+                    jRadioButton2.setSelected(true);
+                */
                 jTextField4.setEnabled(true);
                 JTreeConta.setEnabled(false);
                 
@@ -399,9 +420,10 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 limpiarForm();
                 JTreeConta.setEnabled(true);
                 
-                actualizarArbol();
+                r_con.cierraConexion(); 
                 
-                r_con.cierraConexion();                
+                actualizarArbol();                
+                               
             } catch (SQLException ex) {
                 r_con.cierraConexion();
                 Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
