@@ -38,6 +38,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     
     private Conexion r_con;
     private Usuario usr;
+    private String nameTable = "plan_cuentas";
+    private String operacion = "";
     
     public GUI_Plan_Cuentas(Usuario u, Conexion con) {
         usr = u;
@@ -267,11 +269,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 jTextField4FocusLost(evt);
             }
         });
-        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField4KeyPressed(evt);
-            }
-        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Cancelar");
@@ -495,20 +492,30 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             return;
         }
         else{
-            mensajeError(" ");
-            Object nodeInfo = node.getUserObject();
-            Cuenta loadcuenta = (Cuenta) nodeInfo;
-            this.jTextField5.setText(""+loadcuenta.getNumero_C());
-            this.jTextField1.setText(loadcuenta.getNombre_C());
-            this.jTextField2.setText(loadcuenta.getCodigo_PC());
-            if(loadcuenta.isImputable_C())
-                jRadioButton2.setSelected(true);
-            else
-                jRadioButton1.setSelected(true);
+            if (this.operacion!="MODIFICAR"){
+                if (JTreeConta.isEnabled()){
+                    mensajeError(" ");
+                }
+                Object nodeInfo = node.getUserObject();
+                Cuenta loadcuenta = (Cuenta) nodeInfo;
+                this.jTextField5.setText(""+loadcuenta.getNumero_C());
+                this.jTextField1.setText(loadcuenta.getNombre_C());
+                this.jTextField2.setText(loadcuenta.getCodigo_PC());
+                if(loadcuenta.isImputable_C())
+                    jRadioButton2.setSelected(true);
+                else
+                    jRadioButton1.setSelected(true);
+            }
+            else{
+                Object nodeInfo = node.getUserObject();
+                Cuenta loadcuenta = (Cuenta) nodeInfo;
+                //VERIFICAR DE ACA SI ES IMPUTABLE O NO Y LUEGO CAMBIAR
+                jTextField3.setText(this.codigoPlanDisponible(loadcuenta.getNumero_C(),loadcuenta.getCodigo_PC()));
+            }
         }
         
         //si hace doble click es como dar de alta
-        if(evt.getClickCount()==2){
+        if((evt.getClickCount()==2)&&(JTreeConta.isEnabled())){
             altaCuenta ();
         }
       
@@ -524,14 +531,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
-        // TODO add your handling code here:
-        if(evt.getKeyCode()==10){
-            jRadioButton1.setSelected(false);
-            jRadioButton2.setSelected(false);            
-        }            
-    }//GEN-LAST:event_jTextField4KeyPressed
-
     private void jTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusLost
         // TODO add your handling code here:
         jRadioButton1.setSelected(false);
@@ -539,54 +538,91 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField4FocusLost
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        this.bajaCuenta();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        this.modificarCuenta();        
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(!jTextField4.getText().equals("")){
-            if((jRadioButton1.isSelected())||(jRadioButton2.isSelected())){
-                try {
-                    mensajeError(" ");
-                    r_con.Connection();
-                    ResultSet rs = r_con.Consultar("select max(pc_nro_cuenta) from plan_cuentas");
-                    rs.next();                
-                
-                    int padre = Integer.parseInt(jTextField5.getText());
-                    int num_cuenta = rs.getInt(1)+1;
-                    String cod_plan = jTextField3.getText();
-                    String leyenda = jTextField4.getText();
-                    
-                    int imputable = 0;                    
-                    if(jRadioButton1.isSelected())imputable = 1;
+        if (this.operacion=="ALTA"){
+            if(!jTextField4.getText().equals("")){
+                if((jRadioButton1.isSelected())||(jRadioButton2.isSelected())){
+                    if (!existeCuenta(jTextField4.getText())){
+                        try {
+                            mensajeError(" ");
+                            r_con.Connection();
+                            ResultSet rs = r_con.Consultar("select max(pc_nro_cuenta) from "+nameTable);
+                            rs.next();                
 
-                    String nuevaCuenta = "'"+cod_plan+"',"+num_cuenta+",'"+leyenda+"',"+imputable+","+padre;
-                    r_con.Insertar("insert into plan_cuentas values("+nuevaCuenta+")");
-                    JOptionPane.showMessageDialog(null,"Cuenta agregada correctamente.");
-                    limpiarForm();
-                    
-                    JTreeConta.setEnabled(true);
-                    verPanelOperacion(false);
-                    habilitarOperaciones(true);
-                
-                    r_con.cierraConexion(); 
-                
-                    actualizarArbol();                
-                               
-                } catch (SQLException ex) {
-                    r_con.cierraConexion();
-                    Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
-                }                                               
+                            int padre = Integer.parseInt(jTextField5.getText());
+                            int num_cuenta = rs.getInt(1)+1;
+                            String cod_plan = jTextField3.getText();
+                            String leyenda = jTextField4.getText();
+
+                            int imputable = 0;                    
+                            if(jRadioButton1.isSelected())imputable = 1;
+
+                            String nuevaCuenta = "'"+cod_plan+"',"+num_cuenta+",'"+leyenda+"',"+imputable+","+padre;
+                            r_con.Insertar("insert into "+nameTable+" values("+nuevaCuenta+")");
+                            JOptionPane.showMessageDialog(null,"Cuenta agregada correctamente.");
+                            limpiarForm();
+
+                            JTreeConta.setEnabled(true);
+                            verPanelOperacion(false);
+                            habilitarOperaciones(true);
+
+                            r_con.cierraConexion(); 
+
+                            actualizarArbol();                
+
+                        } catch (SQLException ex) {
+                            r_con.cierraConexion();
+                            Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }  
+                    else{
+                        mensajeError("Ya existe una Cuenta con el nombre ingresado.");
+                        jTextField4.requestFocus();
+                    }
+                }
+                else{
+                    mensajeError("Seleccione si o si el tipo de Cuenta.");
+                }
             }
             else{
-                mensajeError("Seleccione si el tipo de Cuenta.");
+                 mensajeError("Complete el nombre de la Cuenta.");
+                 jTextField4.requestFocus();
             }
         }
         else{
-             mensajeError("Complete el nombre de la Cuenta.");
+            if (this.operacion=="BAJA"){
+                if(!jTextField4.getText().equals("")){
+                    if (jTextField4.getText().equals(jTextField1.getText())){
+                        mensajeError(" ");
+                        r_con.Connection();
+                        r_con.Borrar("DELETE FROM "+nameTable+" WHERE pc_nro_cuenta = "+jTextField5.getText());
+                        //JOptionPane.showMessageDialog(null,"Cuenta eliminada correctamente.");
+                        limpiarForm();
+
+                        JTreeConta.setEnabled(true);
+                        verPanelOperacion(false);
+                        habilitarOperaciones(true);
+
+                        r_con.cierraConexion(); 
+                        actualizarArbol(); 
+                    }
+                    else{
+                        mensajeError("Los nombres de las Cuentas no coinciden.");
+                        jTextField4.requestFocus();
+                    }
+                }
+                else{
+                    mensajeError("Por seguridad ingrese el nombre de la Cuenta a eliminar.");
+                    jTextField4.requestFocus();
+                }
+            }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -601,17 +637,11 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
          if (evt.getKeyCode() == KeyEvent.VK_F1){
              altaCuenta();
          }
+         if (evt.getKeyCode() == KeyEvent.VK_F2){
+             bajaCuenta();
+         }
     }//GEN-LAST:event_JTreeContaKeyPressed
-    
-    private boolean camposNecesarios () {
-       if ((jTextField1.getText().length()==0)) 
-       {
-            JOptionPane.showMessageDialog(null, "Complete todos los campos!","Atención",JOptionPane.WARNING_MESSAGE);
-            return false;
-       }
-       return true;      
-               
-    }
+   
         
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -671,7 +701,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             if (count > aux) {
                 try {
                     Cuenta objChildren = (Cuenta) parent1.getUserObject();
-                    ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C());
+                    ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C()+" order by pc_codigo_plan_cuenta");
                     while (res.next()) {
                         Cuenta hijo = new Cuenta (res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5));
                         childnode = new DefaultMutableTreeNode(hijo);
@@ -745,7 +775,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         r_con.Connection();
         Vector<Cuenta> data = new Vector<Cuenta>();
         try {            
-            ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+Id);
+            ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from "+nameTable+" where pc_id_padre="+Id+" order by pc_codigo_plan_cuenta");
 
             while (res.next()) {
                 data.addElement(new Cuenta(res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5)));
@@ -765,11 +795,11 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     * @param Idparent
     * @return
     */
-    public int getCantidadHijos(String Id) {
+    public int getCantidadHijos(int Id) {
         r_con.Connection();
         int numhijos = 0;
         try {
-            ResultSet res = r_con.Consultar("Select (count(1)) from plan_cuentas where pc_id_padre=" + Id);
+            ResultSet res = r_con.Consultar("Select (count(1)) from "+nameTable+" where pc_id_padre=" + Id);
             res.next();
             numhijos = res.getInt(1);
             res.close();
@@ -839,29 +869,120 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private void mensajeError (String m){
         jLabel10.setText(m);
     }
+     
+    public boolean existeCuenta (String nombre){
+        boolean esta = false;
+        try {
+            r_con.Connection();
+            ResultSet rsl;
+            rsl = r_con.Consultar("SELECT COUNT(*) FROM "+nameTable+" WHERE pc_nombre_cuenta = '"+nombre+"';");
+            rsl.next();
+            int existe = Integer.parseInt(rsl.getString(1));
+            rsl.close();
+            if (existe > 0){
+                esta = true;
+            }
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        r_con.cierraConexion();
+        return esta;
+    }
+    
+    private boolean eligioCuenta () {
+        boolean eligio = true;        
+        if ((jTextField5.getText().length()==0) && (jTextField1.getText().length()==0) && (jTextField2.getText().length()==0)){
+            eligio = false;
+        }
+        return eligio;
+    }
+    
+    private String codigoPlanDisponible (int id_padre, String codigo_plan_padre){
         
+        String codigo_hijo = codigo_plan_padre;
+        
+        Vector<Cuenta> Hijos = getHijos(id_padre);
+        
+        String nuevo_codigo="";
+        boolean termine = false;
+        int i = 1;
+        
+        while ((i <= Hijos.size()+1)&&(!termine)){
+            //caso Titulo Raiz, Activo, etc
+            if ((codigo_plan_padre.length()==1) && (codigo_plan_padre.equals("0"))){
+                nuevo_codigo="";
+            }
+            else{
+                //caso hijo de Activo, etc
+                if (codigo_plan_padre.length()==1){
+                    nuevo_codigo=codigo_plan_padre+".";
+                }
+                else{
+                    //caso de hijo en que ya son .01, .02. etc
+                    if ((codigo_plan_padre.length()>1)&&(i<=9)){
+                        nuevo_codigo=codigo_plan_padre+".0";
+                    }
+                    else{
+                        //caso de hijo en que ya son .11, .12. etc
+                        nuevo_codigo=codigo_plan_padre+".";
+                    }
+                }
+            }
+            
+            nuevo_codigo = nuevo_codigo+Integer.toString(i);
+            
+            if (i <= Hijos.size()){
+                Cuenta hijo = (Cuenta) Hijos.get(i-1);
+                if (!hijo.getCodigo_PC().equals(nuevo_codigo)){
+                    termine = true;
+                }
+            }
+            else{
+                //llegue al maximo, quiere decir que el nuevo codigo toma k
+                termine=true;
+            }           
+            i++;          
+        
+        }        
+        return nuevo_codigo;       
+    }
         
     private void altaCuenta (){
-        if (jRadioButton1.isSelected()){
+        DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+        Cuenta loadcuenta = null;
+        if (node == null){
+            mensajeError("Primero debe seleccionar una Cuenta.");
+        }
+        else{
+            Object nodeInfo = node.getUserObject();
+            loadcuenta = (Cuenta) nodeInfo;
+        }
+        
+        boolean eligio = eligioCuenta();
+        
+        if ((eligio)&&((loadcuenta!=null)&&(!loadcuenta.isImputable_C()))){
            
             habilitarOperaciones(false);
             limpiarPanelOperacion ();
             verPanelOperacion(true);
             mensajeError(" ");
             jLabel9.setText("Alta de nueva Cuenta:");
+            this.operacion = "ALTA";
 
-            DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+            node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
 
             if (node != null) //Nothing is selected.
             {
-                try {
-                    jTextField4.requestFocus();
-                    JTreeConta.setEnabled(false);
-                    JTreeConta.setEditable(false);
+                jTextField4.requestFocus();
+                JTreeConta.setEnabled(false);
+                int id_padre = Integer.parseInt(jTextField5.getText());
+                String plan_padre = jTextField2.getText();
+                jTextField3.setText(this.codigoPlanDisponible(id_padre,plan_padre));
 
-                    r_con.Connection();
+                    /*r_con.Connection();
                     int id_padre = Integer.parseInt(jTextField5.getText());
-                    ResultSet rs = r_con.Consultar("select COUNT(*) from plan_cuentas where pc_id_padre="+id_padre);
+                    ResultSet rs = r_con.Consultar("select COUNT(*) from "+nameTable+" where pc_id_padre="+id_padre);
                     rs.next(); 
                     int futuroHijo = rs.getInt(1);
                     futuroHijo++;
@@ -870,16 +991,100 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                         jTextField3.setText(jTextField2.getText()+".0"+futuroHijo);
                     else
                         jTextField3.setText(jTextField2.getText()+"."+futuroHijo);
-
-                    r_con.cierraConexion();
-                } catch (SQLException ex) {
-                    r_con.cierraConexion();
-                    Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
-                }                
+                    r_con.cierraConexion();*/               
             }
         }
         else{
-            mensajeError("Para AGREGAR una CUENTA debe SELECCIONAR un TÍTULO");
+            if (!eligio){
+                mensajeError("Primero debe seleccionar una Cuenta.");
+            }
+            else{
+                mensajeError("Para AGREGAR una CUENTA debe SELECCIONAR un TÍTULO");
+            }
+        }
+    }
+    
+    private void bajaCuenta(){
+        DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+        Cuenta loadcuenta;
+        int cantidad_hijos = -1;
+        
+        if (node == null){
+            mensajeError("Primero debe seleccionar una Cuenta.");
+        }
+        else{
+            Object nodeInfo = node.getUserObject();
+            loadcuenta = (Cuenta) nodeInfo;
+            cantidad_hijos = this.getCantidadHijos(loadcuenta.getNumero_C());
+        }
+        
+        boolean eligio = eligioCuenta();
+        
+        if ((eligio)&&(cantidad_hijos == 0)){        
+            habilitarOperaciones(false);
+            limpiarPanelOperacion ();
+            verPanelOperacion(true);
+            mensajeError("Por seguridad ingrese el nombre de la Cuenta a eliminar.");
+            jLabel9.setText("Baja de Cuenta:");
+            this.operacion="BAJA";
+            jTextField3.setText("-");
+            JTreeConta.setEnabled(false);
+            jTextField4.requestFocus();            
+        }
+        else{
+            if (!eligio){
+                mensajeError("Primero debe seleccionar una Cuenta.");
+            }
+            else{
+                mensajeError("La Cuenta que intenta Eliminar contiene Cuentas.");
+            }
+        }
+    }
+    
+    private void modificarCuenta (){
+        DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+        Cuenta loadcuenta;
+        int cantidad_hijos = -1;
+        
+        if (node == null){
+            mensajeError("Primero debe seleccionar una Cuenta.");
+        }
+        else{
+            Object nodeInfo = node.getUserObject();
+            loadcuenta = (Cuenta) nodeInfo;
+            cantidad_hijos = this.getCantidadHijos(loadcuenta.getNumero_C());
+            
+        }
+        
+        boolean eligio = eligioCuenta();
+        
+        if ((eligio)&&(cantidad_hijos == 0)){        
+            habilitarOperaciones(false);
+            limpiarPanelOperacion ();
+            verPanelOperacion(true);
+            mensajeError("Seleccione ahora a la cuenta donde desea mover, y el titulo.");
+            jLabel9.setText("Modificar una Cuenta:");
+            this.operacion="MODIFICAR";
+            jTextField4.setText(jTextField1.getText());
+            //jTextField3.setText("-");
+            //JTreeConta.setEnabled(false);
+            jTextField4.requestFocus();            
+        }
+        else{
+            if (!eligio){
+                mensajeError("Primero debe seleccionar una Cuenta.");
+            }
+            else{
+                habilitarOperaciones(false);
+                limpiarPanelOperacion ();
+                verPanelOperacion(true);
+                jLabel9.setText("Modificar una Cuenta:");
+                this.operacion="MODIFICAR";
+                jTextField3.setText("-");
+                JTreeConta.setEnabled(false);
+                jTextField4.requestFocus();
+                mensajeError("Solo podra modificar el nombre porque contiene Cuentas.");
+            }
         }
     }
 }
