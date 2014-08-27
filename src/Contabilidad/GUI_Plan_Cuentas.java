@@ -182,7 +182,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel3)
@@ -250,6 +250,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2)
         );
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(370, 166));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -447,8 +449,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -464,11 +466,11 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                         .addGap(8, 8, 8)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -482,6 +484,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         habilitarOperaciones(true);
         mensajeError(" ");
         verPanelOperacion(false);
+        this.operacion="";
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JTreeContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeContaMouseClicked
@@ -507,10 +510,24 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                     jRadioButton1.setSelected(true);
             }
             else{
+                mensajeError(" ");
                 Object nodeInfo = node.getUserObject();
                 Cuenta loadcuenta = (Cuenta) nodeInfo;
-                //VERIFICAR DE ACA SI ES IMPUTABLE O NO Y LUEGO CAMBIAR
-                jTextField3.setText(this.codigoPlanDisponible(loadcuenta.getNumero_C(),loadcuenta.getCodigo_PC()));
+                //VERIFICAR DE ACA SI ES IMPUTABLE O NO
+                if (!loadcuenta.isImputable_C()){
+                    jButton6.setEnabled(true);
+                    
+                    if (this.hayLugarEnPlan(loadcuenta.getNumero_C(),loadcuenta.getCodigo_PC())){
+                        jTextField3.setText(this.codigoPlanDisponible(loadcuenta.getNumero_C(),loadcuenta.getCodigo_PC()));
+                    }
+                    else{
+                        jButton6.setEnabled(false);
+                        mensajeError("La Cuenta que seleccionó ya alcanzó su limite (9 ó 99).");
+                    }                     
+                }
+                else{                    
+                    mensajeError("Para MODIFICAR una CUENTA debe SELECCIONAR un TÍTULO");
+                }
             }
         }
         
@@ -621,6 +638,50 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 else{
                     mensajeError("Por seguridad ingrese el nombre de la Cuenta a eliminar.");
                     jTextField4.requestFocus();
+                }
+            }
+            else{
+                if (this.operacion=="MODIFICAR"){
+                    if(!jTextField4.getText().equals("")){
+                        //si tenia hijos y es solo el titulo
+                        if (jTextField3.getText().equals("-")){
+                            r_con.Connection();
+                            String sql =  "UPDATE "+nameTable+" SET "
+                                                +" pc_nombre_cuenta = '"+jTextField4.getText()
+                                                +"' WHERE pc_nro_cuenta = "+jTextField5.getText()+";";
+                            
+                            r_con.Actualizar(sql);                           
+                            r_con.cierraConexion();
+                             
+                        }
+                        else{
+                            DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
+                            Object nodeInfo = node.getUserObject();
+                            Cuenta loadcuenta = (Cuenta) nodeInfo;
+                            System.out.println("MODIFICARIA:"+jTextField1.getText()+" CP: "+jTextField2.getText()+" ELIGIENDO A: "+loadcuenta.getNombre_C()+" POR: "+jTextField4.getText()+" CON CP: "+jTextField3.getText());
+                            r_con.Connection();
+                            
+                            String sql =  "UPDATE "+nameTable+" SET "
+                                                +" pc_codigo_plan_cuenta = '"+jTextField3.getText()+"', "
+                                                +" pc_nombre_cuenta = '"+jTextField4.getText()+"', "
+                                                +" pc_id_padre = "+loadcuenta.getNumero_C()
+                                                +" WHERE pc_nro_cuenta = "+jTextField5.getText()+";";
+                            
+                            r_con.Actualizar(sql);
+                            r_con.cierraConexion();
+                        }
+                        this.operacion="";
+                        limpiarForm();
+                        mensajeError(" ");
+                        JTreeConta.setEnabled(true);
+                        verPanelOperacion(false);
+                        habilitarOperaciones(true);
+                        actualizarArbol();                        
+                    }
+                    else{
+                        mensajeError("Complete el nombre de la Cuenta.");
+                        jTextField4.requestFocus();
+                    }
                 }
             }
         }
@@ -898,7 +959,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         return eligio;
     }
     
-    private String codigoPlanDisponible (int id_padre, String codigo_plan_padre){
+    public String codigoPlanDisponible (int id_padre, String codigo_plan_padre){
         
         String codigo_hijo = codigo_plan_padre;
         
@@ -947,6 +1008,41 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         }        
         return nuevo_codigo;       
     }
+    
+   public boolean hayLugarEnPlan (int id_padre, String codigo_plan_padre){
+       boolean haylugar = false; 
+       try {
+            r_con.Connection();
+            ResultSet rs = r_con.Consultar("select COUNT(*) from "+nameTable+" where pc_id_padre="+id_padre);
+            rs.next();
+            int futuroHijo = rs.getInt(1);
+            futuroHijo++;
+            
+            if ((codigo_plan_padre.length()==1) && (codigo_plan_padre.equals("0"))){
+                haylugar = futuroHijo<=9;
+            }
+            else{
+                //caso hijo de Activo, etc
+                if (codigo_plan_padre.length()==1){
+                    haylugar = futuroHijo<=9;
+                }
+                else{
+                    //caso de hijo en que ya son 1.1, 1.2. etc
+                    if ((codigo_plan_padre.length()>=1)&&((codigo_plan_padre.length()<3))){
+                        haylugar = futuroHijo<=9;
+                    }
+                    else{
+                        //caso de hijo en que ya son .11, .12. etc
+                        haylugar = futuroHijo<=99;
+                    }
+                }
+            }
+            r_con.cierraConexion();   
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return haylugar;
+   } 
         
     private void altaCuenta (){
         DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
@@ -974,24 +1070,20 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
 
             if (node != null) //Nothing is selected.
             {
-                jTextField4.requestFocus();
-                JTreeConta.setEnabled(false);
+                jTextField4.requestFocus();                
                 int id_padre = Integer.parseInt(jTextField5.getText());
                 String plan_padre = jTextField2.getText();
-                jTextField3.setText(this.codigoPlanDisponible(id_padre,plan_padre));
-
-                    /*r_con.Connection();
-                    int id_padre = Integer.parseInt(jTextField5.getText());
-                    ResultSet rs = r_con.Consultar("select COUNT(*) from "+nameTable+" where pc_id_padre="+id_padre);
-                    rs.next(); 
-                    int futuroHijo = rs.getInt(1);
-                    futuroHijo++;
-
-                    if(futuroHijo<10)
-                        jTextField3.setText(jTextField2.getText()+".0"+futuroHijo);
-                    else
-                        jTextField3.setText(jTextField2.getText()+"."+futuroHijo);
-                    r_con.cierraConexion();*/               
+                
+                if (this.hayLugarEnPlan(id_padre, plan_padre)){
+                    JTreeConta.setEnabled(false);
+                    jTextField3.setText(this.codigoPlanDisponible(id_padre,plan_padre));
+                }
+                else{
+                    habilitarOperaciones(true);
+                    limpiarPanelOperacion ();
+                    verPanelOperacion(false);
+                    mensajeError("Se llegó al límite de la Cuenta (9 ó 99), rediseñe su Plan de Cta.");
+                }              
             }
         }
         else{
@@ -1062,7 +1154,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             habilitarOperaciones(false);
             limpiarPanelOperacion ();
             verPanelOperacion(true);
-            mensajeError("Seleccione ahora a la cuenta donde desea mover, y el titulo.");
+            mensajeError("Seleccione ahora a la cuenta donde desea mover, y un el título.");
             jLabel9.setText("Modificar una Cuenta:");
             this.operacion="MODIFICAR";
             jTextField4.setText(jTextField1.getText());
@@ -1083,7 +1175,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                 jTextField3.setText("-");
                 JTreeConta.setEnabled(false);
                 jTextField4.requestFocus();
-                mensajeError("Solo podra modificar el nombre porque contiene Cuentas.");
+                mensajeError("Sólo podrá modificar el nombre porque la Cuenta contiene Cuentas.");
             }
         }
     }
