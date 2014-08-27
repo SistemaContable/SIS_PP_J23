@@ -658,7 +658,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                             DefaultMutableTreeNode  node = (DefaultMutableTreeNode) JTreeConta.getLastSelectedPathComponent();
                             Object nodeInfo = node.getUserObject();
                             Cuenta loadcuenta = (Cuenta) nodeInfo;
-                            System.out.println("MODIFICARIA:"+jTextField1.getText()+" CP: "+jTextField2.getText()+" ELIGIENDO A: "+loadcuenta.getNombre_C()+" POR: "+jTextField4.getText()+" CON CP: "+jTextField3.getText());
                             r_con.Connection();
                             
                             String sql =  "UPDATE "+nameTable+" SET "
