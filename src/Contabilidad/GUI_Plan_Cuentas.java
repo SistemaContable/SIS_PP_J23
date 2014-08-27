@@ -47,7 +47,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         initComponents();
         verPanelOperacion(false);
         bloquearCampos(false);
-        cargarArbol();         
+        cargarArbol();  
     }
 
     
@@ -109,6 +109,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -420,6 +421,14 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arbol.png"))); // NOI18N
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -427,12 +436,15 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(141, 141, 141)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jButton7)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -701,6 +713,11 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
              bajaCuenta();
          }
     }//GEN-LAST:event_JTreeContaKeyPressed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        this.expandirArbol();
+    }//GEN-LAST:event_jButton8ActionPerformed
    
         
 
@@ -714,6 +731,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -870,6 +888,16 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
         return numhijos;
     }   
+    
+    public void expandirArbol (){
+        int j=JTreeConta.getRowCount();
+        int i=0;
+        while( i < j) {
+            JTreeConta.expandRow(i);
+            i += 1;
+            j = JTreeConta.getRowCount();
+      }
+    }
     
     public void setTitleLabel (String t){
         this.jLabel1.setText(t);
