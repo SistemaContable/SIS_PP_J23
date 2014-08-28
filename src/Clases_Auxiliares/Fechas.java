@@ -38,6 +38,24 @@ public class Fechas {
         return true;
     }
     
+    /**
+     * Este metodo es utilizado para comprobar que la fecha contable este dentro de la fecha de inicio y cierre
+     * de la empresa
+     * @param fecha que deseamos ingresar
+     * @param fechaI fecha Inicio contabilidad
+     * @param fechaC fecha Cierre contabilidad
+     * @return true si pertenece al intevalo de fecha de inicio y cierre de la empresa
+     */
+    public boolean fechaEntreFechas(String fecha,String fechaI,String fechaC){
+        if((menorFechas(fecha,fechaI)==2)||(menorFechas(fecha,fechaI)==0)){
+            if((menorFechas(fecha,fechaC)==1)||(menorFechas(fecha,fechaC)==0)){
+                    return true;
+            }
+        }
+        return false;
+    }
+    
+    
     
     /**
      * obtener el dia de hoy en un String con formato dd/MM/yyyy (dia/mes/año)
@@ -131,7 +149,7 @@ public class Fechas {
     * @param fecha2 String dd/MM/yyyy
     * @return devuelve 1 si la primera es la menor, 2 si la segunda y 0 si son iguales
     */
-   private int menorFechas (String fecha1, String fecha2) {  
+   public int menorFechas (String fecha1, String fecha2) {  
        int menor = -1;
        try {
             /**Obtenemos las fechas enviadas en el formato a comparar*/
@@ -156,6 +174,10 @@ public class Fechas {
        
        return menor;
    }
+   
+                  
+       
+   
 
    
 }

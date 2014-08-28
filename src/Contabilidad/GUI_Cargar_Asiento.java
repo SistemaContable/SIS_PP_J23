@@ -10,6 +10,7 @@ import Interface.*;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Fechas;
 import Clases_Auxiliares.Validaciones;
+import Objetos.Asiento;
 import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,6 +39,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private Usuario usuario;
     private int renglon;
     private DefaultTableModel modelo;
+    private String fechaInicio,fechaCierre;
     
     //libreria de manejo de fechas
     private Fechas fecha = new Fechas ();
@@ -46,16 +49,36 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         r_con=con;
         usuario=usr;
         renglon=0;
-       
+        cargarFechas();
         r_con.Connection();
         inicializarTabla();
         
         this.habilitarPanel1(false);
         this.habilitarPanel2(false);     
         
-        jFormattedTextField1.setText(fecha.getHoy());
+        campoFecha.setText(fecha.getHoy());
+        campoFecha1.setText(fecha.getHoy());
+        campoFecha2.setText(fecha.getHoy());
     }
 
+    private void cargarFechas(){
+        fechaInicio="";
+        fechaCierre="";
+        r_con.Connection();
+        ResultSet rs=r_con.Consultar("select * from datos_empresa");
+        try {
+            if(rs.next()){
+               fechaInicio=fecha.parseFecha(rs.getDate(2));
+               fechaCierre=fecha.parseFecha(rs.getDate(3));
+               
+            }
+            jLabel20.setText(fechaInicio);           
+            jLabel21.setText(fechaCierre);
+            r_con.cierraConexion();    
+        }        
+        catch(Exception e){r_con.cierraConexion();}           
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,8 +93,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jPanel5 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -140,23 +165,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/retomar_asi.png"))); // NOI18N
         jButton6.setText("Retomar Asiento");
 
-        jDateChooser2.setDateFormatString("dd-MM-yyyy");
-        jDateChooser2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDateChooser2FocusLost(evt);
-            }
-        });
+        jLabel18.setText("Fecha Apertura:");
 
-        try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jFormattedTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jFormattedTextField1FocusLost(evt);
-            }
-        });
+        jLabel19.setText("Fecha Cierre:");
+
+        jLabel20.setText("-");
+
+        jLabel21.setText("-");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -164,9 +179,15 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel21)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -178,10 +199,14 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(jLabel20))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(jLabel21))))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -192,7 +217,19 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jLabel16.setText("Tipo:");
 
-        campoFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/MM/yyyy"))));
+        try {
+            campoFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFechaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFechaFocusLost(evt);
+            }
+        });
 
         jTextField1.setEditable(false);
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -251,9 +288,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,7 +298,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addGap(29, 29, 29))
         );
@@ -276,9 +313,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4)
-                                    .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3)
-                                    .addComponent(jLabel16)))
+                                    .addComponent(jLabel16)
+                                    .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(jButton3)))
@@ -334,9 +371,27 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
-        campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/MM/yyyy"))));
+        try {
+            campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusLost(evt);
+            }
+        });
 
-        campoFecha2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/MM/yy"))));
+        try {
+            campoFecha2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFecha2FocusLost(evt);
+            }
+        });
 
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -393,21 +448,25 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addComponent(jTextField6)
                         .addGap(18, 18, 18)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField7)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(campoFecha1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel12)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(campoFecha2)
-                    .addComponent(jTextField8)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField7)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jLabel12)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField8)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel13))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel13)))
+                        .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -422,21 +481,22 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel11)
+                        .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -470,6 +530,15 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jLabel15.setText("Haber:");
 
+        jTextField9.setEditable(false);
+        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
+
+        jTextField10.setEditable(false);
+        jTextField10.setBackground(new java.awt.Color(255, 255, 255));
+
+        jTextField11.setEditable(false);
+        jTextField11.setBackground(new java.awt.Color(255, 255, 255));
+
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Cancelar");
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -482,6 +551,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton2.setText("Guardar");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -492,20 +566,20 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jButton2)
                 .addGap(113, 113, 113)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)
                         .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField10)))
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29))
         );
         jPanel6Layout.setVerticalGroup(
@@ -546,7 +620,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -571,9 +645,32 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        
+        if(controlarCampos()){
+            cargarTabla();
+            borrarCampos();
+            mensajeError(" ");
+        }
+        else
+        {
+            mensajeError("Debe completar todos los campos");
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    public void borrarCampos(){
+        jTextField2.setText(renglon+"");
+        jTextField3.setText("");
+        jTextField3.requestFocus();
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+        jTextField7.setEnabled(true);
+        jTextField8.setEnabled(true);
+        
+        
+    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         r_con.Connection();
@@ -582,25 +679,52 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         SimpleDateFormat formatEntrada = new SimpleDateFormat("dd/MM/yyyy"); 
         Date fechaEntrada = new Date(); 
         String fecha = formatEntrada.format(fechaEntrada);  
-        campoFecha.setText(fecha);
-        
+        campoFecha.setText(fecha);        
+        renglon=1;
+        jTextField9.setText(0+"");
+        jTextField10.setText(0+"");
+        jTextField11.setText(0+"");
+        campoFecha.requestFocus();
         this.habilitarPanel1(true);
         r_con.cierraConexion();
+        habilitarRadioButtons(false);
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void habilitarRadioButtons(boolean valor){
+        jRadioButton1.setEnabled(valor);
+        jRadioButton2.setEnabled(valor);
+        jRadioButton3.setEnabled(valor);
+    }
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         habilitarPanel1(false);
         habilitarPanel2(true);
-        jTextField3.requestFocus();
-        int numAsiento=Integer.parseInt(jTextField1.getText());
-        //jTextField2.setText(obtenerNroRenglon(numAsiento)+"");
-        renglon=1;
+        jTextField3.requestFocus();                      
         jTextField2.setText(renglon+"");
+        
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void habilitarTipo(){
+        if(fecha.menorFechas(campoFecha.getText(), fechaInicio)==0){
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+        }
+        else{
+            if(fecha.menorFechas(campoFecha.getText(), fechaCierre)==0){
+                jRadioButton2.setEnabled(true);
+                jRadioButton3.setEnabled(true);               
+            }
+            else{
+                jRadioButton2.setEnabled(true);
+                jRadioButton2.setSelected(true);
+            }            
+        }                
+    }
+    
+        
     public void generarAyuda(){
         mensajeError(" ");
         //GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4,this); 
@@ -745,27 +869,86 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
       
     }//GEN-LAST:event_jTextField8FocusLost
 
-    private void jDateChooser2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooser2FocusLost
-        // TODO add your handling code here:
-        jDateChooser2.getDate();
-    }//GEN-LAST:event_jDateChooser2FocusLost
-
-    private void jFormattedTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextField1FocusLost
-        // TODO add your handling code here:        
-        if (fecha.isFechaValida(jFormattedTextField1.getText())){
-            mensajeError(" ");
-        }
-        else{
-             mensajeError("La Fecha ingresada no se reconoce como valida.");
-             jFormattedTextField1.requestFocus();
-        }
-    }//GEN-LAST:event_jFormattedTextField1FocusLost
+    private void campoFechaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFechaFocusLost
+        // TODO add your handling code here:                        
+            if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
+                if (fecha.isFechaValida(campoFecha.getText())){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaInicio, fechaCierre)){
+                        mensajeError(" ");            
+                        habilitarTipo();
+                    }
+                    else{
+                        mensajeError("La Fecha ingresada no se encuentra dentro de la fecha inicio y cierre de la empresa.");
+                        campoFecha.requestFocus();
+                    }
+                }
+                else{
+                     mensajeError("La Fecha ingresada no se reconoce como valida.");
+                     campoFecha.requestFocus();
+                }
+            }
+    }//GEN-LAST:event_campoFechaFocusLost
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
         //jTextField4.requestFocus();
         jTextField4.nextFocus();
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
+        // TODO add your handling code here:
+        if (fecha.isFechaValida(campoFecha1.getText())){
+            mensajeError(" ");
+        }
+        else{
+             mensajeError("La Fecha ingresada no se reconoce como valida.");
+             campoFecha1.requestFocus();
+        }
+    }//GEN-LAST:event_campoFecha1FocusLost
+
+    private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
+        // TODO add your handling code here:
+        if (fecha.isFechaValida(campoFecha2.getText())){
+            if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){               
+                mensajeError(" ");
+            }
+            else{
+                mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
+            }
+        }
+        else{
+             mensajeError("La Fecha ingresada no se reconoce como valida.");
+             campoFecha2.requestFocus();
+        }
+    }//GEN-LAST:event_campoFecha2FocusLost
+
+    private void campoFechaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFechaFocusGained
+        // TODO add your handling code here:
+        habilitarRadioButtons(false);
+        
+    }//GEN-LAST:event_campoFechaFocusGained
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        float saldo=Float.parseFloat(jTextField10.getText());
+        if(saldo==0){                    
+            for(int i=0;i<modelo.getRowCount();i++){
+                r_con.Connection();
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                int numRenglon=Integer.parseInt(modelo.getValueAt(i, 0).toString());               
+                String cadena="update borrador_asientos set ba_ok_carga=1 where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+numRenglon;                
+                this.habilitarPanel1(false);
+                this.habilitarPanel2(false);
+                r_con.Actualizar(cadena);               
+            }
+            JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"El asiento que usted intenta registrar no balancea");
+        }
+        r_con.cierraConexion();
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     private void habilitarPanel1(boolean valor){
         campoFecha.setEnabled(valor);
@@ -802,8 +985,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -813,7 +994,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -882,13 +1067,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         return aux;
     }
 
-    private int obtenerNroRenglon(int numAsiento) {
-        int numRenglon=-1;
-        
-        
-        
-        return numRenglon;
-    }
+
 
     private void inicializarTabla() {
         modelo = new DefaultTableModel();
@@ -902,5 +1081,71 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel17.setText(msj); 
        
     }
+    
+    /**
+     * Nos retorna el numero del tipo, segun el radio button seleccionado
+     * @return 
+     */
+    private String getTipo(){
+        if(jRadioButton1.isSelected())
+            return "Asiento Apertura";
+        if(jRadioButton2.isSelected())
+            return "Asiento Normal";
+        if(jRadioButton3.isSelected())
+            return "Asiento Cierre";
+        return "";
+    }
+    
+    private void cargarTabla(){
+        int num_asiento=Integer.parseInt(jTextField1.getText());
+        String tipo=getTipo();
+        String fecha_contabilidad=campoFecha.getText();
+        int num_cuenta=Integer.parseInt(jTextField3.getText());
+        String fecha_operacion=campoFecha1.getText();
+        String fecha_vencimiento=campoFecha2.getText();
+        String comprobante=jTextField5.getText();
+        String leyenda=jTextField6.getText();
+        float debe,haber;        
+        debe=0;haber=0;
+        if((jTextField7.isEnabled())&&(!jTextField7.equals(""))){
+            haber=0;
+            debe=Float.parseFloat(jTextField7.getText());
+        }
+        else
+        {
+            if((jTextField8.isEnabled())&&(!jTextField8.equals(""))){
+                debe=0;
+                haber=Float.parseFloat(jTextField8.getText());
+            }
+        }
+        float debeTotal=Float.parseFloat(jTextField9.getText())+debe;
+        float haberTotal=Float.parseFloat(jTextField11.getText())+haber;
+        float saldo=haberTotal-debeTotal;
+        jTextField9.setText(debeTotal+"");
+        jTextField11.setText(haberTotal+"");
+        jTextField10.setText(saldo+"");
+        
+        Asiento asiento=new Asiento(num_asiento,renglon,fecha_contabilidad,fecha_operacion,fecha_vencimiento,tipo,num_cuenta,comprobante,leyenda,debe,haber,false,false);
+        asiento.insertar(r_con);
+        
+        String []aux_modelo={renglon+"",num_cuenta+"",fecha_operacion,fecha_vencimiento,comprobante,leyenda,debe+"",haber+""};
+        modelo.addRow(aux_modelo);  
+        jTable1.setModel(modelo);
+        renglon++;
+    }
+    
+    /**
+     * Nos controla los campos de Leyenda y Comprobante
+     * @return true en caso de que ambos esten completos false de lo contrario
+     */
+    private boolean controlarCampos(){
+        if((!jTextField5.getText().equals(""))&&(!jTextField6.getText().equals("")))
+            return true;
+        else
+            return false;
+    }
+    
+    
+    
 
 }
