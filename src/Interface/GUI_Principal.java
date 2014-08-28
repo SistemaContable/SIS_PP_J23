@@ -352,6 +352,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu9.add(jMenuItem19);
 
         jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem20.setMnemonic('2');
         jMenuItem20.setText("Gestion Asientos");
         jMenuItem20.setName("T81"); // NOI18N
         jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
