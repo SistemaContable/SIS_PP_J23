@@ -52,16 +52,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         
         this.habilitarPanel1(false);
         this.habilitarPanel2(false);     
-       
-        /*String [] ddMMyyyy = "28/08/2014".split("/");
         
-        System.out.println(ddMMyyyy[0]+ddMMyyyy[1]+ddMMyyyy[2]);
-        
-        int dia = (Integer.parseInt(ddMMyyyy[0]));
-        int mes = (Integer.parseInt(ddMMyyyy[1]));
-        int año = (Integer.parseInt(ddMMyyyy[2]));
-        Date hoy = new Date(año,mes,dia);
-        System.out.println("dia"+hoy.getDate()+"mes"+hoy.getMonth());*/
         jFormattedTextField1.setText(fecha.getHoy());
     }
 
@@ -337,6 +328,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         });
 
         jTextField4.setEditable(false);
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
 
         campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/MM/yyyy"))));
 
@@ -384,10 +380,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField4)
                                 .addGap(18, 18, 18))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(173, 173, 173)
@@ -589,9 +585,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         String fecha = formatEntrada.format(fechaEntrada);  
         campoFecha.setText(fecha);
         
-        
-        
-        
         this.habilitarPanel1(true);
         r_con.cierraConexion();
         
@@ -611,12 +604,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
     public void generarAyuda(){
         mensajeError(" ");
-        GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4);                                            
+        //GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4,this); 
+        GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,this);
         //lo centro respecto a x
         int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
         int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
         np.setLocation(x, y);        
-         //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.getDesktopPane().add(np);
         try {                
@@ -627,7 +621,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
         np.moveToFront();
         np.requestFocus();         
-        
     }
     
     
@@ -645,12 +638,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         mensajeError(" ");
                     }               
                     else{
-                            mensajeError("La cuenta seleccionada no es imputable");
+                            mensajeError("La cuenta seleccionada no es imputable.");
                             jTextField3.requestFocus();
                         }
                     }            
                 else{
-                   generarAyuda();
+                    jTextField3.requestFocus();
+                    generarAyuda();                   
                 }            
             }
             else{           
@@ -765,9 +759,14 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         else{
              mensajeError("La Fecha ingresada no se reconoce como valida.");
              jFormattedTextField1.requestFocus();
-             //jFormattedTextField1.selectAll();
         }
     }//GEN-LAST:event_jFormattedTextField1FocusLost
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+        //jTextField4.requestFocus();
+        jTextField4.nextFocus();
+    }//GEN-LAST:event_jTextField4ActionPerformed
     
     private void habilitarPanel1(boolean valor){
         campoFecha.setEnabled(valor);
@@ -791,9 +790,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton4.setEnabled(valor);
     }
     
-    private boolean camposNecesarios () {
-        return false;
-    }
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -849,21 +845,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 
-public void setTitleLabel (String t){
-        this.jLabel1.setText(t);
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
-}
-
-public void limpiarForm(){
- 
-}
 
     private int getNumeroAsiento() {
         int asiento=-1;

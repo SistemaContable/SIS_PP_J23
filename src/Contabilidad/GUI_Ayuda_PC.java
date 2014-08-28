@@ -11,15 +11,14 @@ import Clases_Auxiliares.Conexion;
 import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.awt.Component;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -41,13 +40,13 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
     private String nameTable = "plan_cuentas";
     private Cuenta cuenta;
     
-    private JTextField campo;
+    //private JTextField campo;    
+    //private JTextField nroCuentaField,nombreCuentaField;
     
-    private JTextField nroCuentaField,nombreCuentaField;
-
+    private JInternalFrame ventana;
    
     
-    public GUI_Ayuda_PC(Usuario u,Conexion con,JTextField campo1,JTextField campo2) {
+    /*public GUI_Ayuda_PC(Usuario u,Conexion con,JTextField campo1,JTextField campo2, JInternalFrame v) {
         initComponents();
         r_con=con;
         usr=u;
@@ -56,14 +55,27 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
         jButton2.setEnabled(false);
         nroCuentaField=campo1;
         nombreCuentaField=campo2;
+        ventana = v;
         
-        //((GUI_Plan_Cuentas)o).setVisible(false);
         cargarArbol(); 
         expandirArbol ();
         
-    }
+    }*/
 
-    
+    public GUI_Ayuda_PC(Usuario u,Conexion con,JInternalFrame v) {
+        initComponents();
+        r_con=con;
+        usr=u;
+        cuenta=null;
+        r_con.Connection();
+        jButton2.setEnabled(false);
+        
+        //internal frame que solicito la ayuda
+        ventana = v;
+        
+        cargarArbol(); 
+        expandirArbol ();        
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -208,17 +220,39 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
             
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        r_con.cierraConexion();        
+        this.dispose();
+        r_con.cierraConexion();
+        try {        
+            ventana.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ventana.moveToFront();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);    
+        
+        this.dispose();
         r_con.cierraConexion();
-        nroCuentaField.setText(cuenta.getNumero_C()+"");
-        nombreCuentaField.setText(cuenta.getNombre_C());
-    
+        
+        //nroCuentaField.setText(cuenta.getNumero_C()+"");
+        //nombreCuentaField.setText(cuenta.getNombre_C());
+        
+        try {
+            ventana.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Ayuda_PC.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        ventana.moveToFront();
+        
+        //al traer el internalFrame al frente vuelve a tomar el foco el TextField que solicito la ayuda
+        //obviamente el foco debe de quedar en el componente que trajo el problema y no en el siguiente
+        Component quienpidioayuda = ventana.getFocusOwner();
+        if (quienpidioayuda instanceof JTextField){
+            ((JTextField)quienpidioayuda).setText(""+cuenta.getNumero_C());
+            quienpidioayuda.nextFocus();
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void JTreeContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeContaMouseClicked
@@ -243,118 +277,110 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
             
     }//GEN-LAST:event_JTreeContaMouseClicked
     
-  public void cargarArbol() {
-        //inicializo el arbol
-        inicializarArbol();
-        
-        //cargo las cuentas hijo
-        r_con.Connection();
-        int count = 0;
-        int aux = 0;
-        Enumeration e = root1.breadthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            parent1 = (DefaultMutableTreeNode) e.nextElement();
-            if (count > aux) {
-                try {
-                    Cuenta objChildren = (Cuenta) parent1.getUserObject();
-                    ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C()+" order by pc_codigo_plan_cuenta");
-                    while (res.next()) {
-                        Cuenta hijo = new Cuenta (res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5));
-                        childnode = new DefaultMutableTreeNode(hijo);
-                        modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());                        
-                    }
-                    res.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            //Pregunto si llego al fin.
-            if (e.hasMoreElements() == false) {
-                int toEle = totalElementos(root1.breadthFirstEnumeration());
-                if (cant_count < toEle) {
-                    aux = count;
-		    count = -1;                    
-                    e = root1.breadthFirstEnumeration();
-                    cant_count = toEle;
-                } else {
-                    break;
-                }
-            }
-            count++;
-        }
-        System.out.println(cant_count);
-        this.JTreeConta.setModel(modelo1);
-        r_con.cierraConexion();
-    }
-    
-   /**
-     * Metodo PRIVADO de cargarArbol que inicializa el Arbol con las primeras cuentas, Activo, Pasivo, etc
-     */
-    private void inicializarArbol() {
-        //pido el objeto -1 por que es el Plan de Cuentas
-        Cuenta obj = (Cuenta) getHijos(-1).get(0);
-        root1 = new DefaultMutableTreeNode(obj);
-        modelo1 = new DefaultTreeModel(root1);
-        Enumeration e = root1.breadthFirstEnumeration();
-        parent1 = (DefaultMutableTreeNode) e.nextElement();
-        Cuenta objChildren = (Cuenta) parent1.getUserObject();
-        
-        //consigo los hijos de idparent
-        vecChildren = getHijos(objChildren.getNumero_C());
+    public void cargarArbol() {
+          //inicializo el arbol
+          inicializarArbol();
 
-        for (int k = 0; k < vecChildren.size(); k++) {
-            cant_count++;
-            Cuenta hijo;
-            hijo = (Cuenta) vecChildren.get(k);
-            modelo1.insertNodeInto(new DefaultMutableTreeNode(hijo), parent1, parent1.getChildCount());
-        }
-        this.JTreeConta.setModel(modelo1);
-    }
+          //cargo las cuentas hijo
+          r_con.Connection();
+          int count = 0;
+          int aux = 0;
+          Enumeration e = root1.breadthFirstEnumeration();
+          while (e.hasMoreElements()) {
+              parent1 = (DefaultMutableTreeNode) e.nextElement();
+              if (count > aux) {
+                  try {
+                      Cuenta objChildren = (Cuenta) parent1.getUserObject();
+                      ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from plan_cuentas where pc_id_padre="+objChildren.getNumero_C()+" order by pc_codigo_plan_cuenta");
+                      while (res.next()) {
+                          Cuenta hijo = new Cuenta (res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5));
+                          childnode = new DefaultMutableTreeNode(hijo);
+                          modelo1.insertNodeInto(childnode, parent1, parent1.getChildCount());                        
+                      }
+                      res.close();
+                  } catch (SQLException ex) {
+                      Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+              }
+              //Pregunto si llego al fin.
+              if (e.hasMoreElements() == false) {
+                  int toEle = totalElementos(root1.breadthFirstEnumeration());
+                  if (cant_count < toEle) {
+                      aux = count;
+                      count = -1;                    
+                      e = root1.breadthFirstEnumeration();
+                      cant_count = toEle;
+                  } else {
+                      break;
+                  }
+              }
+              count++;
+          }
+          System.out.println(cant_count);
+          this.JTreeConta.setModel(modelo1);
+          r_con.cierraConexion();
+      }
 
-    
-    
-   public int totalElementos(Enumeration e) {
-        int cont = 0;
-        while (e.hasMoreElements()) {
-            e.nextElement();
-            cont++;
-        }
-        return cont;
-    }  
-  
-   
     /**
-     * Return un vector con los hijos.
-     * Id,Idparent,Descripcion,Order
-     * @param Id
-     * @return
-     */
-    public Vector getHijos (int Id) {
-        r_con.Connection();
-        Vector<Cuenta> data = new Vector<Cuenta>();
-        try {            
-            ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from "+nameTable+" where pc_id_padre="+Id+" order by pc_codigo_plan_cuenta");
+      * Metodo PRIVADO de cargarArbol que inicializa el Arbol con las primeras cuentas, Activo, Pasivo, etc
+      */
+     private void inicializarArbol() {
+         //pido el objeto -1 por que es el Plan de Cuentas
+         Cuenta obj = (Cuenta) getHijos(-1).get(0);
+         root1 = new DefaultMutableTreeNode(obj);
+         modelo1 = new DefaultTreeModel(root1);
+         Enumeration e = root1.breadthFirstEnumeration();
+         parent1 = (DefaultMutableTreeNode) e.nextElement();
+         Cuenta objChildren = (Cuenta) parent1.getUserObject();
 
-            while (res.next()) {
-                data.addElement(new Cuenta(res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5)));
-            }
-            res.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-            r_con.cierraConexion();
-        }
-        r_con.cierraConexion();
-        return data;
-    }
-    
-   
-   
-    private void mostrarMSSG (Component c){
-        KeyEvent ke = new KeyEvent(c, KeyEvent.KEY_PRESSED,
-        System.currentTimeMillis(), InputEvent.CTRL_MASK, KeyEvent.VK_F1, KeyEvent.CHAR_UNDEFINED);
-        c.dispatchEvent(ke);
-    }
-        
+         //consigo los hijos de idparent
+         vecChildren = getHijos(objChildren.getNumero_C());
+
+         for (int k = 0; k < vecChildren.size(); k++) {
+             cant_count++;
+             Cuenta hijo;
+             hijo = (Cuenta) vecChildren.get(k);
+             modelo1.insertNodeInto(new DefaultMutableTreeNode(hijo), parent1, parent1.getChildCount());
+         }
+         this.JTreeConta.setModel(modelo1);
+     }
+
+
+
+    public int totalElementos(Enumeration e) {
+         int cont = 0;
+         while (e.hasMoreElements()) {
+             e.nextElement();
+             cont++;
+         }
+         return cont;
+     }  
+
+
+     /**
+      * Return un vector con los hijos.
+      * Id,Idparent,Descripcion,Order
+      * @param Id
+      * @return
+      */
+     public Vector getHijos (int Id) {
+         r_con.Connection();
+         Vector<Cuenta> data = new Vector<Cuenta>();
+         try {            
+             ResultSet res = r_con.Consultar("select pc_codigo_plan_cuenta,pc_nro_cuenta,pc_nombre_cuenta,pc_imputable,pc_id_padre from "+nameTable+" where pc_id_padre="+Id+" order by pc_codigo_plan_cuenta");
+
+             while (res.next()) {
+                 data.addElement(new Cuenta(res.getString(1), res.getInt(2), res.getString(3),res.getBoolean(4),res.getInt(5)));
+             }
+             res.close();
+         } catch (SQLException e) {
+             System.out.println(e);
+             r_con.cierraConexion();
+         }
+         r_con.cierraConexion();
+         return data;
+     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree JTreeConta;
@@ -369,43 +395,17 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-public void setTitleLabel (String t){
-        this.jLabel1.setText(t);
-}
 
-public void buttonBuscar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/buscar.png")));
-    jButton2.setText("Buscar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-}
 
-public void buttonAceptar (){
-    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png")));
-    jButton2.setText("Aceptar");
-    jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    
-}
+        public void expandirArbol (){
+                int j=JTreeConta.getRowCount();
+                int i=0;
+                while( i < j) {
+                    JTreeConta.expandRow(i);
+                    i += 1;
+                    j = JTreeConta.getRowCount();
+              }
+        }
 
-public void expandirArbol (){
-        int j=JTreeConta.getRowCount();
-        int i=0;
-        while( i < j) {
-            JTreeConta.expandRow(i);
-            i += 1;
-            j = JTreeConta.getRowCount();
-      }
-}
-
-public void form_onlySearch (){
-    //this.jTextField2.setEnabled(false);
-}
-
-public void form_Complete (){
-    //this.jTextField2.setEnabled(true);
-}
-
-public void limpiarForm(){
-    
-}
 
 }
