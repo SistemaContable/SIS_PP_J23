@@ -357,13 +357,13 @@ CREATE INDEX IX_bo_asiento_cta ON borrador_asientos (ba_nro_cuenta);
 
 
 
-
-
-
-
-create table datos_empresa(
-	de_razon_social varchar(30),
-	de_fecha_inicio date,
-	de_fecha_cierre date,
+create table parametros_contables(
+	pc_fecha_inicio date,
+	pc_fecha_cierre date,
+	pc_nro_ultimo_asiento int,
+	pc_fecha_impresion_diario date,
+	pc_nro_renglon_diario int,
+	pc_nro_folio int,
+	pc_saldo_transporte float	
 )
 
