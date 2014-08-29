@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
- * @author Manolo
+ * @author Rodrigo
  */
 public class GUI_Usuario extends javax.swing.JInternalFrame {   
     private ArrayList<String> items = new ArrayList<String>();        

@@ -184,5 +184,27 @@ public class Asiento {
         }
         return false;
     }
+    
+    /**
+     * Se conecta a la base de datos y setea el campo ok_carga con el valor ingresado
+     * por parametro
+     * @param r_con Conexion
+     * @param numAsiento Asiento a modificar
+     * @param valor 1 en caso de true, 0 caso de falso
+     */
+    public void setOkCarga(Conexion r_con,int numAsiento,int valor){
+        r_con.Connection();
+        r_con.ActualizarSinCartel("update borrador_asientos set ba_ok_carga="+valor+" where ba_nro_asiento="+numAsiento);
+        r_con.cierraConexion();        
+    }
+    
+    /**
+     * Nos retorna un arreglo con la informacion necesaria para insertar en la tabla
+     * @return 
+     */
+    public String[] getRenglonModelo(){        
+        String [] aux={num_renglon+"",num_cuenta+"",fechaOperacion,fechaVencimiento,comprobante,leyenda,debe+"",haber+""};
+        return aux;      
+    }
         
 }

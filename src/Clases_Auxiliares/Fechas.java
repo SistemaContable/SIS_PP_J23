@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -188,8 +190,17 @@ public class Fechas {
        String year = formato.format(hoy);
        return ("31/12/"+year);       
    } 
-       
-   
+    /**
+     * 
+     * @param 2014-08-29
+     * @return 29/08/2014
+     */
+   public String convertirBarras(String fecha){       
+       String anio=fecha.substring(0, 4);                     
+       String mes=fecha.substring(5,7);
+       String dia=fecha.substring(8,10);
+       return (dia+"/"+mes+"/"+anio);       
+   }
 
    
 }
