@@ -39,8 +39,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private Usuario usuario;
     private int renglon;
     private DefaultTableModel modelo;
-    private String fechaInicio,fechaCierre;
-    
+    private String fechaInicio,fechaCierre,fechaDiario;    
+    private boolean esCarga=false;
     //libreria de manejo de fechas
     private Fechas fecha = new Fechas ();
     
@@ -56,6 +56,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.habilitarPanel1(false);
         this.habilitarPanel2(false);     
         
+        jButton1.setText("Cancelar");
         campoFecha.setText(fecha.getHoy());
         campoFecha1.setText(fecha.getHoy());
         campoFecha2.setText(fecha.getHoy());
@@ -64,16 +65,19 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void cargarFechas(){
         fechaInicio="";
         fechaCierre="";
+        fechaDiario="";
         r_con.Connection();
         ResultSet rs=r_con.Consultar("select * from parametros_contables");
         try {
             if(rs.next()){
                fechaInicio=fecha.parseFecha(rs.getDate(1));
                fechaCierre=fecha.parseFecha(rs.getDate(2));
+               fechaDiario=fecha.parseFecha(rs.getDate(4));
                
             }
             jLabel20.setText(fechaInicio);           
             jLabel21.setText(fechaCierre);
+            jLabel23.setText(fechaDiario);
             r_con.cierraConexion();    
         }        
         catch(Exception e){r_con.cierraConexion();}           
@@ -97,6 +101,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -164,6 +170,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/retomar_asi.png"))); // NOI18N
         jButton6.setText("Retomar Asiento");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Fecha Apertura:");
 
@@ -172,6 +183,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel20.setText("-");
 
         jLabel21.setText("-");
+
+        jLabel22.setText("Fecha Ult. Impresion Diario:");
+
+        jLabel23.setText("-");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -188,7 +203,15 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel21)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102)))
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton6)
@@ -199,11 +222,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
-                    .addComponent(jLabel21)))
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel23)))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -232,9 +257,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         });
 
         jTextField1.setEditable(false);
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField1KeyPressed(evt);
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
             }
         });
 
@@ -620,7 +645,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -639,13 +664,26 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        r_con.cierraConexion();
+        if(!jButton1.getText().equals("Cancelar")){
+            int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                r_con.Connection();
+                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento+" and ba_ok_carga=0");            
+                this.dispose();
+                r_con.cierraConexion();
+            }        
+        }
+        else{
+            this.dispose();
+            r_con.cierraConexion();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         if(controlarCampos()){
+            jButton1.setText("Abandonar Asiento");
             cargarTabla();
             borrarCampos();
             mensajeError(" ");
@@ -698,24 +736,33 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
+        if(esCarga){
+            Asiento asiento=new Asiento();
+            asiento.setOkCarga(r_con, Integer.parseInt(jTextField1.getText()),0);
+        }        
         habilitarPanel1(false);
         habilitarPanel2(true);
         jTextField3.requestFocus();                      
-        jTextField2.setText(renglon+"");
-        
+        jTextField2.setText(renglon+"");        
         
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    
+    /**
+     * Habilita los radioButtons segun la fecha elegida, si la fechaContable
+     * es del mismo dia a la fecha de apertura o a la fecha de cierre o ninguna
+     */
     private void habilitarTipo(){
         if(fecha.menorFechas(campoFecha.getText(), fechaInicio)==0){
             jRadioButton1.setEnabled(true);
             jRadioButton2.setEnabled(true);
+            jRadioButton1.setSelected(true);
         }
         else{
             if(fecha.menorFechas(campoFecha.getText(), fechaCierre)==0){
                 jRadioButton2.setEnabled(true);
-                jRadioButton3.setEnabled(true);               
+                jRadioButton3.setEnabled(true);
+                jRadioButton2.setSelected(true);
             }
             else{
                 jRadioButton2.setEnabled(true);
@@ -792,12 +839,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }
     
     
-    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_jTextField1KeyPressed
-
     private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
         // TODO add your handling code here:
         jTextField4.setText("");
@@ -873,12 +914,12 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:                        
             if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
                 if (fecha.isFechaValida(campoFecha.getText())){
-                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaInicio, fechaCierre)){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
                     }
                     else{
-                        mensajeError("La Fecha ingresada no se encuentra dentro de la fecha inicio y cierre de la empresa.");
+                        mensajeError("La fecha no se encuentra entre la ultima impresion del diario y la fecha de cierre.");
                         campoFecha.requestFocus();
                     }
                 }
@@ -909,8 +950,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
         // TODO add your handling code here:
         if (fecha.isFechaValida(campoFecha2.getText())){
-            if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){               
-                mensajeError(" ");
+            if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){                               
+                    mensajeError(" ");
             }
             else{
                 mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
@@ -939,9 +980,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 String cadena="update borrador_asientos set ba_ok_carga=1 where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+numRenglon;                
                 this.habilitarPanel1(false);
                 this.habilitarPanel2(false);
-                r_con.Actualizar(cadena);               
+                r_con.ActualizarSinCartel(cadena);               
             }
             JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");
+            this.dispose();
         }
         else
         {
@@ -949,13 +991,134 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        habilitarPanelCarga1(true);        
+        jButton1.setText("Abandonar Asiento");
+        esCarga=true;
+        campoFecha.setText("");
+        campoFecha1.setText("");
+        campoFecha2.setText("");
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        // TODO add your handling code here:
+        try{
+            if(esCarga){
+                if((jTextField1==null)||(jTextField1.getText().equals("")))
+                    jTextField1.requestFocus();
+                else
+                {
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                r_con.Connection();
+
+                    ResultSet rs=r_con.Consultar("select ba_nro_asiento,ba_ok_registrado from borrador_asientos where ba_nro_asiento="+numAsiento);
+                    if(rs.next()){
+                        if(!rs.getBoolean(2)){                        
+                            cargarCampos(rs.getInt(1));
+                            jButton3.setEnabled(true);
+                            mensajeError(" ");
+                        }
+                        else
+                        {
+                            deshabilitarCampos();
+                            jTextField1.requestFocus();
+                            mensajeError("El asiento ya se encuentra registrado");
+                        }
+                    }
+                    else
+                    {
+                        deshabilitarCampos();
+                        jTextField1.requestFocus();
+                        mensajeError("El asiento ingresado no existe");                
+                    }            
+                    r_con.cierraConexion();
+                }
+            }
+        }
+        catch(Exception e){
+            r_con.cierraConexion();
+            System.out.println(e.getMessage());
+        }        
+    }//GEN-LAST:event_jTextField1FocusLost
+
+    private void deshabilitarCampos(){
+        modelo=null;
+        jTable1.setModel(modelo);
+        campoFecha.setText("");
+        habilitarRadioButtons(false);                
+        jButton3.setEnabled(false);
+        jTextField3.setText("");                
+        jTextField4.setText("");
+        campoFecha1.setText("");
+        campoFecha2.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+    }
+    
+    private void cargarCampos(int numAsiento){
+        try {
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select * from borrador_asientos where ba_nro_asiento="+numAsiento);
+            Asiento asiento=null;
+            renglon=0;
+            float debeTotal=0;
+            float haberTotal=0;
+            while(rs.next()){
+                renglon++;
+                    asiento=new Asiento(rs.getInt(1),rs.getInt(2),rs.getDate(3).toString(),
+                                            rs.getDate(6).toString(),rs.getDate(7).toString(),
+                                            rs.getString(4),rs.getInt(5),rs.getString(8),
+                                            rs.getString(9),rs.getFloat(10),rs.getFloat(11),
+                                            rs.getBoolean(12),rs.getBoolean(13));
+                modelo.addRow(asiento.getRenglonModelo());
+                jTable1.setModel(modelo);                
+                debeTotal+=asiento.getDebe();
+                haberTotal+=asiento.getHaber();
+            }
+            jTextField9.setText(debeTotal+"");
+            jTextField11.setText(haberTotal+"");
+            float saldo=debeTotal-haberTotal;
+            jTextField10.setText(saldo+"");
+            if(asiento!=null){                             
+                campoFecha.setText(fecha.convertirBarras(asiento.getFecha_contable()));                
+                jTextField2.setText(++renglon+"");
+                if(asiento.getTipo().equals("Asiento Apertura")){
+                    jRadioButton1.setSelected(true);
+                }
+                else{
+                    if(asiento.getTipo().equals("Asiento Normal")){
+                        jRadioButton2.setSelected(true);
+                    }
+                    else{
+                        jRadioButton3.setSelected(true);
+                    }                        
+                }
+            }
+            r_con.cierraConexion();
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Cargar_Asiento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+        
+    private void habilitarPanelCarga1(boolean valor){
+        campoFecha.setEnabled(!valor);
+        campoFecha.setEditable(!valor);
+        jTextField1.setEnabled(valor);
+        jTextField1.setEditable(valor);
+        jTextField1.requestFocus();
+        this.habilitarRadioButtons(!valor);
+    }
     
     private void habilitarPanel1(boolean valor){
         campoFecha.setEnabled(valor);
         jTextField1.setEnabled(valor);
-        jRadioButton1.setEnabled(valor);
-        jRadioButton2.setEnabled(valor);
-        jRadioButton3.setEnabled(valor);
+        this.habilitarRadioButtons(valor);
         jButton3.setEnabled(valor);
     }
     
@@ -999,6 +1162,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1034,7 +1199,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         int asiento=-1;
         try {                        
             r_con.Connection();
-            ResultSet rs=r_con.Consultar("select count(distinct ba_nro_asiento) from "+nameTabla);
+            ResultSet rs=r_con.Consultar("select max(ba_nro_asiento) from "+nameTabla);
             rs.next();
             asiento=rs.getInt(1)+1;
             r_con.cierraConexion();
