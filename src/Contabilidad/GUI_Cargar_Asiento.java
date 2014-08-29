@@ -148,7 +148,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(new javax.swing.border.SoftBevelBorder(0));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -234,7 +234,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
 
         jLabel3.setText("Fecha Contable:");
 
@@ -1044,8 +1044,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField1FocusLost
 
     private void deshabilitarCampos(){
-        modelo=null;
-        jTable1.setModel(modelo);
+        this.inicializarTabla();
         campoFecha.setText("");
         habilitarRadioButtons(false);                
         jButton3.setEnabled(false);
