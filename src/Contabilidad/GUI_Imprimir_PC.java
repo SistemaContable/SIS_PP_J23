@@ -11,9 +11,30 @@ import Clases_Auxiliares.Validaciones;
 import Objetos.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashAttributeSet;
+import javax.print.attribute.standard.PrinterName;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -29,6 +50,8 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
     private String nameTable = "plan_cuentas";
     private String orden_por_CPC = "pc_codigo_plan_cuenta";
     private String orden_por_cro_C = "pc_nro_cuenta";
+    private String nombre_reporte = "plan_cuentas.jrxml";
+    private String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
     
     public GUI_Imprimir_PC(Usuario u, Conexion con) {
@@ -67,6 +90,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jCheckBox2 = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -95,8 +119,8 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
-        jButton2.setText("Aceptar");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/previsualizar.png"))); // NOI18N
+        jButton2.setText("Visualizar Reporte");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,19 +158,28 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("  ");
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/print.png"))); // NOI18N
+        jButton3.setText("Imprimir Reporte");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(185, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
-                .addGap(106, 106, 106)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(89, 89, 89))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,24 +196,27 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                         .addGap(32, 32, 32)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,13 +235,15 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox2))
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(27, 27, 27))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -221,9 +259,146 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (validarDatos()){
-        
+            try {
+                  
+                  //cargo Parametros del Reporte
+                   Map parametros = new HashMap();
+                   parametros.put("name_empresa", r_con.getRazon_social());
+                   if (jCheckBox1.isSelected()){
+                        parametros.put("orden",this.orden_por_CPC);
+                   }
+                   else{
+                       parametros.put("orden",this.orden_por_cro_C);
+                   }
+                   parametros.put("menor_cod_PC",""+jTextField3.getText());
+                   parametros.put("mayor_cod_PC",""+jTextField4.getText());
+                   parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
+                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
+                               
+                   
+                   // Compilamos el .jrxml y lo cargamos  
+                   //final String jasperName = JasperCompileManager.compileReportToFile("src/Reportes/"+nombre_reporte);  
+                   //final JasperReport report = (JasperReport)JRLoader.loadObject(jasperName);  
+                   
+                  
+                    //localizo el reporte para usarlo
+                    JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
+                    
+                    r_con.Connection();
+                    JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
+           
+                    //creo un objeto Visor del Reporte
+                    JasperViewer jviewer = new JasperViewer(print,false);
+                    jviewer.setTitle("Reporte Plan de Cuentas."); 
+            
+                    //quito el boton de imprimir del Visor
+                    JRootPane JRP = (JRootPane) jviewer.getComponent(0);           
+                    JLayeredPane JLP = (JLayeredPane) JRP.getComponent(1);
+                    JPanel JP = (JPanel) JLP.getComponent(0);
+                    JPanel JP2 = (JPanel) JP.getComponent(0);
+                    JRViewer JRV = (JRViewer) JP2.getComponent(0);
+                    JPanel JP3 = (JPanel) JRV.getComponent(0);            
+                    //COMPONENTE 0 es el Boton Guardar, el 1 el es de Imprimir
+                    JP3.getComponent(1).setEnabled(false);
+                    
+                    jviewer.setVisible(true);
+            
+            
+            } catch (Exception e) {
+                r_con.cierraConexion();
+                System.out.println(e.getMessage());
+            } 
+            finally {
+                      r_con.cierraConexion();
+            }    
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {            
+            //cargo Parametros del Reporte
+            Map parametros = new HashMap();
+            parametros.put("name_empresa", r_con.getRazon_social());
+            if (jCheckBox1.isSelected()){
+                parametros.put("orden",this.orden_por_CPC);
+            }
+            else{
+                parametros.put("orden",this.orden_por_cro_C);
+            } 
+            parametros.put("menor_cod_PC",""+jTextField3.getText());
+            parametros.put("mayor_cod_PC",""+jTextField4.getText());
+            parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
+            parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
+            
+            //localizo el reporte para usarlo
+            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
+            
+            r_con.Connection();
+            //cargo los datos
+            JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());            
+
+            //vector con las impresoras del modulo de la base de datos
+            Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
+            //total impresoras disponibles
+            PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
+            //vector con las impresoras del modulo como objeto impresora (PrintService)
+            Vector<PrintService>impresoras_modulo = new Vector();
+            //objeto impresora en el que se imprime
+            PrintService impresora = null;
+
+            if (v.size()>0){
+                String nombre_imp;
+                //caso en que sea una unica impresora por modulo
+                //if(v.size()==1){
+                    //nombre_imp=v.elementAt(0).firstElement();
+                    //AttributeSet aset = new HashAttributeSet();
+                    //aset.add(new PrinterName(nombre_imp, null));
+                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                    //impresora = impresoras[0];
+                    //}
+
+                //caso en que haya mas de una impresora por modulo
+                if (v.size()>=1){
+                    //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
+                    for (int i = 0; i < v.size(); i++) {
+                        nombre_imp=v.elementAt(i).firstElement();
+                        AttributeSet aset = new HashAttributeSet();
+                        aset.add(new PrinterName(nombre_imp, null));
+                        impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                        impresora = impresoras[0];
+                        impresoras_modulo.add(impresora);
+                    }
+                    //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
+                    PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
+                    for (int i = 0; i < impresoras_modulo.size(); i++) {
+                        listado_impresoras[i]=impresoras_modulo.elementAt(i);
+                    }
+                    //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
+                    impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
+                        "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
+                }
+
+                //mando a imprimir el reporte en la impresora
+                if (impresora != null){
+                    JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
+                    jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.TRUE);
+                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                    jrprintServiceExporter.exportReport();
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
+                    + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+            r_con.cierraConexion();
+        } catch (JRException ex) {
+            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
+            r_con.cierraConexion();
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
    
     
     private void minimosYmaximos (){
@@ -255,6 +430,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
