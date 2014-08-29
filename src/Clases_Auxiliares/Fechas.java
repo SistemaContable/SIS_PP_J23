@@ -175,7 +175,19 @@ public class Fechas {
        return menor;
    }
    
-                  
+   public String primerDiadelAño (){
+       Date hoy = new Date();
+       SimpleDateFormat formato = new SimpleDateFormat("yyyy");
+       String year = formato.format(hoy);
+       return ("01/01/"+year);       
+   } 
+   
+   public String ultimoDiadelAño (){
+       Date hoy = new Date();
+       SimpleDateFormat formato = new SimpleDateFormat("yyyy");
+       String year = formato.format(hoy);
+       return ("31/12/"+year);       
+   } 
        
    
 
