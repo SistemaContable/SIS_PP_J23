@@ -7,9 +7,11 @@
 package Contabilidad;
 
 import Clases_Auxiliares.Conexion;
+import Interface.GUI_Principal;
 import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Enumeration;
@@ -40,6 +42,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private Usuario usr;
     private String nameTable = "plan_cuentas";
     private String operacion = "";
+    private Cuenta ctaAyuda=null;
     
     public GUI_Plan_Cuentas(Usuario u, Conexion con) {
         usr = u;
@@ -47,8 +50,14 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         initComponents();
         verPanelOperacion(false);
         bloquearCampos(false);
-        cargarArbol();         
+        cargarArbol();  
     }
+
+    public void setCtaAyuda(Cuenta ctaAyuda) {
+        this.ctaAyuda = ctaAyuda;
+    }
+    
+ 
 
     
     private void actualizarArbol(){        
@@ -109,6 +118,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -420,19 +430,30 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arbol.png"))); // NOI18N
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(141, 141, 141)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(130, 130, 130)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jButton7)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton8)
+                    .addComponent(jButton7))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -525,7 +546,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                         mensajeError("La Cuenta que seleccionó ya alcanzó su limite (9 ó 99).");
                     }                     
                 }
-                else{                    
+                else{
+                    jButton6.setEnabled(false);
                     mensajeError("Para MODIFICAR una CUENTA debe SELECCIONAR un TÍTULO");
                 }
             }
@@ -652,6 +674,13 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                             
                             r_con.Actualizar(sql);                           
                             r_con.cierraConexion();
+                            this.operacion="";
+                            limpiarForm();
+                            mensajeError(" ");
+                            JTreeConta.setEnabled(true);
+                            verPanelOperacion(false);
+                            habilitarOperaciones(true);
+                            actualizarArbol();
                              
                         }
                         else{
@@ -660,22 +689,29 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                             Cuenta loadcuenta = (Cuenta) nodeInfo;
                             r_con.Connection();
                             
-                            String sql =  "UPDATE "+nameTable+" SET "
+                            String message="Se va a modificar la Cuenta "+jTextField1.getText()+" con Codigo de Plan: "+jTextField2.getText() +"\n"
+                                    + "a la Cuenta "+loadcuenta.getNombre_C()+" con el nuevo nombre: "+jTextField4.getText()+" y Codigo de Plan: "+jTextField3.getText();
+                            
+                            int rta=JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                            
+                            if (rta==JOptionPane.YES_OPTION){
+                                String sql =  "UPDATE "+nameTable+" SET "
                                                 +" pc_codigo_plan_cuenta = '"+jTextField3.getText()+"', "
                                                 +" pc_nombre_cuenta = '"+jTextField4.getText()+"', "
                                                 +" pc_id_padre = "+loadcuenta.getNumero_C()
                                                 +" WHERE pc_nro_cuenta = "+jTextField5.getText()+";";
                             
-                            r_con.Actualizar(sql);
-                            r_con.cierraConexion();
-                        }
-                        this.operacion="";
-                        limpiarForm();
-                        mensajeError(" ");
-                        JTreeConta.setEnabled(true);
-                        verPanelOperacion(false);
-                        habilitarOperaciones(true);
-                        actualizarArbol();                        
+                                r_con.Actualizar(sql);
+                                r_con.cierraConexion();
+                                this.operacion="";
+                                limpiarForm();
+                                mensajeError(" ");
+                                JTreeConta.setEnabled(true);
+                                verPanelOperacion(false);
+                                habilitarOperaciones(true);
+                                actualizarArbol();
+                            }                                
+                        }                       
                     }
                     else{
                         mensajeError("Complete el nombre de la Cuenta.");
@@ -688,6 +724,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /*
@@ -700,7 +738,15 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
          if (evt.getKeyCode() == KeyEvent.VK_F2){
              bajaCuenta();
          }
+         if (evt.getKeyCode() == KeyEvent.VK_F3){
+             modificarCuenta();
+         }
     }//GEN-LAST:event_JTreeContaKeyPressed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        this.expandirArbol();
+    }//GEN-LAST:event_jButton8ActionPerformed
    
         
 
@@ -714,6 +760,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -870,6 +917,16 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
         return numhijos;
     }   
+    
+    public void expandirArbol (){
+        int j=JTreeConta.getRowCount();
+        int i=0;
+        while( i < j) {
+            JTreeConta.expandRow(i);
+            i += 1;
+            j = JTreeConta.getRowCount();
+      }
+    }
     
     public void setTitleLabel (String t){
         this.jLabel1.setText(t);
@@ -1153,6 +1210,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             habilitarOperaciones(false);
             limpiarPanelOperacion ();
             verPanelOperacion(true);
+            jButton6.setEnabled(false);
             mensajeError("Seleccione ahora a la cuenta donde desea mover, y un el título.");
             jLabel9.setText("Modificar una Cuenta:");
             this.operacion="MODIFICAR";

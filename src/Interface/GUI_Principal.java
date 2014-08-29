@@ -2,7 +2,7 @@
 package Interface;
 
 import Clases_Auxiliares.Conexion;
-import Contabilidad.GUI_Asientos;
+import Contabilidad.GUI_Cargar_Asiento;
 import Objetos.Usuario;
 import _Pruebas.GUI_Plan_Cuenta;
 import Contabilidad.GUI_Plan_Cuentas;
@@ -352,7 +352,8 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu9.add(jMenuItem19);
 
         jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem20.setText("Cargar Asientos");
+        jMenuItem20.setMnemonic('2');
+        jMenuItem20.setText("Gestion Asientos");
         jMenuItem20.setName("T81"); // NOI18N
         jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1014,8 +1015,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
         // TODO add your handling code here:
-        //creo el InternalFrame;
-        GUI_Asientos np = new GUI_Asientos(usuario,r_con);       
+            GUI_Cargar_Asiento np = new GUI_Cargar_Asiento(usuario,r_con);       
 
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
