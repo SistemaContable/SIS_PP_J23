@@ -724,7 +724,22 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-
+        GUI_Imprimir_PC np = new GUI_Imprimir_PC(usr,r_con);       
+        //lo centro respecto a x
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {                
+            np.setSelected(true);            
+         } 
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();
         
     }//GEN-LAST:event_jButton7ActionPerformed
 
