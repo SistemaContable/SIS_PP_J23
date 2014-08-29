@@ -31,7 +31,6 @@ public class GUI_Empresa extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         r_con = con;
-        System.out.println(control_f.primerDiadelAño());
         campoFecha.setText(control_f.primerDiadelAño());
         campoFecha1.setText(control_f.ultimoDiadelAño());
         
@@ -239,7 +238,6 @@ public class GUI_Empresa extends javax.swing.JFrame {
                   	
                     String valores = "'"+campoFecha.getText()+"','"+campoFecha1.getText()+"',0,'"+campoFecha.getText()+"',0,0,0";
                     String sql = "INSERT INTO parametros_contables values ("+valores+");";
-                    System.out.println(sql);
                     r_con.Insertar(sql);
                     r_con.cierraConexion();
                     this.dispose();
