@@ -57,9 +57,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.habilitarPanel2(false);     
         
         jButton1.setText("Cancelar");
-        campoFecha.setText(fecha.getHoy());
-        campoFecha1.setText(fecha.getHoy());
-        campoFecha2.setText(fecha.getHoy());
+        campoFecha.setText(fecha.getHoy());        
     }
 
     private void cargarFechas(){
@@ -80,7 +78,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             jLabel23.setText(fechaDiario);
             r_con.cierraConexion();    
         }        
-        catch(Exception e){r_con.cierraConexion();}           
+        catch(Exception e){r_con.cierraConexion();}
     }
     
     /**
@@ -148,7 +146,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(0));
+        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -234,7 +232,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel3.setText("Fecha Contable:");
 
@@ -740,7 +738,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         if(esCarga){
             Asiento asiento=new Asiento();
             asiento.setOkCarga(r_con, Integer.parseInt(jTextField1.getText()),0);
-        }        
+        }
+        campoFecha1.setText(campoFecha.getText());
+        campoFecha2.setText(campoFecha.getText());
         habilitarPanel1(false);
         habilitarPanel2(true);
         jTextField3.requestFocus();                      

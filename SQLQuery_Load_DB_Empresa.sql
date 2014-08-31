@@ -331,9 +331,6 @@ insert into plan_cuentas values('5.5.01',61,'Fletes pagados',1,60);
 insert into plan_cuentas values('5.5.02',82,'Conservacion y mantenimiento',1,60);
 
 
-
-
-
 create table borrador_asientos(
 	ba_nro_asiento int not null,
 	ba_nro_renglon int,
@@ -355,6 +352,28 @@ create table borrador_asientos(
 
 CREATE INDEX IX_bo_asiento_cta ON borrador_asientos (ba_nro_cuenta);
 
+
+
+create table asientos(
+	as_nro_asiento int not null,
+	as_nro_renglon int,
+	as_fecha_contabilidad date,
+	as_tipo varchar(30),
+	as_nro_cuenta int,
+	as_fecha_operacion date,
+	as_fecha_vencimiento date,
+	as_nro_comprobante varchar(30),
+	as_leyenda varchar(30),
+	as_debe float,
+	as_haber float,
+	as_ok_carga bit,
+	as_ok_registrado bit,
+
+	primary key (as_nro_asiento,as_nro_renglon),
+	foreign key (as_nro_cuenta)references plan_cuentas(pc_nro_cuenta)
+)
+
+CREATE INDEX IX_as_asiento_cta ON borrador_asientos (ba_nro_cuenta);
 
 
 create table parametros_contables(
