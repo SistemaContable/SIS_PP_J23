@@ -16,8 +16,11 @@ import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -1383,5 +1386,16 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             return true;
         else
             return false;
+    }
+    
+    public void actualizarSaldoDebeHaber(){
+        BigDecimal debTotal=new BigDecimal(new DecimalFormat("0.00").format(0));
+        BigDecimal habTotal=new BigDecimal(new DecimalFormat("0.00").format(0));
+        for(int i=0;i<modelo.getRowCount();i++){
+            String deb=(String)modelo.getValueAt(i, 6);
+            String hab=(String)modelo.getValueAt(i, 7);
+            System.out.println(deb+" "+hab);
+            BigDecimal d=new BigDecimal(deb);
+        }    
     }
 }
