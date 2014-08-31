@@ -991,28 +991,36 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
-        if (!fecha.isFechaValida(campoFecha1.getText())){
-            mensajeError("La Fecha ingresada no se reconoce como valida.");  
-            campoFecha1.requestFocus();
-        }
-        else{
-            mensajeError(" ");
+        if ((evt.getOppositeComponent()!=jTextField3)){
+            if (!fecha.isFechaValida(campoFecha1.getText())){
+                mensajeError("La Fecha ingresada no se reconoce como valida.");  
+                campoFecha1.requestFocus();
+            }
+            else{
+                if ((evt.getOppositeComponent()!=campoFecha2)){
+                    mensajeError(" ");
+                }
+            }
         }
     }//GEN-LAST:event_campoFecha1FocusLost
 
     private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
-        if (fecha.isFechaValida(campoFecha2.getText())){
-            if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){                               
-                    mensajeError(" ");
+       if ((evt.getOppositeComponent()!=jTextField3)){
+            if (fecha.isFechaValida(campoFecha2.getText())){
+                if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){                               
+                    if (evt.getOppositeComponent()!=campoFecha1){    
+                        mensajeError(" ");
+                    }
+                }
+                else{
+                    campoFecha2.requestFocus();
+                    mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
+                }
             }
             else{
-                campoFecha2.requestFocus();
-                mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
+                 mensajeError("La Fecha ingresada no se reconoce como valida.");
+                 campoFecha2.requestFocus();
             }
-        }
-        else{
-             mensajeError("La Fecha ingresada no se reconoce como valida.");
-             campoFecha2.requestFocus();
         }
     }//GEN-LAST:event_campoFecha2FocusLost
 
