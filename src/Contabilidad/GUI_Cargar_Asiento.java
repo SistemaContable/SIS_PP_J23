@@ -13,6 +13,7 @@ import Clases_Auxiliares.Validaciones;
 import Objetos.Asiento;
 import Objetos.Cuenta;
 import Objetos.Usuario;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
@@ -57,7 +58,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.habilitarPanel2(false);     
         
         jButton1.setText("Cancelar");
-        campoFecha.setText(fecha.getHoy());        
+        campoFecha.setText(fecha.getHoy());   
+        jButton2.setEnabled(false);
     }
 
     private void cargarFechas(){
@@ -184,6 +186,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jLabel22.setText("Fecha Ult. Impresion Diario:");
 
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("-");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -201,15 +204,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel21)))
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102)))
+                .addGap(63, 63, 63)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton6)
@@ -265,12 +264,27 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Apertura");
+        jRadioButton1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jRadioButton1FocusLost(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Normal");
+        jRadioButton2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jRadioButton2FocusLost(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Cierre");
+        jRadioButton3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jRadioButton3FocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -400,6 +414,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoFecha1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 campoFecha1FocusLost(evt);
             }
@@ -411,6 +428,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         campoFecha2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFecha2FocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 campoFecha2FocusLost(evt);
             }
@@ -643,7 +663,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -681,9 +701,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         if(controlarCampos()){
+            jButton2.setEnabled(true);
             jButton1.setText("Abandonar Asiento");
             cargarTabla();
-            borrarCampos();
+            borrarCamposAstoBasicos();
             mensajeError(" ");
         }
         else
@@ -702,9 +723,18 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField7.setText("");
         jTextField8.setText("");
         jTextField7.setEnabled(true);
-        jTextField8.setEnabled(true);
-        
-        
+        jTextField8.setEnabled(true);        
+    }
+    
+    private void borrarCamposAstoBasicos(){
+        jTextField2.setText(renglon+"");
+        jTextField3.setText("");
+        jTextField3.requestFocus();
+        jTextField4.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+        jTextField7.setEnabled(true);
+        jTextField8.setEnabled(true); 
     }
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -721,6 +751,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField10.setText(0+"");
         jTextField11.setText(0+"");
         campoFecha.requestFocus();
+        campoFecha.select(0,0);
         this.habilitarPanel1(true);
         r_con.cierraConexion();
         habilitarRadioButtons(false);
@@ -795,14 +826,26 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     
     
     private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
-        // TODO add your handling code here:
-        
-      if(!evt.getOppositeComponent().getClass().getName().equals("javax.swing.JTree")){
+
+      boolean es_componente=false;
+      //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+      //if (evt.getOppositeComponent()!=null){
+        int i=0;        
+        Component[] components = jPanel3.getComponents();
+        while ((!es_componente)&&(i<components.length)){
+            if (components[i]==evt.getOppositeComponent()){
+                es_componente=true;
+            }
+            i++;
+        }
+      //}
+      
+      if(es_componente){
             String nroCuenta=jTextField3.getText();
             if(!nroCuenta.equals("")){            
                 cuenta=obtenerCuenta(nroCuenta);            
                 if(cuenta!=null){
-                    if(esImputable(nroCuenta+"")){
+                    if(esImputable(nroCuenta+"")){  
                         jTextField4.setText(cuenta.getNombre_C());
                         jTextField4.nextFocus();
                         mensajeError(" ");
@@ -822,6 +865,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 jTextField3.requestFocus();
             }
       }
+      else{
+          mensajeError(" ");
+      }
     }//GEN-LAST:event_jTextField3FocusLost
 
     /**
@@ -840,7 +886,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     
     
     private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
-        // TODO add your handling code here:
         jTextField4.setText("");
     }//GEN-LAST:event_jTextField3FocusGained
 
@@ -852,62 +897,70 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField3KeyPressed
 
     private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusLost
-        // TODO add your handling code here:
-        if(!jTextField7.getText().equals("")){
-            Validaciones v = new Validaciones();
-            if (v.isFloat(jTextField7.getText())){
-                if (Float.parseFloat(jTextField7.getText())>=0){
-                    mensajeError(" ");
-                    jTextField8.setEnabled(false);
-                    jTextField8.nextFocus();
+        // TODO add your handling code here:    
+        if ((evt.getOppositeComponent()!=jTextField3) && 
+            (evt.getOppositeComponent()!=campoFecha1) &&
+            (evt.getOppositeComponent()!=campoFecha2)){
+        
+            if(!jTextField7.getText().equals("")){
+                Validaciones v = new Validaciones();
+                if (v.isFloat(jTextField7.getText())){
+                    if (Float.parseFloat(jTextField7.getText())>=0){
+                        mensajeError(" ");  
+                        jTextField8.setEnabled(false);
+                        jTextField8.nextFocus();
+                    }
+                    else{
+                        mensajeError("El saldo al Debe es negativo.");
+                        jTextField7.requestFocus();
+                        jTextField7.selectAll();
+                    }
                 }
                 else{
-                    mensajeError("El saldo al Debe es negativo.");
+                    mensajeError("El saldo al Debe no es un valor numérico.");
                     jTextField7.requestFocus();
                     jTextField7.selectAll();
-                }
+                }            
             }
             else{
-                mensajeError("El saldo al Debe no es un valor numérico.");
-                jTextField7.requestFocus();
-                jTextField7.selectAll();
-            }            
-        }
-        else{
-            mensajeError(" ");
-            jTextField8.setEnabled(true);
-            jTextField8.requestFocus();
+                mensajeError(" ");
+                jTextField8.setEnabled(true); 
+                jTextField8.requestFocus();
+            }
         }
     }//GEN-LAST:event_jTextField7FocusLost
 
     private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
         // TODO add your handling code here:
-        if(!jTextField8.getText().equals("")){
-            Validaciones v = new Validaciones();
-            if (v.isFloat(jTextField8.getText())){
-                if (Float.parseFloat(jTextField8.getText())>=0){
-                    mensajeError(" ");
-                    jTextField7.setEnabled(false);
-                    jTextField8.nextFocus();
+        if ((evt.getOppositeComponent()!=jTextField3) && 
+            (evt.getOppositeComponent()!=campoFecha1) &&
+            (evt.getOppositeComponent()!=campoFecha2)){
+            if(!jTextField8.getText().equals("")){
+                Validaciones v = new Validaciones();
+                if (v.isFloat(jTextField8.getText())){
+                    if (Float.parseFloat(jTextField8.getText())>=0){
+                        mensajeError(" ");  
+                        jTextField7.setEnabled(false);
+                        jTextField8.nextFocus();
+                    }
+                    else{
+                        mensajeError("El saldo al Haber es negativo.");
+                        jTextField8.requestFocus();
+                        jTextField8.selectAll();
+                    }
                 }
                 else{
-                    mensajeError("El saldo al Haber es negativo.");
+                    mensajeError("El saldo al Haber no es un valor numérico.");
                     jTextField8.requestFocus();
                     jTextField8.selectAll();
-                }
+                }            
             }
             else{
-                mensajeError("El saldo al Haber no es un valor numérico.");
-                jTextField8.requestFocus();
-                jTextField8.selectAll();
-            }            
-        }
-        else{
-            mensajeError(" ");
-            jTextField7.setEnabled(true);
-            jTextField7.requestFocus();
-        }
-      
+                mensajeError(" "); 
+                jTextField7.setEnabled(true);
+                jTextField7.requestFocus();
+            }
+        }    
     }//GEN-LAST:event_jTextField8FocusLost
 
     private void campoFechaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFechaFocusLost
@@ -917,6 +970,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                     if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
+                        jPanel1.nextFocus();
                     }
                     else{
                         mensajeError("La fecha no se encuentra entre la ultima impresion del diario y la fecha de cierre.");
@@ -933,27 +987,26 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
         //jTextField4.requestFocus();
-        jTextField4.nextFocus();
+        //jTextField4.nextFocus();
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
-        // TODO add your handling code here:
-        if (fecha.isFechaValida(campoFecha1.getText())){
-            mensajeError(" ");
+        if (!fecha.isFechaValida(campoFecha1.getText())){
+            mensajeError("La Fecha ingresada no se reconoce como valida.");  
+            campoFecha1.requestFocus();
         }
         else{
-             mensajeError("La Fecha ingresada no se reconoce como valida.");
-             campoFecha1.requestFocus();
+            mensajeError(" ");
         }
     }//GEN-LAST:event_campoFecha1FocusLost
 
     private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
-        // TODO add your handling code here:
         if (fecha.isFechaValida(campoFecha2.getText())){
             if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){                               
                     mensajeError(" ");
             }
             else{
+                campoFecha2.requestFocus();
                 mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
             }
         }
@@ -1042,6 +1095,29 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             System.out.println(e.getMessage());
         }        
     }//GEN-LAST:event_jTextField1FocusLost
+
+    private void campoFecha1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusGained
+        campoFecha1.select(0,0);      
+    }//GEN-LAST:event_campoFecha1FocusGained
+
+    private void campoFecha2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusGained
+        campoFecha2.select(0,0);    
+    }//GEN-LAST:event_campoFecha2FocusGained
+
+    private void jRadioButton1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jRadioButton1FocusLost
+        // TODO add your handling code here:
+        jButton3.requestFocus();
+    }//GEN-LAST:event_jRadioButton1FocusLost
+
+    private void jRadioButton2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jRadioButton2FocusLost
+        // TODO add your handling code here:
+        jButton3.requestFocus();
+    }//GEN-LAST:event_jRadioButton2FocusLost
+
+    private void jRadioButton3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jRadioButton3FocusLost
+        // TODO add your handling code here:
+        jButton3.requestFocus();
+    }//GEN-LAST:event_jRadioButton3FocusLost
 
     private void deshabilitarCampos(){
         this.inicializarTabla();
@@ -1308,8 +1384,4 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         else
             return false;
     }
-    
-    
-    
-
 }
