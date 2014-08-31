@@ -7,6 +7,7 @@
 package Contabilidad;
 
 import Clases_Auxiliares.Conexion;
+import Clases_Auxiliares.Fechas;
 import Clases_Auxiliares.Validaciones;
 import Objetos.Usuario;
 import java.sql.ResultSet;
@@ -40,28 +41,28 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Manolo
  */
-public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
+public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GUI_A_Prod
      */
     private Conexion r_con;
     private Usuario usr;
-    private String nameTable = "plan_cuentas";
-    private String orden_por_CPC = "pc_codigo_plan_cuenta";
-    private String orden_por_cro_C = "pc_nro_cuenta";
-    private String nombre_reporte = "plan_cuentas.jrxml";
+    private String nameTable = "asientos";
+    private String nombre_reporte = "asientos.jrxml";
     private String id_modulo_imp = "8";
-    private String minCPC,maxCPC,minNC,maxNC;
+    private String minASTO,maxASTO,minFEC,maxFEC;
     
-    public GUI_Imprimir_PC(Usuario u, Conexion con) {
+    private Fechas fecha = new Fechas ();
+    
+    public GUI_Imprimir_ASTO(Usuario u, Conexion con) {
         usr = u;
         r_con=con;      
         initComponents();  
-        minCPC="";
-        maxCPC="";
-        minNC="";
-        maxCPC="";
+        minASTO="";
+        maxASTO="";
+        minFEC="";
+        maxFEC="";
         minimosYmaximos();
     }
 
@@ -83,21 +84,18 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        campoFecha1 = new javax.swing.JFormattedTextField();
+        campoFecha2 = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Filtro Reporte Plan de Cuentas");
+        setTitle("Filtro Reporte Asientos");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -106,7 +104,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jLabel1.setText("Preferencias:");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel2.setText("desde Cuenta:");
+        jLabel2.setText("desde Asiento:");
 
         jTextField1.setToolTipText("");
 
@@ -129,29 +127,15 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel3.setText("hasta Cuenta:");
+        jLabel3.setText("hasta Asiento:");
 
         jTextField2.setToolTipText("");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel4.setText("desde Código:");
-
-        jTextField3.setToolTipText("");
+        jLabel4.setText("desde Fecha:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel5.setText("hasta Código:");
-
-        jTextField4.setToolTipText("");
-
-        buttonGroup1.add(jCheckBox1);
-        jCheckBox1.setSelected(true);
-        jCheckBox1.setText("por Código de Plan de Cuenta");
-
-        buttonGroup1.add(jCheckBox2);
-        jCheckBox2.setText("por número de Plan de Cuenta");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel6.setText("Ordenado por:");
+        jLabel5.setText("hasta Fecha:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel7.setForeground(java.awt.Color.red);
@@ -163,6 +147,34 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        try {
+            campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusLost(evt);
+            }
+        });
+
+        try {
+            campoFecha2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFecha2FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFecha2FocusLost(evt);
             }
         });
 
@@ -179,32 +191,26 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel6)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel5)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(campoFecha2)))
+                .addGap(35, 35, 35))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -215,7 +221,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,25 +230,18 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
+                .addGap(34, 34, 34)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -263,22 +262,11 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
-                   if (jCheckBox1.isSelected()){
-                        parametros.put("orden",this.orden_por_CPC);
-                   }
-                   else{
-                       parametros.put("orden",this.orden_por_cro_C);
-                   }
-                   parametros.put("menor_cod_PC",""+jTextField3.getText());
-                   parametros.put("mayor_cod_PC",""+jTextField4.getText());
-                   parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
-                               
-                   
-                   // Compilamos el .jrxml y lo cargamos  
-                   //final String jasperName = JasperCompileManager.compileReportToFile("src/Reportes/"+nombre_reporte);  
-                   //final JasperReport report = (JasperReport)JRLoader.loadObject(jasperName);  
-                   
+                   parametros.put("min_asto",Integer.parseInt(jTextField1.getText()));
+                   parametros.put("max_asto",Integer.parseInt(jTextField2.getText()));
+                   parametros.put("min_fec",campoFecha1.getText());
+                   parametros.put("max_fec",campoFecha2.getText());                             
+
                   
                     //localizo el reporte para usarlo
                     JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -314,90 +302,105 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {            
-            //cargo Parametros del Reporte
-            Map parametros = new HashMap();
-            parametros.put("name_empresa", r_con.getRazon_social());
-            if (jCheckBox1.isSelected()){
-                parametros.put("orden",this.orden_por_CPC);
-            }
-            else{
-                parametros.put("orden",this.orden_por_cro_C);
-            } 
-            parametros.put("menor_cod_PC",""+jTextField3.getText());
-            parametros.put("mayor_cod_PC",""+jTextField4.getText());
-            parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-            parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
-            
-            //localizo el reporte para usarlo
-            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
-            
-            r_con.Connection();
-            //cargo los datos
-            JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());            
+        try {
+            if (validarDatos()){
+                //cargo Parametros del Reporte
+                Map parametros = new HashMap();
+                parametros.put("name_empresa", r_con.getRazon_social());
+                parametros.put("min_asto",Integer.parseInt(jTextField1.getText()));
+                parametros.put("max_asto",Integer.parseInt(jTextField2.getText()));
+                parametros.put("min_fec",campoFecha1.getText());
+                parametros.put("max_fec",campoFecha2.getText());
 
-            //vector con las impresoras del modulo de la base de datos
-            Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
-            //total impresoras disponibles
-            PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
-            //vector con las impresoras del modulo como objeto impresora (PrintService)
-            Vector<PrintService>impresoras_modulo = new Vector();
-            //objeto impresora en el que se imprime
-            PrintService impresora = null;
+                //localizo el reporte para usarlo
+                JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
 
-            if (v.size()>0){
-                String nombre_imp;
-                //caso en que sea una unica impresora por modulo
-                //if(v.size()==1){
-                    //nombre_imp=v.elementAt(0).firstElement();
-                    //AttributeSet aset = new HashAttributeSet();
-                    //aset.add(new PrinterName(nombre_imp, null));
-                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                    //impresora = impresoras[0];
-                    //}
+                r_con.Connection();
+                //cargo los datos
+                JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());            
 
-                //caso en que haya mas de una impresora por modulo
-                if (v.size()>=1){
-                    //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
-                    for (int i = 0; i < v.size(); i++) {
-                        nombre_imp=v.elementAt(i).firstElement();
-                        AttributeSet aset = new HashAttributeSet();
-                        aset.add(new PrinterName(nombre_imp, null));
-                        impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                        impresora = impresoras[0];
-                        impresoras_modulo.add(impresora);
+                //vector con las impresoras del modulo de la base de datos
+                Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
+                //total impresoras disponibles
+                PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
+                //vector con las impresoras del modulo como objeto impresora (PrintService)
+                Vector<PrintService>impresoras_modulo = new Vector();
+                //objeto impresora en el que se imprime
+                PrintService impresora = null;
+
+                if (v.size()>0){
+                    String nombre_imp;
+                    //caso en que haya mas de una impresora por modulo
+                    if (v.size()>=1){
+                        //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
+                        for (int i = 0; i < v.size(); i++) {
+                            nombre_imp=v.elementAt(i).firstElement();
+                            AttributeSet aset = new HashAttributeSet();
+                            aset.add(new PrinterName(nombre_imp, null));
+                            impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                            impresora = impresoras[0];
+                            impresoras_modulo.add(impresora);
+                        }
+                        //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
+                        PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
+                        for (int i = 0; i < impresoras_modulo.size(); i++) {
+                            listado_impresoras[i]=impresoras_modulo.elementAt(i);
+                        }
+                        //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
+                        impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
+                            "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
                     }
-                    //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
-                    PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
-                    for (int i = 0; i < impresoras_modulo.size(); i++) {
-                        listado_impresoras[i]=impresoras_modulo.elementAt(i);
-                    }
-                    //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
-                    impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
-                        "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
-                }
 
-                //mando a imprimir el reporte en la impresora
-                if (impresora != null){
-                    JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
-                    jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
-                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
-                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.TRUE);
-                    jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
-                    jrprintServiceExporter.exportReport();
+                    //mando a imprimir el reporte en la impresora
+                    if (impresora != null){
+                        JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
+                        jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
+                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
+                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.TRUE);
+                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                        jrprintServiceExporter.exportReport();
+                    }
                 }
+                else{
+                    JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
+                        + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
+                }
+                r_con.cierraConexion();
             }
-            else{
-                JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
-                    + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
+            } catch (JRException ex) {
+                Logger.getLogger(GUI_Imprimir_ASTO.class.getName()).log(Level.SEVERE, null, ex);
+                r_con.cierraConexion();
             }
-            r_con.cierraConexion();
-        } catch (JRException ex) {
-            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
-            r_con.cierraConexion();
-        }
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void campoFecha1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusGained
+        campoFecha1.select(0,0);
+    }//GEN-LAST:event_campoFecha1FocusGained
+
+    private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
+        if (!fecha.isFechaValida(campoFecha1.getText())){
+            mensajeError("La Fecha ingresada no se reconoce como valida.");
+        }
+        else{
+            mensajeError(" ");
+        }
+    }//GEN-LAST:event_campoFecha1FocusLost
+
+    private void campoFecha2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusGained
+        // TODO add your handling code here:
+        campoFecha2.select(0,0);
+    }//GEN-LAST:event_campoFecha2FocusGained
+
+    private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
+        // TODO add your handling code here:
+        if (!fecha.isFechaValida(campoFecha2.getText())){
+            mensajeError("La Fecha ingresada no se reconoce como valida.");
+        }
+        else{
+            mensajeError(" ");
+        }
+    }//GEN-LAST:event_campoFecha2FocusLost
    
     
     private void minimosYmaximos (){
@@ -405,20 +408,24 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         try {
             r_con.Connection();
             
-            ResultSet res = r_con.Consultar("SELECT MIN(pc_codigo_plan_cuenta),MAX(pc_codigo_plan_cuenta),MIN(pc_nro_cuenta),MAX(pc_nro_cuenta) FROM "+nameTable+" WHERE pc_codigo_plan_cuenta<>'0'");
-            res.next();
-            minCPC=res.getString(1);
-            maxCPC=res.getString(2);
-            minNC=res.getString(3);
-            maxNC=res.getString(4);
+            ResultSet res = r_con.Consultar("SELECT MIN(as_nro_asiento),MAX(as_nro_asiento) FROM "+nameTable);
+            if(res.next()){
+                minASTO=res.getString(1);
+                maxASTO=res.getString(2);
+            }
+            res = r_con.Consultar("select * from parametros_contables");
+            if(res.next()){
+               minFEC = fecha.parseFecha(res.getDate(1));
+               maxFEC = fecha.parseFecha(res.getDate(2));
+            }
             
-            jTextField1.setText(minNC);
-            jTextField2.setText(maxNC);
-            jTextField3.setText(minCPC);
-            jTextField4.setText(maxCPC);
+            jTextField1.setText(minASTO);
+            jTextField2.setText(maxASTO);
+            campoFecha1.setText(minFEC);
+            campoFecha2.setText(maxFEC);
             
         } catch (SQLException ex) {
-            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GUI_Imprimir_ASTO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -427,22 +434,19 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JFormattedTextField campoFecha1;
+    private javax.swing.JFormattedTextField campoFecha2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
 public void setTitleLabel (String t){
@@ -455,17 +459,23 @@ public void setTitleLabel (String t){
         Validaciones val = new Validaciones();
         
         if (jTextField1.getText().equals("") || jTextField2.getText().equals("")){
-            mensajeError("Ingrese un valor para Cuenta Desde.. Hasta.");
+            mensajeError("Ingrese un rango de Asientos (1 .. 99).");
         }
         else{
             if (!val.isInt(jTextField1.getText()) || !val.isInt(jTextField2.getText())){
-                mensajeError("Ingrese un valor NUMERICO para Cuenta Desde.. Hasta.");
+                mensajeError("Ingrese un valor NUMERICO para el rango de Asientos (1 .. 99).");
             }
             else{
-                valido = true;
-                mensajeError(" ");
+            
+                    if (!fecha.isFechaValida(campoFecha1.getText()) || (!fecha.isFechaValida(campoFecha1.getText()))){
+                        mensajeError("Ingrese Fechas Validas por favor.");
+                    }
+                    else{
+                        valido = true;
+                        mensajeError(" ");
+                    }        
             }
-        } 
+        }     
         return valido;
     }
     
