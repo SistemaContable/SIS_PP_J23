@@ -532,16 +532,16 @@ public class Conexion{
             stnt.executeUpdate(actualiza);
             stnt.close();            
             return (true);
-        } catch (SQLException ex) {            
-             if (ex.getErrorCode()==2627){
-                    System.out.println("El campo Clave ya se encuentra registrado!");
+        } catch (SQLException ex) {                         
+            /*if (ex.getErrorCode()==2627){
+                    JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             if (ex.getErrorCode()==8152){
                      System.out.println("Hay Campos que exceden su longitud, verifique!");
             }
             else{
                 System.err.println("7. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
-            }            
+            }  */          
             return (false);
         }
     
