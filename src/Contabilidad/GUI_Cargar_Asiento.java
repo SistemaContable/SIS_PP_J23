@@ -16,8 +16,11 @@ import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -39,7 +42,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private Cuenta cuenta;
     private Usuario usuario;
     private int renglon;
-    private DefaultTableModel modelo;
+    private DefaultTableModelAsientos modelo;
     private String fechaInicio,fechaCierre,fechaDiario;    
     private boolean esCarga=false;
     //libreria de manejo de fechas
@@ -60,6 +63,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton1.setText("Cancelar");
         campoFecha.setText(fecha.getHoy());   
         jButton2.setEnabled(false);
+        jTable1.setEnabled(false);
     }
 
     private void cargarFechas(){
@@ -95,7 +99,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -103,6 +106,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -134,6 +138,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -160,14 +165,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Gestión de Asientos Contables:");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cargar_asi.png"))); // NOI18N
-        jButton5.setText("Cargar Asiento");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/retomar_asi.png"))); // NOI18N
         jButton6.setText("Retomar Asiento");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -188,6 +185,14 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("-");
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cargar_asi.png"))); // NOI18N
+        jButton5.setText("Cargar Asiento");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -227,7 +232,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                     .addComponent(jLabel21)
                     .addComponent(jLabel23)))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -335,7 +340,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addGap(29, 29, 29))
         );
@@ -448,6 +453,14 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        jButton7.setText("Borrar");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton4.setText("Confirmar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -485,7 +498,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(173, 173, 173)
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jTextField6)
@@ -510,11 +523,12 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField5)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
             .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -541,17 +555,22 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                     .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6))
-                .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -565,6 +584,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel2.setText("Saldo:");
@@ -605,11 +629,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(94, 94, 94)
+                .addGap(120, 120, 120)
                 .addComponent(jButton2)
-                .addGap(113, 113, 113)
+                .addGap(87, 87, 87)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel14)
@@ -638,8 +662,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                             .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(44, 44, 44))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -653,7 +677,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(137, 137, 137))
             .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
@@ -663,7 +689,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -698,20 +724,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        if(controlarCampos()){
-            jButton2.setEnabled(true);
-            jButton1.setText("Abandonar Asiento");
-            cargarTabla();
-            borrarCamposAstoBasicos();
-            mensajeError(" ");
-        }
-        else
-        {
-            mensajeError("Debe completar todos los campos");
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
+        
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public void borrarCampos(){
         jTextField2.setText(renglon+"");
@@ -776,7 +792,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         habilitarPanel2(true);
         jTextField3.requestFocus();                      
         jTextField2.setText(renglon+"");        
-        
+        jTable1.setEnabled(true);
     }//GEN-LAST:event_jButton3ActionPerformed
     
     /**
@@ -1127,6 +1143,67 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton3.requestFocus();
     }//GEN-LAST:event_jRadioButton3FocusLost
 
+
+    
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:        
+        if(evt.getClickCount()==2){
+            
+            int fila=jTable1.getSelectedRow();
+    //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
+            int numRenglon=Integer.parseInt((String)modelo.getValueAt(fila, 0));
+            int numCuenta=Integer.parseInt((String)modelo.getValueAt(fila, 1));
+            String fechaOp=(String)modelo.getValueAt(fila, 2);
+            String fechaVto=(String)modelo.getValueAt(fila, 3);
+            String comprobante=(String)modelo.getValueAt(fila, 4);
+            String leyenda=(String)modelo.getValueAt(fila, 5);
+            BigDecimal debe=convertirEnBigDecimal((String)modelo.getValueAt(fila, 6));
+            BigDecimal haber=convertirEnBigDecimal((String)modelo.getValueAt(fila, 7));
+            
+            jTextField2.setText(numRenglon+"");
+            jTextField3.setText(numCuenta+"");
+            
+            jTextField3.requestFocus();jTextField2.requestFocus();jTextField3.requestFocus();
+            campoFecha1.setText(fecha.convertirBarras(fechaOp));
+            campoFecha2.setText(fecha.convertirBarras(fechaVto));
+            jTextField5.setText(comprobante);
+            jTextField6.setText(leyenda);
+            jTextField7.setText("");
+            jTextField8.setText("");
+            if(debe.floatValue()==0)
+                jTextField8.setText(haber+"");
+            else
+                jTextField7.setText(debe+"");
+            habilitarPanel2(true);
+            jButton7.setEnabled(true);
+            jButton4.setText("Modificar");
+        }               
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if(jButton4.getText().equals("Confirmar")){
+            if(controlarCampos()){
+                jButton2.setEnabled(true);
+                jButton1.setText("Abandonar Asiento");
+                cargarTabla();
+                borrarCamposAstoBasicos();
+                mensajeError(" ");
+            }
+            else
+            {
+                mensajeError("Debe completar todos los campos");
+            }
+        }
+        else
+        {
+            jButton4.setText("Confirmar");
+            
+            
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void deshabilitarCampos(){
         this.inicializarTabla();
         campoFecha.setText("");
@@ -1148,8 +1225,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             ResultSet rs=r_con.Consultar("select * from borrador_asientos where ba_nro_asiento="+numAsiento);
             Asiento asiento=null;
             renglon=0;
-            float debeTotal=0;
-            float haberTotal=0;
+            BigDecimal debeTotal=new BigDecimal(0);
+            BigDecimal haberTotal=new BigDecimal(0);
             while(rs.next()){
                 renglon++;
                     asiento=new Asiento(rs.getInt(1),rs.getInt(2),rs.getDate(3).toString(),
@@ -1158,13 +1235,15 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                                             rs.getString(9),rs.getFloat(10),rs.getFloat(11),
                                             rs.getBoolean(12),rs.getBoolean(13));
                 modelo.addRow(asiento.getRenglonModelo());
-                jTable1.setModel(modelo);                
-                debeTotal+=asiento.getDebe();
-                haberTotal+=asiento.getHaber();
+                jTable1.setModel(modelo);           
+                BigDecimal asDebe=convertirEnBigDecimal(asiento.getDebe()+"");
+                debeTotal=sumarBigDecimal(debeTotal+"",asDebe+"");
+                BigDecimal asHaber=convertirEnBigDecimal(asiento.getHaber()+"");
+                haberTotal=sumarBigDecimal(haberTotal+"",asHaber+"");
             }
             jTextField9.setText(debeTotal+"");
             jTextField11.setText(haberTotal+"");
-            float saldo=debeTotal-haberTotal;
+            BigDecimal saldo=sumarBigDecimal(debeTotal+"","-"+haberTotal);
             jTextField10.setText(saldo+"");
             if(asiento!=null){                             
                 campoFecha.setText(fecha.convertirBarras(asiento.getFecha_contable()));                
@@ -1215,7 +1294,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField8.setEnabled(valor);
         campoFecha1.setEnabled(valor);
         campoFecha2.setEnabled(valor); 
-        jButton4.setEnabled(valor);
+        jButton7.setEnabled(!valor);
+        jButton7.setEnabled(valor);
     }
     
  
@@ -1231,6 +1311,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1317,8 +1398,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
 
 
-    private void inicializarTabla() {
-        modelo = new DefaultTableModel();
+    private void inicializarTabla() {        
+        modelo=new DefaultTableModelAsientos();
         String [] columnas= {"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"};
         modelo.setColumnIdentifiers(columnas); 
         jTable1.setModel(modelo);
@@ -1353,27 +1434,32 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         String fecha_vencimiento=campoFecha2.getText();
         String comprobante=jTextField5.getText();
         String leyenda=jTextField6.getText();
-        float debe,haber;        
-        debe=0;haber=0;
+        BigDecimal debe,haber;        
+        debe=new BigDecimal(0);
+        haber=new BigDecimal(0);
         if((jTextField7.isEnabled())&&(!jTextField7.equals(""))){
-            haber=0;
-            debe=Float.parseFloat(jTextField7.getText());
+            haber=new BigDecimal(0);
+            float d=Float.parseFloat(jTextField7.getText());
+            debe=convertirEnBigDecimal(d+"");
         }
         else
         {
             if((jTextField8.isEnabled())&&(!jTextField8.equals(""))){
-                debe=0;
-                haber=Float.parseFloat(jTextField8.getText());
+                debe=new BigDecimal(0);
+                float h=Float.parseFloat(jTextField8.getText());
+                haber=convertirEnBigDecimal(h+"");
             }
-        }
-        float debeTotal=Float.parseFloat(jTextField9.getText())+debe;
-        float haberTotal=Float.parseFloat(jTextField11.getText())+haber;
-        float saldo=haberTotal-debeTotal;
+        }        
+        BigDecimal debeTotal=convertirEnBigDecimal(jTextField9.getText());
+        debeTotal=sumarBigDecimal(debeTotal+"",debe+"");
+        BigDecimal haberTotal=convertirEnBigDecimal(jTextField11.getText());        
+        haberTotal=sumarBigDecimal(haberTotal+"",haber+"");
+        BigDecimal saldo=sumarBigDecimal(haberTotal+"","-"+debeTotal);
         jTextField9.setText(debeTotal+"");
         jTextField11.setText(haberTotal+"");
         jTextField10.setText(saldo+"");
         
-        Asiento asiento=new Asiento(num_asiento,renglon,fecha_contabilidad,fecha_operacion,fecha_vencimiento,tipo,num_cuenta,comprobante,leyenda,debe,haber,false,false);
+        Asiento asiento=new Asiento(num_asiento,renglon,fecha_contabilidad,fecha_operacion,fecha_vencimiento,tipo,num_cuenta,comprobante,leyenda,debe.floatValue(),haber.floatValue(),false,false);
         asiento.insertar(r_con);
         
         String []aux_modelo={renglon+"",num_cuenta+"",fecha_operacion,fecha_vencimiento,comprobante,leyenda,debe+"",haber+""};
@@ -1392,4 +1478,32 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         else
             return false;
     }
+    
+    public void actualizarSaldoDebeHaber(){
+        
+    }
+    
+    private BigDecimal sumarBigDecimal(String num1,String num2){        
+        float num1Float=Float.parseFloat(num1);
+        float num2Float=Float.parseFloat(num2);
+        String formato1=new DecimalFormat("0.00").format(num1Float);
+        String formato2=new DecimalFormat("0.00").format(num2Float);
+        formato1=formato1.replace(',', '.');
+        formato2=formato2.replace(',', '.');        
+        BigDecimal num1BigD=new BigDecimal(formato1);
+        BigDecimal num2BigD=new BigDecimal(formato2);
+        BigDecimal suma=num1BigD.add(num2BigD);        
+        return suma;
+    }
+    
+    private BigDecimal convertirEnBigDecimal(String num){
+        float num1=Float.parseFloat(num);
+        String formato=new DecimalFormat("0.00").format(num1);
+        formato=formato.replace(',','.');
+        BigDecimal bigNum=new BigDecimal(formato);
+        return bigNum;
+    }
+    
+        
+    
 }
