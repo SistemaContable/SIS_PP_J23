@@ -31,8 +31,8 @@ public class Asiento {
         this.num_asiento = num_asiento;
         this.num_renglon = num_renglon;
         this.fecha_contable = fecha_contable;
-        this.fechaOperacion = fechaOperacion;
-        this.fechaVencimiento = fechaVencimiento;
+        this.fechaOperacion = fechaOperacion.replace("-", "/");
+        this.fechaVencimiento = fechaVencimiento.replace("-", "/");
         this.tipo = tipo;
         this.num_cuenta = num_cuenta;
         this.comprobante = comprobante;
@@ -202,7 +202,9 @@ public class Asiento {
      * Nos retorna un arreglo con la informacion necesaria para insertar en la tabla
      * @return 
      */
-    public String[] getRenglonModelo(){        
+    public String[] getRenglonModelo(){
+        fechaOperacion=fechaOperacion.replace("-", "/");
+        fechaVencimiento=fechaVencimiento.replace("-", "/");
         String [] aux={num_renglon+"",num_cuenta+"",fechaOperacion,fechaVencimiento,comprobante,leyenda,debe+"",haber+""};
         return aux;      
     }
