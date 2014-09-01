@@ -201,6 +201,22 @@ public class Fechas {
        String dia=fecha.substring(8,10);
        return (dia+"/"+mes+"/"+anio);       
    }
+   
+   
+   public static Date getUltimoDiaDelMes() {
+        
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR),
+        cal.get(Calendar.MONTH),
+        cal.getActualMaximum(Calendar.DAY_OF_MONTH),
+        cal.getMaximum(Calendar.HOUR_OF_DAY),
+        cal.getMaximum(Calendar.MINUTE),
+        cal.getMaximum(Calendar.SECOND));
+
+        return cal.getTime();
+
+    }
+
 
    
 }

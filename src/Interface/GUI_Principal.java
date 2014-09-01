@@ -4,6 +4,7 @@ package Interface;
 import Clases_Auxiliares.Conexion;
 import Contabilidad.GUI_Cargar_Asiento;
 import Contabilidad.GUI_Imprimir_ASTO;
+import Contabilidad.GUI_Imprimir_Diario;
 import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
 import _Pruebas.GUI_Plan_Cuenta;
@@ -179,6 +180,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu10 = new javax.swing.JMenu();
         jMenuItem23 = new javax.swing.JMenuItem();
         jMenuItem22 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
@@ -402,6 +404,15 @@ public class GUI_Principal extends javax.swing.JFrame {
             }
         });
         jMenu10.add(jMenuItem22);
+
+        jMenuItem24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem24.setText("Libro Diario");
+        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem24ActionPerformed(evt);
+            }
+        });
+        jMenu10.add(jMenuItem24);
 
         jMenu9.add(jMenu10);
 
@@ -1136,6 +1147,27 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();
     }//GEN-LAST:event_jMenuItem23ActionPerformed
+
+    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
+        // TODO add your handling code here:
+        
+        GUI_Imprimir_Diario np = new GUI_Imprimir_Diario (usuario,r_con);       
+
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();
+    }//GEN-LAST:event_jMenuItem24ActionPerformed
     
     
     public void abrirSesion (){
@@ -1222,6 +1254,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
