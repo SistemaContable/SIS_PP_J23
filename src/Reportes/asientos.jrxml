@@ -18,28 +18,27 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     as_ok_carga AS ok_carga,
-     as_ok_registrado AS ok_registrado,
-     as_nro_asiento AS nro_asiento,
-     as_nro_renglon AS nro_renglon,
-     as_fecha_contabilidad AS fecha_contabilidad,
-     as_tipo AS tipo,
-     as_nro_cuenta AS nro_cuenta,
+     ba_ok_carga AS ok_carga,
+     ba_ok_registrado AS ok_registrado,
+     ba_nro_asiento AS nro_asiento,
+     ba_nro_renglon AS nro_renglon,
+     ba_fecha_contabilidad AS fecha_contabilidad,
+     ba_tipo AS tipo,
+     ba_nro_cuenta AS nro_cuenta,
      pc_nombre_cuenta AS nombre_cuenta,
-     as_fecha_operacion AS fecha_operacion,
-     as_fecha_vencimiento AS fecha_vencimiento,
-     as_nro_comprobante AS nro_comprobante,
-     as_leyenda AS leyenda,
-     as_debe AS debe,
-     as_haber AS haber
+     ba_fecha_operacion AS fecha_operacion,
+     ba_fecha_vencimiento AS fecha_vencimiento,
+     ba_nro_comprobante AS nro_comprobante,
+     ba_leyenda AS leyenda,
+     ba_debe AS debe,
+     ba_haber AS haber
 FROM
-     asientos,plan_cuentas
+     borrador_asientos,plan_cuentas
 
 WHERE
-(as_nro_cuenta = pc_nro_cuenta) and
-((as_nro_asiento>=$P{min_asto}) and (as_nro_asiento<=$P{max_asto})) and
-((as_fecha_contabilidad>=$P{min_fec}) and (as_fecha_contabilidad<=$P{max_fec}))
-and ((as_ok_carga = 1) and (as_ok_registrado = 1))]]>
+(ba_nro_cuenta = pc_nro_cuenta) and
+((ba_nro_asiento>=$P{min_asto}) and (ba_nro_asiento<=$P{max_asto})) and
+((ba_fecha_contabilidad>=$P{min_fec}) and (ba_fecha_contabilidad<=$P{max_fec}))]]>
 	</queryString>
 	<field name="ok_carga" class="java.lang.Boolean"/>
 	<field name="ok_registrado" class="java.lang.Boolean"/>

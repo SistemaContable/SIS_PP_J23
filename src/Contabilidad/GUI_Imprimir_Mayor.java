@@ -40,7 +40,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Manolo
  */
-public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
+public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GUI_A_Prod
@@ -54,7 +54,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
     private String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
     
-    public GUI_Imprimir_PC(Usuario u, Conexion con) {
+    public GUI_Imprimir_Mayor(Usuario u, Conexion con) {
         usr = u;
         r_con=con;      
         initComponents();  
@@ -86,9 +86,6 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
 
@@ -97,7 +94,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Filtro Reporte Plan de Cuentas");
+        setTitle("Filtro Reporte Mayor");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 
@@ -143,16 +140,6 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
 
         jTextField4.setToolTipText("");
 
-        buttonGroup1.add(jCheckBox1);
-        jCheckBox1.setSelected(true);
-        jCheckBox1.setText("por Código de Plan de Cuenta");
-
-        buttonGroup1.add(jCheckBox2);
-        jCheckBox2.setText("por número de Plan de Cuenta");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel6.setText("Ordenado por:");
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel7.setForeground(java.awt.Color.red);
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -196,14 +183,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                         .addGap(32, 32, 32)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -227,14 +207,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
@@ -242,7 +215,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -263,12 +236,12 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
-                   if (jCheckBox1.isSelected()){
+                  
                         parametros.put("orden",this.orden_por_CPC);
-                   }
-                   else{
+                   
+                  
                        parametros.put("orden",this.orden_por_cro_C);
-                   }
+                   
                    parametros.put("menor_cod_PC",""+jTextField3.getText());
                    parametros.put("mayor_cod_PC",""+jTextField4.getText());
                    parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
@@ -319,12 +292,12 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             //cargo Parametros del Reporte
             Map parametros = new HashMap();
             parametros.put("name_empresa", r_con.getRazon_social());
-            if (jCheckBox1.isSelected()){
+            
                 parametros.put("orden",this.orden_por_CPC);
-            }
-            else{
+            
+            
                 parametros.put("orden",this.orden_por_cro_C);
-            } 
+             
             parametros.put("menor_cod_PC",""+jTextField3.getText());
             parametros.put("mayor_cod_PC",""+jTextField4.getText());
             parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
@@ -394,7 +367,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             }
             r_con.cierraConexion();
         } catch (JRException ex) {
-            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
             r_con.cierraConexion();
         }
 
@@ -419,7 +392,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             jTextField4.setText(maxCPC);
             
         } catch (SQLException ex) {
-            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -431,14 +404,11 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
