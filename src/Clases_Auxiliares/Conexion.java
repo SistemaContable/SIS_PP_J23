@@ -534,10 +534,10 @@ public class Conexion{
             return (true);
         } catch (SQLException ex) {            
              if (ex.getErrorCode()==2627){
-                    JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
+                    System.out.println("El campo Clave ya se encuentra registrado!");
             }
             if (ex.getErrorCode()==8152){
-                    JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
+                     System.out.println("Hay Campos que exceden su longitud, verifique!");
             }
             else{
                 System.err.println("7. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     

@@ -56,7 +56,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     private String nombre_reporte = "plan_cuentas.jrxml";
     private String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
-    private String fechaDiario,fechaCierre;
+    private String fechaDiario,fechaCierre,fechaApertura;
     private boolean aceptada=false;
     
     
@@ -72,12 +72,13 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         
         
         r_con.Connection();        
-        ResultSet rs=r_con.Consultar("select pc_fecha_cierre,pc_fecha_impresion_diario from parametros_contables");
+        ResultSet rs=r_con.Consultar("select pc_fecha_cierre,pc_fecha_impresion_diario,pc_fecha_inicio from parametros_contables");
         try {
             rs.next();
             Fechas fechas=new Fechas();
             fechaCierre=fechas.parseFecha(rs.getDate(1));
             fechaDiario=fechas.parseFecha(rs.getDate(2));
+            fechaApertura=fechas.parseFecha(rs.getDate(3));
         } catch (SQLException ex) {
             Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,7 +110,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             }                                              
             if(numAsiento!=-1){
                 String cadena=numAsiento+","+0+",' ',' ',"+numCuenta+",' ',' ',' ','Saldo anterior',"+d.floatValue()+","+h.floatValue()+","+saldo.floatValue();
-                r_con.Insertar("insert into libro_mayor values("+cadena+")");               
+                r_con.ActualizarSinCartel("insert into libro_mayor values("+cadena+")");               
                 bd[0]=d;bd[1]=h;bd[2]=saldo;                
             }
             r_con.cierraConexion();
@@ -329,15 +330,23 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    public void generarTabla(){
+        r_con.Connection();
+        r_con.ActualizarSinCartel("delete from libro_mayor");
+        r_con.cierraConexion();
+        int cuentaDesde=Integer.parseInt(jTextField1.getText());
+        int cuentaHasta=Integer.parseInt(jTextField2.getText());
+        for(int i=cuentaDesde;i<cuentaHasta;i++)
+            generarCuenta(i);
+    }
+    
+    
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         //this.dispose();
         //r_con.cierraConexion();
-        int cuentaDesde=Integer.parseInt(jTextField1.getText());
-        int cuentaHasta=Integer.parseInt(jTextField2.getText());
-        for(int i=cuentaDesde;i<cuentaHasta;i++)
-            generarCuenta(i);
+        generarTabla();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -489,14 +498,14 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Fechas fecha=new Fechas();
             if (fecha.isFechaValida(campoFecha.getText())){                
-                if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
+                if(fecha.fechaEntreFechas(campoFecha.getText(), fechaApertura, fechaCierre)){
                     mensajeError(" ");                         
                     campoFecha1.requestFocus();
                     aceptada=true;
                 }
                 else
                 {                    
-                    mensajeError("La Fecha ingresada debe ser mayor a "+fechaDiario+" y menor que"+fechaCierre);
+                    mensajeError("La Fecha ingresada debe ser mayor a "+fechaApertura+" y menor que"+fechaCierre);
                     campoFecha.requestFocus();
                 }
             }
