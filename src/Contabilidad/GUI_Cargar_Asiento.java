@@ -1007,7 +1007,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:                        
             if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
                 if (fecha.isFechaValida(campoFecha.getText())){
-                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fecha.addDaysToDate(fechaDiario, 1), fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
                         jPanel1.nextFocus();

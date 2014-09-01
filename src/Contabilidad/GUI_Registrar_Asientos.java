@@ -297,27 +297,26 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
         String fechaHasta=campoFecha2.getText();
         
             if(jCheckBox1.isSelected()){
-                System.out.println("asientos y fechas");
+                
                 r_con.Insertar("insert into asientos(as_nro_asiento,as_nro_renglon,as_fecha_contabilidad,as_tipo,as_nro_cuenta,as_fecha_operacion,as_fecha_vencimiento,as_nro_comprobante,as_leyenda,as_debe,as_haber,as_ok_carga,as_ok_registrado) "+
                                " select * from borrador_asientos where ba_ok_carga=1 and ba_ok_registrado=0 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta+" and ba_fecha_contabilidad>='"+fechaDesde+"' and ba_fecha_contabilidad<='"+fechaHasta+"'");                
                 r_con.ActualizarSinCartel("update borrador_asientos set ba_ok_registrado=1 where ba_ok_carga=1 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta
                                  +" and ba_fecha_contabilidad>='"+fechaDesde+"' and ba_fecha_contabilidad<='"+fechaHasta+"'");
                 r_con.ActualizarSinCartel("update asientos set as_ok_registrado=1");
-                System.out.println("Superamos actualizar");                
+                
             }
             else
             {
-                System.out.println("solo asientos");
+                
                 r_con.Insertar("insert into asientos(as_nro_asiento,as_nro_renglon,as_fecha_contabilidad,as_tipo,as_nro_cuenta,as_fecha_operacion,as_fecha_vencimiento,as_nro_comprobante,as_leyenda,as_debe,as_haber,as_ok_carga,as_ok_registrado) "+
                 " select * from borrador_asientos where ba_ok_carga=1 and ba_ok_registrado=0 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta);
                 r_con.ActualizarSinCartel("update borrador_asientos set ba_ok_registrado=1 where ba_ok_carga=1 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta);                              
                 r_con.ActualizarSinCartel("update asientos set as_ok_registrado=1");
                 
             }
-        
-        
-        
-                       
+            JOptionPane.showMessageDialog(null,"Los asientos fueron registrados correctamente");
+            dispose();
+            r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
