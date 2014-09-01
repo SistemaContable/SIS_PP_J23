@@ -48,7 +48,7 @@ public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
      */
     private Conexion r_con;
     private Usuario usr;
-    private String nameTable = "asientos";
+    private String nameTable = "borrador_asientos";
     private String nombre_reporte = "asientos.jrxml";
     private String id_modulo_imp = "8";
     private String minASTO,maxASTO,minFEC,maxFEC;
@@ -408,7 +408,7 @@ public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
         try {
             r_con.Connection();
             
-            ResultSet res = r_con.Consultar("SELECT MIN(as_nro_asiento),MAX(as_nro_asiento) FROM "+nameTable);
+            ResultSet res = r_con.Consultar("SELECT MIN(ba_nro_asiento),MAX(ba_nro_asiento) FROM "+nameTable);
             if(res.next()){
                 minASTO=res.getString(1);
                 maxASTO=res.getString(2);
