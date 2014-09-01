@@ -351,6 +351,7 @@ create table borrador_asientos(
 )
 
 CREATE INDEX IX_bo_asiento_cta ON borrador_asientos (ba_nro_cuenta);
+CREATE INDEX IX_bo_fecha_contabilidad ON borrador_asientos (ba_fecha_contabilidad);
 
 
 
@@ -373,7 +374,8 @@ create table asientos(
 	foreign key (as_nro_cuenta)references plan_cuentas(pc_nro_cuenta)
 )
 
-CREATE INDEX IX_as_asiento_cta ON borrador_asientos (ba_nro_cuenta);
+CREATE INDEX IX_as_asiento_cta ON asientos (as_nro_cuenta);
+CREATE INDEX IX_as_fecha_contabilidad ON asientos (as_fecha_contabilidad);
 
 
 create table parametros_contables(
