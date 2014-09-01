@@ -7,10 +7,13 @@
 package Contabilidad;
 
 import Clases_Auxiliares.Conexion;
+import Clases_Auxiliares.Fechas;
 import Clases_Auxiliares.Validaciones;
 import Objetos.Usuario;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -53,18 +56,98 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     private String nombre_reporte = "plan_cuentas.jrxml";
     private String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
+    private String fechaDiario,fechaCierre;
+    private boolean aceptada=false;
     
-    public GUI_Imprimir_Mayor(Usuario u, Conexion con) {
+    
+    public GUI_Imprimir_Mayor(Usuario u, Conexion con){
         usr = u;
-        r_con=con;      
+        r_con=con;              
         initComponents();  
         minCPC="";
         maxCPC="";
         minNC="";
         maxCPC="";
         minimosYmaximos();
+        
+        
+        r_con.Connection();        
+        ResultSet rs=r_con.Consultar("select pc_fecha_cierre,pc_fecha_impresion_diario from parametros_contables");
+        try {
+            rs.next();
+            Fechas fechas=new Fechas();
+            fechaCierre=fechas.parseFecha(rs.getDate(1));
+            fechaDiario=fechas.parseFecha(rs.getDate(2));
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  
+        r_con.ActualizarSinCartel("delete from libro_mayor");
+        r_con.cierraConexion();
     }
 
+    public BigDecimal[] saldoAnterior(int numCuenta){
+        try {
+            r_con.Connection();
+            BigDecimal[] bd=new BigDecimal[3];
+            bd[0]=new BigDecimal(0);
+            bd[1]=new BigDecimal(0);
+            bd[2]=new BigDecimal(0);
+            
+            String fechaDesde=campoFecha.getText();                                 
+            int numAsiento=-1;
+            ResultSet rs=r_con.Consultar("select * from asientos where as_nro_cuenta="+numCuenta+" and as_fecha_contabilidad<'"+fechaDesde+"' order by as_fecha_contabilidad");
+            BigDecimal d=new BigDecimal(0);
+            BigDecimal h=new BigDecimal(0);
+            BigDecimal saldo=new BigDecimal(0);
+            while(rs.next()){
+                numAsiento=rs.getInt(1);
+                saldo=sumarBigDecimal(saldo+"","-"+rs.getFloat(11));
+                saldo=sumarBigDecimal(saldo+"",+rs.getFloat(10)+"");
+                d=sumarBigDecimal(d+"",rs.getFloat(10)+"");
+                h=sumarBigDecimal(h+"",rs.getFloat(11)+"");                
+            }                                              
+            if(numAsiento!=-1){
+                String cadena=numAsiento+","+0+",' ',' ',"+numCuenta+",' ',' ',' ','Saldo anterior',"+d.floatValue()+","+h.floatValue()+","+saldo.floatValue();
+                r_con.Insertar("insert into libro_mayor values("+cadena+")");               
+                bd[0]=d;bd[1]=h;bd[2]=saldo;                
+            }
+            r_con.cierraConexion();
+            return bd;            
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }                
+    }
+    
+    public void generarCuenta(int numCuenta){
+        try {            
+            BigDecimal[]bd=saldoAnterior(numCuenta);            
+            r_con.Connection();
+            String fechaDesde=campoFecha.getText();
+            String fechaHasta=campoFecha1.getText();                        
+            ResultSet rs=r_con.Consultar("select * from asientos where as_nro_cuenta="+numCuenta+" and as_fecha_contabilidad>='"+fechaDesde+"' and as_fecha_contabilidad<='"+fechaHasta+"' order by as_fecha_contabilidad");
+            BigDecimal d=bd[0];
+            BigDecimal h=bd[1];
+            BigDecimal saldo=bd[2];
+            while(rs.next()){
+                saldo=sumarBigDecimal(saldo+"","-"+rs.getFloat(11));
+                saldo=sumarBigDecimal(saldo+"",+rs.getFloat(10)+"");
+                String cadena=rs.getInt(1)+","+rs.getInt(2)+",'"+rs.getDate(3)+"','"+rs.getString(4)+"',"+rs.getInt(5)+",'"+rs.getDate(6)+"','"+rs.getDate(7)+"','"+rs.getString(8)+"','"+rs.getString(9)+"',"+rs.getFloat(10)+","+rs.getFloat(11)+","+saldo.floatValue();
+                r_con.Insertar("insert into libro_mayor values("+cadena+")");               
+                d=sumarBigDecimal(d+"",rs.getFloat(10)+"");
+                h=sumarBigDecimal(h+"",rs.getFloat(11)+"");                
+            }                                                                      
+            r_con.cierraConexion();
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,11 +166,11 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        campoFecha = new javax.swing.JFormattedTextField();
+        campoFecha1 = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -131,14 +214,10 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         jTextField2.setToolTipText("");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel4.setText("desde Código:");
-
-        jTextField3.setToolTipText("");
+        jLabel4.setText("desde Fecha:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel5.setText("hasta Código:");
-
-        jTextField4.setToolTipText("");
+        jLabel5.setText("hasta Fecha:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel7.setForeground(java.awt.Color.red);
@@ -150,6 +229,34 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        try {
+            campoFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFechaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFechaFocusLost(evt);
+            }
+        });
+
+        try {
+            campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoFecha1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoFecha1FocusLost(evt);
             }
         });
 
@@ -167,23 +274,23 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                 .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(campoFecha))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -204,9 +311,9 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -215,7 +322,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -225,8 +332,13 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        r_con.cierraConexion();
+        //this.dispose();
+        //r_con.cierraConexion();
+        int cuentaDesde=Integer.parseInt(jTextField1.getText());
+        int cuentaHasta=Integer.parseInt(jTextField2.getText());
+        for(int i=cuentaDesde;i<cuentaHasta;i++)
+            generarCuenta(i);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -242,8 +354,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                   
                        parametros.put("orden",this.orden_por_cro_C);
                    
-                   parametros.put("menor_cod_PC",""+jTextField3.getText());
-                   parametros.put("mayor_cod_PC",""+jTextField4.getText());
+                   //parametros.put("menor_cod_PC",""+jTextField3.getText());
+                   //parametros.put("mayor_cod_PC",""+jTextField4.getText());
                    parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
                    parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
                                
@@ -298,8 +410,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             
                 parametros.put("orden",this.orden_por_cro_C);
              
-            parametros.put("menor_cod_PC",""+jTextField3.getText());
-            parametros.put("mayor_cod_PC",""+jTextField4.getText());
+//            parametros.put("menor_cod_PC",""+jTextField3.getText());
+//            parametros.put("mayor_cod_PC",""+jTextField4.getText());
             parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
             parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
             
@@ -372,6 +484,56 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void campoFechaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFechaFocusLost
+        // TODO add your handling code here:
+        Fechas fecha=new Fechas();
+            if (fecha.isFechaValida(campoFecha.getText())){                
+                if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
+                    mensajeError(" ");                         
+                    campoFecha1.requestFocus();
+                    aceptada=true;
+                }
+                else
+                {                    
+                    mensajeError("La Fecha ingresada debe ser mayor a "+fechaDiario+" y menor que"+fechaCierre);
+                    campoFecha.requestFocus();
+                }
+            }
+            else
+            {
+                mensajeError("La Fecha ingresada no se reconoce como valida.");
+                campoFecha.requestFocus();
+            }                    
+    }//GEN-LAST:event_campoFechaFocusLost
+
+    private void campoFecha1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusGained
+        
+    }//GEN-LAST:event_campoFecha1FocusGained
+
+    private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
+        Fechas fecha=new Fechas();
+        if(aceptada){    
+            if (fecha.isFechaValida(campoFecha1.getText())){
+                if(fecha.fechaEntreFechas(campoFecha1.getText(), campoFecha.getText(), fechaCierre)){                                                       
+                    mensajeError(" ");                    
+                }
+                else{
+                    campoFecha1.requestFocus();
+                    mensajeError("La fecha ingresada debe ser mayor que "+campoFecha.getText()+" y menor que "+fechaCierre);
+                }
+            }
+            else{
+                mensajeError("La Fecha ingresada no se reconoce como valida.");
+                campoFecha1.requestFocus();
+            }                                    
+        }
+    }//GEN-LAST:event_campoFecha1FocusLost
+
+    private void campoFechaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFechaFocusGained
+        // TODO add your handling code here:
+        aceptada=false;
+    }//GEN-LAST:event_campoFechaFocusGained
    
     
     private void minimosYmaximos (){
@@ -388,8 +550,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             
             jTextField1.setText(minNC);
             jTextField2.setText(maxNC);
-            jTextField3.setText(minCPC);
-            jTextField4.setText(maxCPC);
+//            jTextField3.setText(minCPC);
+//            jTextField4.setText(maxCPC);
             
         } catch (SQLException ex) {
             Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
@@ -401,6 +563,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JFormattedTextField campoFecha;
+    private javax.swing.JFormattedTextField campoFecha1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -412,8 +576,6 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
 public void setTitleLabel (String t){
@@ -443,5 +605,27 @@ public void setTitleLabel (String t){
     private void mensajeError(String msj) {
         jLabel7.setText(msj);        
     }
-
+    
+        private BigDecimal sumarBigDecimal(String num1,String num2){        
+        float num1Float=Float.parseFloat(num1);
+        float num2Float=Float.parseFloat(num2);
+        String formato1=new DecimalFormat("0.00").format(num1Float);
+        String formato2=new DecimalFormat("0.00").format(num2Float);
+        formato1=formato1.replace(',', '.');
+        formato2=formato2.replace(',', '.');        
+        BigDecimal num1BigD=new BigDecimal(formato1);
+        BigDecimal num2BigD=new BigDecimal(formato2);
+        BigDecimal suma=num1BigD.add(num2BigD);        
+        return suma;
+    }
+    
+    private BigDecimal convertirEnBigDecimal(String num){
+        float num1=Float.parseFloat(num);
+        String formato=new DecimalFormat("0.00").format(num1);
+        formato=formato.replace(',','.');
+        BigDecimal bigNum=new BigDecimal(formato);
+        return bigNum;
+    }
+ 
+    
 }

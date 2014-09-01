@@ -4,7 +4,7 @@ package Interface;
 import Clases_Auxiliares.Conexion;
 import Contabilidad.GUI_Cargar_Asiento;
 import Contabilidad.GUI_Imprimir_ASTO;
-import Contabilidad.GUI_Imprimir_Diario;
+import Contabilidad.GUI_Imprimir_Mayor;
 import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
 import _Pruebas.GUI_Plan_Cuenta;
@@ -1150,9 +1150,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
         // TODO add your handling code here:
-        
-        GUI_Imprimir_Diario np = new GUI_Imprimir_Diario (usuario,r_con);       
-
+        GUI_Imprimir_Mayor np = new GUI_Imprimir_Mayor(usuario,r_con);       
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
@@ -1166,7 +1164,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();
+        np.requestFocus();        
     }//GEN-LAST:event_jMenuItem24ActionPerformed
     
     

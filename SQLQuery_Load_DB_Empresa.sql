@@ -388,3 +388,23 @@ create table parametros_contables(
 	pc_saldo_transporte float	
 )
 
+create table libro_mayor(
+	lm_nro_asiento int not null,
+	lm_nro_renglon int,
+	lm_fecha_contabilidad date,
+	lm_tipo varchar(30),
+	lm_nro_cuenta int,
+	lm_fecha_operacion date,
+	lm_fecha_vencimiento date,
+	lm_nro_comprobante varchar(30),
+	lm_leyenda varchar(30),
+	lm_debe float,
+	lm_haber float,
+	lm_saldo float,
+
+	primary key (lm_nro_asiento,lm_nro_renglon),
+	foreign key (lm_nro_cuenta)references plan_cuentas(pc_nro_cuenta)
+)
+
+CREATE INDEX IX_as_asiento_cta ON libro_mayor (lm_nro_cuenta);
+CREATE INDEX IX_as_fecha_contabilidad ON libro_mayor(lm_fecha_contabilidad);

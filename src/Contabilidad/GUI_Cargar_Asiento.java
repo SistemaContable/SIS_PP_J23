@@ -725,9 +725,34 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        
+        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                int numRenglon=Integer.parseInt(jTextField2.getText());
+                modelo.removeRow(numRenglon-1);
+                r_con.Connection();
+                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+                renombrarTabla();
+            }        
+            jButton4.setText("Confirmar");
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void renombrarTabla(){
+        for(int i=0;i<modelo.getRowCount();i++){
+            int nuevoRen=i+1;
+            modelo.setValueAt(nuevoRen+"", i, 0);
+            int num_asiento=Integer.parseInt(jTextField1.getText());
+            int num_cuenta=Integer.parseInt(jTextField3.getText());
+            //renglon+"",num_cuenta+"",fecha_operacion,fecha_vencimiento,comprobante,leyenda,debe+"",haber+""
+            float d=Float.parseFloat((String)modelo.getValueAt(i, 6));
+            float h=Float.parseFloat((String)modelo.getValueAt(i, 7));
+            Asiento asiento=new Asiento(num_asiento,nuevoRen,campoFecha.getText(),(String)modelo.getValueAt(i, 2),(String)modelo.getValueAt(i, 3),getTipo(),num_cuenta,(String)modelo.getValueAt(i, 4),(String)modelo.getValueAt(i, 5),d,h,false,false);
+            asiento.insertar(r_con);
+        }        
+        
+        
+    }
+    
     public void borrarCampos(){
         jTextField2.setText(renglon+"");
         jTextField3.setText("");
@@ -982,7 +1007,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:                        
             if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
                 if (fecha.isFechaValida(campoFecha.getText())){
-                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fecha.addDaysToDate(fechaDiario, 1), fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
                         jPanel1.nextFocus();
@@ -1071,6 +1096,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         habilitarPanelCarga1(true);        
+        this.inicializarTabla();
         jButton1.setText("Abandonar Asiento");
         esCarga=true;
         campoFecha.setText("");
@@ -1146,38 +1172,38 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:        
-        if(evt.getClickCount()==2){
-            
-            int fila=jTable1.getSelectedRow();
-    //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
-            int numRenglon=Integer.parseInt((String)modelo.getValueAt(fila, 0));
-            int numCuenta=Integer.parseInt((String)modelo.getValueAt(fila, 1));
-            String fechaOp=(String)modelo.getValueAt(fila, 2);
-            String fechaVto=(String)modelo.getValueAt(fila, 3);
-            String comprobante=(String)modelo.getValueAt(fila, 4);
-            String leyenda=(String)modelo.getValueAt(fila, 5);
-            BigDecimal debe=convertirEnBigDecimal((String)modelo.getValueAt(fila, 6));
-            BigDecimal haber=convertirEnBigDecimal((String)modelo.getValueAt(fila, 7));
-            
-            jTextField2.setText(numRenglon+"");
-            jTextField3.setText(numCuenta+"");
-            
-            jTextField3.requestFocus();jTextField2.requestFocus();jTextField3.requestFocus();
-            campoFecha1.setText(fecha.convertirBarras(fechaOp));
-            campoFecha2.setText(fecha.convertirBarras(fechaVto));
-            jTextField5.setText(comprobante);
-            jTextField6.setText(leyenda);
-            jTextField7.setText("");
-            jTextField8.setText("");
-            if(debe.floatValue()==0)
-                jTextField8.setText(haber+"");
-            else
-                jTextField7.setText(debe+"");
-            habilitarPanel2(true);
-            jButton7.setEnabled(true);
-            jButton4.setText("Modificar");
-        }               
-        
+        if(jTable1.isEnabled()){
+            if(evt.getClickCount()==2){            
+                int fila=jTable1.getSelectedRow();
+            //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
+                int numRenglon=Integer.parseInt((String)modelo.getValueAt(fila, 0));
+                int numCuenta=Integer.parseInt((String)modelo.getValueAt(fila, 1));
+                String fechaOp=(String)modelo.getValueAt(fila, 2);
+                String fechaVto=(String)modelo.getValueAt(fila, 3);
+                String comprobante=(String)modelo.getValueAt(fila, 4);
+                String leyenda=(String)modelo.getValueAt(fila, 5);
+                BigDecimal debe=convertirEnBigDecimal((String)modelo.getValueAt(fila, 6));
+                BigDecimal haber=convertirEnBigDecimal((String)modelo.getValueAt(fila, 7));
+
+                jTextField2.setText(numRenglon+"");
+                jTextField3.setText(numCuenta+"");
+
+                jTextField3.requestFocus();jTextField2.requestFocus();jTextField3.requestFocus();
+                campoFecha1.setText(fecha.convertirBarras(fechaOp));
+                campoFecha2.setText(fecha.convertirBarras(fechaVto));
+                jTextField5.setText(comprobante);
+                jTextField6.setText(leyenda);
+                jTextField7.setText("");
+                jTextField8.setText("");
+                if(debe.floatValue()==0)
+                    jTextField8.setText(haber+"");
+                else
+                    jTextField7.setText(debe+"");
+                habilitarPanel2(true);
+                jButton7.setEnabled(true);
+                jButton4.setText("Modificar");
+            }               
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -1197,12 +1223,50 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
         else
         {
-            jButton4.setText("Confirmar");
-            
-            
+            if(controlarCampos()){
+                jButton4.setText("Confirmar");
+                actualizarTabla();
+                mensajeError(" ");
+                borrarCamposAstoBasicos();                
+            }
+            else
+                mensajeError("Debe completar todos los campos");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void actualizarTabla(){
+        int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
+            
+            int ren=numRenglon+1;
+            modelo.setValueAt(ren+"",numRenglon , 0);
+            modelo.setValueAt(Integer.parseInt(jTextField3.getText())+"",numRenglon , 1);
+            modelo.setValueAt(campoFecha1.getText(),numRenglon , 2);
+            modelo.setValueAt(campoFecha2.getText(),numRenglon , 3);
+            modelo.setValueAt(jTextField5.getText(),numRenglon , 4);
+            modelo.setValueAt(jTextField6.getText(),numRenglon , 5);
+            BigDecimal d=new BigDecimal(0);
+            BigDecimal h=new BigDecimal(0);
+            if(jTextField7.isEnabled()){
+                d=convertirEnBigDecimal(Float.parseFloat(jTextField7.getText())+"");
+            }
+            else
+            {
+                h=convertirEnBigDecimal(Float.parseFloat(jTextField8.getText())+"");
+            }    
+            modelo.setValueAt(d+"",numRenglon , 6);
+            modelo.setValueAt(h+"",numRenglon , 7);
+            int numAsiento=Integer.parseInt(jTextField1.getText());
+            r_con.Connection();
+            //Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber
+            r_con.ActualizarSinCartel("update borrador_asientos set ba_fecha_operacion='"+campoFecha1.getText()+
+                                      "' ,ba_fecha_vencimiento='"+campoFecha2.getText()+
+                                      "' ,ba_nro_comprobante='"+jTextField5.getText()+
+                                      "' ,ba_leyenda='"+jTextField6.getText()+
+                                      "' ,ba_debe="+d+" ,ba_haber="+h+" where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+ren);                                      
+            r_con.cierraConexion();
+    }
+    
+    
     private void deshabilitarCampos(){
         this.inicializarTabla();
         campoFecha.setText("");
@@ -1244,7 +1308,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             jTextField11.setText(haberTotal+"");
             BigDecimal saldo=sumarBigDecimal(debeTotal+"","-"+haberTotal);
             jTextField10.setText(saldo+"");
-            if(asiento!=null){                             
+            if(asiento!=null){                                                             
                 campoFecha.setText(fecha.convertirBarras(asiento.getFecha_contable()));                
                 jTextField2.setText(++renglon+"");
                 if(asiento.getTipo().equals("Asiento Apertura")){
