@@ -402,7 +402,7 @@ create table libro_mayor(
 	lm_haber float,
 	lm_saldo float,
 
-	primary key (lm_nro_asiento,lm_nro_renglon),
+	primary key (lm_nro_asiento,lm_nro_renglon,lm_nro_cuenta),
 	foreign key (lm_nro_cuenta)references plan_cuentas(pc_nro_cuenta)
 )
 

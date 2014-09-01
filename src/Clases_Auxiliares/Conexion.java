@@ -532,8 +532,8 @@ public class Conexion{
             stnt.executeUpdate(actualiza);
             stnt.close();            
             return (true);
-        } catch (SQLException ex) {            
-             if (ex.getErrorCode()==2627){
+        } catch (SQLException ex) {                         
+            /*if (ex.getErrorCode()==2627){
                     JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             if (ex.getErrorCode()==8152){
@@ -541,7 +541,7 @@ public class Conexion{
             }
             else{
                 System.err.println("7. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
-            }            
+            }  */          
             return (false);
         }
     
