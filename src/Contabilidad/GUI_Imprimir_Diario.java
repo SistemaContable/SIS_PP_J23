@@ -361,11 +361,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                sql = "UPDATE parametros_contables SET pc_fecha_impresion_diario = '"+campoFecha2.getText()+"', pc_nro_renglon_diario = "+ult_renglon+", pc_nro_folio = "+nro_folio+";";
-                System.out.println(sql);
-                r_con.ActualizarSinCartel(sql);
+                }               
 
                 //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
                 
@@ -402,13 +398,27 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                     }
 
                     //mando a imprimir el reporte en la impresora
-                    if (impresora != null){
-                        JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
+                    if (impresora != null){   
+                        JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();                        
                         jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
                         jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
                         jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.TRUE);
                         jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
                         jrprintServiceExporter.exportReport();
+                        
+                        String message="Se solicito la impresión del libro Diario, ¿Confirma la CORRECTA impresión?.";
+                        int rta=JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        if (rta==JOptionPane.YES_OPTION){
+                            sql = "UPDATE parametros_contables SET pc_fecha_impresion_diario = '"+campoFecha2.getText()+"', pc_nro_renglon_diario = "+ult_renglon+", pc_nro_folio = "+nro_folio+";";
+                            System.out.println(sql);
+                            r_con.ActualizarSinCartel(sql);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null,"Los parametros no se actualizaron. Puede volver a imprimir el Libro Diario.","Error",JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        System.out.println("IMPRESORA NULA VER QUE PASO.");
                     }
                 }
                 else{
@@ -418,6 +428,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 r_con.cierraConexion();
             }
             } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null,"Ocurrió un Error.","Error",JOptionPane.WARNING_MESSAGE);
                 Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
                 r_con.cierraConexion();
             }

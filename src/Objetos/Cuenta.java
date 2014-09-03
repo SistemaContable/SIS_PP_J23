@@ -74,7 +74,7 @@ public class Cuenta {
     
     @Override
     public String toString() {
-        return (codigo_PC + " - " + nombre_C);
+        return (codigo_PC + " - " + nombre_C + " ("+numero_C+")");
     }
     
     

@@ -9,7 +9,10 @@ package Contabilidad;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Fechas;
 import Clases_Auxiliares.Validaciones;
+import Interface.GUI_Principal;
 import Objetos.Usuario;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,11 +53,12 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
      */
     private Conexion r_con;
     private Usuario usr;
-    private String nameTable = "plan_cuentas";
-    private String orden_por_CPC = "pc_codigo_plan_cuenta";
-    private String orden_por_cro_C = "pc_nro_cuenta";
-    private String nombre_reporte = "plan_cuentas.jrxml";
-    private String id_modulo_imp = "8";
+    
+    private final String nameTable = "plan_cuentas";
+    private final String orden_por_CPC = "pc_codigo_plan_cuenta";
+    private final String orden_por_cro_C = "pc_nro_cuenta";
+    private final String nombre_reporte = "mayor.jrxml";
+    private final String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
     private String fechaDiario,fechaCierre,fechaInicio;
     private boolean aceptada=false;
@@ -68,8 +72,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         maxCPC="";
         minNC="";
         maxCPC="";
-        minimosYmaximos();
         
+        minimosYmaximos();        
         
         r_con.Connection();        
         ResultSet rs=r_con.Consultar("select pc_fecha_cierre,pc_fecha_impresion_diario,pc_fecha_inicio from parametros_contables");
@@ -200,6 +204,11 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         jLabel2.setText("desde Cuenta:");
 
         jTextField1.setToolTipText("");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Cancelar");
@@ -223,6 +232,11 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         jLabel3.setText("hasta Cuenta:");
 
         jTextField2.setToolTipText("");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("desde Fecha:");
@@ -353,35 +367,19 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //this.dispose();
-        //r_con.cierraConexion();
-        generarTabla();
-        
+        this.dispose();
+        r_con.cierraConexion();
+        //generarTabla();   
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (validarDatos()){
             try {
-                  
+                  generarTabla(); 
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
-                  
-                        parametros.put("orden",this.orden_por_CPC);
-                   
-                  
-                       parametros.put("orden",this.orden_por_cro_C);
-                   
-                   //parametros.put("menor_cod_PC",""+jTextField3.getText());
-                   //parametros.put("mayor_cod_PC",""+jTextField4.getText());
-                   parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
-                               
-                   
-                   // Compilamos el .jrxml y lo cargamos  
-                   //final String jasperName = JasperCompileManager.compileReportToFile("src/Reportes/"+nombre_reporte);  
-                   //final JasperReport report = (JasperReport)JRLoader.loadObject(jasperName);  
                    
                   
                     //localizo el reporte para usarlo
@@ -421,18 +419,9 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {            
             //cargo Parametros del Reporte
+            generarTabla(); 
             Map parametros = new HashMap();
             parametros.put("name_empresa", r_con.getRazon_social());
-            
-                parametros.put("orden",this.orden_por_CPC);
-            
-            
-                parametros.put("orden",this.orden_por_cro_C);
-             
-//            parametros.put("menor_cod_PC",""+jTextField3.getText());
-//            parametros.put("mayor_cod_PC",""+jTextField4.getText());
-            parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-            parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
             
             //localizo el reporte para usarlo
             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -452,15 +441,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
 
             if (v.size()>0){
                 String nombre_imp;
-                //caso en que sea una unica impresora por modulo
-                //if(v.size()==1){
-                    //nombre_imp=v.elementAt(0).firstElement();
-                    //AttributeSet aset = new HashAttributeSet();
-                    //aset.add(new PrinterName(nombre_imp, null));
-                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                    //impresora = impresoras[0];
-                    //}
-
+                
                 //caso en que haya mas de una impresora por modulo
                 if (v.size()>=1){
                     //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
@@ -498,6 +479,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             }
             r_con.cierraConexion();
         } catch (JRException ex) {
+            
             Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
             r_con.cierraConexion();
         }
@@ -553,7 +535,41 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         aceptada=false;
     }//GEN-LAST:event_campoFechaFocusGained
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_F1){            
+            generarAyuda();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_F1){            
+            generarAyuda();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
    
+    public void generarAyuda(){
+        mensajeError(" ");
+        //GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4,this); 
+        GUI_Ayuda_PC np=new GUI_Ayuda_PC(usr,r_con,this);
+        //lo centro respecto a x
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {                
+            np.setSelected(true);            
+         } 
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();         
+    }
     
     private void minimosYmaximos (){
         
@@ -604,6 +620,7 @@ public void setTitleLabel (String t){
     private boolean validarDatos() {
         //unicamente valido el numero de cuenta
         boolean valido = false;
+        Fechas fecha = new Fechas();
         Validaciones val = new Validaciones();
         
         if (jTextField1.getText().equals("") || jTextField2.getText().equals("")){
@@ -614,12 +631,19 @@ public void setTitleLabel (String t){
                 mensajeError("Ingrese un valor NUMERICO para Cuenta Desde.. Hasta.");
             }
             else{
-                valido = true;
-                mensajeError(" ");
-            }
-        } 
+                if (!fecha.isFechaValida(campoFecha.getText()) || (!fecha.isFechaValida(campoFecha1.getText()))){
+                        mensajeError("Ingrese Fechas Validas por favor.");
+                }
+                else{                    
+                    valido = true;
+                    mensajeError(" ");                        
+                }  
+                    
+            }  
+        }         
         return valido;
     }
+
     
     private void mensajeError(String msj) {
         jLabel7.setText(msj);        
