@@ -119,8 +119,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -164,6 +164,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Gestión de Asientos Contables:");
+
+        jPanel5.setFocusCycleRoot(true);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/retomar_asi.png"))); // NOI18N
         jButton6.setText("Retomar Asiento");
@@ -237,6 +239,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setFocusCycleRoot(true);
 
         jLabel3.setText("Fecha Contable:");
 
@@ -368,9 +371,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jLabel5.setText("Nro. Cuenta (F1)");
+        jPanel3.setFocusCycleRoot(true);
 
         jLabel6.setText("Leyenda");
+
+        jLabel5.setText("Nro. Cuenta (F1)");
 
         jLabel7.setText("Nombre Cuenta");
 
@@ -441,12 +446,15 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
+        jTextField5.setNextFocusableComponent(jTextField6);
+
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField7FocusLost(evt);
             }
         });
 
+        jTextField8.setNextFocusableComponent(jButton4);
         jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField8FocusLost(evt);
@@ -455,6 +463,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton4.setText("Confirmar");
+        jButton4.setNextFocusableComponent(jButton7);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -463,6 +472,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
         jButton7.setText("Borrar");
+        jButton7.setNextFocusableComponent(jTextField3);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -688,7 +698,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -722,20 +732,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             r_con.cierraConexion();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
-            if (rta==JOptionPane.YES_OPTION){
-                int numAsiento=Integer.parseInt(jTextField1.getText());
-                int numRenglon=Integer.parseInt(jTextField2.getText());
-                modelo.removeRow(numRenglon-1);
-                r_con.Connection();
-                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
-                renombrarTabla();
-            }        
-            jButton4.setText("Confirmar");
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void renombrarTabla(){
         for(int i=0;i<modelo.getRowCount();i++){
@@ -1200,7 +1196,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 else
                     jTextField7.setText(debe+"");
                 habilitarPanel2(true);
-                jButton7.setEnabled(true);
+                //jButton7.setEnabled(true);
                 jButton4.setText("Modificar");
             }               
         }
@@ -1233,6 +1229,20 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 mensajeError("Debe completar todos los campos");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (rta==JOptionPane.YES_OPTION){
+            int numAsiento=Integer.parseInt(jTextField1.getText());
+            int numRenglon=Integer.parseInt(jTextField2.getText());
+            modelo.removeRow(numRenglon-1);
+            r_con.Connection();
+            r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+            renombrarTabla();
+        }
+        jButton4.setText("Confirmar");
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void actualizarTabla(){
         int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
@@ -1358,7 +1368,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         campoFecha1.setEnabled(valor);
         campoFecha2.setEnabled(valor); 
         jButton7.setEnabled(!valor);
-        jButton7.setEnabled(valor);
     }
     
  
