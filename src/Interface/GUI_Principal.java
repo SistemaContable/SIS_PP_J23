@@ -8,7 +8,6 @@ import Contabilidad.GUI_Imprimir_Diario;
 import Contabilidad.GUI_Imprimir_Mayor;
 import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
-import _Pruebas.GUI_Plan_Cuenta;
 import Contabilidad.GUI_Plan_Cuentas;
 import Contabilidad.GUI_Registrar_Asientos;
 import java.awt.Component;
@@ -20,7 +19,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenu;
-import _Pruebas.Main_Conta;
 
 /**
  *
