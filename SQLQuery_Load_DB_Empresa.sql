@@ -408,3 +408,17 @@ create table libro_mayor(
 
 CREATE INDEX IX_as_asiento_cta ON libro_mayor (lm_nro_cuenta);
 CREATE INDEX IX_as_fecha_contabilidad ON libro_mayor(lm_fecha_contabilidad);
+
+
+create table balance(
+blc_cuenta int,
+blc_codigo_plan_cuenta varchar(30),
+blc_nombre_cta varchar(30),
+blc_saldo_inicial float,
+blc_debito float,
+blc_haber float,
+blc_saldo_acumulado float,
+blc_saldo_cierre float,
+primary key (blc_cuenta),
+foreign key (blc_cuenta)references plan_cuentas(pc_nro_cuenta),
+)
