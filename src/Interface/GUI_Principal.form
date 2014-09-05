@@ -248,9 +248,22 @@
                       <Image iconType="3" name="/Iconos/item.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Libro Diario"/>
+                    <Property name="name" type="java.lang.String" value="T814" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem25ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem26">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Iconos/item.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Listado Balance"/>
+                    <Property name="name" type="java.lang.String" value="T815" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem26ActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

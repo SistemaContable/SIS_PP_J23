@@ -295,30 +295,55 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
         int asientoHasta=Integer.parseInt(jTextField2.getText());
         String fechaDesde=campoFecha1.getText();
         String fechaHasta=campoFecha2.getText();
-        
+        int cantAsientosAntes=0;
+        int cantAsientosDespues=0;
+        int cantActualizaciones=0;
             if(jCheckBox1.isSelected()){
-                
+                cantAsientosAntes=cantAsientos();                
                 r_con.Insertar("insert into asientos(as_nro_asiento,as_nro_renglon,as_fecha_contabilidad,as_tipo,as_nro_cuenta,as_fecha_operacion,as_fecha_vencimiento,as_nro_comprobante,as_leyenda,as_debe,as_haber,as_ok_carga,as_ok_registrado) "+
                                " select * from borrador_asientos where ba_ok_carga=1 and ba_ok_registrado=0 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta+" and ba_fecha_contabilidad>='"+fechaDesde+"' and ba_fecha_contabilidad<='"+fechaHasta+"'");                
+                cantAsientosDespues=cantAsientos();
                 r_con.ActualizarSinCartel("update borrador_asientos set ba_ok_registrado=1 where ba_ok_carga=1 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta
                                  +" and ba_fecha_contabilidad>='"+fechaDesde+"' and ba_fecha_contabilidad<='"+fechaHasta+"'");
                 r_con.ActualizarSinCartel("update asientos set as_ok_registrado=1");
-                
             }
             else
-            {
-                
+            {                
+                cantAsientosAntes=cantAsientos();
                 r_con.Insertar("insert into asientos(as_nro_asiento,as_nro_renglon,as_fecha_contabilidad,as_tipo,as_nro_cuenta,as_fecha_operacion,as_fecha_vencimiento,as_nro_comprobante,as_leyenda,as_debe,as_haber,as_ok_carga,as_ok_registrado) "+
                 " select * from borrador_asientos where ba_ok_carga=1 and ba_ok_registrado=0 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta);
+                cantAsientosDespues=cantAsientos();
                 r_con.ActualizarSinCartel("update borrador_asientos set ba_ok_registrado=1 where ba_ok_carga=1 and ba_nro_asiento>="+asientoDesde+" and ba_nro_asiento<="+asientoHasta);                              
-                r_con.ActualizarSinCartel("update asientos set as_ok_registrado=1");
-                
-            }
-            JOptionPane.showMessageDialog(null,"Los asientos fueron registrados correctamente");
+                r_con.ActualizarSinCartel("update asientos set as_ok_registrado=1");                
+            }            
+            cantActualizaciones=cantAsientosDespues-cantAsientosAntes;
+            JOptionPane.showMessageDialog(null,"Se registraron "+cantActualizaciones+" Asientos");
             dispose();
             r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public boolean controlarRegistros(){
+        r_con.Connection();
+        r_con.Consultar("");
+        
+        
+        
+        return false;
+    }
+        
+    private int cantAsientos(){
+        int aux=0;
+        try {                        
+            ResultSet rs=r_con.Consultar("select count(distinct(as_nro_asiento)) from asientos");
+            rs.next();
+            aux=rs.getInt(1);                      
+        } 
+        catch (SQLException ex) {            
+            Logger.getLogger(GUI_Registrar_Asientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return aux;
+    }
+    
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
         // TODO add your handling code here:
         if(jCheckBox1.isSelected()){

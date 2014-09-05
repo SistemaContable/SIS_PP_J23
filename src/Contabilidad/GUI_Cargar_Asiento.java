@@ -54,7 +54,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         usuario=usr;
         renglon=0;
         cargarFechas();
-        //r_con.Connection();
+        r_con.Connection();
         inicializarTabla();
         
         this.habilitarPanel1(false);
@@ -63,6 +63,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton1.setText("Cancelar");
         campoFecha.setText(fecha.getHoy());   
         jButton2.setEnabled(false);
+        boton7.setEnabled(false);
         jTable1.setEnabled(false);
         jButton5.requestFocus();
     }
@@ -84,9 +85,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             jLabel21.setText(fechaCierre);
             jLabel23.setText(fechaDiario);
             r_con.cierraConexion();    
-        }         
+        }        
         catch(Exception e){r_con.cierraConexion();}
-        r_con.cierraConexion();
     }
     
     /**
@@ -141,7 +141,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        boton7 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
@@ -448,8 +448,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField5.setNextFocusableComponent(jTextField6);
-
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField7FocusLost(evt);
@@ -465,19 +463,19 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton4.setText("Confirmar");
-        jButton4.setNextFocusableComponent(jButton7);
+        jButton4.setNextFocusableComponent(boton7);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
-        jButton7.setText("Borrar");
-        jButton7.setNextFocusableComponent(jTextField3);
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        boton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        boton7.setText("Borrar");
+        boton7.setNextFocusableComponent(jTextField3);
+        boton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                boton7ActionPerformed(evt);
             }
         });
 
@@ -539,7 +537,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField5)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
             .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -582,7 +580,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -641,23 +639,22 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel2))
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel14)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
         jPanel6Layout.setVerticalGroup(
@@ -665,22 +662,17 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel14)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15)
+                        .addComponent(jLabel14)
+                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -700,16 +692,16 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -735,6 +727,21 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        boton7.setEnabled(false);
+        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                int numRenglon=Integer.parseInt(jTextField2.getText());
+                modelo.removeRow(numRenglon-1);
+                r_con.Connection();
+                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+                renombrarTabla();
+            }        
+            jButton4.setText("Confirmar");
+    }                                        
+
     private void renombrarTabla(){
         for(int i=0;i<modelo.getRowCount();i++){
             int nuevoRen=i+1;
@@ -747,7 +754,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             Asiento asiento=new Asiento(num_asiento,nuevoRen,campoFecha.getText(),(String)modelo.getValueAt(i, 2),(String)modelo.getValueAt(i, 3),getTipo(),num_cuenta,(String)modelo.getValueAt(i, 4),(String)modelo.getValueAt(i, 5),d,h,false,false);
             asiento.insertar(r_con);
         }        
-        
+        this.actualizarSaldoDebeHaber();
         
     }
     
@@ -778,6 +785,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         r_con.Connection();
+        this.inicializarTabla();
         int numAsiento=getNumeroAsiento();
         jTextField1.setText(numAsiento+"");
         SimpleDateFormat formatEntrada = new SimpleDateFormat("dd/MM/yyyy"); 
@@ -1005,7 +1013,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:                        
             if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
                 if (fecha.isFechaValida(campoFecha.getText())){
-                    if(fecha.fechaEntreFechas(campoFecha.getText(), fecha.addDaysToDate(fechaDiario, 1), fechaCierre)){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
                         jPanel1.nextFocus();
@@ -1071,9 +1079,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         float saldo=Float.parseFloat(jTextField10.getText());
-        r_con.Connection();
-        if(saldo==0){            
-            for(int i=0;i<modelo.getRowCount();i++){                
+        if(saldo==0){                    
+            for(int i=0;i<modelo.getRowCount();i++){
+                r_con.Connection();
                 int numAsiento=Integer.parseInt(jTextField1.getText());
                 int numRenglon=Integer.parseInt(modelo.getValueAt(i, 0).toString());               
                 String cadena="update borrador_asientos set ba_ok_carga=1 where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+numRenglon;                
@@ -1092,14 +1100,29 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        habilitarPanelCarga1(true);        
-        this.inicializarTabla();
-        jButton1.setText("Abandonar Asiento");
-        esCarga=true;
-        campoFecha.setText("");
-        campoFecha1.setText("");
-        campoFecha2.setText("");
+        int rta=0;
+        if(modelo.getRowCount()!=0){
+        rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Retomar Asiento", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){        // TODO add your handling code here:
+                habilitarPanelCarga1(true);        
+                this.inicializarTabla();
+                jButton1.setText("Abandonar Asiento");
+                esCarga=true;
+                campoFecha.setText("");
+                campoFecha1.setText("");
+                campoFecha2.setText("");
+            }
+        }
+        else
+        {        
+            habilitarPanelCarga1(true);        
+            this.inicializarTabla();
+            jButton1.setText("Abandonar Asiento");
+            esCarga=true;
+            campoFecha.setText("");
+            campoFecha1.setText("");
+            campoFecha2.setText("");
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
@@ -1198,7 +1221,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 else
                     jTextField7.setText(debe+"");
                 habilitarPanel2(true);
-                //jButton7.setEnabled(true);
+                boton7.setEnabled(true);
                 jButton4.setText("Modificar");
             }               
         }
@@ -1206,6 +1229,12 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        if(!jTextField7.isEnabled()){
+            jTextField7.setText("");
+        }
+        if(!jTextField8.isEnabled()){
+            jTextField8.setText("");
+        }        
         if(jButton4.getText().equals("Confirmar")){
             if(controlarCampos()){
                 jButton2.setEnabled(true);
@@ -1232,20 +1261,22 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void boton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton7ActionPerformed
         // TODO add your handling code here:
-        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (rta==JOptionPane.YES_OPTION){
-            int numAsiento=Integer.parseInt(jTextField1.getText());
-            int numRenglon=Integer.parseInt(jTextField2.getText());
-            modelo.removeRow(numRenglon-1);
-            r_con.Connection();
-            r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
-            renombrarTabla();
-            r_con.Connection();
-        }
-        jButton4.setText("Confirmar");
-    }//GEN-LAST:event_jButton7ActionPerformed
+        boton7.setEnabled(false);
+        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                int numRenglon=Integer.parseInt(jTextField2.getText());
+                modelo.removeRow(numRenglon-1);
+                r_con.Connection();
+                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+                renombrarTabla();
+            }
+            else
+                boton7.setEnabled(true);
+            jButton4.setText("Confirmar");
+    }//GEN-LAST:event_boton7ActionPerformed
 
     private void actualizarTabla(){
         int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
@@ -1275,8 +1306,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                                       "' ,ba_fecha_vencimiento='"+campoFecha2.getText()+
                                       "' ,ba_nro_comprobante='"+jTextField5.getText()+
                                       "' ,ba_leyenda='"+jTextField6.getText()+
-                                      "' ,ba_debe="+d+" ,ba_haber="+h+" where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+ren);                                      
+                                      "' ,ba_debe="+d+" ,ba_haber="+h+" where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+ren);                                                  
             r_con.cierraConexion();
+            this.actualizarSaldoDebeHaber();
     }
     
     
@@ -1284,7 +1316,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.inicializarTabla();
         campoFecha.setText("");
         habilitarRadioButtons(false);                
-        jButton3.setEnabled(false);
+//        jButton3.setEnabled(false);
         jTextField3.setText("");                
         jTextField4.setText("");
         campoFecha1.setText("");
@@ -1349,8 +1381,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         campoFecha.setEditable(!valor);
         jTextField1.setEnabled(valor);
         jTextField1.setEditable(valor);
+        jButton3.setEnabled(valor);
         jTextField1.requestFocus();
         this.habilitarRadioButtons(!valor);
+        
     }
     
     private void habilitarPanel1(boolean valor){
@@ -1370,12 +1404,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField8.setEnabled(valor);
         campoFecha1.setEnabled(valor);
         campoFecha2.setEnabled(valor); 
-        jButton7.setEnabled(!valor);
+        boton7.setEnabled(!valor);        
     }
     
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton boton7;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JFormattedTextField campoFecha;
     private javax.swing.JFormattedTextField campoFecha1;
@@ -1386,7 +1421,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1554,8 +1588,23 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             return false;
     }
     
+    /**
+     * Recorre la tabla y recalcula el debe el haber y saldo 
+     */
     public void actualizarSaldoDebeHaber(){
-        
+        BigDecimal debe=new BigDecimal(0);
+        BigDecimal haber=new BigDecimal(0);
+        String dAux;
+        String hAux;
+        for(int i=0;i<modelo.getRowCount();i++){
+            dAux=modelo.getValueAt(i, 6)+"";
+            hAux=modelo.getValueAt(i, 7)+"";
+            debe=sumarBigDecimal(debe+"",dAux);
+            haber=sumarBigDecimal(haber+"",hAux);
+        }
+        jTextField9.setText(debe+"");        
+        jTextField11.setText(haber+"");
+        jTextField10.setText(sumarBigDecimal(debe+"","-"+haber)+"");
     }
     
     private BigDecimal sumarBigDecimal(String num1,String num2){        

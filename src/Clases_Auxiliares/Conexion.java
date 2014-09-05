@@ -588,7 +588,7 @@ public class Conexion{
     }
  
     public boolean Insertar(String inserta) {
-        try{
+        try{            
             stnt = (Statement) this.conn.createStatement();
             stnt.executeUpdate(inserta);
             stnt.close();

@@ -175,13 +175,15 @@ public class Asiento {
                 debe+=rs.getFloat(1);
                 haber+=rs.getFloat(2);
             }
-            if(debe-haber==0)
+            if(debe-haber==0){
+                r_con.cierraConexion();
                 return true;
-            r_con.cierraConexion();
+            }            
         } catch (SQLException ex) {
             r_con.cierraConexion();
             Logger.getLogger(Asiento.class.getName()).log(Level.SEVERE, null, ex);
         }
+        r_con.cierraConexion();
         return false;
     }
     
