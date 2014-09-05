@@ -1098,7 +1098,12 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 this.habilitarPanel2(false);
                 r_con.ActualizarSinCartel(cadena);                               
             }
-            JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");            
+            if (modelo.getRowCount()>0){
+                JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");    
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Realice una nueva Carga"); 
+            }            
             this.habilitarPanel2(false);
             jButton6.setEnabled(true);
             jButton5.setEnabled(true);
