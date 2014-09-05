@@ -62,8 +62,7 @@ ORDER BY blc_codigo_plan_cuenta]]>
 		<variableExpression><![CDATA[$F{balance_blc_saldo_cierre}]]></variableExpression>
 	</variable>
 	<variable name="variable1" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_inicial} : 0))
-]]></variableExpression>
+		<variableExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_inicial} : 0))]]></variableExpression>
 	</variable>
 	<variable name="variable2" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{balance_blc_saldo_acumulado}]]></variableExpression>
@@ -72,13 +71,7 @@ ORDER BY blc_codigo_plan_cuenta]]>
 	<group name="por_cuenta">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupFooter>
-			<band height="84">
-				<rectangle>
-					<reportElement x="232" y="42" width="324" height="20" uuid="bb95273a-b251-44ff-9a42-e60acabbbadf"/>
-					<graphicElement>
-						<pen lineWidth="1.0" lineStyle="Dotted"/>
-					</graphicElement>
-				</rectangle>
+			<band height="52">
 				<line>
 					<reportElement x="0" y="9" width="555" height="1" uuid="89fac664-b2e9-4b36-9e1a-a2d36599bda0"/>
 					<graphicElement>
@@ -111,9 +104,7 @@ ORDER BY blc_codigo_plan_cuenta]]>
 					<textElement textAlignment="Right">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_cierre} : 0))
-
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_cierre} : 0))]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="130" y="19" width="97" height="20" uuid="1e440dd6-b852-41e2-9936-0bc9da3fff06"/>
@@ -122,30 +113,6 @@ ORDER BY blc_codigo_plan_cuenta]]>
 					</textElement>
 					<text><![CDATA[RESULTADOS:]]></text>
 				</staticText>
-				<textField pattern="###0.00" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="200" y="44" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="803c8636-f7f6-4994-8cc9-8808040b5ea6"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
-						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? 0 : $F{balance_blc_saldo_inicial}))]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.00" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="393" y="44" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a9bd46ce-28b6-4871-a5b6-a3729721e47c"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
-						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? 0 : $F{balance_blc_saldo_acumulado}))]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.00" isBlankWhenNull="false">
-					<reportElement mode="Transparent" x="453" y="44" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="83b15dfa-bc6c-4817-8034-e96b392bb352"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
-						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
-					</textElement>
-					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? 0 : $F{balance_blc_saldo_cierre}))]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupFooter>
 	</group>
