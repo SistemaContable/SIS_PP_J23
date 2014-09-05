@@ -362,7 +362,7 @@ WHERE
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="29" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="bc7e0d48-db77-48ba-871c-870e82445779"/>
 			</line>
@@ -379,7 +379,7 @@ WHERE
 			<textField>
 				<reportElement x="0" y="0" width="67" height="20" uuid="1a6c8f18-5195-4da2-997a-92a79ae6adda"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="62" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e574893-18c2-4612-824d-522890d660d9"/>

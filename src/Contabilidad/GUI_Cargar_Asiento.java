@@ -448,6 +448,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
+        jTextField5.setNextFocusableComponent(jTextField6);
+        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField5FocusLost(evt);
+            }
+        });
+
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField7FocusLost(evt);
@@ -1277,6 +1284,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 boton7.setEnabled(true);
             jButton4.setText("Confirmar");
     }//GEN-LAST:event_boton7ActionPerformed
+
+    private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
+        // TODO add your handling code here:
+        jTextField6.requestFocus();
+    }//GEN-LAST:event_jTextField5FocusLost
 
     private void actualizarTabla(){
         int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;

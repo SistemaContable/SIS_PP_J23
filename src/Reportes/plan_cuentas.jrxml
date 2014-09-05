@@ -213,7 +213,7 @@ ORDER BY  $P!{orden}]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="23" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="bc7e0d48-db77-48ba-871c-870e82445779"/>
 			</line>

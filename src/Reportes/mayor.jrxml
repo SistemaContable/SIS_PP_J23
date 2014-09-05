@@ -25,7 +25,7 @@ FROM
 WHERE
 	 (lm_nro_cuenta=pc_nro_cuenta)
 
-ORDER BY  libro_mayor_CPC,lm_fecha_contabilidad,lm_nro_asiento ]]>
+ORDER BY  libro_mayor_CPC,lm_fecha_contabilidad,lm_nro_asiento]]>
 	</queryString>
 	<field name="libro_mayor_lm_nro_asiento" class="java.lang.Integer"/>
 	<field name="libro_mayor_lm_nro_renglon" class="java.lang.Integer"/>
@@ -376,8 +376,7 @@ ORDER BY  libro_mayor_CPC,lm_fecha_contabilidad,lm_nro_asiento ]]>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="118" y="0" width="53" height="14" uuid="d2b31c78-218d-411e-85f7-c01a4f65353c"/>
-				<textFieldExpression><![CDATA[(($F{libro_mayor_lm_nro_renglon}==0) ? "" : $F{libro_mayor_lm_fecha_vencimiento})
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(($F{libro_mayor_lm_nro_renglon}==0) ? "" : $F{libro_mayor_lm_fecha_vencimiento})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="114" y="0" width="26" height="14" uuid="a5b5abef-bbcf-4c36-b31c-e98f7b2d4e7f">
@@ -391,7 +390,7 @@ ORDER BY  libro_mayor_CPC,lm_fecha_contabilidad,lm_nro_asiento ]]>
 		<band height="2" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="23" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="bc7e0d48-db77-48ba-871c-870e82445779"/>
 			</line>
@@ -408,7 +407,7 @@ ORDER BY  libro_mayor_CPC,lm_fecha_contabilidad,lm_nro_asiento ]]>
 			<textField>
 				<reportElement x="0" y="0" width="67" height="20" uuid="1a6c8f18-5195-4da2-997a-92a79ae6adda"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="62" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e574893-18c2-4612-824d-522890d660d9"/>
