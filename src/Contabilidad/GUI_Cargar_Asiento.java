@@ -1104,8 +1104,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             this.habilitarPanel2(false);
             jButton6.setEnabled(true);
             jButton5.setEnabled(true);
-            jButton1.setEnabled(false);boton7.setEnabled(false);
-            jButton2.setText("Cancelar");
+            boton7.setEnabled(false);
+            jButton1.setText("Cancelar");
             this.inicializarTabla();
             
         }
