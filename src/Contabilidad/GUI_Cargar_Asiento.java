@@ -820,6 +820,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:        
         if(esCarga){
+            jButton2.setEnabled(true);
+            jButton5.setText("Abandonar Asiento");
             Asiento asiento=new Asiento();
             asiento.setOkCarga(r_con, Integer.parseInt(jTextField1.getText()),0);
         }
@@ -1099,10 +1101,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 r_con.ActualizarSinCartel(cadena);                               
             }
             JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");            
+            this.habilitarPanel2(false);
             jButton6.setEnabled(true);
             jButton5.setEnabled(true);
+            jButton1.setEnabled(false);boton7.setEnabled(false);
+            jButton2.setText("Cancelar");
             this.inicializarTabla();
-            this.habilitarPanel2(false);
+            
         }
         else
         {
@@ -1117,8 +1122,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Retomar Asiento", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){        // TODO add your handling code here:
                 habilitarPanelCarga1(true);        
-                this.inicializarTabla();
-                jButton1.setText("Abandonar Asiento");
+                this.inicializarTabla();                
                 esCarga=true;
                 campoFecha.setText("");
                 campoFecha1.setText("");
@@ -1129,13 +1133,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         {        
             habilitarPanelCarga1(true);        
             this.inicializarTabla();
-            jButton1.setText("Abandonar Asiento");
             esCarga=true;
             campoFecha.setText("");
             campoFecha1.setText("");
             campoFecha2.setText("");
         }
-        jButton2.setEnabled(true);
         jButton5.setEnabled(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 

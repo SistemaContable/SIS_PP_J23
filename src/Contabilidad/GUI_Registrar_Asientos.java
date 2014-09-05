@@ -13,8 +13,10 @@ import Objetos.Usuario;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -289,7 +291,7 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoFecha2FocusLost
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                
         r_con.Connection();                
         int asientoDesde=Integer.parseInt(jTextField1.getText());
         int asientoHasta=Integer.parseInt(jTextField2.getText());
@@ -318,23 +320,77 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
             }            
             cantActualizaciones=cantAsientosDespues-cantAsientosAntes;
             JOptionPane.showMessageDialog(null,"Se registraron "+cantActualizaciones+" Asientos");
+            String noRegis=noRegistrados();
+            if(!noRegis.equals("Los siguientes asientos no fueron registrados:"))
+                JOptionPane.showMessageDialog(null,noRegis);
             dispose();
             r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
+    public String noRegistrados(){
+        try {
+            String cadena="Los siguientes asientos no fueron registrados:";
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select distinct(ba_nro_asiento),ba_ok_registrado,ba_ok_carga from borrador_asientos,plan_cuentas");
+            while(rs.next()){
+                if((!rs.getBoolean(2))&&(!rs.getBoolean(3))){
+                    cadena+="\n"+rs.getInt(1);
+                }                                
+            }
+            r_con.cierraConexion();
+            return cadena;
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Registrar_Asientos.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+    }        
+    /**
+     * Se fija si esta bien balanceado cada asiento en caso de que no lo
+     * este te muestra cual es por pantalla
+     * @return  
+     */
     public boolean controlarRegistros(){
         try {
             r_con.Connection();
-            ResultSet rs=r_con.Consultar("select * from borrador_asientos");
+            ResultSet rs=r_con.Consultar("select pc_fecha_cierre,pc_fecha_impresion_diario,pc_fecha_inicio from parametros_contables");        
+            rs.next();
+            Fechas fechas=new Fechas();
+            String fechaCierre=fechas.parseFecha(rs.getDate(1));
+            String fechaDiario=fechas.parseFecha(rs.getDate(2));
+            String fechaInicio=fechas.parseFecha(rs.getDate(3));                        
+            rs=r_con.Consultar("select distinct(ba_nro_asiento) from borrador_asientos");
             while(rs.next()){
-                
-                
-                
-                
+                int numCuenta=rs.getInt(1);
+                ResultSet rsAux=r_con.Consultar("select * from borrador_asientos,plan_cuentas where ba_nro_cuenta=pc_nro_cuenta and ba_nro_asiento="+numCuenta);
+                BigDecimal d=new BigDecimal(0);
+                BigDecimal h=new BigDecimal(0);
+                while(rsAux.next()){
+                    d=sumarBigDecimal(d+"",rsAux.getFloat("ba_debe")+"");
+                    h=sumarBigDecimal(h+"",rsAux.getFloat("ba_haber")+"");
+                    if(!fecha.fechaEntreFechas(fecha.convertirBarras(rsAux.getDate("ba_fecha_contabilidad")+""), fechaDiario, fechaCierre)){
+                        System.out.println("Fecha incorrecta "+fecha.convertirBarras(rsAux.getDate("ba_fecha_contabilidad")+" en "+rsAux.getInt("ba_nro_cuenta")));
+                        r_con.cierraConexion();
+                        return false;
+                    }
+                    if(!rsAux.getBoolean("pc_imputable")){
+                        System.out.println("No es imputable "+rsAux.getInt("ba_nro_cuenta")+" "+numCuenta);
+                        r_con.cierraConexion();
+                        return false;
+                    }                                            
+                }
+                d=sumarBigDecimal(d+"","-"+h);
+                if(d.floatValue()!=0){
+                    System.out.println("No balancea "+d);
+                    r_con.cierraConexion();
+                    return false;
+                }               
             }
-            
-            return false;
+            r_con.cierraConexion();
+            return true;
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Registrar_Asientos.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -488,5 +544,18 @@ public boolean validarCampo(String num){
         return false;
     }    
 }
+
+private BigDecimal sumarBigDecimal(String num1,String num2){        
+        float num1Float=Float.parseFloat(num1);
+        float num2Float=Float.parseFloat(num2);
+        String formato1=new DecimalFormat("0.00").format(num1Float);
+        String formato2=new DecimalFormat("0.00").format(num2Float);
+        formato1=formato1.replace(',', '.');
+        formato2=formato2.replace(',', '.');        
+        BigDecimal num1BigD=new BigDecimal(formato1);
+        BigDecimal num2BigD=new BigDecimal(formato2);
+        BigDecimal suma=num1BigD.add(num2BigD);        
+        return suma;
+    }
 
 }
