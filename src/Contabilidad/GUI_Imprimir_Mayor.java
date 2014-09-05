@@ -382,6 +382,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
+                   parametros.put("desde", campoFecha.getText());
+                   parametros.put("hasta", campoFecha1.getText());
                    
                   
                     //localizo el reporte para usarlo
@@ -424,6 +426,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             generarTabla(); 
             Map parametros = new HashMap();
             parametros.put("name_empresa", r_con.getRazon_social());
+            parametros.put("desde", campoFecha.getText());
+            parametros.put("hasta", campoFecha1.getText());
             
             //localizo el reporte para usarlo
             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
