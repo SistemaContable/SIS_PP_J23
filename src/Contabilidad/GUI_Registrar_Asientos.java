@@ -322,6 +322,15 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
             r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public boolean controlarRegistros(){
+        r_con.Connection();
+        r_con.Consultar("");
+        
+        
+        
+        return false;
+    }
+        
     private int cantAsientos(){
         int aux=0;
         try {                        

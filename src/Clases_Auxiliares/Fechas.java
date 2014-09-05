@@ -200,7 +200,7 @@ public class Fechas {
        String mes=fecha.substring(5,7);
        String dia=fecha.substring(8,10);
        return (dia+"/"+mes+"/"+anio);       
-   }
+   }      
    
    
    public static Date getUltimoDiaDelMes() {

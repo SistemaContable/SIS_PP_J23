@@ -271,11 +271,117 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     
-    public void generarTabla(){
-        
+       
+    public void insertarCuenta(int numCuenta){
+        try {
+            r_con.Connection();                         
+            String fechaDesde=campoFecha.getText();                                 
+            String fechaHasta=campoFecha1.getText();                                 
+            int numAsiento=-1;
+            ResultSet rs=r_con.Consultar("select * from asientos,plan_cuentas where pc_nro_cuenta=as_nro_cuenta and as_nro_cuenta="+numCuenta);
+            BigDecimal d=new BigDecimal(0);
+            BigDecimal h=new BigDecimal(0);
+            BigDecimal saldo=new BigDecimal(0);
+            BigDecimal saldoInicial=new BigDecimal(0);
+            Fechas fecha=new Fechas();
+            String planCuenta="";
+            String nombreCuenta="";
+            boolean entre=false;
+            while(rs.next()){
+                entre=true;
+                planCuenta=rs.getString("pc_codigo_plan_cuenta");
+                nombreCuenta=rs.getString("pc_nombre_cuenta");
+                if(fecha.fechaEntreFechas(fecha.convertirBarras(rs.getDate("as_fecha_contabilidad")+"")+"",fechaInicio, fechaDesde+"")){                    
+                    numAsiento=rs.getInt(1);            
+                    if(rs.getFloat("as_debe")!=0)
+                        saldoInicial=sumarBigDecimal(saldoInicial+"",rs.getFloat("as_debe")+"");
+                    else
+                        saldoInicial=sumarBigDecimal(saldoInicial+"","-"+rs.getFloat("as_haber"));                    
+                }
+                else
+                {
+                    saldo=sumarBigDecimal(saldo+"","-"+rs.getFloat("as_haber"));
+                    saldo=sumarBigDecimal(saldo+"",+rs.getFloat("as_debe")+"");
+                    d=sumarBigDecimal(d+"",rs.getFloat("as_debe")+"");
+                    h=sumarBigDecimal(h+"",rs.getFloat("as_haber")+"");                
+                }
+            }
+            if(entre){
+                BigDecimal diferencia=sumarBigDecimal(saldoInicial+"",saldo+"");
+                String cadena=numCuenta+",'"+planCuenta+"','"+nombreCuenta+"',"+saldoInicial+","+d+","+h+","+saldo+","+diferencia;
+                r_con.Insertar("insert into balance values("+cadena+")");            
+            }
+            r_con.cierraConexion();            
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }                
     }
+                
+    public void generarTabla(){
+        r_con.Connection();
+        r_con.ActualizarSinCartel("delete from libro_mayor");
+        r_con.ActualizarSinCartel("delete from balance");
+        r_con.cierraConexion();
+        int cuentaDesde=Integer.parseInt(jTextField1.getText());
+        int cuentaHasta=Integer.parseInt(jTextField2.getText());
+        for(int i=cuentaDesde;i<cuentaHasta;i++)
+            insertarCuenta(i);                                                    
+        generarBalance();
+    }
+    
+    public void generarBalance(){
+        try {
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select max(LEN(blc_codigo_plan_cuenta)) from balance");
+            rs.next();
+            int profundidad=rs.getInt(1);            
+            while(profundidad>0){
+                rs=r_con.Consultar("select * " +
+                                   "from balance,plan_cuentas "+
+                                   "where blc_cuenta=pc_nro_cuenta and LEN(pc_codigo_plan_cuenta)="+profundidad);
+                while(rs.next()){
+                 
+                    BigDecimal d=convertirEnBigDecimal(rs.getFloat("blc_debito")+"");
+                    BigDecimal h=convertirEnBigDecimal(rs.getFloat("blc_haber")+"");
+                    BigDecimal saldoInicial=convertirEnBigDecimal(rs.getFloat("blc_saldo_inicial")+"");
+                    BigDecimal saldoAcum=convertirEnBigDecimal(rs.getFloat("blc_saldo_acumulado")+"");
+                    int cuentaPadre=rs.getInt("pc_id_padre");
+                    
+                    ResultSet rsAux=r_con.Consultar("select * from balance where blc_cuenta="+cuentaPadre);
+                    if(rsAux.next()){                        
+                    // en caso de que exista el padre dentro del balance entonces debo modificar sus datos
+                        
+                        d=sumarBigDecimal(d+"",rsAux.getFloat("blc_debito")+"");
+                        h=sumarBigDecimal(h+"",rsAux.getFloat("blc_haber")+"");
+                        saldoInicial=sumarBigDecimal(saldoInicial+"",rsAux.getFloat("blc_saldo_inicial")+"");
+                        saldoAcum=sumarBigDecimal(saldoAcum+"",rsAux.getFloat("blc_saldo_acumulado")+"");
+                        
+                        r_con.ActualizarSinCartel("update balance set blc_saldo_inicial="+saldoInicial.floatValue()+", blc_debito="+d.floatValue()+", blc_haber="+h.floatValue()+", blc_saldo_acumulado="+saldoAcum.floatValue()+" where blc_cuenta="+cuentaPadre);
+                    }
+                    else
+                    {
+                    // debo insertar el padre dentro de la tabla balance
+                        
+                        rsAux=r_con.Consultar("select * from plan_cuentas where pc_nro_cuenta="+cuentaPadre);
+                        rsAux.next();
+                        BigDecimal dif=sumarBigDecimal(saldoInicial+"",saldoAcum+"");
+                        String cadena=cuentaPadre+",'"+rsAux.getString("pc_codigo_plan_cuenta")+"','"+rsAux.getString("pc_nombre_cuenta")+"',"+saldoInicial.floatValue()+","+d.floatValue()+","+h.floatValue()+","+saldoAcum.floatValue()+","+dif.floatValue();
+                        
+                        r_con.Insertar("insert into balance values("+cadena+")");
+                    }                    
+                }
+                profundidad--;
+            }
+            r_con.ActualizarSinCartel("delete from balance where blc_cuenta=0");
+            r_con.cierraConexion();
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Balance.class.getName()).log(Level.SEVERE, null, ex);
+        }                        
+    }        
     
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
