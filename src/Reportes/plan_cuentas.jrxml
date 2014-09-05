@@ -58,20 +58,20 @@ ORDER BY  $P!{orden}]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch">
+	<pageHeader>
+		<band height="79">
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" uuid="ca4c5899-132e-471f-9af5-8a3d9ae8439c"/>
+				<reportElement x="0" y="-1" width="555" height="1" uuid="5caeb5da-b581-4030-9d34-c37e1923a480"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="32" width="83" height="20" uuid="152bf005-c7d7-4e42-85d7-f1d6015bfaec"/>
+				<reportElement x="0" y="31" width="83" height="20" uuid="35090f54-1ac3-4e4b-8342-ec791e0e0904"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Empresa:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="83" y="32" width="311" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9af8c39b-dd2e-44de-95ae-4f789f058bc0"/>
+				<reportElement mode="Transparent" x="83" y="31" width="311" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4f5717c7-9db8-4049-9135-2dbd60fab619"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -79,7 +79,7 @@ ORDER BY  $P!{orden}]]>
 				<textFieldExpression><![CDATA[$P{name_empresa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="1" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="a5b1c027-2c56-4e16-887c-05f55e08c949"/>
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="a0f7fd42-a22a-454d-a27b-8540e68939c3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="22" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -87,38 +87,38 @@ ORDER BY  $P!{orden}]]>
 				<text><![CDATA[Plan de Cuentas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="468" y="1" width="87" height="15" uuid="cf692547-0f3b-4472-b46d-ebcda2584096"/>
+				<reportElement x="468" y="0" width="87" height="15" uuid="296b5698-4e29-4cfb-b259-c79bffc62eb3"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Sistema Contable]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="31" width="555" height="1" uuid="0470c6e5-0994-4f1a-befc-93fc5dcac65d"/>
+				<reportElement x="0" y="30" width="555" height="1" uuid="6ef4d806-0531-483d-9093-c3558e670099"/>
 			</line>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="429" y="32" width="126" height="20" uuid="78f62634-ecbc-43c0-9c9f-fbd017df7ce6"/>
+				<reportElement x="416" y="31" width="139" height="20" uuid="91ee385e-3f98-4a09-8c86-127350705e2f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="78" width="555" height="1" uuid="c0fe2675-c215-40c7-80e7-691587003c43"/>
+				<reportElement x="0" y="77" width="555" height="1" uuid="92f0da42-f124-4450-8a4c-18a10ccf5c21"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="170" y="51" width="71" height="15" uuid="29265ebb-dc54-441f-a775-33c24580fab8"/>
+				<reportElement x="180" y="51" width="71" height="15" uuid="9cd765c9-4c62-4359-9e3b-f84d2c3ef783"/>
 				<text><![CDATA[Desde cuenta:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="289" y="51" width="68" height="15" uuid="0761ce81-2b5c-4ca5-8a32-c9844b7188a7"/>
+				<reportElement x="299" y="51" width="68" height="15" uuid="1892c21f-75fe-4a1f-ae22-3f95c6c8b912"/>
 				<text><![CDATA[Hasta cuenta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="241" y="51" width="31" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="eea54e88-d50f-4ec9-a153-a48deeb5ca2f"/>
+				<reportElement mode="Transparent" x="251" y="51" width="31" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="44317829-a45f-42bf-960a-a43a1c629731"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -126,27 +126,27 @@ ORDER BY  $P!{orden}]]>
 				<textFieldExpression><![CDATA[$P{menor_nro_C}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="358" y="51" width="36" height="15" uuid="e094514d-cf05-45f8-b231-af160d6b1ec6"/>
+				<reportElement x="368" y="51" width="36" height="15" uuid="ed25297a-df40-4ea2-a81e-b8ed7dffedae"/>
 				<textFieldExpression><![CDATA[$P{mayor_nro_C}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="170" y="63" width="71" height="14" uuid="8030cf38-5348-4bf6-81c2-2aa8d45bc604"/>
+				<reportElement x="180" y="63" width="71" height="14" uuid="607f69c1-df9a-44f3-99c3-6502633579c3"/>
 				<text><![CDATA[Desde código:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="241" y="63" width="31" height="14" uuid="bc9eef2d-f9bb-4bfc-9e8d-47a17ffb03c2"/>
+				<reportElement x="251" y="63" width="31" height="14" uuid="cb59c91d-3a4a-4431-9d38-8306c6f19f66"/>
 				<textFieldExpression><![CDATA[$P{menor_cod_PC}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="289" y="63" width="69" height="14" uuid="45b707bf-ad30-4f89-a722-96e661654a01"/>
+				<reportElement x="299" y="63" width="69" height="14" uuid="0f88926a-4e65-4e51-884c-d151eda89886"/>
 				<text><![CDATA[Hasta código:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="358" y="63" width="36" height="14" uuid="47a16d9f-991e-4bd4-b83a-a2eeb039f455"/>
+				<reportElement x="368" y="63" width="36" height="14" uuid="06f80fce-fc11-4757-babd-8d94fc158404"/>
 				<textFieldExpression><![CDATA[$P{mayor_cod_PC}]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
+	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
