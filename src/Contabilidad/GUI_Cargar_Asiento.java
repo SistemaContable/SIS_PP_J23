@@ -808,7 +808,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.habilitarPanel1(true);
         r_con.cierraConexion();
         habilitarRadioButtons(false);
-        
+        jButton6.setEnabled(false);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void habilitarRadioButtons(boolean valor){
@@ -1096,10 +1096,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 String cadena="update borrador_asientos set ba_ok_carga=1 where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+numRenglon;                
                 this.habilitarPanel1(false);
                 this.habilitarPanel2(false);
-                r_con.ActualizarSinCartel(cadena);               
+                r_con.ActualizarSinCartel(cadena);                               
             }
-            JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");
-            this.dispose();
+            JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");            
+            jButton6.setEnabled(true);
+            jButton5.setEnabled(true);
+            this.inicializarTabla();
+            this.habilitarPanel2(false);
         }
         else
         {
@@ -1132,6 +1135,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             campoFecha1.setText("");
             campoFecha2.setText("");
         }
+        jButton2.setEnabled(true);
+        jButton5.setEnabled(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
@@ -1418,7 +1423,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField8.setEnabled(valor);
         campoFecha1.setEnabled(valor);
         campoFecha2.setEnabled(valor); 
-        boton7.setEnabled(!valor);        
+        boton7.setEnabled(!valor);
+        jButton4.setEnabled(valor);
     }
     
  

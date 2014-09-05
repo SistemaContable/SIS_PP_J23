@@ -323,12 +323,21 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public boolean controlarRegistros(){
-        r_con.Connection();
-        r_con.Consultar("");
-        
-        
-        
-        return false;
+        try {
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select * from borrador_asientos");
+            while(rs.next()){
+                
+                
+                
+                
+            }
+            
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI_Registrar_Asientos.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
         
     private int cantAsientos(){
