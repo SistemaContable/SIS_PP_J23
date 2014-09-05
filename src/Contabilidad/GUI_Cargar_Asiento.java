@@ -1106,6 +1106,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         {
             JOptionPane.showMessageDialog(null,"El asiento que usted intenta registrar no balancea");
         }
+        jTextField9.setText(0+"");
+        jTextField10.setText(0+"");
+        jTextField11.setText(0+"");    
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
