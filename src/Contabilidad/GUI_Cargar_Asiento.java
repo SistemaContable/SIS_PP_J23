@@ -959,7 +959,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField7.getText())){
                     if (Float.parseFloat(jTextField7.getText())>=0){
-                        mensajeError(" ");  
+                        mensajeError(" ");
+                        jTextField8.setText("");
                         jTextField8.setEnabled(false);
                         jTextField8.nextFocus();
                     }
@@ -992,7 +993,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField8.getText())){
                     if (Float.parseFloat(jTextField8.getText())>=0){
-                        mensajeError(" ");  
+                        mensajeError(" "); 
+                        jTextField7.setText("");
                         jTextField7.setEnabled(false);
                         jTextField8.nextFocus();
                     }
