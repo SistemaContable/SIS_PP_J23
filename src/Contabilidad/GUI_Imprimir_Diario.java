@@ -52,7 +52,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
     private String nombre_reporte = "libro_diario.jrxml";
     private String id_modulo_imp = "8";
     private String inicio_FEC, cierre_FEC,ult_impre_FEC,maxFEC;
-    private int ult_renglon,nro_folio;
+    private int ult_asto, ult_renglon,nro_folio;
     
     private Fechas fecha = new Fechas ();
     
@@ -88,6 +88,8 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -178,6 +180,11 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("-");
 
+        jLabel9.setText("Ultimo Asiento:");
+
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("-");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -205,11 +212,13 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                         .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9)
                             .addComponent(jLabel6)
                             .addComponent(jLabel2)
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(campoFecha1, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -224,11 +233,15 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel8))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
@@ -244,7 +257,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -265,23 +278,19 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
-                   parametros.put("ultimo_asto",0);
+                   parametros.put("ultimo_asto",ult_asto+1);
                    if (ult_renglon!=0){
                         parametros.put("min_fec",campoFecha1.getText());
-                    }
-                    else{
+                   }
+                   else{
                        parametros.put("min_fec",fecha.addDaysToDate(campoFecha1.getText(), -1));                    
-                    }
+                   }
                    parametros.put("max_fec",campoFecha2.getText());
                    parametros.put("cierre_fec",this.cierre_FEC);
-                   if (nro_folio!=0){
-                        parametros.put("nro_folio",this.nro_folio+1);
-                    }
-                    else{
-                        parametros.put("nro_folio",this.nro_folio+1);
-                    }
+                   parametros.put("nro_folio",this.nro_folio);                    
                    parametros.put("ultimo_renglon",ult_renglon);
-
+                   parametros.put("SUBREPORT_DIR","src/Reportes/");
+                   
                    //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
                   
                     //localizo el reporte para usarlo
@@ -323,7 +332,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 //cargo Parametros del Reporte
                 Map parametros = new HashMap();
                 parametros.put("name_empresa", r_con.getRazon_social());
-                parametros.put("ultimo_asto",0);
+                parametros.put("ultimo_asto",ult_asto+1);
                 if (ult_renglon!=0){
                     parametros.put("min_fec",campoFecha1.getText());
                 }
@@ -332,13 +341,9 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 }
                 parametros.put("max_fec",campoFecha2.getText());
                 parametros.put("cierre_fec",this.cierre_FEC);
-                if (nro_folio!=0){
-                    parametros.put("nro_folio",this.nro_folio);
-                }
-                else{
-                    parametros.put("nro_folio",this.nro_folio+1);
-                }
-                parametros.put("ultimo_renglon",ult_renglon);
+                parametros.put("nro_folio",this.nro_folio);                
+                parametros.put("ultimo_renglon",ult_renglon);                
+                parametros.put("SUBREPORT_DIR","src/Reportes/");
 
                 //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
 
@@ -351,17 +356,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 
                 //paginas que ocupó
                 nro_folio = nro_folio+print.getPages().size();
-                
-                //renglones que ocupó
-                String sql = "SELECT COUNT(*) FROM asientos WHERE as_fecha_contabilidad <= '"+campoFecha2.getText()+"'";
-                ResultSet res = r_con.Consultar(sql);
-                try {
-                    if(res.next()){
-                         this.ult_renglon=res.getInt(1);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
-                }               
+                               
 
                 //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
                 
@@ -409,9 +404,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                         String message="Se solicito la impresión del libro Diario, ¿Confirma la CORRECTA impresión?.";
                         int rta=JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                         if (rta==JOptionPane.YES_OPTION){
-                            sql = "UPDATE parametros_contables SET pc_fecha_impresion_diario = '"+campoFecha2.getText()+"', pc_nro_renglon_diario = "+ult_renglon+", pc_nro_folio = "+nro_folio+";";
-                            System.out.println(sql);
-                            r_con.ActualizarSinCartel(sql);
+                            modificarDatosDiario ();
                         }
                         else{
                             JOptionPane.showMessageDialog(null,"Los parametros no se actualizaron. Puede volver a imprimir el Libro Diario.","Error",JOptionPane.WARNING_MESSAGE);
@@ -435,7 +428,34 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
         
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    
+    private void modificarDatosDiario (){        
+        //renglones que ocupó y asto que ocupó
+        String sql_ren = "SELECT COUNT(*) FROM asientos WHERE as_fecha_contabilidad <= '"+campoFecha2.getText()+"'";
+        String sql_asto = "SELECT COUNT(DISTINCT as_nro_asiento) FROM asientos WHERE as_fecha_contabilidad <= '"+campoFecha2.getText()+"'";
+        r_con.Connection();
+        ResultSet res;
+        try {
+            res = r_con.Consultar(sql_ren);
+            if(res.next()){
+                this.ult_renglon=res.getInt(1);
+            }
+            
+            res = r_con.Consultar(sql_asto);
+            if(res.next()){
+                this.ult_asto=res.getInt(1);
+            }
+            String sql = "UPDATE parametros_contables SET pc_fecha_impresion_diario = '"+campoFecha2.getText()+"', pc_nro_renglon_diario = "+ult_renglon+", pc_nro_folio = "+nro_folio+", pc_nro_ultimo_asiento = "+ult_asto+" ;";
+            //System.out.println(sql);
+            r_con.ActualizarSinCartel(sql);
+            res.close();
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        r_con.cierraConexion();
+    }
+    
     private void campoFecha1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusGained
         campoFecha1.select(0,0);
     }//GEN-LAST:event_campoFecha1FocusGained
@@ -466,13 +486,15 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
    
     
     private void minimosYmaximos (){
-        
+        Fechas f = new Fechas();
         try {
             r_con.Connection();     
             ResultSet res = r_con.Consultar("SELECT * FROM parametros_contables");
             if(res.next()){
                 inicio_FEC=res.getString(1);
                 cierre_FEC=res.getString(2);
+                cierre_FEC=f.convertirBarras(cierre_FEC);
+                ult_asto=res.getInt(3);
                 ult_impre_FEC=res.getString(4);
                 ult_renglon=res.getInt(5);
                 nro_folio=res.getInt(6);
@@ -480,6 +502,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
             
             jLabel3.setText(""+nro_folio);
             jLabel8.setText(""+ult_renglon);
+            jLabel10.setText(""+ult_asto);
             campoFecha1.setText(fecha.convertirBarras(ult_impre_FEC));
             campoFecha2.setText(fecha.getHoy());
             this.maxFEC=fecha.getHoy();
@@ -500,6 +523,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -507,6 +531,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 
 public void setTitleLabel (String t){

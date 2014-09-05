@@ -125,20 +125,20 @@ WHERE
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch">
+	<pageHeader>
+		<band height="80">
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" uuid="ca4c5899-132e-471f-9af5-8a3d9ae8439c"/>
+				<reportElement x="0" y="1" width="555" height="1" uuid="cd8ab468-5ffd-4e86-9923-e396db2eb6da"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="32" width="83" height="20" uuid="152bf005-c7d7-4e42-85d7-f1d6015bfaec"/>
+				<reportElement x="0" y="33" width="83" height="20" uuid="aa90dce7-4eb4-4556-88f7-3230f76ed408"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Empresa:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="83" y="32" width="169" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9af8c39b-dd2e-44de-95ae-4f789f058bc0"/>
+				<reportElement mode="Transparent" x="83" y="33" width="169" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="94e2308c-7032-4ce6-9606-2863c59231f9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -146,70 +146,70 @@ WHERE
 				<textFieldExpression><![CDATA[$P{name_empresa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="1" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="a5b1c027-2c56-4e16-887c-05f55e08c949"/>
+				<reportElement mode="Transparent" x="0" y="2" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="3d580e68-f280-4e99-bb51-ae24c9cf2621"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Arial" size="22" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Tipo de Reporte]]></text>
+				<text><![CDATA[Listado de Asientos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="468" y="1" width="87" height="15" uuid="cf692547-0f3b-4472-b46d-ebcda2584096"/>
+				<reportElement x="468" y="2" width="87" height="15" uuid="a85f79af-aa88-4e62-bdbe-f3642e0d8edf"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Sistema Contable]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="31" width="555" height="1" uuid="0470c6e5-0994-4f1a-befc-93fc5dcac65d"/>
+				<reportElement x="0" y="32" width="555" height="1" uuid="35631db8-b41a-4583-83cf-81f5b4da2df1"/>
 			</line>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="429" y="32" width="126" height="21" uuid="78f62634-ecbc-43c0-9c9f-fbd017df7ce6"/>
+				<reportElement x="418" y="33" width="137" height="21" uuid="6d3c4b24-9876-48eb-94bd-7f6ee544ebab"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="78" width="555" height="1" uuid="c0fe2675-c215-40c7-80e7-691587003c43"/>
+				<reportElement x="0" y="79" width="555" height="1" uuid="47f2d273-da01-412c-a492-a2eaaef2cafc"/>
 				<graphicElement>
 					<pen lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="174" y="51" width="56" height="15" uuid="0167f214-3edb-4610-873b-3e5e79b6dc29"/>
+				<reportElement x="174" y="52" width="56" height="15" uuid="87ee289b-0fea-4225-a7d8-54b4d0bdc036"/>
 				<text><![CDATA[Desde Asto:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="303" y="51" width="53" height="15" uuid="e39a01af-5562-43f8-a8e3-2a32331eedbd"/>
+				<reportElement x="303" y="52" width="53" height="15" uuid="337e3845-5235-4428-aca7-b446c0cdfc29"/>
 				<text><![CDATA[Hasta Asto:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="230" y="51" width="43" height="15" uuid="3c4dc45a-6621-4a64-9aca-556f0f167a55"/>
+				<reportElement x="230" y="52" width="43" height="15" uuid="981bf324-8b68-45fc-9610-04fc5f539fda"/>
 				<textFieldExpression><![CDATA[$P{min_asto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="356" y="51" width="100" height="15" uuid="c63a4a49-fec2-43da-a18d-08ade97ceebb"/>
+				<reportElement x="356" y="52" width="100" height="15" uuid="5b127a45-dcb0-4b7d-a666-74e05ef25ed3"/>
 				<textFieldExpression><![CDATA[$P{max_asto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="303" y="62" width="53" height="15" uuid="05856f62-a5b2-41db-b56e-a70d6f145e0d"/>
+				<reportElement x="303" y="63" width="53" height="15" uuid="a1a36552-ca01-4bae-9729-2f515b8cd237"/>
 				<text><![CDATA[Hasta Fec.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="174" y="62" width="56" height="15" uuid="2e27486e-dd8a-416e-b87b-fa031618550e"/>
+				<reportElement x="174" y="63" width="56" height="15" uuid="f8124ab1-68e6-4200-952d-6ee3e90ec824"/>
 				<text><![CDATA[Desde Fec.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="230" y="62" width="60" height="13" uuid="9e96d0d7-acf2-444a-ba71-f9cfa6d2e0e8"/>
+				<reportElement x="230" y="63" width="60" height="13" uuid="7e4da9d5-5a2d-46ac-a29b-185e3d3e23fd"/>
 				<textFieldExpression><![CDATA[$P{min_fec}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="354" y="62" width="100" height="13" uuid="5aaf1f59-20ab-44d0-825c-222b62974384"/>
+				<reportElement x="354" y="63" width="100" height="13" uuid="3f80f2e4-1e89-4b51-99bf-350ebe65590f"/>
 				<textFieldExpression><![CDATA[$P{max_fec}]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
+	</pageHeader>
 	<columnHeader>
 		<band height="24" splitType="Stretch">
 			<staticText>
