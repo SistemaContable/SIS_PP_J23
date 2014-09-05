@@ -537,7 +537,7 @@ public class Conexion{
                     JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
             if (ex.getErrorCode()==8152){
-                    JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
+                     System.out.println("Hay Campos que exceden su longitud, verifique!");
             }
             else{
                 System.err.println("7. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     

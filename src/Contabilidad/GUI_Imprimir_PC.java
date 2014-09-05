@@ -8,7 +8,10 @@ package Contabilidad;
 
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Validaciones;
+import Interface.GUI_Principal;
 import Objetos.Usuario;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -109,6 +112,11 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jLabel2.setText("desde Cuenta:");
 
         jTextField1.setToolTipText("");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
         jButton1.setText("Cancelar");
@@ -132,6 +140,11 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         jLabel3.setText("hasta Cuenta:");
 
         jTextField2.setToolTipText("");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("desde Código:");
@@ -399,7 +412,41 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_F1){            
+            generarAyuda();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_F1){            
+            generarAyuda();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
    
+    public void generarAyuda(){
+        mensajeError(" ");
+        //GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4,this); 
+        GUI_Ayuda_PC np=new GUI_Ayuda_PC(usr,r_con,this);
+        //lo centro respecto a x
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {                
+            np.setSelected(true);            
+         } 
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();         
+    }
     
     private void minimosYmaximos (){
         

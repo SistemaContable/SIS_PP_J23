@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="asiento_transporte" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0835a333-1fa9-447a-9a65-65ce12470b30">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ULTIMO_RENGLON" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(nro_linea) AS reg_ante,SUM(debe) AS debe_trans_anterior,SUM (haber) AS haber_trans_anterior
+FROM (
+SELECT
+     ROW_NUMBER () OVER (ORDER BY as_fecha_contabilidad) AS nro_linea,
+     as_ok_carga AS ok_carga,
+     as_ok_registrado AS ok_registrado,
+     as_nro_asiento AS nro_asiento,
+     as_nro_renglon AS nro_renglon,
+     as_fecha_contabilidad AS fecha_contabilidad,
+     as_debe AS debe,
+     as_haber AS haber
+FROM
+     asientos) AS tablita
+
+WHERE nro_linea <= $P{ULTIMO_RENGLON}]]>
+	</queryString>
+	<field name="reg_ante" class="java.lang.Integer"/>
+	<field name="debe_trans_anterior" class="java.lang.Double"/>
+	<field name="haber_trans_anterior" class="java.lang.Double"/>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="145" y="3" width="61" height="14" uuid="2973bfef-1c32-45d8-90c5-6595269a9a5f"/>
+				<textFieldExpression><![CDATA[$F{reg_ante}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="434" y="2" width="56" height="15" uuid="882d7f07-b53c-4dcf-b804-19136c956482"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[(($F{debe_trans_anterior}==null) ? 0 : $F{debe_trans_anterior})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="495" y="2" width="59" height="15" uuid="174b031f-002a-4943-96cd-3cf903984c2a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[(($F{haber_trans_anterior}==null) ? 0 : $F{haber_trans_anterior})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="17" width="555" height="1" uuid="e5db4030-c641-4729-9cc3-78f777222b99"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="7" y="3" width="138" height="14" uuid="3c1efd4a-613f-41f9-965e-4e48266eb3cf"/>
+				<text><![CDATA[CANTIDAD DE REGISTROS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="3" width="100" height="14" uuid="4c9a10e3-c0a7-4799-8e33-fd8519f108e3"/>
+				<text><![CDATA[T R A N S P O R T E]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="9abd939a-7bd4-4ee4-b1d6-a164351fec5e"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

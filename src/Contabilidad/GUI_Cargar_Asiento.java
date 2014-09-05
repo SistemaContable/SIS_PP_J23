@@ -63,8 +63,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton1.setText("Cancelar");
         campoFecha.setText(fecha.getHoy());   
         jButton2.setEnabled(false);
-        jButton7.setEnabled(false);
+        boton7.setEnabled(false);
         jTable1.setEnabled(false);
+        jButton5.requestFocus();
     }
 
     private void cargarFechas(){
@@ -120,8 +121,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -140,7 +141,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        boton7 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
@@ -165,6 +166,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Gestión de Asientos Contables:");
+
+        jPanel5.setFocusCycleRoot(true);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/retomar_asi.png"))); // NOI18N
         jButton6.setText("Retomar Asiento");
@@ -238,6 +241,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setFocusCycleRoot(true);
 
         jLabel3.setText("Fecha Contable:");
 
@@ -369,9 +373,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jLabel5.setText("Nro. Cuenta (F1)");
+        jPanel3.setFocusCycleRoot(true);
 
         jLabel6.setText("Leyenda");
+
+        jLabel5.setText("Nro. Cuenta (F1)");
 
         jLabel7.setText("Nombre Cuenta");
 
@@ -442,24 +448,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField5FocusLost(evt);
-            }
-        });
-
-        jTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField6FocusLost(evt);
-            }
-        });
-
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField7FocusLost(evt);
             }
         });
 
+        jTextField8.setNextFocusableComponent(jButton4);
         jTextField8.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTextField8FocusLost(evt);
@@ -468,17 +463,19 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         jButton4.setText("Confirmar");
+        jButton4.setNextFocusableComponent(boton7);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
-        jButton7.setText("Borrar");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        boton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
+        boton7.setText("Borrar");
+        boton7.setNextFocusableComponent(jTextField3);
+        boton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                boton7ActionPerformed(evt);
             }
         });
 
@@ -540,7 +537,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField5)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(24, 24, 24))
             .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -583,7 +580,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -665,20 +662,17 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel14)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15)
+                        .addComponent(jLabel14)
+                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -733,9 +727,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-        jButton7.setEnabled(false);
+        boton7.setEnabled(false);
         int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){
                 int numAsiento=Integer.parseInt(jTextField1.getText());
@@ -746,7 +740,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 renombrarTabla();
             }        
             jButton4.setText("Confirmar");
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }                                        
 
     private void renombrarTabla(){
         for(int i=0;i<modelo.getRowCount();i++){
@@ -1019,7 +1013,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         // TODO add your handling code here:                        
             if((!fechaInicio.equals(""))&&(!fechaCierre.equals(""))){
                 if (fecha.isFechaValida(campoFecha.getText())){
-                    if(fecha.fechaEntreFechas(campoFecha.getText(), fecha.addDaysToDate(fechaDiario, 1), fechaCierre)){
+                    if(fecha.fechaEntreFechas(campoFecha.getText(), fechaDiario, fechaCierre)){
                         mensajeError(" ");            
                         habilitarTipo();
                         jPanel1.nextFocus();
@@ -1227,7 +1221,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 else
                     jTextField7.setText(debe+"");
                 habilitarPanel2(true);
-                jButton7.setEnabled(true);
+                boton7.setEnabled(true);
                 jButton4.setText("Modificar");
             }               
         }
@@ -1267,15 +1261,22 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
+    private void boton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton7ActionPerformed
         // TODO add your handling code here:
-        jTextField6.requestFocus();
-    }//GEN-LAST:event_jTextField5FocusLost
-
-    private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
-        // TODO add your handling code here:
-        jTextField7.requestFocus();
-    }//GEN-LAST:event_jTextField6FocusLost
+        boton7.setEnabled(false);
+        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+            if (rta==JOptionPane.YES_OPTION){
+                int numAsiento=Integer.parseInt(jTextField1.getText());
+                int numRenglon=Integer.parseInt(jTextField2.getText());
+                modelo.removeRow(numRenglon-1);
+                r_con.Connection();
+                r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+                renombrarTabla();
+            }
+            else
+                boton7.setEnabled(true);
+            jButton4.setText("Confirmar");
+    }//GEN-LAST:event_boton7ActionPerformed
 
     private void actualizarTabla(){
         int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
@@ -1315,7 +1316,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         this.inicializarTabla();
         campoFecha.setText("");
         habilitarRadioButtons(false);                
-        jButton3.setEnabled(false);
+//        jButton3.setEnabled(false);
         jTextField3.setText("");                
         jTextField4.setText("");
         campoFecha1.setText("");
@@ -1380,8 +1381,10 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         campoFecha.setEditable(!valor);
         jTextField1.setEnabled(valor);
         jTextField1.setEditable(valor);
+        jButton3.setEnabled(valor);
         jTextField1.requestFocus();
         this.habilitarRadioButtons(!valor);
+        
     }
     
     private void habilitarPanel1(boolean valor){
@@ -1401,12 +1404,13 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jTextField8.setEnabled(valor);
         campoFecha1.setEnabled(valor);
         campoFecha2.setEnabled(valor); 
-        jButton7.setEnabled(!valor);        
+        boton7.setEnabled(!valor);        
     }
     
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton boton7;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JFormattedTextField campoFecha;
     private javax.swing.JFormattedTextField campoFecha1;
@@ -1417,7 +1421,6 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
