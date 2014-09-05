@@ -273,8 +273,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (validarDatos()){
-            try {
-                  
+            try {                  
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
@@ -290,8 +289,6 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                    parametros.put("nro_folio",this.nro_folio);                    
                    parametros.put("ultimo_renglon",ult_renglon);
                    parametros.put("SUBREPORT_DIR","src/Reportes/");
-                   
-                   //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
                   
                     //localizo el reporte para usarlo
                     JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -321,7 +318,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 System.out.println(e.getMessage());
             } 
             finally {
-                      r_con.cierraConexion();
+                r_con.cierraConexion();
             }    
        }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -343,22 +340,16 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 parametros.put("cierre_fec",this.cierre_FEC);
                 parametros.put("nro_folio",this.nro_folio);                
                 parametros.put("ultimo_renglon",ult_renglon);                
-                parametros.put("SUBREPORT_DIR","src/Reportes/");
-
-                //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
+                parametros.put("SUBREPORT_DIR","src/Reportes/");          
 
                 //localizo el reporte para usarlo
                 JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
 
                 r_con.Connection();
-                //cargo los datos
                 JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());            
                 
                 //paginas que ocupó
                 nro_folio = nro_folio+print.getPages().size();
-                               
-
-                //System.out.println(ult_renglon+" "+fecha.addDaysToDate(campoFecha1.getText(), -1)+" "+campoFecha2.getText()+" "+nro_folio);
                 
                 //vector con las impresoras del modulo de la base de datos
                 Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
@@ -404,7 +395,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                         String message="Se solicito la impresión del libro Diario, ¿Confirma la CORRECTA impresión?.";
                         int rta=JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                         if (rta==JOptionPane.YES_OPTION){
-                            modificarDatosDiario ();
+                            this.modificarDatosDiario ();
                         }
                         else{
                             JOptionPane.showMessageDialog(null,"Los parametros no se actualizaron. Puede volver a imprimir el Libro Diario.","Error",JOptionPane.WARNING_MESSAGE);
@@ -424,8 +415,7 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null,"Ocurrió un Error.","Error",JOptionPane.WARNING_MESSAGE);
                 Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
                 r_con.cierraConexion();
-            }
-        
+            }        
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
     
@@ -508,9 +498,10 @@ public class GUI_Imprimir_Diario extends javax.swing.JInternalFrame {
             this.maxFEC=fecha.getHoy();
             
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_Diario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        r_con.cierraConexion();
     }
                
         

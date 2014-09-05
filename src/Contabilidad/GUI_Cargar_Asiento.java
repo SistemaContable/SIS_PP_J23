@@ -54,7 +54,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         usuario=usr;
         renglon=0;
         cargarFechas();
-        r_con.Connection();
+        //r_con.Connection();
         inicializarTabla();
         
         this.habilitarPanel1(false);
@@ -84,8 +84,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             jLabel21.setText(fechaCierre);
             jLabel23.setText(fechaDiario);
             r_con.cierraConexion();    
-        }        
+        }         
         catch(Exception e){r_con.cierraConexion();}
+        r_con.cierraConexion();
     }
     
     /**
@@ -1070,9 +1071,9 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         float saldo=Float.parseFloat(jTextField10.getText());
-        if(saldo==0){                    
-            for(int i=0;i<modelo.getRowCount();i++){
-                r_con.Connection();
+        r_con.Connection();
+        if(saldo==0){            
+            for(int i=0;i<modelo.getRowCount();i++){                
                 int numAsiento=Integer.parseInt(jTextField1.getText());
                 int numRenglon=Integer.parseInt(modelo.getValueAt(i, 0).toString());               
                 String cadena="update borrador_asientos set ba_ok_carga=1 where ba_nro_asiento="+numAsiento+" and ba_nro_renglon="+numRenglon;                
@@ -1241,6 +1242,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
             r_con.Connection();
             r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
             renombrarTabla();
+            r_con.Connection();
         }
         jButton4.setText("Confirmar");
     }//GEN-LAST:event_jButton7ActionPerformed

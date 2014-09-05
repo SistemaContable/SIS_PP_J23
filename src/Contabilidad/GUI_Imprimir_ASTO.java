@@ -296,7 +296,7 @@ public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
                 System.out.println(e.getMessage());
             } 
             finally {
-                      r_con.cierraConexion();
+                r_con.cierraConexion();
             }    
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -424,7 +424,11 @@ public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
             campoFecha1.setText(minFEC);
             campoFecha2.setText(maxFEC);
             
+            res.close();
+            r_con.cierraConexion();
+            
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_ASTO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
