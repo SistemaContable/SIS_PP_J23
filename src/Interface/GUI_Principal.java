@@ -1079,7 +1079,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
         // TODO add your handling code here:
-            GUI_Cargar_Asiento np = new GUI_Cargar_Asiento(usuario,r_con);       
+        GUI_Cargar_Asiento np = new GUI_Cargar_Asiento(usuario,r_con);       
 
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
@@ -1094,7 +1094,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus(); 
+        //np.requestFocus(); 
         
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 

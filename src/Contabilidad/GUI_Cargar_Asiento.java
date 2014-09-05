@@ -64,6 +64,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         campoFecha.setText(fecha.getHoy());   
         jButton2.setEnabled(false);
         jTable1.setEnabled(false);
+        jButton5.requestFocus();
     }
 
     private void cargarFechas(){
