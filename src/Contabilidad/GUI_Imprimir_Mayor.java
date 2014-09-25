@@ -83,7 +83,9 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             fechaCierre=fechas.parseFecha(rs.getDate(1));
             fechaDiario=fechas.parseFecha(rs.getDate(2));
             fechaInicio=fechas.parseFecha(rs.getDate(3));
+            rs.close();
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
         }                  
         campoFecha.setText(fechaInicio);                
@@ -380,6 +382,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
+                   parametros.put("desde", campoFecha.getText());
+                   parametros.put("hasta", campoFecha1.getText());
                    
                   
                     //localizo el reporte para usarlo
@@ -411,7 +415,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                 System.out.println(e.getMessage());
             } 
             finally {
-                      r_con.cierraConexion();
+                r_con.cierraConexion();
             }    
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -422,6 +426,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             generarTabla(); 
             Map parametros = new HashMap();
             parametros.put("name_empresa", r_con.getRazon_social());
+            parametros.put("desde", campoFecha.getText());
+            parametros.put("hasta", campoFecha1.getText());
             
             //localizo el reporte para usarlo
             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -479,9 +485,8 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             }
             r_con.cierraConexion();
         } catch (JRException ex) {
-            
-            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
             r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);            
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -587,8 +592,10 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             jTextField2.setText(maxNC);
 //            jTextField3.setText(minCPC);
 //            jTextField4.setText(maxCPC);
+            r_con.cierraConexion();
             
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_Mayor.class.getName()).log(Level.SEVERE, null, ex);
         }
         

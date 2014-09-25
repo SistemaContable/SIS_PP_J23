@@ -72,6 +72,7 @@ public boolean isFloat (String cadena){
 	}
 }
 
+
 public boolean isCuit(String t,String num,String DV){
     int tipo=Integer.parseInt(t);
     int numero=Integer.parseInt(num);        
@@ -108,4 +109,14 @@ public boolean isCuit(String t,String num,String DV){
     return dv==auxDev;   
 }
 
+
+ 
+public  boolean isLong(String cadena){
+	try {
+		Long.parseLong(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}   
 }

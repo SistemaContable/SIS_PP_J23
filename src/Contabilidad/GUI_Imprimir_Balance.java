@@ -50,10 +50,8 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
      */
     private Conexion r_con;
     private Usuario usr;
-    private String nameTable = "plan_cuentas";
-    private String orden_por_CPC = "pc_codigo_plan_cuenta";
-    private String orden_por_cro_C = "pc_nro_cuenta";
-    private String nombre_reporte = "plan_cuentas.jrxml";
+    private String nameTable = "balance";
+    private String nombre_reporte = "balance.jrxml";
     private String id_modulo_imp = "8";
     private String minCPC,maxCPC,minNC,maxNC;
     private String fechaDiario,fechaCierre,fechaInicio;
@@ -132,6 +130,7 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("desde Cuenta:");
 
+        jTextField1.setEditable(false);
         jTextField1.setToolTipText("");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
@@ -155,6 +154,7 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("hasta Cuenta:");
 
+        jTextField2.setEditable(false);
         jTextField2.setToolTipText("");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -209,13 +209,6 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -227,7 +220,7 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5))
@@ -235,11 +228,18 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(171, 171, 171))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +266,7 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -380,42 +380,42 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_Balance.class.getName()).log(Level.SEVERE, null, ex);
-        }                        
+        }
+        reacomodarBalanza();
     }        
     
+    private void reacomodarBalanza(){        
+        try {
+            r_con.Connection();
+            ResultSet rs=r_con.Consultar("select * from balance");
+            while(rs.next()){
+                BigDecimal saldoInicial=convertirEnBigDecimal(rs.getFloat("blc_saldo_inicial")+"");
+                BigDecimal saldoAcum=convertirEnBigDecimal(rs.getFloat("blc_saldo_acumulado")+"");
+                BigDecimal saldoCierre=sumarBigDecimal(saldoInicial+"",saldoAcum+"");
+                r_con.ActualizarSinCartel("update balance set blc_saldo_cierre="+saldoCierre.floatValue()+" where blc_cuenta="+rs.getInt("blc_cuenta"));                
+            }
+            r_con.cierraConexion();
+        } catch (SQLException ex) {
+            r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_Balance.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //this.dispose();
-        //r_con.cierraConexion();
-        generarTabla();
-        
-        
+        this.dispose();
+        r_con.cierraConexion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (validarDatos()){
             try {
-                  
-                  //cargo Parametros del Reporte
+                   generarTabla();
+                   //cargo Parametros del Reporte
                    Map parametros = new HashMap();
                    parametros.put("name_empresa", r_con.getRazon_social());
-                  
-                        parametros.put("orden",this.orden_por_CPC);
-                   
-                  
-                       parametros.put("orden",this.orden_por_cro_C);
-                   
-                   //parametros.put("menor_cod_PC",""+jTextField3.getText());
-                   //parametros.put("mayor_cod_PC",""+jTextField4.getText());
-                   parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
-                               
-                   
-                   // Compilamos el .jrxml y lo cargamos  
-                   //final String jasperName = JasperCompileManager.compileReportToFile("src/Reportes/"+nombre_reporte);  
-                   //final JasperReport report = (JasperReport)JRLoader.loadObject(jasperName);  
-                   
+                   parametros.put("desde", campoFecha.getText());
+                   parametros.put("hasta", campoFecha1.getText());                   
                   
                     //localizo el reporte para usarlo
                     JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -453,19 +453,12 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {            
+            generarTabla();
             //cargo Parametros del Reporte
             Map parametros = new HashMap();
             parametros.put("name_empresa", r_con.getRazon_social());
-            
-                parametros.put("orden",this.orden_por_CPC);
-            
-            
-                parametros.put("orden",this.orden_por_cro_C);
-             
-//            parametros.put("menor_cod_PC",""+jTextField3.getText());
-//            parametros.put("mayor_cod_PC",""+jTextField4.getText());
-            parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-            parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
+            parametros.put("desde", campoFecha.getText());
+            parametros.put("hasta", campoFecha1.getText());
             
             //localizo el reporte para usarlo
             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+nombre_reporte);
@@ -485,14 +478,6 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
 
             if (v.size()>0){
                 String nombre_imp;
-                //caso en que sea una unica impresora por modulo
-                //if(v.size()==1){
-                    //nombre_imp=v.elementAt(0).firstElement();
-                    //AttributeSet aset = new HashAttributeSet();
-                    //aset.add(new PrinterName(nombre_imp, null));
-                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                    //impresora = impresoras[0];
-                    //}
 
                 //caso en que haya mas de una impresora por modulo
                 if (v.size()>=1){
@@ -593,7 +578,7 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
         try {
             r_con.Connection();
             
-            ResultSet res = r_con.Consultar("SELECT MIN(pc_codigo_plan_cuenta),MAX(pc_codigo_plan_cuenta),MIN(pc_nro_cuenta),MAX(pc_nro_cuenta) FROM "+nameTable+" WHERE pc_codigo_plan_cuenta<>'0'");
+            ResultSet res = r_con.Consultar("SELECT MIN(pc_codigo_plan_cuenta),MAX(pc_codigo_plan_cuenta),MIN(pc_nro_cuenta),MAX(pc_nro_cuenta) FROM plan_cuentas WHERE pc_codigo_plan_cuenta<>'0'");
             res.next();
             minCPC=res.getString(1);
             maxCPC=res.getString(2);
@@ -602,8 +587,6 @@ public class GUI_Imprimir_Balance extends javax.swing.JInternalFrame {
             
             jTextField1.setText(minNC);
             jTextField2.setText(maxNC);
-//            jTextField3.setText(minCPC);
-//            jTextField4.setText(maxCPC);
             
         } catch (SQLException ex) {
             Logger.getLogger(GUI_Imprimir_Balance.class.getName()).log(Level.SEVERE, null, ex);
@@ -658,7 +641,7 @@ public void setTitleLabel (String t){
         jLabel7.setText(msj);        
     }
     
-        private BigDecimal sumarBigDecimal(String num1,String num2){        
+    private BigDecimal sumarBigDecimal(String num1,String num2){        
         float num1Float=Float.parseFloat(num1);
         float num2Float=Float.parseFloat(num2);
         String formato1=new DecimalFormat("0.00").format(num1Float);
@@ -667,7 +650,22 @@ public void setTitleLabel (String t){
         formato2=formato2.replace(',', '.');        
         BigDecimal num1BigD=new BigDecimal(formato1);
         BigDecimal num2BigD=new BigDecimal(formato2);
-        BigDecimal suma=num1BigD.add(num2BigD);        
+        BigDecimal suma=num1BigD.add(num2BigD);
+        //num1BigD.subtract(suma)
+        return suma;
+    }
+        
+    private BigDecimal restarBigDecimal(String num1,String num2){        
+        float num1Float=Float.parseFloat(num1);
+        float num2Float=Float.parseFloat(num2);
+        String formato1=new DecimalFormat("0.00").format(num1Float);
+        String formato2=new DecimalFormat("0.00").format(num2Float);
+        formato1=formato1.replace(',', '.');
+        formato2=formato2.replace(',', '.');        
+        BigDecimal num1BigD=new BigDecimal(formato1);
+        BigDecimal num2BigD=new BigDecimal(formato2);
+        BigDecimal suma=num1BigD.subtract(num2BigD);
+        //num1BigD.subtract(suma)
         return suma;
     }
     

@@ -708,7 +708,6 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                                                 +" WHERE pc_nro_cuenta = "+jTextField5.getText()+";";
                             
                                 r_con.Actualizar(sql);
-                                r_con.cierraConexion();
                                 this.operacion="";
                                 limpiarForm();
                                 mensajeError(" ");
@@ -716,7 +715,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                                 verPanelOperacion(false);
                                 habilitarOperaciones(true);
                                 actualizarArbol();
-                            }                                
+                            } 
+                            r_con.cierraConexion();
                         }                       
                     }
                     else{
@@ -837,6 +837,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
                     }
                     res.close();
                 } catch (SQLException ex) {
+                    r_con.cierraConexion();
                     Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -854,7 +855,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             }
             count++;
         }
-        System.out.println(cant_count);
+        //System.out.println(cant_count);
         this.JTreeConta.setModel(modelo1);
         r_con.cierraConexion();
     }
@@ -910,8 +911,8 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             }
             res.close();
         } catch (SQLException e) {
-            System.out.println(e);
             r_con.cierraConexion();
+            System.out.println(e);            
         }
         r_con.cierraConexion();
         return data;
@@ -1116,6 +1117,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
             }
             r_con.cierraConexion();   
         } catch (SQLException ex) {
+            r_con.cierraConexion(); 
             Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
         }
         return haylugar;

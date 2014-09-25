@@ -11,6 +11,8 @@ import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
 import Contabilidad.GUI_Plan_Cuentas;
 import Contabilidad.GUI_Registrar_Asientos;
+import Facturacion.IGUI_Tipo_Tasas_IVA;
+import _Pruebas.IGUI_Gestion;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
@@ -163,10 +165,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem27 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -242,45 +241,15 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.setText("1. Auxiliares");
         jMenu1.setName("M5"); // NOI18N
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenu3.setMnemonic('1');
-        jMenu3.setText("Tasas de IVA");
-        jMenu3.setName("M2"); // NOI18N
-
-        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem7.setMnemonic('1');
-        jMenuItem7.setText("Alta");
-        jMenuItem7.setName("T21"); // NOI18N
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem27.setText("Gestión Tipo de Tasas de IVA");
+        jMenuItem27.setName("M2"); // NOI18N
+        jMenuItem27.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                jMenuItem27ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem7);
-
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem1.setMnemonic('2');
-        jMenuItem1.setText("Baja");
-        jMenuItem1.setName("T22"); // NOI18N
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem1);
-
-        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem8.setMnemonic('3');
-        jMenuItem8.setText("Listado");
-        jMenuItem8.setName("T25"); // NOI18N
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem8);
-
-        jMenu1.add(jMenu3);
+        jMenu1.add(jMenuItem27);
 
         jMenuBar1.add(jMenu1);
 
@@ -704,57 +673,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         cp.nextFocus();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
-         //creo el InternalFrame;
-        GUI_A_IVA np = new GUI_A_IVA(usuario,r_con);       
-        np.setTitle("Alta Tasa IVA.");
-        np.setTitleLabel("Alta Tasa IVA:");
-        np.buttonAceptar();
-        //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
-        //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, np.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        np.setVisible(true);
-        this.jDesktopPane1.add(np);
-        try {        
-            np.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        np.moveToFront();
-        np.requestFocus();
-        np.nextFocus();
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        //creo el InternalFrame;
-        GUI_A_IVA bp = new GUI_A_IVA(usuario,r_con);       
-        bp.form_onlySearch();
-        bp.setTitle("Baja Tasa de IVA.");
-        bp.setTitleLabel("Baja Tasa de IVA:");
-        bp.buttonBuscar();
-        //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - bp.getWidth() / 2;
-        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
-        bp.setLocation(x, bp.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        bp.setVisible(true);
-        this.jDesktopPane1.add(bp);
-        try {        
-            bp.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        bp.moveToFront();
-        bp.requestFocus();
-        bp.nextFocus();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         GUI_Listado l = new GUI_Listado(r_con);
@@ -783,35 +701,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         l.requestFocus();
         
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-        GUI_Listado l = new GUI_Listado(r_con);
-        l.setTitulo("Tasas de IVA");
-        l.setCampo_clave("tasa_clave");
-        l.setNombre_tabla("Tasas_IVA");
-        l.setNombre_reporte("rep_tasas_iva.jrxml");
-        String [] nombre_columnas = {"Tasa Clave","Tasa Descripcion","Tasa Sigla"};
-        l.setNombre_columnas(nombre_columnas);
-        l.setId_modulo_imp("2");
-        l.Cargar_Tabla(l.getConsultaTodosElementos());
-       
-         //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - l.getWidth() / 2;
-        //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
-        l.setLocation(x, l.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        l.setVisible(true);
-        this.jDesktopPane1.add(l);
-        try {        
-            l.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        l.moveToFront();
-        l.requestFocus();
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
@@ -888,11 +777,9 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
-       
        GUI_Inicio_Sesion se = new GUI_Inicio_Sesion(r_con);
        this.dispose();
        se.setVisible(true);
-                       
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
@@ -1227,6 +1114,26 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();
     }//GEN-LAST:event_jMenuItem26ActionPerformed
+
+    private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        IGUI_Tipo_Tasas_IVA np = new IGUI_Tipo_Tasas_IVA(r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();
+    }//GEN-LAST:event_jMenuItem27ActionPerformed
     
     
     public void abrirSesion (){
@@ -1289,7 +1196,6 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
@@ -1297,7 +1203,6 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
@@ -1316,12 +1221,11 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem26;
+    private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables
 }

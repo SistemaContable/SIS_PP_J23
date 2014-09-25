@@ -67,7 +67,7 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
         r_con=con;
         usr=u;
         cuenta=null;
-        r_con.Connection();
+        //r_con.Connection();
         jButton2.setEnabled(false);
         
         //internal frame que solicito la ayuda
@@ -299,6 +299,7 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
                       }
                       res.close();
                   } catch (SQLException ex) {
+                      r_con.cierraConexion();
                       Logger.getLogger(GUI_Plan_Cuentas.class.getName()).log(Level.SEVERE, null, ex);
                   }
               }
@@ -316,7 +317,7 @@ public class GUI_Ayuda_PC extends javax.swing.JInternalFrame {
               }
               count++;
           }
-          System.out.println(cant_count);
+          //System.out.println(cant_count);
           this.JTreeConta.setModel(modelo1);
           r_con.cierraConexion();
       }

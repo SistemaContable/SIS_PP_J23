@@ -285,8 +285,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                    parametros.put("menor_cod_PC",""+jTextField3.getText());
                    parametros.put("mayor_cod_PC",""+jTextField4.getText());
                    parametros.put("menor_nro_C",Integer.parseInt(jTextField1.getText()));
-                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));
-                               
+                   parametros.put("mayor_nro_C",Integer.parseInt(jTextField2.getText()));                          
                    
                    // Compilamos el .jrxml y lo cargamos  
                    //final String jasperName = JasperCompileManager.compileReportToFile("src/Reportes/"+nombre_reporte);  
@@ -298,8 +297,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                     
                     r_con.Connection();
                     JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
-                    
-                    System.out.println(print.getPages().size());
+
                     //creo un objeto Visor del Reporte
                     JasperViewer jviewer = new JasperViewer(print,false);
                     jviewer.setTitle("Reporte Plan de Cuentas."); 
@@ -322,7 +320,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
                 System.out.println(e.getMessage());
             } 
             finally {
-                      r_con.cierraConexion();
+                r_con.cierraConexion();
             }    
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -361,14 +359,6 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
 
             if (v.size()>0){
                 String nombre_imp;
-                //caso en que sea una unica impresora por modulo
-                //if(v.size()==1){
-                    //nombre_imp=v.elementAt(0).firstElement();
-                    //AttributeSet aset = new HashAttributeSet();
-                    //aset.add(new PrinterName(nombre_imp, null));
-                    //impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                    //impresora = impresoras[0];
-                    //}
 
                 //caso en que haya mas de una impresora por modulo
                 if (v.size()>=1){
@@ -407,8 +397,8 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             }
             r_con.cierraConexion();
         } catch (JRException ex) {
-            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
-            r_con.cierraConexion();
+             r_con.cierraConexion();
+            Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);           
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -465,7 +455,9 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
             jTextField3.setText(minCPC);
             jTextField4.setText(maxCPC);
             
+            r_con.cierraConexion();
         } catch (SQLException ex) {
+            r_con.cierraConexion();
             Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);
         }
         

@@ -155,7 +155,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(new javax.swing.border.SoftBevelBorder(0));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -240,7 +240,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         jPanel1.setFocusCycleRoot(true);
 
         jLabel3.setText("Fecha Contable:");
@@ -449,6 +449,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         });
 
         jTextField5.setNextFocusableComponent(jTextField6);
+        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField5FocusLost(evt);
+            }
+        });
 
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -682,13 +687,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(137, 137, 137))
             .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -956,7 +959,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField7.getText())){
                     if (Float.parseFloat(jTextField7.getText())>=0){
-                        mensajeError(" ");  
+                        mensajeError(" ");
+                        jTextField8.setText("");
                         jTextField8.setEnabled(false);
                         jTextField8.nextFocus();
                     }
@@ -989,7 +993,8 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField8.getText())){
                     if (Float.parseFloat(jTextField8.getText())>=0){
-                        mensajeError(" ");  
+                        mensajeError(" "); 
+                        jTextField7.setText("");
                         jTextField7.setEnabled(false);
                         jTextField8.nextFocus();
                     }
@@ -1093,12 +1098,17 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 this.habilitarPanel2(false);
                 r_con.ActualizarSinCartel(cadena);                               
             }
-            JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");            
+            if (modelo.getRowCount()>0){
+                JOptionPane.showMessageDialog(null,"El asiento fue cargado correctamente");    
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Realice una nueva Carga"); 
+            }            
             this.habilitarPanel2(false);
             jButton6.setEnabled(true);
             jButton5.setEnabled(true);
-            jButton1.setEnabled(false);boton7.setEnabled(false);
-            jButton2.setText("Cancelar");
+            boton7.setEnabled(false);
+            jButton1.setText("Cancelar");
             this.inicializarTabla();
             
         }
@@ -1108,7 +1118,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         }
         jTextField9.setText(0+"");
         jTextField10.setText(0+"");
-        jTextField11.setText(0+"");    
+        jTextField11.setText(0+"");
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1289,6 +1299,11 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
                 boton7.setEnabled(true);
             jButton4.setText("Confirmar");
     }//GEN-LAST:event_boton7ActionPerformed
+
+    private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
+        // TODO add your handling code here:
+        jTextField6.requestFocus();
+    }//GEN-LAST:event_jTextField5FocusLost
 
     private void actualizarTabla(){
         int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
