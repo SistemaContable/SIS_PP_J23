@@ -72,5 +72,40 @@ public boolean isFloat (String cadena){
 	}
 }
 
-    
+public boolean isCuit(String t,String num,String DV){
+    int tipo=Integer.parseInt(t);
+    int numero=Integer.parseInt(num);        
+    int totalTipo=(tipo%10)*4;
+    tipo=tipo/10;
+    totalTipo+=((tipo%10)*5);                        
+    int totalNum=0;
+    for(int i=2;i<8;i++){
+        totalNum+=((numero%10)*i);
+        numero=numero/10;
+    }       
+    totalNum+=((numero%10)*2);
+    numero=numero/10;
+    totalNum+=((numero%10)*3);        
+        
+    int suma=totalNum+totalTipo;
+    int resto=suma%11;     
+    int dv=-1;
+    if(resto==0){
+        dv=0;
+    }
+    else
+    {
+        int complemento=11-resto;            
+        if(complemento==10){
+            dv=9;                
+        }
+        else
+        {
+            dv=complemento;                
+        }
+    }        
+    int auxDev=Integer.parseInt(DV);
+    return dv==auxDev;   
+}
+
 }
