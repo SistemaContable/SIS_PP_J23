@@ -683,7 +683,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             if (lab_modo.getText().equals("Baja")){
                 if (!field_codigo.getText().equals("")){
                     if(!existe(Integer.parseInt(field_codigo.getText()))){
-                        mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
+                        mostrar_Msj_Error("Ingrese un codigo que se encuentre registrado en el sistema");
                         field_codigo.requestFocus();
                     }
                     else{                  
@@ -703,7 +703,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
                 if (lab_modo.getText().equals("Modificación")){
                     if (!field_codigo.getText().equals("")){
                         if(!existe(Integer.parseInt(field_codigo.getText()))){
-                            mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
+                            mostrar_Msj_Error("Ingrese un codigo que se encuentre registrado en el sistema");
                             field_codigo.requestFocus();
                         }
                         else{
@@ -809,6 +809,8 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
      * @param fila indica una fila valida dentro de la tabla, gestiona la posicion fila_registro
      */
     private void cargar_ValoresPorFila (int fila){
+        this.ocultar_Msj();
+        field_buscar.setText("");
         if ((fila >= 0)&&(fila < tabla.getRowCount())){
             fila_ultimo_registro=fila;
             String codigo = String.valueOf(tabla.getValueAt(fila, 0));
