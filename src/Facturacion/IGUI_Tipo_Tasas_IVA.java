@@ -79,6 +79,8 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             cargar_ValoresPorFila(0);
         }
     }
+    
+    public IGUI_Tipo_Tasas_IVA(){}
 
     /**
      * This method is called from within the constructor to initialize the form.

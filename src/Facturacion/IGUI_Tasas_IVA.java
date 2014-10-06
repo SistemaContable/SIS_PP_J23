@@ -68,6 +68,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         restringirCampos();
         r_con = r; 
         
+        System.out.print(field_desde.getText());
         modoConsulta();
         cargarOrdenamientos ();
         detectarOrden ();
@@ -95,9 +96,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         tabla = new javax.swing.JTable();
         panel_datos = new javax.swing.JPanel();
         combo_tipo = new javax.swing.JComboBox();
-        field_codigo = new javax.swing.JTextField();
-        field_descripcion = new javax.swing.JTextField();
-        field_sigla = new javax.swing.JTextField();
+        field_desde = new javax.swing.JFormattedTextField();
+        field_hasta = new javax.swing.JFormattedTextField();
+        field_tasa = new javax.swing.JTextField();
+        field_sobretasa = new javax.swing.JTextField();
         btn_aceptar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
         lab_tit_orden = new javax.swing.JLabel();
@@ -105,10 +107,13 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         lab_tit_modo = new javax.swing.JLabel();
         lab_modo = new javax.swing.JLabel();
         lab_mensaje = new javax.swing.JLabel();
-        lab_codigo = new javax.swing.JLabel();
-        lab_descripcion = new javax.swing.JLabel();
-        lab_sigla = new javax.swing.JLabel();
+        lab_tasa = new javax.swing.JLabel();
+        lab_sobretasa = new javax.swing.JLabel();
         lab_tipo = new javax.swing.JLabel();
+        lab_desde = new javax.swing.JLabel();
+        lab_hasta = new javax.swing.JLabel();
+        lab_tipo_tasa = new javax.swing.JLabel();
+        lab_ID = new javax.swing.JLabel();
         panel_desplazamiento = new javax.swing.JPanel();
         btn_primero = new javax.swing.JButton();
         btn_anterior = new javax.swing.JButton();
@@ -161,20 +166,58 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panel_datos.setFocusCycleRoot(true);
 
-        combo_tipo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-
-        field_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                field_codigoKeyTyped(evt);
+        combo_tipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        combo_tipo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                combo_tipoItemStateChanged(evt);
             }
         });
+
+        try {
+            field_desde.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        field_desde.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        field_desde.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                field_desdeFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_desdeFocusLost(evt);
+            }
+        });
+
+        try {
+            field_hasta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        field_hasta.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        field_hasta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                field_hastaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_hastaFocusLost(evt);
+            }
+        });
+
+        field_tasa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        field_tasa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                field_tasaKeyTyped(evt);
+            }
+        });
+
+        field_sobretasa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_aceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
@@ -213,17 +256,28 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         lab_mensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lab_mensaje.setText("mensaje");
 
-        lab_codigo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_codigo.setText("Código:");
+        lab_tasa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_tasa.setText("Tasa:");
 
-        lab_descripcion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_descripcion.setText("Descripción:");
-
-        lab_sigla.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_sigla.setText("Sigla:");
+        lab_sobretasa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_sobretasa.setText("Sobretasa:");
 
         lab_tipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_tipo.setText("Tipo Tasa IVA:");
+
+        lab_desde.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_desde.setText("Fecha Desde:");
+
+        lab_hasta.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_hasta.setText("Fecha Hasta:");
+
+        lab_tipo_tasa.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lab_tipo_tasa.setForeground(new java.awt.Color(51, 51, 51));
+        lab_tipo_tasa.setText("Tipo");
+
+        lab_ID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_ID.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lab_ID.setText("ID");
 
         javax.swing.GroupLayout panel_datosLayout = new javax.swing.GroupLayout(panel_datos);
         panel_datos.setLayout(panel_datosLayout);
@@ -234,66 +288,83 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(lab_tit_orden)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lab_orden)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lab_tit_modo)
-                .addGap(18, 18, 18)
-                .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lab_sigla, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lab_descripcion, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lab_codigo, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(field_sigla, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(field_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(193, 193, 193))
-            .addGroup(panel_datosLayout.createSequentialGroup()
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGap(180, 180, 180)
+                        .addGap(118, 118, 118)
                         .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(88, 88, 88)
-                        .addComponent(btn_cancelar))
+                        .addComponent(btn_cancelar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGap(195, 195, 195)
-                        .addComponent(lab_tipo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lab_orden)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lab_tit_modo)
+                        .addGap(18, 18, 18)
+                        .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
+                .addComponent(lab_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lab_sobretasa)
+                            .addComponent(lab_hasta)
+                            .addComponent(lab_tasa)
+                            .addComponent(lab_desde)
+                            .addComponent(lab_tipo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(field_hasta)
+                                .addComponent(field_sobretasa)
+                                .addComponent(field_tasa, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(field_desde, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(lab_tipo_tasa, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(173, 173, 173))
         );
         panel_datosLayout.setVerticalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_datosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lab_tit_orden)
-                    .addComponent(lab_orden)
-                    .addComponent(lab_tit_modo)
-                    .addComponent(lab_modo))
-                .addGap(17, 17, 17)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lab_tipo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lab_codigo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lab_descripcion)
-                    .addComponent(field_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lab_sigla)
-                    .addComponent(field_sigla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lab_tit_orden)
+                            .addComponent(lab_orden)
+                            .addComponent(lab_tit_modo)
+                            .addComponent(lab_modo))
+                        .addGap(157, 157, 157))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lab_tipo)
+                            .addComponent(lab_tipo_tasa)
+                            .addComponent(lab_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lab_desde)
+                            .addComponent(field_desde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lab_hasta)
+                            .addComponent(field_hasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(field_tasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lab_tasa))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lab_sobretasa)
+                            .addComponent(field_sobretasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(4, 4, 4)))
+                .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -466,7 +537,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         ayudaDisponible(false);
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
-        field_codigo.requestFocus();
+        combo_tipo.requestFocus();
     }//GEN-LAST:event_menu_altaMouseClicked
 
     private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_bajaMouseClicked
@@ -488,7 +559,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
         mostrar_Msj_Error("¿Está seguro que desea Modificar?");
-        field_codigo.requestFocus();
+        field_desde.requestFocus();
     }//GEN-LAST:event_menu_modMouseClicked
 
     private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeroActionPerformed
@@ -676,11 +747,11 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         ocultar_Msj();
         menuDisponible(true); 
         modoConsulta();
-        if (field_codigo.getText().equals("")){
+        if (field_tasa.getText().equals("")){
             cargar_ValoresPorFila(this.fila_ultimo_registro);
         }
         else{
-            posicionarAyuda(field_codigo.getText());
+            posicionarAyuda(field_tasa.getText());
         }
         
     }//GEN-LAST:event_btn_cancelarActionPerformed
@@ -700,10 +771,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         }
         else{
             if (lab_modo.getText().equals("Baja")){
-                if (!field_codigo.getText().equals("")){
-                    if(!existe(Integer.parseInt(field_codigo.getText()))){
+                if (!field_tasa.getText().equals("")){
+                    if(!existe(Integer.parseInt(lab_ID.getText()))){
                         mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
-                        field_codigo.requestFocus();
+                        field_tasa.requestFocus();
                     }
                     else{                  
                         ocultar_Msj();
@@ -720,10 +791,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             }
             else{
                 if (lab_modo.getText().equals("Modificación")){
-                    if (!field_codigo.getText().equals("")){
-                        if(!existe(Integer.parseInt(field_codigo.getText()))){
+                    if (!field_tasa.getText().equals("")){
+                        if(!existe(Integer.parseInt(field_tasa.getText()))){
                             mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
-                            field_codigo.requestFocus();
+                            field_tasa.requestFocus();
                         }
                         else{
                             if (camposCompletos()){
@@ -746,15 +817,61 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
-    private void field_codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_codigoKeyTyped
+    private void field_tasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_tasaKeyTyped
         onlyNum(evt);
-    }//GEN-LAST:event_field_codigoKeyTyped
+    }//GEN-LAST:event_field_tasaKeyTyped
 
     private void field_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_buscarKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             accion_Buscar();            
         }
     }//GEN-LAST:event_field_buscarKeyPressed
+
+    private void field_desdeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeFocusGained
+        field_desde.select(0,0);
+    }//GEN-LAST:event_field_desdeFocusGained
+
+    private void field_desdeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeFocusLost
+        if (fecha.isFechaValida(field_desde.getText())){
+            ocultar_Msj();
+        }
+        else{
+            mostrar_Msj_Error("La Fecha ingresada no se reconoce como valida.");
+            field_desde.requestFocus();
+        }
+    }//GEN-LAST:event_field_desdeFocusLost
+
+    private void field_hastaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_hastaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_field_hastaFocusGained
+
+    private void field_hastaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_hastaFocusLost
+        // TODO add your handling code here:
+        if (fecha.isFechaValida(field_hasta.getText())){
+            ocultar_Msj();
+        }
+        else{
+            mostrar_Msj_Error("La Fecha ingresada no se reconoce como valida.");
+            field_hasta.requestFocus();
+        }
+    }//GEN-LAST:event_field_hastaFocusLost
+
+    private void combo_tipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_tipoItemStateChanged
+        try {
+            r_con.Connection();
+            IGUI_Tipo_Tasas_IVA ref = new IGUI_Tipo_Tasas_IVA ();
+            ResultSet res = r_con.Consultar("SELECT * FROM "+ref.getName_tabla()+
+                                            " WHERE tasa_clave = "+combo_tipo.getSelectedItem());  
+
+            while(res.next()){
+               lab_tipo_tasa.setText(res.getString(2).toUpperCase());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
+    }//GEN-LAST:event_combo_tipoItemStateChanged
     
     private void cargarOrdenamientos () {         
         ButtonGroup grupo_recorridos;
@@ -804,16 +921,19 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             this.vaciarCampos();
             r_con.Connection();
             PreparedStatement pstm = r_con.getConn().prepareStatement(
-                        "SELECT *"+
+                        " SELECT *"+
                         " FROM "+name_tabla+
-                        " WHERE tasa_clave = "+valor);
+                        " WHERE tasa_id = "+valor);
 
             ResultSet res = pstm.executeQuery();
                 
-            while(res.next()){                   
-                field_codigo.setText(res.getString(1));
-                field_descripcion.setText(res.getString(2));
-                field_sigla.setText(res.getString(3));
+            while(res.next()){
+                lab_ID.setText(res.getString(1));
+                combo_tipo.setSelectedItem(res.getString(2));
+                field_desde.setText(fecha.convertirBarras(res.getString(3)));
+                field_hasta.setText(fecha.convertirBarras(res.getString(4)));
+                field_tasa.setText(res.getString(5));
+                field_sobretasa.setText(res.getString(6));
             }
             res.close();
         } catch(SQLException e){
@@ -855,8 +975,8 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         columna.setMinWidth(100);
         columna.setMaxWidth(100);*/
         
-        if (!field_codigo.getText().equals("")){
-            posicionarAyuda(field_codigo.getText());
+        if (!field_tasa.getText().equals("")){
+            posicionarAyuda(field_tasa.getText());
         }
         else{
             if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
@@ -1002,7 +1122,12 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                 int i = 0;
                 while(res.next()){
                     for (int j = 0; j < colum_names.length; j++) {  
-                        data[i][j] = res.getString(j+1);
+                        if ((j==2)||(j==3)){
+                            data[i][j] = fecha.convertirBarras(res.getString(j+1));
+                        }
+                        else{
+                            data[i][j] = res.getString(j+1);
+                        }
                     }     
                     i++;
                 }
@@ -1026,7 +1151,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             PreparedStatement pstm = r_con.getConn().prepareStatement(
                     "SELECT * "+
                     " FROM "+name_tabla+
-                    " WHERE tasa_clave = "+nro);
+                    " WHERE tasa_id = "+nro);
             
             ResultSet res = pstm.executeQuery();
             
@@ -1045,19 +1170,21 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void insertar(){             
         r_con.Connection();
         String sql = "INSERT INTO "+name_tabla
-                   + " VALUES('"+field_codigo.getText()+"','"
-                            +field_descripcion.getText()+"','"
-                            +field_sigla.getText()+"')";
+                   + " VALUES('"+combo_tipo.getSelectedItem()+"','"
+                                +field_desde.getText()+"','"
+                                +field_hasta.getText()+"',"
+                                +field_tasa.getText()+","
+                                +field_sobretasa.getText()+")";
         
         if(r_con.Insertar(sql)){            
-                mostrar_Msj_Exito("Tipo de Tasa de IVA registrada en el Sistema.");
+                mostrar_Msj_Exito("Tasa de IVA registrada en el Sistema.");
         };
     }
     
     private void eliminar(){
-        if (!field_codigo.getText().equals("")){
+        if (!field_tasa.getText().equals("")){
             r_con.Connection();
-            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE tasa_clave = '"+field_codigo.getText()+"'");         
+            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE tasa_id = '"+lab_ID.getText()+"'");         
             r_con.cierraConexion();
         }
     }
@@ -1069,10 +1196,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         // ej:String dni = field_codigo.getText();        
         
         r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
-                + "tasa_clave = '"+field_codigo.getText()+"', "
-                + "tasa_desc = '"+field_descripcion.getText()+"', "
+                + "tasa_clave = '"+field_tasa.getText()+"', "
+                + "tasa_desc = '"+field_sobretasa.getText()+"', "
                 + "tasa_sigla = '"+field_sigla.getText()+"' "
-                + "WHERE tasa_clave = "+field_codigo.getText());
+                + "WHERE tasa_clave = "+field_tasa.getText());
         r_con.cierraConexion();
     }
     
@@ -1086,9 +1213,11 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     
     
     private void camposEditables (boolean condicion){
-        field_codigo.setEditable(condicion);
-        field_descripcion.setEditable(condicion);
-        field_sigla.setEditable(condicion);
+        combo_tipo.setEditable(condicion);
+        field_desde.setEditable(condicion);
+        field_hasta.setEditable(condicion);
+        field_tasa.setEditable(condicion);
+        field_sobretasa.setEditable(condicion);        
     }
     
     private void ayudaDisponible(boolean condicion){
@@ -1102,15 +1231,22 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         tabla.setVisible(condicion);
     }
     
-    private void vaciarCampos(){        
-        field_codigo.setText("");
-        field_descripcion.setText("");
-        field_sigla.setText("");
+    private void vaciarCampos(){
+        if(combo_tipo.getItemCount()>0){
+            combo_tipo.setSelectedIndex(0);
+        }
+        field_desde.setText("");
+        field_hasta.setText("");
+        field_tasa.setText("");
+        field_sobretasa.setText("");
     }
     
     private boolean camposCompletos (){
-        if((!field_codigo.getText().equals(""))&&
-           (!field_descripcion.getText().equals(""))
+        if((combo_tipo.getSelectedIndex()>=0)&&
+           (fecha.isFechaValida(field_desde.getText()))&&
+           (fecha.isFechaValida(field_hasta.getText()))&&
+           (!field_tasa.getText().equals(""))&&
+           (!field_sobretasa.getText().equals(""))
           ){
             return true;
         }
@@ -1153,18 +1289,22 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_ultimo;
     private javax.swing.JComboBox combo_tipo;
     private javax.swing.JTextField field_buscar;
-    private javax.swing.JTextField field_codigo;
-    private javax.swing.JTextField field_descripcion;
-    private javax.swing.JTextField field_sigla;
+    private javax.swing.JFormattedTextField field_desde;
+    private javax.swing.JFormattedTextField field_hasta;
+    private javax.swing.JTextField field_sobretasa;
+    private javax.swing.JTextField field_tasa;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lab_ID;
     private javax.swing.JLabel lab_buscar;
-    private javax.swing.JLabel lab_codigo;
-    private javax.swing.JLabel lab_descripcion;
+    private javax.swing.JLabel lab_desde;
+    private javax.swing.JLabel lab_hasta;
     private javax.swing.JLabel lab_mensaje;
     private javax.swing.JLabel lab_modo;
     private javax.swing.JLabel lab_orden;
-    private javax.swing.JLabel lab_sigla;
+    private javax.swing.JLabel lab_sobretasa;
+    private javax.swing.JLabel lab_tasa;
     private javax.swing.JLabel lab_tipo;
+    private javax.swing.JLabel lab_tipo_tasa;
     private javax.swing.JLabel lab_tit_modo;
     private javax.swing.JLabel lab_tit_orden;
     private javax.swing.JMenu menu_alta;
@@ -1180,9 +1320,9 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void restringirCampos() {        
-        field_codigo.setNextFocusableComponent(field_descripcion);
-        field_descripcion.setNextFocusableComponent(field_sigla);
-        field_sigla.setNextFocusableComponent(btn_aceptar);
+        //field_tasa.setNextFocusableComponent(field_sobretasa);
+        //field_sobretasa.setNextFocusableComponent(field_sigla);
+        //field_sigla.setNextFocusableComponent(btn_aceptar);
     }
     
     /*
@@ -1199,18 +1339,17 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         try {
             combo_tipo.removeAllItems();
             r_con.Connection();
-            IGUI_Tipo_Tasas_IVA ref = null;
+            IGUI_Tipo_Tasas_IVA ref = new IGUI_Tipo_Tasas_IVA ();
             ResultSet res = r_con.Consultar("SELECT * FROM "+ref.getName_tabla());            
 
             while(res.next()){
-               combo_tipo.addItem(res.getString(1)+" - "+res.getString(2));
-                
+               combo_tipo.addItem(res.getString(1)); 
             }
-            
-            r_con.cierraConexion();
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } finally {            
+            r_con.cierraConexion();
+        } 
     }
 }
 

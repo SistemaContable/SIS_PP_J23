@@ -31,12 +31,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem27ActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem29">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Iconos/item.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Tasas de IVA"/>
+                <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem29ActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gestion Tipo Comprobante"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Tipo Comprobante"/>
                 <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
               </Properties>
               <Events>
@@ -48,7 +60,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gestion Punto de Venta"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Punto de Venta"/>
                 <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
               </Properties>
               <Events>
@@ -60,7 +72,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gestion Localidades"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Localidades"/>
                 <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
               </Properties>
               <Events>
@@ -72,7 +84,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Iconos/item.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gestion Situacion Frente Iva"/>
+                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Situacion Frente Iva"/>
                 <Property name="name" type="java.lang.String" value="M2" noResource="true"/>
               </Properties>
               <Events>

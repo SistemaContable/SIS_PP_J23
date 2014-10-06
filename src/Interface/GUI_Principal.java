@@ -14,6 +14,7 @@ import Contabilidad.GUI_Registrar_Asientos;
 import Facturacion.IGUI_Localidades;
 import Facturacion.IGUI_Punto_Venta;
 import Facturacion.IGUI_Sit_Frente_Iva;
+import Facturacion.IGUI_Tasas_IVA;
 import Facturacion.IGUI_Tipo_Comprobante;
 import Facturacion.IGUI_Tipo_Tasas_IVA;
 import _Pruebas.IGUI_Gestion;
@@ -170,6 +171,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem27 = new javax.swing.JMenuItem();
+        jMenuItem29 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -259,8 +261,18 @@ public class GUI_Principal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem27);
 
+        jMenuItem29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem29.setText("Gestión Tasas de IVA");
+        jMenuItem29.setName("M2"); // NOI18N
+        jMenuItem29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem29ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem29);
+
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem1.setText("Gestion Tipo Comprobante");
+        jMenuItem1.setText("Gestión Tipo Comprobante");
         jMenuItem1.setName("M2"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +282,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem7.setText("Gestion Punto de Venta");
+        jMenuItem7.setText("Gestión Punto de Venta");
         jMenuItem7.setName("M2"); // NOI18N
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,7 +292,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem7);
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem8.setText("Gestion Localidades");
+        jMenuItem8.setText("Gestión Localidades");
         jMenuItem8.setName("M2"); // NOI18N
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,7 +302,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem8);
 
         jMenuItem28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
-        jMenuItem28.setText("Gestion Situacion Frente Iva");
+        jMenuItem28.setText("Gestión Situacion Frente Iva");
         jMenuItem28.setName("M2"); // NOI18N
         jMenuItem28.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1170,7 +1182,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1189,7 +1200,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1208,7 +1218,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1227,7 +1236,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1246,7 +1254,6 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1259,6 +1266,24 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();                
     }//GEN-LAST:event_jMenuItem28ActionPerformed
+
+    private void jMenuItem29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem29ActionPerformed
+        IGUI_Tasas_IVA np = new IGUI_Tasas_IVA(r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();         
+    }//GEN-LAST:event_jMenuItem29ActionPerformed
     
     
     public void abrirSesion (){
@@ -1349,6 +1374,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
+    private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
