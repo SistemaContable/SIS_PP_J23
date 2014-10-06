@@ -1198,7 +1198,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
                 + "tasa_clave = '"+field_tasa.getText()+"', "
                 + "tasa_desc = '"+field_sobretasa.getText()+"', "
-                + "tasa_sigla = '"+field_sigla.getText()+"' "
+                + "tasa_sigla = '"+field_tasa.getText()+"' "
                 + "WHERE tasa_clave = "+field_tasa.getText());
         r_con.cierraConexion();
     }
