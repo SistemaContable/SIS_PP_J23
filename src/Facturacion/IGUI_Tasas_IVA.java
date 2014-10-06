@@ -67,8 +67,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         initComponents();
         restringirCampos();
         r_con = r; 
-        
-        System.out.print(field_desde.getText());
+
         modoConsulta();
         cargarOrdenamientos ();
         detectarOrden ();
@@ -559,7 +558,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
         mostrar_Msj_Error("¿Está seguro que desea Modificar?");
-        field_desde.requestFocus();
+        field_tasa.requestFocus();
+        combo_tipo.setEnabled(false);
+        field_desde.setEnabled(false);
+        field_hasta.setEnabled(false);
     }//GEN-LAST:event_menu_modMouseClicked
 
     private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeroActionPerformed
@@ -759,11 +761,16 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
        if (lab_modo.getText().equals("Alta")){
             if (camposCompletos()){
-                ocultar_Msj();
-                insertar();               
-                menuDisponible(true); 
-                modoConsulta();           
-                updateTabla();               
+                if (validarFechas()){
+                    ocultar_Msj();
+                    insertar();
+                    combo_tipo.setEnabled(true);
+                    field_desde.setEnabled(true);
+                    field_hasta.setEnabled(true);
+                    menuDisponible(true); 
+                    modoConsulta();           
+                    updateTabla();
+                }               
             }
             else{
                 mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
@@ -792,22 +799,16 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             else{
                 if (lab_modo.getText().equals("Modificación")){
                     if (!field_tasa.getText().equals("")){
-                        if(!existe(Integer.parseInt(field_tasa.getText()))){
-                            mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
-                            field_tasa.requestFocus();
+                        if (camposCompletos()){
+                            ocultar_Msj();
+                            modificar();
+                            menuDisponible(true); 
+                            modoConsulta();
+                            updateTabla();              
                         }
                         else{
-                            if (camposCompletos()){
-                                ocultar_Msj();
-                                modificar();
-                                menuDisponible(true); 
-                                modoConsulta();
-                                updateTabla();              
-                            }
-                            else{
-                                mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
-                            }                                                
-                        }
+                            mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
+                        }                                    
                     }
                     else{
                         mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
@@ -866,6 +867,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             while(res.next()){
                lab_tipo_tasa.setText(res.getString(2).toUpperCase());
             }
+            combo_tipo.nextFocus();
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
@@ -1168,17 +1170,38 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     }
     
     private void insertar(){             
-        r_con.Connection();
-        String sql = "INSERT INTO "+name_tabla
-                   + " VALUES('"+combo_tipo.getSelectedItem()+"','"
-                                +field_desde.getText()+"','"
-                                +field_hasta.getText()+"',"
-                                +field_tasa.getText()+","
-                                +field_sobretasa.getText()+")";
-        
-        if(r_con.Insertar(sql)){            
+        try {
+            r_con.Connection();
+            //actualizo el anterior
+            String sql_up = "SELECT * " +
+                    " FROM Tasas_IVA" +
+                    " WHERE ((tasa_desde in (SELECT MAX(tasa_desde) "
+                    + "FROM Tasas_IVA WHERE tasa_tipo = "+combo_tipo.getSelectedItem()+")))";
+            
+            ResultSet res = r_con.Consultar(sql_up);
+            
+            if (res.next()){
+                
+                r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
+                + "tasa_hasta = '"+fecha.addDaysToDate(field_desde.getText(),-1)+"' "
+                + "WHERE tasa_id = "+res.getString(1));    
+            }           
+            
+            String sql2 = "INSERT INTO "+name_tabla
+                    + " VALUES('"+combo_tipo.getSelectedItem()+"','"
+                    +field_desde.getText()+"','"
+                    +field_hasta.getText()+"',"
+                    +field_tasa.getText()+","
+                    +field_sobretasa.getText()+")";
+            
+            if(r_con.Insertar(sql2)){            
                 mostrar_Msj_Exito("Tasa de IVA registrada en el Sistema.");
-        };
+            };           
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
     }
     
     private void eliminar(){
@@ -1196,10 +1219,9 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         // ej:String dni = field_codigo.getText();        
         
         r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
-                + "tasa_clave = '"+field_tasa.getText()+"', "
-                + "tasa_desc = '"+field_sobretasa.getText()+"', "
-                + "tasa_sigla = '"+field_tasa.getText()+"' "
-                + "WHERE tasa_clave = "+field_tasa.getText());
+                + "tasa_tasa = '"+field_tasa.getText()+"', "
+                + "tasa_sobretasa = '"+field_sobretasa.getText()+"' "               
+                + "WHERE tasa_id = "+lab_ID.getText());
         r_con.cierraConexion();
     }
     
@@ -1350,6 +1372,43 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         } finally {            
             r_con.cierraConexion();
         } 
+    }
+    
+    private boolean validarFechas (){
+        boolean cumple = false;
+        
+        if (fecha.menorFechas(field_desde.getText(), field_hasta.getText())==1){
+            try {
+                String sql = "SELECT * " +
+                        " FROM Tasas_IVA" +
+                        " WHERE ((tasa_desde in (SELECT MAX(tasa_desde) "
+                        + "FROM Tasas_IVA WHERE tasa_tipo = "+combo_tipo.getSelectedItem()+")))";
+                r_con.Connection();
+                ResultSet res = r_con.Consultar(sql);
+                if (res.next()){
+                    String fecha_desde = res.getString(3);
+                    if (fecha.menorFechas(field_desde.getText(), fecha.convertirBarras(fecha_desde))==2){
+                        cumple=true;
+                        ocultar_Msj();
+                    }
+                    else{
+                        this.mostrar_Msj_Error("intenta registrar una Tasa de Iva anterior a la ultima de ese tipo");
+                        cumple = false;
+                    }
+                }
+                else{
+                    cumple = true;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            this.mostrar_Msj_Error("Fecha desde es mayor que fecha hasta.");
+            cumple = false;
+        }
+        
+        return cumple;        
     }
 }
 
