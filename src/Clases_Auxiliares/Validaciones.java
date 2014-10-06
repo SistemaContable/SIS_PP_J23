@@ -72,5 +72,13 @@ public boolean isFloat (String cadena){
 	}
 }
 
-    
+ 
+public  boolean isLong(String cadena){
+	try {
+		Long.parseLong(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}   
 }
