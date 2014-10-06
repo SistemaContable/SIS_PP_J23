@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Manolo
  */
-public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
+public class IGUI_Sit_Frente_Iva extends javax.swing.JInternalFrame {
 
     //variables de referencias a librerias Auxiliares
     private Conexion r_con = new Conexion(); 
@@ -39,19 +39,19 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     
     
     //nombre de la Tabla del SGBD
-    private String name_tabla = "tipo_tasas_iva";
+    private String name_tabla = "situacion_frente_iva";
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
-    private String[] colum_names = {"tasa_clave","tasa_desc","tasa_sigla"};
+    private String[] colum_names = {"sfi_id","sfi_descripcion","sfi_sigla"};
     //nombres reales de los Indices de la Tabla
-    private String[] indices_tabla = {"PK_Tasa_IVA","IX_Descripcion"};  
+    private String[] indices_tabla = {"PK_sfi_id","PK_sfi_descripcion"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
-    private String[] colum_names_tabla = {"Codigo Tasa","Descripcion","Sigla"};    
+    private String[] colum_names_tabla = {"ID","Situacion Frente Iva","Sigla"};    
     
    
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento)
-    private String[] name_indicesTabla = {"por Codigo de Tasa IVA","por Descripcion"};
+    private String[] name_indicesTabla = {"por ID Situacion Frente Iva","por Descripcion"};
     //posicion que ocupa el valor indicesTabla en el colum_names_tabla (para saber que buscar)
     private int[] relacion_indices_conTabla = {0,1};
     
@@ -63,7 +63,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     private int fila_ultimo_registro;    
     
     
-    public IGUI_Tipo_Tasas_IVA(Conexion r) {
+    public IGUI_Sit_Frente_Iva(Conexion r) {
         initComponents();
         restringirCampos();
         r_con = r; 
@@ -122,7 +122,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         menu_salir = new javax.swing.JMenu();
 
         setMaximizable(true);
-        setTitle("Gestión Tipo de Tasas de IVA");
+        setTitle("Gestión Situacion Frente Iva");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cuentas.png"))); // NOI18N
 
         panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -209,7 +209,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         lab_mensaje.setText("mensaje");
 
         lab_codigo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lab_codigo.setText("Código:");
+        lab_codigo.setText("ID:");
 
         lab_descripcion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_descripcion.setText("Descripción:");
@@ -465,6 +465,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         menuDisponible(false);
         lab_modo.setText("Modificación");
         camposEditables(true);
+        field_codigo.setEditable(false);
         ayudaDisponible(false);
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
@@ -683,7 +684,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             if (lab_modo.getText().equals("Baja")){
                 if (!field_codigo.getText().equals("")){
                     if(!existe(Integer.parseInt(field_codigo.getText()))){
-                        mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
+                        mostrar_Msj_Error("Ingrese una ID que se encuentre registrado en el sistema");
                         field_codigo.requestFocus();
                     }
                     else{                  
@@ -703,7 +704,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
                 if (lab_modo.getText().equals("Modificación")){
                     if (!field_codigo.getText().equals("")){
                         if(!existe(Integer.parseInt(field_codigo.getText()))){
-                            mostrar_Msj_Error("Ingrese una cuenta que se encuentre registrada en el sistema");
+                            mostrar_Msj_Error("Ingrese una ID que se encuentre registrado en el sistema");
                             field_codigo.requestFocus();
                         }
                         else{
@@ -787,7 +788,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             PreparedStatement pstm = r_con.getConn().prepareStatement(
                         "SELECT *"+
                         " FROM "+name_tabla+
-                        " WHERE tasa_clave = "+valor);
+                        " WHERE sfi_id = "+valor);
 
             ResultSet res = pstm.executeQuery();
                 
@@ -809,6 +810,8 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
      * @param fila indica una fila valida dentro de la tabla, gestiona la posicion fila_registro
      */
     private void cargar_ValoresPorFila (int fila){
+        this.ocultar_Msj();
+        field_buscar.setText("");
         if ((fila >= 0)&&(fila < tabla.getRowCount())){
             fila_ultimo_registro=fila;
             String codigo = String.valueOf(tabla.getValueAt(fila, 0));
@@ -1007,7 +1010,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             PreparedStatement pstm = r_con.getConn().prepareStatement(
                     "SELECT * "+
                     " FROM "+name_tabla+
-                    " WHERE tasa_clave = "+nro);
+                    " WHERE sfi_id = "+nro);
             
             ResultSet res = pstm.executeQuery();
             
@@ -1016,7 +1019,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             }
             res.close();
         } catch (SQLException ex) {
-            Logger.getLogger(IGUI_Tipo_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IGUI_Sit_Frente_Iva.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             r_con.cierraConexion();
         }
@@ -1031,14 +1034,14 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
                             +field_sigla.getText()+"')";
         
         if(r_con.Insertar(sql)){            
-                mostrar_Msj_Exito("Tipo de Tasa de IVA registrada en el Sistema.");
+                mostrar_Msj_Exito("Situacion Frente Iva registrada en el Sistema.");
         };
     }
     
     private void eliminar(){
         if (!field_codigo.getText().equals("")){
             r_con.Connection();
-            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE tasa_clave = '"+field_codigo.getText()+"'");         
+            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE sfi_id = '"+field_codigo.getText()+"'");         
             r_con.cierraConexion();
         }
     }
@@ -1050,10 +1053,10 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         // ej:String dni = field_codigo.getText();        
         
         r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
-                + "tasa_clave = '"+field_codigo.getText()+"', "
-                + "tasa_desc = '"+field_descripcion.getText()+"', "
-                + "tasa_sigla = '"+field_sigla.getText()+"' "
-                + "WHERE tasa_clave = "+field_codigo.getText());
+                + "sfi_id = '"+field_codigo.getText()+"', "
+                + "sfi_descripcion = '"+field_descripcion.getText()+"', "
+                + "sfi_sigla = '"+field_sigla.getText()+"' "
+                + "WHERE sfi_id = "+field_codigo.getText());
         r_con.cierraConexion();
     }
     

@@ -447,4 +447,99 @@ blc_saldo_acumulado float,
 blc_saldo_cierre float,
 primary key (blc_cuenta),
 foreign key (blc_cuenta)references plan_cuentas(pc_nro_cuenta),
-)
+);
+
+
+
+-- ####################  NUEVO  ############################
+
+
+
+
+create table tipo_comprobante(
+	tc_codigo int not null,
+	tc_descripcion varchar(70),
+	tc_activo bit,
+	primary key(tc_codigo)
+);
+
+CREATE INDEX PK_tc_codigo ON tipo_comprobante (tc_codigo);
+CREATE INDEX IX_tc_descripcion ON tipo_comprobante (tc_descripcion);
+
+insert into tipo_comprobante values ('01','FACTURA A',1);
+insert into tipo_comprobante values ('02','NOTA DE DEBITO A',1);
+insert into tipo_comprobante values ('03','NOTA DE CREDITO A',0);
+insert into tipo_comprobante values ('04','RECIBOS A',1);
+insert into tipo_comprobante values ('05','NOTA DE VENTA AL CONTADO A',1);
+insert into tipo_comprobante values ('06','FACTURA B',1);
+insert into tipo_comprobante values ('07','NOTA DE DEBITO B',1);
+insert into tipo_comprobante values ('08','NOTA DE CREDITO B',0);
+insert into tipo_comprobante values ('09','RECIBO B',1);
+insert into tipo_comprobante values ('10','NOTA DE VENTA AL CONTADO B',1);
+insert into tipo_comprobante values ('11','FACTURA C',1);
+insert into tipo_comprobante values ('12','NOTA DE DEBITO C',1);
+insert into tipo_comprobante values ('13','NOTA DE CREDITO C',0);
+insert into tipo_comprobante values ('14','DOCUMENTO ADUANERO',1);
+insert into tipo_comprobante values ('15','RECIBO C',1);
+insert into tipo_comprobante values ('16','NOTA DE VENTA AL CONTADO C',1);
+insert into tipo_comprobante values ('19','FACTURA DE EXPORTACION',1);
+
+insert into tipo_comprobante values ('51','FACTURA M',1);
+insert into tipo_comprobante values ('52','NOTA DE DEBITO M',1);
+insert into tipo_comprobante values ('53','NOTA DE CREDITO M',0);
+insert into tipo_comprobante values ('54','RECIBO M',1);
+insert into tipo_comprobante values ('55','NOTA DE VENTA AL CONTADO M',1);
+
+insert into tipo_comprobante values ('80','COMPROBANTE DIARIO DE CIERRE (ZETA)',1);
+insert into tipo_comprobante values ('81','TIQUE FACTURA CONTROLADORES FISCALES',1);
+insert into tipo_comprobante values ('82','TIQUE FACTURA B',1);
+insert into tipo_comprobante values ('83','TIQUE',1);
+
+insert into tipo_comprobante values ('91','REMITO R',1);
+
+create table punto_venta(
+	pv_codigo int not null,
+	pv_descripcion varchar(20),
+	primary key(pv_codigo)
+);
+CREATE INDEX PK_pv_codigo ON punto_venta (pv_codigo);
+CREATE INDEX PK_pv_descripcion ON punto_venta (pv_descripcion);
+
+insert into punto_venta values(1,'PV01');
+insert into punto_venta values(2,'PV02');
+insert into punto_venta values(3,'PV03');
+
+create table localidades(
+	loc_id int not null,
+	loc_codigo_postal int not null,
+	loc_descripcion varchar(20),
+	primary key(loc_id)
+);
+CREATE INDEX PK_loc_id ON localidades (loc_id);
+CREATE INDEX PK_codigo_postal ON localidades (loc_codigo_postal);
+CREATE INDEX PK_loc_descripcion ON localidades (loc_descripcion);
+
+insert into localidades values(1,8150,'Coronel Dorrego');
+insert into localidades values(2,8000,'Bahia Blanca');
+insert into localidades values(3,7500,'Tres Arroyos');
+insert into localidades values(4,6310,'General Campos');
+
+
+create table situacion_frente_iva(
+	sfi_id int not null,
+	sfi_descripcion varchar(40),
+	sfi_sigla varchar(3),
+	primary key(sfi_id)
+);
+CREATE INDEX PK_sfi_id ON situacion_frente_iva (sfi_id);
+CREATE INDEX PK_sfi_descripcion ON situacion_frente_iva (sfi_descripcion);
+
+
+insert into situacion_frente_iva values(1,'Responsable Inscripto','RI');
+insert into situacion_frente_iva values(2,'Responsable No Inscripto','RNI');
+insert into situacion_frente_iva values(3,'Exento','EX');
+insert into situacion_frente_iva values(4,'No Responsable','NR');
+insert into situacion_frente_iva values(5,'Consumidor Final','CF');
+insert into situacion_frente_iva values(6,'Monotributo','Mt');
+insert into situacion_frente_iva values(7,'Sujeto No Categorizado','SNC');
+
