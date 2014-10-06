@@ -14,6 +14,30 @@ insert into tipo_tasas_iva values ('01','Tasa General','TGR');
 insert into tipo_tasas_iva values ('02','Tasa Diferencial','TDF');
 insert into tipo_tasas_iva values ('03','Tasa Reducida','TRD');
 
+CREATE TABLE tasas_iva
+(
+	tasa_id int IDENTITY(1,1),
+	tasa_tipo varchar(2) not NULL,
+ 	tasa_desde date not NULL,
+ 	tasa_hasta date not NULL,
+ 	tasa_tasa float,
+	tasa_sobretasa float
+
+	PRIMARY KEY (tasa_id),
+	FOREIGN KEY (tasa_tipo) REFERENCES tipo_tasas_iva (tasa_clave)
+)
+
+ CREATE INDEX  IX_Tipo ON tasas_iva (tasa_tipo);
+ CREATE INDEX  IX_Desde ON tasas_iva (tasa_desde);
+ CREATE INDEX  IX_Tasa ON tasas_iva (tasa_tasa);
+ 
+ insert into tasas_iva values ('00','01-01-1900','31-12-2500',0,0);
+ insert into tasas_iva values ('01','01-01-1992','31-12-1995',18,9);
+ insert into tasas_iva values ('01','01-01-1996','31-12-2000',15,7.5);
+ insert into tasas_iva values ('01','01-01-2001','31-12-2500',21,10.5);
+ insert into tasas_iva values ('02','01-01-2007','31-12-2500',27,13.5);
+ insert into tasas_iva values ('03','01-01-2007','31-12-2500',10.5,null);
+
 CREATE TABLE Articulos
 ( 
 	art_codigo      	varchar(15) not null,

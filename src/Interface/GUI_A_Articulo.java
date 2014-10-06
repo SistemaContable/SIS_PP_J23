@@ -253,7 +253,7 @@ public class GUI_A_Articulo extends javax.swing.JInternalFrame {
     private void prepararHelp(){
         r_con.Connection();
         rc.convertirComponente(jTextField6);       
-        ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA");        
+        ResultSet rs = r_con.Consultar("SELECT * FROM tipo_tasas_iva");        
         items.add("");
         try {
             while (rs.next())
@@ -535,7 +535,7 @@ private boolean muestraValor (String cod){
     boolean existe = false;
     
     r_con.Connection();
-    ResultSet rs = r_con.Consultar("SELECT * FROM Tasas_IVA WHERE tasa_clave = '"+cod+"'");
+    ResultSet rs = r_con.Consultar("SELECT * FROM tipo_tasas_iva WHERE tasa_clave = '"+cod+"'");
     try {
              while (rs.next())
             {

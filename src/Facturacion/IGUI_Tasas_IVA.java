@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Manolo
  */
-public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
+public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
 
     //variables de referencias a librerias Auxiliares
     private Conexion r_con = new Conexion(); 
@@ -39,21 +39,21 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     
     
     //nombre de la Tabla del SGBD
-    private String name_tabla = "tipo_tasas_iva";
+    private String name_tabla = "tasas_iva";
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
-    private String[] colum_names = {"tasa_clave","tasa_desc","tasa_sigla"};
+    private String[] colum_names = {"tasa_id","tasa_tipo","tasa_desde","tasa_hasta","tasa_tasa","tasa_sobretasa"};
     //nombres reales de los Indices de la Tabla
-    private String[] indices_tabla = {"PK_Tasa_IVA","IX_Descripcion"};  
+    private String[] indices_tabla = {"PK_Tasa_ID","IX_Tipo","IX_Desde","IX_Tasa"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
-    private String[] colum_names_tabla = {"Codigo Tasa","Descripcion","Sigla"};    
+    private String[] colum_names_tabla = {"ID","Tipo Tasa","Desde","Hasta","Tasa %","Sobretasa"};    
     
    
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento)
-    private String[] name_indicesTabla = {"por Codigo de Tasa IVA","por Descripcion"};
+    private String[] name_indicesTabla = {"por Identificador","por Tipo de Tasa","por Fecha Desde","por % Tasa"};
     //posicion que ocupa el valor indicesTabla en el colum_names_tabla (para saber que buscar)
-    private int[] relacion_indices_conTabla = {0,1};
+    private int[] relacion_indices_conTabla = {0,1,2,4};
     
     //modo ordenamiento elegido inicial por defecto (cambiar manualmente)
     private int numero_ordenamiento_elegido = 0; //(corresponde al numero de indicesTabla)
@@ -63,7 +63,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     private int fila_ultimo_registro;    
     
     
-    public IGUI_Tipo_Tasas_IVA(Conexion r) {
+    public IGUI_Tasas_IVA(Conexion r) {
         initComponents();
         restringirCampos();
         r_con = r; 
@@ -78,6 +78,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             tabla.setRowSelectionInterval(0,0); 
             cargar_ValoresPorFila(0);
         }
+        cargarComboTipoIVA();
     }
 
     /**
@@ -93,6 +94,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         panel_datos = new javax.swing.JPanel();
+        combo_tipo = new javax.swing.JComboBox();
         field_codigo = new javax.swing.JTextField();
         field_descripcion = new javax.swing.JTextField();
         field_sigla = new javax.swing.JTextField();
@@ -106,6 +108,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         lab_codigo = new javax.swing.JLabel();
         lab_descripcion = new javax.swing.JLabel();
         lab_sigla = new javax.swing.JLabel();
+        lab_tipo = new javax.swing.JLabel();
         panel_desplazamiento = new javax.swing.JPanel();
         btn_primero = new javax.swing.JButton();
         btn_anterior = new javax.swing.JButton();
@@ -165,6 +168,8 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panel_datos.setFocusCycleRoot(true);
 
+        combo_tipo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
         field_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 field_codigoKeyTyped(evt);
@@ -217,6 +222,9 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
         lab_sigla.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_sigla.setText("Sigla:");
 
+        lab_tipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_tipo.setText("Tipo Tasa IVA:");
+
         javax.swing.GroupLayout panel_datosLayout = new javax.swing.GroupLayout(panel_datos);
         panel_datos.setLayout(panel_datosLayout);
         panel_datosLayout.setHorizontalGroup(
@@ -245,10 +253,17 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
                     .addComponent(field_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(193, 193, 193))
             .addGroup(panel_datosLayout.createSequentialGroup()
-                .addGap(180, 180, 180)
-                .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88)
-                .addComponent(btn_cancelar)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(88, 88, 88)
+                        .addComponent(btn_cancelar))
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addGap(195, 195, 195)
+                        .addComponent(lab_tipo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_datosLayout.setVerticalGroup(
@@ -260,7 +275,11 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
                     .addComponent(lab_orden)
                     .addComponent(lab_tit_modo)
                     .addComponent(lab_modo))
-                .addGap(43, 43, 43)
+                .addGap(17, 17, 17)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lab_tipo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lab_codigo))
@@ -1016,7 +1035,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             }
             res.close();
         } catch (SQLException ex) {
-            Logger.getLogger(IGUI_Tipo_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             r_con.cierraConexion();
         }
@@ -1132,6 +1151,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_primero;
     private javax.swing.JButton btn_proximo;
     private javax.swing.JButton btn_ultimo;
+    private javax.swing.JComboBox combo_tipo;
     private javax.swing.JTextField field_buscar;
     private javax.swing.JTextField field_codigo;
     private javax.swing.JTextField field_descripcion;
@@ -1144,6 +1164,7 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lab_modo;
     private javax.swing.JLabel lab_orden;
     private javax.swing.JLabel lab_sigla;
+    private javax.swing.JLabel lab_tipo;
     private javax.swing.JLabel lab_tit_modo;
     private javax.swing.JLabel lab_tit_orden;
     private javax.swing.JMenu menu_alta;
@@ -1173,9 +1194,23 @@ public class IGUI_Tipo_Tasas_IVA extends javax.swing.JInternalFrame {
             ke.consume(); 
         } 
     } 
+    
+    private void cargarComboTipoIVA(){
+        try {
+            combo_tipo.removeAllItems();
+            r_con.Connection();
+            IGUI_Tipo_Tasas_IVA ref = null;
+            ResultSet res = r_con.Consultar("SELECT * FROM "+ref.getName_tabla());            
 
-    public String getName_tabla() {
-        return name_tabla;
+            while(res.next()){
+               combo_tipo.addItem(res.getString(1)+" - "+res.getString(2));
+                
+            }
+            
+            r_con.cierraConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Tasas_IVA.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
