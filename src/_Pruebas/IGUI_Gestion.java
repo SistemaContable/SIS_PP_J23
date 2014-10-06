@@ -911,7 +911,7 @@ public class IGUI_Gestion extends javax.swing.JInternalFrame {
         }
         else{
             Cuenta cta = new Cuenta ();
-            cta.setCta_Nro(Integer.parseInt(ultima));
+            //cta.setCta_Nro(Integer.parseInt(ultima));
             posicionarAyuda(cta);
         }
         
@@ -1187,7 +1187,7 @@ public class IGUI_Gestion extends javax.swing.JInternalFrame {
         boolean encontre = false;
         
         while ((!encontre)&&(i<tabla.getRowCount())) {            
-            if (Integer.parseInt(String.valueOf(tabla.getValueAt(i, 0)))==cta.getCta_Nro()){
+            if (Integer.parseInt(String.valueOf(tabla.getValueAt(i, 0)))==1){
                 encontre=true;
             }
             i++;
@@ -1461,7 +1461,7 @@ public class IGUI_Gestion extends javax.swing.JInternalFrame {
                 + "Cta_Cli_Telefono = '"+field_telefono.getText()+"', "
                 + "Cta_Cli_Sueldo = "+sueldo+", "
                 + "Cta_ult_cambio_estado = '"+field_fec_cbo_est.getText()+"',"
-                + "Cta_Estado_id = '"+combo_estado.getSelectedItem()+"'"
+                + "Cta_Estado_id = '"+combo_estado.getSelectedItem()+"' "
                 + "WHERE Cta_Nro ="+field_cta_nro.getText());
         r_con.cierraConexion();
     }

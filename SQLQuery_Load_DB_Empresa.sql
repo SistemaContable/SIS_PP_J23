@@ -1,4 +1,4 @@
-CREATE TABLE Tasas_IVA
+CREATE TABLE tipo_tasas_iva
 ( 
 	tasa_clave      	varchar(2) not null,
   	tasa_desc        	varchar(20) not null,
@@ -6,11 +6,13 @@ CREATE TABLE Tasas_IVA
   	
 	CONSTRAINT PK_Tasa_IVA primary key (tasa_clave)
  );
+ CREATE INDEX  IX_Descripcion ON tipo_tasas_iva (tasa_desc);
 
-insert into Tasas_IVA values ('00','Excento','EXC');
-insert into Tasas_IVA values ('01','Tasa General','TGR');
-insert into Tasas_IVA values ('02','Tasa Diferencial','TDF');
-insert into Tasas_IVA values ('03','Tasa Reducida','TRD');
+
+insert into tipo_tasas_iva values ('00','Excento','EXC');
+insert into tipo_tasas_iva values ('01','Tasa General','TGR');
+insert into tipo_tasas_iva values ('02','Tasa Diferencial','TDF');
+insert into tipo_tasas_iva values ('03','Tasa Reducida','TRD');
 
 CREATE TABLE Articulos
 ( 
@@ -22,7 +24,7 @@ CREATE TABLE Articulos
 	art_cod_tasa_iva	varchar (2) not null,
   	
 	CONSTRAINT PK_Articulos primary key (art_codigo),
-  	CONSTRAINT FK_Articulos_cod_tasa_iva foreign key (art_cod_tasa_iva) references Tasas_IVA(tasa_clave),
+  	CONSTRAINT FK_Articulos_cod_tasa_iva foreign key (art_cod_tasa_iva) references tipo_tasas_iva(tasa_clave),
 	CONSTRAINT CK_Articulos_art_precio CHECK (art_precio >= 0)
  );
 
