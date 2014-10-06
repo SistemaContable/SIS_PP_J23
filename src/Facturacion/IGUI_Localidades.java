@@ -36,7 +36,7 @@ public class IGUI_Localidades extends javax.swing.JInternalFrame {
     private Conexion r_con = new Conexion(); 
     private final Validaciones validar = new Validaciones();
     private final Fechas fecha = new Fechas ();
-    
+    private boolean pepe;
     
     //nombre de la Tabla del SGBD
     private String name_tabla = "localidades";
