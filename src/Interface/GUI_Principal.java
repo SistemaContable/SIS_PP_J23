@@ -11,6 +11,7 @@ import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
 import Contabilidad.GUI_Plan_Cuentas;
 import Contabilidad.GUI_Registrar_Asientos;
+import Facturacion.IGUI_Asignar_Pto_Venta_Comprobante;
 import Facturacion.IGUI_Localidades;
 import Facturacion.IGUI_Punto_Venta;
 import Facturacion.IGUI_Sit_Frente_Iva;
@@ -176,6 +177,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem28 = new javax.swing.JMenuItem();
+        jMenuItem30 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -310,6 +312,16 @@ public class GUI_Principal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem28);
+
+        jMenuItem30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem30.setText("Gestion Asignar Punto Venta-Tipo Comprobante");
+        jMenuItem30.setName("M2"); // NOI18N
+        jMenuItem30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem30ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem30);
 
         jMenuBar1.add(jMenu1);
 
@@ -1284,6 +1296,24 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();         
     }//GEN-LAST:event_jMenuItem29ActionPerformed
+
+    private void jMenuItem30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem30ActionPerformed
+        IGUI_Asignar_Pto_Venta_Comprobante np = new IGUI_Asignar_Pto_Venta_Comprobante(r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();         
+    }//GEN-LAST:event_jMenuItem30ActionPerformed
     
     
     public void abrirSesion (){
@@ -1376,6 +1406,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;

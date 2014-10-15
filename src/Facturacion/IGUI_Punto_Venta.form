@@ -130,7 +130,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="189" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="171" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -188,25 +188,25 @@
                   <Component id="lab_modo" min="-2" pref="88" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lab_descripcion" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="lab_codigo" alignment="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="field_codigo" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="field_descripcion" min="-2" pref="190" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="btn_aceptar" min="-2" pref="105" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
                   <Component id="btn_cancelar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="lab_codigo" min="-2" max="-2" attributes="0"/>
+                      <Component id="lab_descripcion" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="field_codigo" min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="field_descripcion" min="-2" pref="152" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -220,7 +220,7 @@
                       <Component id="lab_tit_modo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lab_modo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="field_codigo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lab_codigo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -237,7 +237,7 @@
                       <Component id="btn_aceptar" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="btn_cancelar" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

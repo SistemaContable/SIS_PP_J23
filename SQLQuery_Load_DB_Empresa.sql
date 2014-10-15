@@ -543,3 +543,15 @@ insert into situacion_frente_iva values(5,'Consumidor Final','CF');
 insert into situacion_frente_iva values(6,'Monotributo','Mt');
 insert into situacion_frente_iva values(7,'Sujeto No Categorizado','SNC');
 
+create table ptoventa_x_tipocomprobante(
+	vxc_id_pto_venta int not null,
+	vxc_id_tipo_comprobante int not null,
+	vxc_numero int,		
+	primary key(vxc_id_pto_venta,vxc_id_tipo_comprobante),
+	foreign key(vxc_id_pto_venta)references punto_venta(pv_codigo),
+	foreign key(vxc_id_tipo_comprobante)references tipo_comprobante(tc_codigo)
+)
+CREATE INDEX  IX_vxc_pto_venta ON ptoventa_x_tipocomprobante (vxc_id_pto_venta);
+CREATE INDEX  IX_vxc_tipo_comprobante ON ptoventa_x_tipocomprobante (vxc_id_tipo_comprobante);
+
+insert into ptoventa_x_tipocomprobante values(1,1,0);

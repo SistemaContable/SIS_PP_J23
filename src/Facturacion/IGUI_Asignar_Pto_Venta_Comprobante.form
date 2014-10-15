@@ -64,7 +64,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="maximizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Gesti&#xf3;n Tipo de Tasas de IVA"/>
+    <Property name="title" type="java.lang.String" value="Gesti&#xf3;n Asignar Punto Venta-Comprobantes"/>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
       <Image iconType="3" name="/Iconos/cuentas.png"/>
     </Property>
@@ -130,7 +130,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="151" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="137" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -200,35 +200,31 @@
                   </Group>
               </Group>
               <Group type="102" alignment="1" attributes="0">
-                  <Component id="lab_ID" min="-2" pref="81" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="lab_ID" min="-2" pref="81" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lab_sobretasa" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_hasta" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_tasa" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_desde" min="-2" max="-2" attributes="0"/>
+                              <Component id="lab_tipo1" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_tipo" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="field_sobretasa" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="field_tasa" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="field_desdee" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
-                              <Component id="field_hasta" min="-2" pref="84" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="combo_comprobante" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="combo_pto_venta" min="-2" pref="61" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
-                          <Component id="combo_tipo" min="-2" pref="61" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                          <Component id="lab_tipo_tasa" min="-2" pref="128" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lab_tipo_comprobante" min="-2" pref="128" max="-2" attributes="0"/>
+                      <Component id="lab_tipo_pto_venta" min="-2" pref="128" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="191" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -237,46 +233,34 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lab_tit_orden" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_orden" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_tit_modo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_modo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="combo_tipo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="combo_pto_venta" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_tipo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_tipo_tasa" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lab_tipo_pto_venta" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lab_ID" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lab_desde" min="-2" max="-2" attributes="0"/>
-                              <Component id="field_desdee" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lab_hasta" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="field_hasta" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lab_tipo1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="combo_comprobante" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lab_tipo_comprobante" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="field_tasa" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_tasa" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lab_sobretasa" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="field_sobretasa" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                   <Component id="lab_mensaje" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -289,7 +273,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JComboBox" name="combo_tipo">
+        <Component class="javax.swing.JComboBox" name="combo_pto_venta">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
@@ -299,21 +283,8 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_tipoItemStateChanged"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_pto_ventaItemStateChanged"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JTextField" name="field_tasa">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="field_tasaKeyTyped"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JTextField" name="field_sobretasa">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btn_aceptar">
           <Properties>
@@ -393,47 +364,15 @@
             <Property name="text" type="java.lang.String" value="mensaje"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lab_tasa">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Tasa:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lab_sobretasa">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Sobretasa:"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="lab_tipo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Tipo Tasa IVA:"/>
+            <Property name="text" type="java.lang.String" value="Punto Venta:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lab_desde">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Fecha Desde:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lab_hasta">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Fecha Hasta:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lab_tipo_tasa">
+        <Component class="javax.swing.JLabel" name="lab_tipo_pto_venta">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="1"/>
@@ -453,27 +392,43 @@
             <Property name="text" type="java.lang.String" value="ID"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="field_desdee">
+        <Component class="javax.swing.JLabel" name="lab_tipo1">
           <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="##/##/####" subtype="-1" type="5"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Tipo Comprobante:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="combo_comprobante">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="0"/>
+            </Property>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_desdeeFocusGained"/>
-            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_desdeeFocusLost"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_comprobanteItemStateChanged"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="field_hasta">
+        <Component class="javax.swing.JLabel" name="lab_tipo_comprobante">
           <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="##/##/####" subtype="-1" type="5"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="1"/>
             </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="33" red="33" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Tipo"/>
           </Properties>
-          <Events>
-            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_hastaFocusGained"/>
-            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_hastaFocusLost"/>
-          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Seleccionar todos los Tipos de Comprobantes"/>
+            <Property name="horizontalTextPosition" type="int" value="2"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
