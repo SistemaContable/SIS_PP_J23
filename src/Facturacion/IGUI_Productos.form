@@ -189,64 +189,59 @@
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
+                  <Component id="btn_aceptar" min="-2" pref="105" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                  <Component id="btn_cancelar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lab_cantidad" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lab_descripcion" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lab_codigo" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="field_descripcion" alignment="0" min="-2" pref="208" max="-2" attributes="0"/>
+                      <Component id="field_codigo" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                      <Component id="field_cantidad" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
-                          <Component id="btn_aceptar" min="-2" pref="105" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                          <Component id="btn_cancelar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lab_cantidad" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_descripcion" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="lab_codigo" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lab_neto" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="field_precio_venta" min="-2" pref="83" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lab_cu" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="field_costo_u" min="-2" pref="83" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="combo_tipo_imp" alignment="1" min="-2" pref="140" max="-2" attributes="0"/>
+                              <Component id="lab_tasa" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="field_descripcion" alignment="0" min="-2" pref="208" max="-2" attributes="0"/>
-                                      <Component id="field_codigo" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="lab_neto" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="field_precio_venta" min="-2" pref="83" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="lab_cu" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="field_costo_u" min="-2" pref="83" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="field_cantidad" min="-2" pref="83" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="lab_tasa" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="167" max="-2" attributes="0"/>
-                                          <Component id="combo_tipo_imp" max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="field_tasa_iva" min="-2" pref="83" max="-2" attributes="0"/>
-                                      <Component id="field_impuesto" min="-2" pref="83" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="field_impuesto" min="-2" pref="83" max="-2" attributes="0"/>
+                              <Component id="field_tasa_iva" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lab_tipo_imp" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lab_tipo_iva" max="32767" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -280,11 +275,13 @@
                       <Component id="field_cantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="field_tasa_iva" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lab_tasa" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lab_tipo_iva" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="combo_tipo_imp" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="field_impuesto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lab_tipo_imp" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="lab_mensaje" min="-2" pref="45" max="-2" attributes="0"/>
@@ -301,6 +298,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="field_codigo">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_codigoFocusLost"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="field_codigoKeyTyped"/>
           </Events>
         </Component>
@@ -341,6 +339,11 @@
         <Component class="javax.swing.JTextField" name="field_precio_venta">
         </Component>
         <Component class="javax.swing.JTextField" name="field_tasa_iva">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_tasa_ivaFocusLost"/>
+            <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="field_tasa_ivaInputMethodTextChanged"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="field_tasa_ivaKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="combo_tipo_imp">
           <Properties>
@@ -355,6 +358,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_tipo_impItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="field_impuesto">
         </Component>
@@ -445,7 +451,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Precio Neto de Venta: "/>
+            <Property name="text" type="java.lang.String" value="Precio Neto de Venta:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lab_tasa">
@@ -453,7 +459,25 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Tasa de IVA: "/>
+            <Property name="text" type="java.lang.String" value="Tasa de IVA:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lab_tipo_imp">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value=" "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lab_tipo_iva">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value=" "/>
           </Properties>
         </Component>
       </SubComponents>
