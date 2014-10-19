@@ -62,7 +62,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
     private String modo_ordenamiento_elegido = indices_tabla[numero_ordenamiento_elegido];
     
     //fila actual posicionado en la tabla
-    private int fila_ultimo_registro;    
+    private int fila_ultimo_registro; 
     
     
     public IGUI_Productos(Conexion r) {
@@ -907,7 +907,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
 
     private void field_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_codigoFocusLost
         // TODO add your handling code here:
-        if (field_codigo.isEditable()){
+        if (field_codigo.isEditable() && (lab_modo.getText().equals("Alta"))){
             if ((evt.getOppositeComponent()!=null)&&(!evt.getOppositeComponent().equals(btn_cancelar))){
                 if (!field_codigo.getText().equals("")){
                     if (!existe(field_codigo.getText())){
@@ -1320,22 +1320,55 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
     private void eliminar(){
         if (!field_codigo.getText().equals("")){
             r_con.Connection();
-            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE tasa_clave = '"+field_codigo.getText()+"'");         
+            r_con.Borrar("DELETE FROM "+name_tabla+" WHERE prod_codigo = '"+field_codigo.getText()+"'");         
             r_con.cierraConexion();
         }
     }
     
     private void modificar(){
-        r_con.Connection(); 
+        r_con.Connection();
         
         // Controlo los campos Numericos si son en blanco hay que ponerle null, sino da error
-        // ej:String dni = field_codigo.getText();        
+        // ej:String dni = field_codigo.getText(); 
+        String codigo=null; 
+        if (!field_codigo.getText().equals("")){
+            codigo=field_codigo.getText();
+        }        
+        String cantidad="0"; 
+        if (!field_cantidad.getText().equals("")){
+            cantidad=field_cantidad.getText();
+        }        
+        String costo=null; 
+        if (!field_costo_u.getText().equals("")){
+            costo=field_costo_u.getText();
+        }
+        String venta=null; 
+        if (!field_precio_venta.getText().equals("")){
+            venta=field_precio_venta.getText();
+        }       
         
-        r_con.ActualizarSinCartel("UPDATE "+name_tabla+" SET "
-                + "tasa_clave = '"+field_codigo.getText()+"', "
-                + "tasa_desc = '"+field_descripcion.getText()+"', "
-                + "tasa_sigla = '"+field_cantidad.getText()+"' "
-                + "WHERE tasa_clave = "+field_codigo.getText());
+        String prod_impuesto_porcentaje = "0";
+        String prod_impuesto_valor = "0";
+        if(combo_tipo_imp.getSelectedIndex()!=0){
+            if(combo_tipo_imp.getSelectedIndex()==1){
+                prod_impuesto_porcentaje = field_impuesto.getText();
+            }
+            else{
+                prod_impuesto_valor = field_impuesto.getText();
+            }
+        } 
+        
+        String sql = ("UPDATE "+name_tabla+" SET "
+                + "prod_codigo = "+codigo+", "
+                + "prod_descripcion = '"+field_descripcion.getText()+"', "
+                + "prod_cantidad = "+cantidad+", "
+                + "prod_costo = "+costo+", "
+                + "prod_precio_neto_venta = "+venta+", "
+                + "prod_tasa_iva = "+field_tasa_iva.getText()+", "
+                + "prod_impuesto_porcentaje = "+prod_impuesto_porcentaje+", "
+                + "prod_impuesto_valor = "+prod_impuesto_valor+" "
+                + "WHERE prod_codigo = "+codigo);
+        r_con.ActualizarSinCartel(sql);
         r_con.cierraConexion();
     }
     
