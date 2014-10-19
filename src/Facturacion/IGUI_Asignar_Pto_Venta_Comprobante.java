@@ -46,7 +46,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
     //private String[] colum_names = {"vxc_id_pto_venta","vxc_id_tipo_comprobante","vxc_numero"};
     //nombres reales de los Indices de la Tabla
-    private String[] indices_tabla = {"IX_vxc_pto_venta","IX_vxc_tipo_comprobante"};  
+    private String[] indices_tabla = {"IX_tc_descripcion","IX_vxc_tipo_comprobante"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
@@ -54,7 +54,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     
    
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento)
-    private String[] name_indicesTabla = {"por Punto de Venta","por Tipo de Comprobante"};
+    private String[] name_indicesTabla = {"por Descripcion de Comprobante","por Tipo de Comprobante"};
     //posicion que ocupa el valor indicesTabla en el colum_names_tabla (para saber que buscar)
     private int[] relacion_indices_conTabla = {0,1};
     
@@ -531,6 +531,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         menuDisponible(true); 
         modoConsulta();        
         listaComprobantes.clearSelection();
+        cargarListaComprobantes();
         /*if (field_tasa.getText().equals("")){
             cargar_ValoresPorFila(this.fila_ultimo_registro);
         }
@@ -577,7 +578,6 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             r_con.Connection();            
             ResultSet res = r_con.Consultar("SELECT * FROM punto_venta"+
                                             " WHERE pv_codigo = "+combo_pto_venta.getSelectedItem());  
-
             while(res.next()){
                lab_tipo_pto_venta.setText(res.getString(2).toUpperCase());
             }            
@@ -585,7 +585,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             Logger.getLogger(IGUI_Asignar_Pto_Venta_Comprobante.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             r_con.cierraConexion();
-        }
+        }                
         updateTabla();
     }//GEN-LAST:event_combo_pto_ventaItemStateChanged
 
@@ -889,6 +889,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     }
     
     private void eliminar(){
+        try{
         if (!lab_tipo_pto_venta.getText().equals("")){
             int puntoVenta=Integer.parseInt((String)combo_pto_venta.getSelectedItem());        
             r_con.Connection();
@@ -901,6 +902,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             }            
             r_con.cierraConexion();
         }
+        }catch(java.lang.ArrayIndexOutOfBoundsException e){}
     }
     
     
@@ -1028,9 +1030,10 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     public void cargarListaBorrar(){
         try{                                        
             r_con.Connection();
+            String puntoVenta=combo_pto_venta.getSelectedItem().toString();            
             ResultSet rs=r_con.Consultar("select tc_codigo,tc_descripcion,vxc_numero "
                         + "         from punto_venta,tipo_comprobante,ptoventa_x_tipocomprobante "
-                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_codigo="+combo_pto_venta.getSelectedIndex()+1);
+                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_codigo="+puntoVenta);
             DefaultListModel modelo = new DefaultListModel();
             while(rs.next()){       
                 String cadena=rs.getString(1)+" - "+rs.getString(2);

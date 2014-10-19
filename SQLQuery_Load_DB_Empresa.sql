@@ -555,3 +555,23 @@ CREATE INDEX  IX_vxc_pto_venta ON ptoventa_x_tipocomprobante (vxc_id_pto_venta);
 CREATE INDEX  IX_vxc_tipo_comprobante ON ptoventa_x_tipocomprobante (vxc_id_tipo_comprobante);
 
 insert into ptoventa_x_tipocomprobante values(1,1,0);
+
+
+create table clientes(
+cli_codigo varchar(20) not null,
+cli_nombre varchar(20),
+cli_apellido varchar(20),
+cli_fecha_nac date,
+cli_cuit varchar(11),
+cli_localidad int,
+cli_direccion varchar(50),
+cli_calle int,
+cli_sit_frente_iva int,
+primary key(cli_codigo),
+foreign key (cli_localidad) references localidades(loc_id),
+foreign key (cli_sit_frente_iva) references situacion_frente_iva(sfi_id)
+)
+
+CREATE INDEX  IX_Clientes_id ON clientes (cli_codigo);
+CREATE INDEX  IX_Clientes_nom ON clientes (cli_nombre);
+CREATE INDEX  IX_Clie

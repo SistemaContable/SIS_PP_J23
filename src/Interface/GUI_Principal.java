@@ -12,6 +12,7 @@ import Objetos.Usuario;
 import Contabilidad.GUI_Plan_Cuentas;
 import Contabilidad.GUI_Registrar_Asientos;
 import Facturacion.IGUI_Asignar_Pto_Venta_Comprobante;
+import Facturacion.IGUI_Clientes;
 import Facturacion.IGUI_Localidades;
 import Facturacion.IGUI_Productos;
 import Facturacion.IGUI_Punto_Venta;
@@ -181,6 +182,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem30 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
@@ -336,6 +338,16 @@ public class GUI_Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem3.setText("Gestión Clientes");
+        jMenuItem3.setName("M1"); // NOI18N
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
 
@@ -1158,6 +1170,25 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.moveToFront();
         np.requestFocus();        
     }//GEN-LAST:event_jMenuItem30ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        IGUI_Clientes np = new IGUI_Clientes(r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        y=100;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
     
     
     public void abrirSesion (){
@@ -1249,6 +1280,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem29;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
