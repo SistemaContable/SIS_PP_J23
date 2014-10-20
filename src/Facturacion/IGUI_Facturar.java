@@ -51,6 +51,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     //libreria de manejo de fechas
     private Fechas fecha = new Fechas ();
     
+    private Cliente cliente_factura;
+    
     public IGUI_Facturar(Usuario usr,Conexion con) {
         initComponents();
         r_con=con;
@@ -119,6 +121,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         btn_confirmar_encabezado = new javax.swing.JButton();
         label_tipo_comprobante = new javax.swing.JLabel();
         label_numero_factura = new javax.swing.JLabel();
+        label_situacion = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -130,7 +133,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -255,6 +257,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         label_numero_factura.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         label_numero_factura.setText(" ");
 
+        label_situacion.setForeground(new java.awt.Color(0, 153, 51));
+        label_situacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_situacion.setText("  ");
+
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("Tipo Comprobante:");
 
@@ -286,10 +292,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
         jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel33.setText("Sit. IVA");
-
-        jLabel34.setForeground(new java.awt.Color(0, 153, 51));
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel34.setText("Situacion");
 
         javax.swing.GroupLayout panel_datos_facturaLayout = new javax.swing.GroupLayout(panel_datos_factura);
         panel_datos_factura.setLayout(panel_datos_facturaLayout);
@@ -355,7 +357,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                                     .addComponent(field_situacion_IVA))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(label_situacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_datos_facturaLayout.setVerticalGroup(
@@ -410,7 +412,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                     .addComponent(field_direccion_nro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(field_situacion_IVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel34))
+                                        .addComponent(label_situacion))
                                     .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -616,10 +618,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1282,6 +1283,42 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
     private void field_nro_clienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_nro_clienteFocusLost
         // TODO add your handling code here:
+        boolean es_componente=false;
+        //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+        int i=0;        
+        Component[] components = panel_datos_factura.getComponents();
+        while ((!es_componente)&&(i<components.length)){
+            if (components[i]==evt.getOppositeComponent()){
+                es_componente=true;
+            }
+            i++;
+        }
+        
+        if((es_componente)&&(!field_nro_cliente.getText().equals(""))){
+            Cliente cli = get_Cliente (field_nro_cliente.getText());
+            if (cli.getCodigo_cliente()!=0){
+                cliente_factura = cli;
+                field_nombre.setText(cli.getNombre_cliente()+" "+cli.getApellido_cliente());
+                field_cuil_1.setText(cli.getCuil_prefijo_cliente());
+                field_cuil_2.setText(cli.getCuil_dni_cliente());
+                field_cuil_3.setText(cli.getCuil_digito_cliente());
+                field_direccion_calle.setText(cli.getCalle_cliente());
+                field_direccion_nro.setText(cli.getNumero_calle_cliente());
+                field_localidad.setText(cli.getLocalidad_cliente());
+                field_situacion_IVA.setText(""+cli.getCodigo_situacion_IVA_cliente());
+                label_situacion.setText(cli.getDescripcion_situacion_IVA_cliente());               
+                mensajeError(" ");
+            }
+            else{
+                label_situacion.setText(" ");
+                field_nro_cliente.requestFocus();
+                generarAyuda_Punto_Venta();      
+            }
+        }
+        else{
+            label_situacion.setText(" ");
+            mensajeError("Por favor, ingrese un cliente");
+        }
         get_Cliente(field_nro_cliente.getText());
     }//GEN-LAST:event_field_nro_clienteFocusLost
     
@@ -1329,7 +1366,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     private Cliente get_Cliente (String codigo){
         String detalle = "";
-        Objetos.Cliente cli = new Cliente();
+        Cliente cli = new Cliente();
         try {            
             r_con.Connection();
             String sql = ( "SELECT cli_codigo, cli_nombre, cli_apellido, cli_fecha_nac, cli_cuit, loc_descripcion, cli_direccion, cli_calle, cli_sit_frente_iva, sfi_descripcion " +
@@ -1360,7 +1397,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         } finally {
                     r_con.cierraConexion();
                   }
-        cli.toString();
+        //System.out.println(cli.toString());
         return cli;
     }
     
@@ -1567,7 +1604,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1589,6 +1625,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel label_mensaje;
     private javax.swing.JLabel label_numero_factura;
+    private javax.swing.JLabel label_situacion;
     private javax.swing.JLabel label_tipo_comprobante;
     private javax.swing.JPanel panel_datos_factura;
     // End of variables declaration//GEN-END:variables
