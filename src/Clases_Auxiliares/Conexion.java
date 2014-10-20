@@ -593,7 +593,8 @@ public class Conexion{
             stnt.executeUpdate(inserta);
             stnt.close();
             //JOptionPane.showMessageDialog(null, "El Registro se dio de alta correctamente.","Informacíon",JOptionPane.INFORMATION_MESSAGE);            
-        } catch (SQLException ex) {            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
     

@@ -11,6 +11,8 @@ import Contabilidad.GUI_Imprimir_PC;
 import Objetos.Usuario;
 import Contabilidad.GUI_Plan_Cuentas;
 import Contabilidad.GUI_Registrar_Asientos;
+import Facturacion.IGUI_Asignar_Pto_Venta_Comprobante;
+import Facturacion.IGUI_Clientes;
 import Facturacion.IGUI_Facturar;
 import Facturacion.IGUI_Localidades;
 import Facturacion.IGUI_Productos;
@@ -1124,13 +1126,13 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
         this.jDesktopPane1.add(np);
-        try {
+        try {        
             np.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();         
+        np.requestFocus();
     }//GEN-LAST:event_jMenuItem29ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

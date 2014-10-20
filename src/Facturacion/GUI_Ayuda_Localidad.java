@@ -41,7 +41,7 @@ public class GUI_Ayuda_Localidad extends javax.swing.JInternalFrame {
     //nombre de la Tabla del SGBD
     private final String name_tabla = "localidades";
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
-    private final String[] colum_names = {"loc_id","loc_codigo_postal,loc_descripcion"};
+    private final String[] colum_names = {"loc_id","loc_codigo_postal","loc_descripcion"};
     //nombres reales de los Indices de la Tabla
     private final String[] indices_tabla = {"PK_codigo_postal","PK_loc_descripcion"}; 
     //modo ordenamiento elegido inicial por defecto (cambiar manualmente)
@@ -50,7 +50,7 @@ public class GUI_Ayuda_Localidad extends javax.swing.JInternalFrame {
     
 //***********************************************************************************************************************************************************************************
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
-    private final String[] colum_names_tabla = {"Codigo Postal","Descripción"};        
+    private final String[] colum_names_tabla = {"ID","Codigo Postal","Descripción"};        
     //nombre del modo de ordenamiento elegido inicial
     private final String modo_ordenamiento_elegido = indices_tabla[numero_ordenamiento_elegido];
 //***********************************************************************************************************************************************************************************
@@ -304,7 +304,7 @@ public class GUI_Ayuda_Localidad extends javax.swing.JInternalFrame {
     
     private void cargar_Seleccionado (int elegido){
        if ((elegido >= 0)&&(elegido < tabla.getRowCount())){
-           id_ayuda=String.valueOf(tabla.getValueAt(elegido, 0));
+           id_ayuda=String.valueOf(tabla.getValueAt(elegido, 1));
            String elemento = String.valueOf(tabla.getValueAt(elegido, 1));
            lab_elegido.setText(elemento);
         }
