@@ -1029,7 +1029,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 else{
                     vaciar_cliente ();
                     field_nro_cliente.requestFocus();
-                    //generarAyuda_Punto_Venta();      
+                    generarAyuda_Cliente();      
                 }
             }
             else{
@@ -1174,6 +1174,25 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
      public void generarAyuda_Punto_Venta(){
         GUI_Ayuda_Punto_Venta np = new GUI_Ayuda_Punto_Venta(r_con,this);
+        //lo centro respecto a x
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {                
+            np.setSelected(true);            
+         } 
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        np.requestFocus();         
+    }
+     
+     public void generarAyuda_Cliente(){
+        GUI_Ayuda_Cliente np = new GUI_Ayuda_Cliente(r_con,this);
         //lo centro respecto a x
         int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
         int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
