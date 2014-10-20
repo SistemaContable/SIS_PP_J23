@@ -890,77 +890,80 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private void field_tipo_comprobanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tipo_comprobanteFocusLost
         boolean es_componente=false;
         //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
-        int i=0;        
-        Component[] components = panel_datos_factura.getComponents();
-        while ((!es_componente)&&(i<components.length)){
-            if (components[i]==evt.getOppositeComponent()){
-                es_componente=true;
+        if (evt.getOppositeComponent()!=fecha_factura){
+            int i=0;        
+            Component[] components = panel_datos_factura.getComponents();
+            while ((!es_componente)&&(i<components.length)){
+                if (components[i]==evt.getOppositeComponent()){
+                    es_componente=true;
+                }
+                i++;
             }
-            i++;
-        }
-        
-        if((es_componente)&&(field_tipo_comprobante.isEditable())){        
-            if (!field_tipo_comprobante.getText().equals("")){
-                String detalle = get_TipoComprobante(field_tipo_comprobante.getText());
-                if (!detalle.equals("")){
-                    label_tipo_comprobante.setText(detalle+" Nº: ");
-                    mensajeError(" ");
+
+            if((es_componente)&&(field_tipo_comprobante.isEditable())){        
+                if (!field_tipo_comprobante.getText().equals("")){
+                    String detalle = get_TipoComprobante(field_tipo_comprobante.getText());
+                    if (!detalle.equals("")){
+                        label_tipo_comprobante.setText(detalle+" Nº: ");
+                        mensajeError(" ");
+                    }
+                    else{
+                        field_tipo_comprobante.requestFocus();
+                        label_tipo_comprobante.setText("TIPO COMPROBANTE:");
+                        generarAyuda_Tipo_Comprobante();
+                    }
                 }
                 else{
-                    field_tipo_comprobante.requestFocus();
                     label_tipo_comprobante.setText("TIPO COMPROBANTE:");
-                    generarAyuda_Tipo_Comprobante();
+                    mensajeError("Por favor, seleccione un tipo de comprobante");
                 }
             }
-            else{
-                label_tipo_comprobante.setText("TIPO COMPROBANTE:");
-                mensajeError("Por favor, seleccione un tipo de comprobante");
-            }
-        }
-        
+        }        
     }//GEN-LAST:event_field_tipo_comprobanteFocusLost
     
     private void field_punto_ventaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_punto_ventaFocusLost
         // TODO add your handling code here:
         boolean es_componente=false;
-        //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
-        int i=0;        
-        Component[] components = panel_datos_factura.getComponents();
-        while ((!es_componente)&&(i<components.length)){
-            if (components[i]==evt.getOppositeComponent()){
-                es_componente=true;
-            }
-            i++;
-        }
-        
-        if((es_componente)&&(!field_punto_venta.getText().equals(""))){
-            if (isPuntoVenta(field_punto_venta.getText())){
-                String detalle = get_NumeroComprobante(field_punto_venta.getText(),field_tipo_comprobante.getText());
-                if (!detalle.equals("")){
-                    String numero_com="00";
-                    String numero_pto="0000";
-                    if ((!field_tipo_comprobante.getText().equals(""))&&(!field_punto_venta.getText().equals(""))){
-                        numero_com = String.format("%02d", Integer.parseInt(field_tipo_comprobante.getText()));
-                        numero_pto = String.format("%04d", Integer.parseInt(field_punto_venta.getText()));
-                    }                
-                    String numero_fac = String.format("%08d", Integer.parseInt(detalle));
-                    label_numero_factura.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
-                    mensajeError(" ");
+        if (evt.getOppositeComponent()!=field_tipo_comprobante){
+            //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+            int i=0;        
+            Component[] components = panel_datos_factura.getComponents();
+            while ((!es_componente)&&(i<components.length)){
+                if (components[i]==evt.getOppositeComponent()){
+                    es_componente=true;
                 }
-                else{
-                    label_numero_factura.setText(" ");
-                    field_tipo_comprobante.requestFocus();
-                    mensajeError("El tipo de comprobante "+field_tipo_comprobante.getText()+" no esta disponible para el punto de venta "+field_punto_venta.getText());
+                i++;
+            }
+
+            if((es_componente)&&(!field_punto_venta.getText().equals(""))){
+                if (isPuntoVenta(field_punto_venta.getText())){
+                    String detalle = get_NumeroComprobante(field_punto_venta.getText(),field_tipo_comprobante.getText());
+                    if (!detalle.equals("")){
+                        String numero_com="00";
+                        String numero_pto="0000";
+                        if ((!field_tipo_comprobante.getText().equals(""))&&(!field_punto_venta.getText().equals(""))){
+                            numero_com = String.format("%02d", Integer.parseInt(field_tipo_comprobante.getText()));
+                            numero_pto = String.format("%04d", Integer.parseInt(field_punto_venta.getText()));
+                        }                
+                        String numero_fac = String.format("%08d", Integer.parseInt(detalle));
+                        label_numero_factura.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
+                        mensajeError(" ");
+                    }
+                    else{
+                        label_numero_factura.setText(" ");
+                        field_punto_venta.requestFocus();
+                        mensajeError("El tipo de comprobante "+field_tipo_comprobante.getText()+" no esta disponible para el punto de venta "+field_punto_venta.getText());
+                    }
+                }
+                else {
+                    field_punto_venta.requestFocus();
+                    generarAyuda_Punto_Venta();   
                 }
             }
-            else {
-                field_punto_venta.requestFocus();
-                generarAyuda_Punto_Venta();   
+            else{
+                label_numero_factura.setText(" ");
+                mensajeError("Por favor, seleccione un punto de venta");
             }
-        }
-        else{
-            label_numero_factura.setText(" ");
-            mensajeError("Por favor, seleccione un punto de venta");
         }
     }//GEN-LAST:event_field_punto_ventaFocusLost
 
@@ -997,43 +1000,56 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private void field_nro_clienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_nro_clienteFocusLost
         // TODO add your handling code here:
         boolean es_componente=false;
-        //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
-        int i=0;        
-        Component[] components = panel_datos_factura.getComponents();
-        while ((!es_componente)&&(i<components.length)){
-            if (components[i]==evt.getOppositeComponent()){
-                es_componente=true;
+        if (evt.getOppositeComponent()!=field_punto_venta){
+            //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+            int i=0;        
+            Component[] components = panel_datos_factura.getComponents();
+            while ((!es_componente)&&(i<components.length)){
+                if (components[i]==evt.getOppositeComponent()){
+                    es_componente=true;
+                }
+                i++;
             }
-            i++;
-        }
-        
-        if((es_componente)&&(!field_nro_cliente.getText().equals(""))){
-            Cliente cli = get_Cliente (field_nro_cliente.getText());
-            if (cli.getCodigo_cliente()!=0){
-                cliente_factura = cli;
-                field_nombre.setText(cli.getNombre_cliente()+" "+cli.getApellido_cliente());
-                field_cuil_1.setText(cli.getCuil_prefijo_cliente());
-                field_cuil_2.setText(cli.getCuil_dni_cliente());
-                field_cuil_3.setText(cli.getCuil_digito_cliente());
-                field_direccion_calle.setText(cli.getCalle_cliente());
-                field_direccion_nro.setText(cli.getNumero_calle_cliente());
-                field_localidad.setText(cli.getLocalidad_cliente());
-                field_situacion_IVA.setText(""+cli.getCodigo_situacion_IVA_cliente());
-                label_situacion.setText(cli.getDescripcion_situacion_IVA_cliente());               
-                mensajeError(" ");
+
+            if((es_componente)&&(!field_nro_cliente.getText().equals(""))){
+                Cliente cli = get_Cliente (field_nro_cliente.getText());
+                if (cli.getCodigo_cliente()!=0){
+                    cliente_factura = cli;
+                    field_nombre.setText(cli.getNombre_cliente()+" "+cli.getApellido_cliente());
+                    field_cuil_1.setText(cli.getCuil_prefijo_cliente());
+                    field_cuil_2.setText(cli.getCuil_dni_cliente());
+                    field_cuil_3.setText(cli.getCuil_digito_cliente());
+                    field_direccion_calle.setText(cli.getCalle_cliente());
+                    field_direccion_nro.setText(cli.getNumero_calle_cliente());
+                    field_localidad.setText(cli.getLocalidad_cliente());
+                    field_situacion_IVA.setText(""+cli.getCodigo_situacion_IVA_cliente());
+                    label_situacion.setText(cli.getDescripcion_situacion_IVA_cliente());               
+                    mensajeError(" ");
+                }
+                else{
+                    vaciar_cliente ();
+                    field_nro_cliente.requestFocus();
+                    //generarAyuda_Punto_Venta();      
+                }
             }
             else{
-                label_situacion.setText(" ");
-                field_nro_cliente.requestFocus();
-                //generarAyuda_Punto_Venta();      
+                vaciar_cliente ();
+                mensajeError("Por favor, ingrese un cliente");
             }
         }
-        else{
-            label_situacion.setText(" ");
-            mensajeError("Por favor, ingrese un cliente");
-        }
-        get_Cliente(field_nro_cliente.getText());
     }//GEN-LAST:event_field_nro_clienteFocusLost
+    
+    private void vaciar_cliente (){
+        field_nombre.setText("");
+        field_cuil_1.setText("");
+        field_cuil_2.setText("");
+        field_cuil_3.setText("");
+        field_direccion_calle.setText("");
+        field_direccion_nro.setText("");
+        field_localidad.setText("");
+        field_situacion_IVA.setText("");
+        label_situacion.setText(" ");
+    }
     
     private String get_TipoComprobante (String codigo){
         String detalle = "";
