@@ -96,11 +96,11 @@ public class GUI_Ayuda_Sit_Frente_Iva extends javax.swing.JInternalFrame {
         lab_elegido = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(new javax.swing.border.SoftBevelBorder(0));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Tipo de Tasas de IVA");
+        setTitle("Ayuda Situacion Frente Iva");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 

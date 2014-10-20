@@ -35,22 +35,22 @@ import javax.swing.table.TableColumn;
  *
  * @author Manolo
  */
-public class GUI_Ayuda_Cliente extends javax.swing.JInternalFrame {
+public class GUI_Ayuda_Producto extends javax.swing.JInternalFrame {
     
 //***********************************************************************************************************************************************************************************   
     //nombre de la Tabla del SGBD
-    private final String name_tabla = "clientes";
+    private final String name_tabla = "productos";
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
-    private final String[] colum_names = {"cli_codigo","cli_nombre","cli_apellido","cli_cuit"};
+    private final String[] colum_names = {"prod_codigo","prod_descripcion","prod_cantidad"};
     //nombres reales de los Indices de la Tabla
-    private final String[] indices_tabla = {"IX_Clientes_id"}; 
+    private final String[] indices_tabla = {"PK_Producto_Codigo"}; 
     //modo ordenamiento elegido inicial por defecto (cambiar manualmente)
     private final int numero_ordenamiento_elegido = 0; //(corresponde al numero de indices_tabla)
 //***********************************************************************************************************************************************************************************
     
 //***********************************************************************************************************************************************************************************
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
-    private final String[] colum_names_tabla = {"Codigo","Nombre","Apellido","CUIT "};        
+    private final String[] colum_names_tabla = {"Codigo","Descripcion","Cantidad"};        
     //nombre del modo de ordenamiento elegido inicial
     private final String modo_ordenamiento_elegido = indices_tabla[numero_ordenamiento_elegido];
 //***********************************************************************************************************************************************************************************
@@ -59,7 +59,7 @@ public class GUI_Ayuda_Cliente extends javax.swing.JInternalFrame {
     private final JInternalFrame ventana;
     private String id_ayuda;
    
-    public GUI_Ayuda_Cliente(Conexion con,JInternalFrame v) {
+    public GUI_Ayuda_Producto(Conexion con,JInternalFrame v) {
         initComponents();        
         r_con=con;              
         //internal frame que solicito la ayuda
@@ -96,11 +96,11 @@ public class GUI_Ayuda_Cliente extends javax.swing.JInternalFrame {
         lab_elegido = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 204));
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(new javax.swing.border.SoftBevelBorder(0));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Tipo de Tasas de IVA");
+        setTitle("Ayuda Productos");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/articulo.png"))); // NOI18N
         setInheritsPopupMenu(true);
 

@@ -411,7 +411,8 @@ create table parametros_contables(
 	pc_fecha_impresion_diario date,
 	pc_nro_renglon_diario int,
 	pc_nro_folio int,
-	pc_saldo_transporte float	
+	pc_saldo_transporte float,	
+	pc_ultima_facturacion date
 )
 
 create table libro_mayor(
@@ -642,5 +643,13 @@ INSERT INTO situacion_x_tipocomprobante VALUES (7,9);
 INSERT INTO situacion_x_tipocomprobante VALUES (7,10);
 
 
-
+create table encabezado_factura(
+ef_tipo_comprobante int not null,
+ef_punto_venta int not null,
+ef_cliente int not null,
+ef_fecha_facturacion date,
+primary key(ef_tipo_comprobante,ef_punto_venta,ef_cliente),
+foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
+foreign key(ef_punto_venta)references punto_venta(pv_codigo)
+);
 

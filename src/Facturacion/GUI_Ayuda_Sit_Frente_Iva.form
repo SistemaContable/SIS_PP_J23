@@ -13,7 +13,7 @@
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Tipo de Tasas de IVA"/>
+    <Property name="title" type="java.lang.String" value="Ayuda Situacion Frente Iva"/>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
       <Image iconType="3" name="/Iconos/articulo.png"/>
     </Property>
