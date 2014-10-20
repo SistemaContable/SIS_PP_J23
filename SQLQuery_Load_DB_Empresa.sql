@@ -453,7 +453,25 @@ foreign key (blc_cuenta)references plan_cuentas(pc_nro_cuenta),
 
 -- ####################  NUEVO  ############################
 
-
+CREATE TABLE productos(
+  	prod_codigo int not NULL,
+	prod_descripcion varchar(60),
+	prod_cantidad int,
+	prod_costo float,
+	prod_precio_neto_venta float,
+	prod_tasa_iva int,
+	prod_impuesto_porcentaje float,
+	prod_impuesto_valor float
+	
+	PRIMARY KEY (prod_codigo),
+	FOREIGN KEY (prod_tasa_iva) REFERENCES tasas_iva (tasa_id)
+ )
+ 
+  CREATE INDEX  PK_Producto_Codigo ON productos (prod_codigo);
+  CREATE INDEX  PK_Producto_Cantidad ON productos (prod_cantidad);
+  CREATE INDEX  PK_Producto_Costo ON productos (prod_costo);
+  CREATE INDEX  PK_Producto_Tasa ON productos (prod_tasa_iva);
+ 
 
 
 create table tipo_comprobante(
@@ -542,4 +560,87 @@ insert into situacion_frente_iva values(4,'No Responsable','NR');
 insert into situacion_frente_iva values(5,'Consumidor Final','CF');
 insert into situacion_frente_iva values(6,'Monotributo','Mt');
 insert into situacion_frente_iva values(7,'Sujeto No Categorizado','SNC');
+
+
+create table ptoventa_x_tipocomprobante(
+	vxc_id_pto_venta int not null,
+	vxc_id_tipo_comprobante int not null,
+	vxc_numero int,		
+	primary key(vxc_id_pto_venta,vxc_id_tipo_comprobante),
+	foreign key(vxc_id_pto_venta)references punto_venta(pv_codigo),
+	foreign key(vxc_id_tipo_comprobante)references tipo_comprobante(tc_codigo)
+)
+CREATE INDEX  IX_vxc_pto_venta ON ptoventa_x_tipocomprobante (vxc_id_pto_venta);
+CREATE INDEX  IX_vxc_tipo_comprobante ON ptoventa_x_tipocomprobante (vxc_id_tipo_comprobante);
+
+insert into ptoventa_x_tipocomprobante values(1,1,0);
+
+
+create table clientes(
+cli_codigo varchar(20) not null,
+cli_nombre varchar(20),
+cli_apellido varchar(20),
+cli_fecha_nac date,
+cli_cuit varchar(11),
+cli_localidad int,
+cli_direccion varchar(50),
+cli_calle int,
+cli_sit_frente_iva int,
+primary key(cli_codigo),
+foreign key (cli_localidad) references localidades(loc_id),
+foreign key (cli_sit_frente_iva) references situacion_frente_iva(sfi_id)
+)
+
+CREATE INDEX  IX_Clientes_id ON clientes (cli_codigo);
+CREATE INDEX  IX_Clientes_nom ON clientes (cli_nombre);
+
+CREATE TABLE situacion_x_tipocomprobante(
+sfi_id	int not null,
+tc_codigo	int	not null
+
+primary key(sfi_id,tc_codigo),
+foreign key (sfi_id) references situacion_frente_iva(sfi_id),
+foreign key (tc_codigo) references tipo_comprobante(tc_codigo)
+)
+
+CREATE INDEX  IX_SFI ON situacion_x_tipocomprobante (sfi_id);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (1,1);
+INSERT INTO situacion_x_tipocomprobante VALUES (1,2);
+INSERT INTO situacion_x_tipocomprobante VALUES (1,3);
+INSERT INTO situacion_x_tipocomprobante VALUES (1,4);
+INSERT INTO situacion_x_tipocomprobante VALUES (1,5);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (2,1);
+INSERT INTO situacion_x_tipocomprobante VALUES (2,2);
+INSERT INTO situacion_x_tipocomprobante VALUES (2,3);
+INSERT INTO situacion_x_tipocomprobante VALUES (2,4);
+INSERT INTO situacion_x_tipocomprobante VALUES (2,5);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (3,6);
+INSERT INTO situacion_x_tipocomprobante VALUES (3,7);
+INSERT INTO situacion_x_tipocomprobante VALUES (3,8);
+INSERT INTO situacion_x_tipocomprobante VALUES (3,9);
+INSERT INTO situacion_x_tipocomprobante VALUES (3,10);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (5,6);
+INSERT INTO situacion_x_tipocomprobante VALUES (5,7);
+INSERT INTO situacion_x_tipocomprobante VALUES (5,8);
+INSERT INTO situacion_x_tipocomprobante VALUES (5,9);
+INSERT INTO situacion_x_tipocomprobante VALUES (5,10);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (6,6);
+INSERT INTO situacion_x_tipocomprobante VALUES (6,7);
+INSERT INTO situacion_x_tipocomprobante VALUES (6,8);
+INSERT INTO situacion_x_tipocomprobante VALUES (6,9);
+INSERT INTO situacion_x_tipocomprobante VALUES (6,10);
+
+INSERT INTO situacion_x_tipocomprobante VALUES (7,6);
+INSERT INTO situacion_x_tipocomprobante VALUES (7,7);
+INSERT INTO situacion_x_tipocomprobante VALUES (7,8);
+INSERT INTO situacion_x_tipocomprobante VALUES (7,9);
+INSERT INTO situacion_x_tipocomprobante VALUES (7,10);
+
+
+
 

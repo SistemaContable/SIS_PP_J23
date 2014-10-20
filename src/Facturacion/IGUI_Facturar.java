@@ -205,9 +205,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }
         fecha_factura.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                fecha_facturaFocusGained(evt);
-            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 fecha_facturaFocusLost(evt);
             }
@@ -981,28 +978,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_field_punto_ventaKeyPressed
 
-    private void fecha_facturaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusGained
-        // TODO add your handling code here:
-        fecha_factura.select(0,0);
-    }//GEN-LAST:event_fecha_facturaFocusGained
-
     private void fecha_facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusLost
         // TODO add your handling code here:
-        if (evt.getOppositeComponent()!=field_nro_cliente){
-            if (!fecha.isFechaValida(fecha_factura.getText())){
-                fecha_factura.requestFocus();    
-                mensajeError("La Fecha ingresada no se reconoce como valida.");    
-            }
-            else{
-                mensajeError(" ");
-            }
-        }
-    }//GEN-LAST:event_fecha_facturaFocusLost
-
-    private void field_nro_clienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_nro_clienteFocusLost
-        // TODO add your handling code here:
         boolean es_componente=false;
-        if (evt.getOppositeComponent()!=field_punto_venta){
+        if (evt.getOppositeComponent() != field_nro_cliente){
             //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
             int i=0;        
             Component[] components = panel_datos_factura.getComponents();
@@ -1013,33 +992,92 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 i++;
             }
 
-            if((es_componente)&&(!field_nro_cliente.getText().equals(""))){
-                Cliente cli = get_Cliente (field_nro_cliente.getText());
-                if (cli.getCodigo_cliente()!=0){
-                    cliente_factura = cli;
-                    field_nombre.setText(cli.getNombre_cliente()+" "+cli.getApellido_cliente());
-                    field_cuil_1.setText(cli.getCuil_prefijo_cliente());
-                    field_cuil_2.setText(cli.getCuil_dni_cliente());
-                    field_cuil_3.setText(cli.getCuil_digito_cliente());
-                    field_direccion_calle.setText(cli.getCalle_cliente());
-                    field_direccion_nro.setText(cli.getNumero_calle_cliente());
-                    field_localidad.setText(cli.getLocalidad_cliente());
-                    field_situacion_IVA.setText(""+cli.getCodigo_situacion_IVA_cliente());
-                    label_situacion.setText(cli.getDescripcion_situacion_IVA_cliente());               
+            if (es_componente){
+                System.out.println("entre donde no debo");
+                if (!fecha.isFechaValida(fecha_factura.getText())){
+                    fecha_factura.requestFocus();    
+                    mensajeError("La Fecha ingresada no se reconoce como valida.");    
+                }
+                else{
                     mensajeError(" ");
+                }
+            }
+        }
+    }//GEN-LAST:event_fecha_facturaFocusLost
+
+    private void field_nro_clienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_nro_clienteFocusLost
+        // TODO add your handling code here:
+        boolean es_componente=false;
+        if (evt.getOppositeComponent()!= field_punto_venta){
+            //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+            int i=0;        
+            Component[] components = panel_datos_factura.getComponents();
+            while ((!es_componente)&&(i<components.length)){
+                if (components[i]==evt.getOppositeComponent()){
+                    es_componente=true;
+                }
+                i++;
+            }
+            if((es_componente)){
+                if (!field_nro_cliente.getText().equals("")){
+                    Cliente cli = get_Cliente (field_nro_cliente.getText());
+                    if (cli.getCodigo_cliente()!=0){
+                        if ((!field_tipo_comprobante.equals(""))&&(validar_Comprobante_Cliente (cli,field_tipo_comprobante.getText()))) {
+                            cliente_factura = cli;
+                            field_nombre.setText(cli.getNombre_cliente()+" "+cli.getApellido_cliente());
+                            field_cuil_1.setText(cli.getCuil_prefijo_cliente());
+                            field_cuil_2.setText(cli.getCuil_dni_cliente());
+                            field_cuil_3.setText(cli.getCuil_digito_cliente());
+                            field_direccion_calle.setText(cli.getCalle_cliente());
+                            field_direccion_nro.setText(cli.getNumero_calle_cliente());
+                            field_localidad.setText(cli.getLocalidad_cliente());
+                            field_situacion_IVA.setText(""+cli.getCodigo_situacion_IVA_cliente());
+                            label_situacion.setText(cli.getDescripcion_situacion_IVA_cliente());               
+                            mensajeError(" ");
+                        }
+                        else{
+                            field_nro_cliente.requestFocus();
+                            mensajeError("El tipo de comprobante seleccionado no esta permitido para la situacion frente al IVA del Cliente");
+                        }
+                    }
+                    else{
+                        vaciar_cliente ();
+                        field_nro_cliente.requestFocus();
+                        generarAyuda_Cliente();      
+                    }
                 }
                 else{
                     vaciar_cliente ();
                     field_nro_cliente.requestFocus();
-                    generarAyuda_Cliente();      
+                    mensajeError("Por favor, ingrese un cliente");
                 }
-            }
-            else{
-                vaciar_cliente ();
-                mensajeError("Por favor, ingrese un cliente");
             }
         }
     }//GEN-LAST:event_field_nro_clienteFocusLost
+    
+    private boolean validar_Comprobante_Cliente (Cliente cli, String codigo_comprobante){
+        boolean existe = false;
+        try {
+            r_con.Connection();
+            String sql = (
+                        "SELECT * "+
+                        " FROM situacion_x_tipocomprobante "+
+                        " WHERE sfi_id = "+cli.getCodigo_situacion_IVA_cliente()+" AND tc_codigo = "+codigo_comprobante);           
+            
+            ResultSet res = r_con.Consultar(sql);
+            
+            while(res.next()){
+                existe = true;
+            }
+            res.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
+        return existe;
+    
+    }
     
     private void vaciar_cliente (){
         field_nombre.setText("");
