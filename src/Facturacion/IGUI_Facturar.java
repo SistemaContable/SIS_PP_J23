@@ -42,15 +42,15 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
      */
     private Conexion r_con;
     private String name_tabla="borrador_asientos";
-    private Cuenta cuenta;
     private Usuario usuario;
+    
     private int renglon;
     private DefaultTableModelAsientos modelo;
     private String fechaInicio,fechaCierre,fechaDiario;    
     private boolean esCarga=false;
-    //libreria de manejo de fechas
-    private Fechas fecha = new Fechas ();
     
+    //libreria de manejo de fechas
+    private Fechas fecha = new Fechas ();    
     private Cliente cliente_factura;
     
     public IGUI_Facturar(Usuario usr,Conexion con) {
@@ -58,7 +58,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         r_con=con;
         usuario=usr;
         renglon=0;
-        cargarFechas();
+
         r_con.Connection();
         inicializarTabla();
         
@@ -71,8 +71,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         boton7.setEnabled(false);
         jTable1.setEnabled(false);
         
+        ordenarFoco();
         field_tipo_comprobante.requestFocus();
-
     }
 
     private void cargarFechas(){
@@ -135,20 +135,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jLabel33 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        campoFecha1 = new javax.swing.JFormattedTextField();
-        campoFecha2 = new javax.swing.JFormattedTextField();
-        jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
@@ -308,15 +296,32 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                         .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(field_tipo_comprobante))
-                        .addGap(20, 20, 20)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(field_punto_venta)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(field_punto_venta)))
                     .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
                         .addComponent(fecha_factura, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datos_facturaLayout.createSequentialGroup()
+                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panel_datos_facturaLayout.createSequentialGroup()
+                                .addComponent(field_direccion_calle, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(field_direccion_nro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(field_localidad)
+                            .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                            .addComponent(field_situacion_IVA))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label_situacion, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel_datos_facturaLayout.createSequentialGroup()
                         .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,7 +331,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                             .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panel_datos_facturaLayout.createSequentialGroup()
                                 .addComponent(field_cuil_1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,30 +340,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(field_cuil_2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel30))
-                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_confirmar_encabezado))
-                    .addGroup(panel_datos_facturaLayout.createSequentialGroup()
-                        .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(field_cuil_3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datos_facturaLayout.createSequentialGroup()
-                                .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(panel_datos_facturaLayout.createSequentialGroup()
-                                        .addComponent(field_direccion_calle, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(field_direccion_nro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel30)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(field_localidad)
-                                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(12, 12, 12)
-                                .addGroup(panel_datos_facturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                                    .addComponent(field_situacion_IVA))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label_situacion, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(field_cuil_3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)
+                                .addComponent(btn_confirmar_encabezado)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_datos_facturaLayout.setVerticalGroup(
@@ -417,83 +404,14 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel3.setFocusCycleRoot(true);
 
         jLabel6.setText("Leyenda");
 
-        jLabel5.setText("Nro. Cuenta (F1)");
-
-        jLabel7.setText("Nombre Cuenta");
-
-        jLabel8.setText("Fecha Operación");
-
-        jLabel9.setText("Fecha Vencimiento");
-
-        jLabel10.setText("Nro. Comprobante");
-
-        jLabel11.setText("Nro. Renglon");
-
         jLabel12.setText("Debe");
 
         jLabel13.setText("Haber");
-
-        jTextField2.setEditable(false);
-
-        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField3FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField3FocusLost(evt);
-            }
-        });
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField3KeyPressed(evt);
-            }
-        });
-
-        jTextField4.setEditable(false);
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-
-        try {
-            campoFecha1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        campoFecha1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                campoFecha1FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                campoFecha1FocusLost(evt);
-            }
-        });
-
-        try {
-            campoFecha2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        campoFecha2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                campoFecha2FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                campoFecha2FocusLost(evt);
-            }
-        });
-
-        jTextField5.setNextFocusableComponent(jTextField6);
-        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField5FocusLost(evt);
-            }
-        });
 
         jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -519,7 +437,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
         boton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/eliminar.png"))); // NOI18N
         boton7.setText("Borrar");
-        boton7.setNextFocusableComponent(jTextField3);
         boton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boton7ActionPerformed(evt);
@@ -530,101 +447,49 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)
-                                .addComponent(jTextField4)
-                                .addGap(18, 18, 18))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel5)
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
+                        .addGap(157, 157, 157)
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
                         .addComponent(jTextField6)
                         .addGap(18, 18, 18)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField7)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel12)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField8)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel13))))
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel12)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField5)
-                    .addComponent(boton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24))
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel13)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4)
+                    .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(jLabel9)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabel11)
-                        .addComponent(jLabel7)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8))
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -738,17 +603,18 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel_datos_factura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
                 .addComponent(label_mensaje)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -780,7 +646,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){
                 //int numAsiento=Integer.parseInt(jTextField1.getText());
-                int numRenglon=Integer.parseInt(jTextField2.getText());
+                int numRenglon=1;
                 modelo.removeRow(numRenglon-1);
                 r_con.Connection();
                 //r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
@@ -794,7 +660,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             int nuevoRen=i+1;
             modelo.setValueAt(nuevoRen+"", i, 0);
             //int num_asiento=Integer.parseInt(jTextField1.getText());
-            int num_cuenta=Integer.parseInt(jTextField3.getText());
+            //int num_cuenta=Integer.parseInt(jTextField3.getText());
             //renglon+"",num_cuenta+"",fecha_operacion,fecha_vencimiento,comprobante,leyenda,debe+"",haber+""
             float d=Float.parseFloat((String)modelo.getValueAt(i, 6));
             float h=Float.parseFloat((String)modelo.getValueAt(i, 7));
@@ -806,11 +672,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     public void borrarCampos(){
-        jTextField2.setText(renglon+"");
-        jTextField3.setText("");
-        jTextField3.requestFocus();
-        jTextField4.setText("");
-        jTextField5.setText("");
+
         jTextField6.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
@@ -819,10 +681,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void borrarCamposAstoBasicos(){
-        jTextField2.setText(renglon+"");
-        jTextField3.setText("");
-        jTextField3.requestFocus();
-        jTextField4.setText("");
+
         jTextField7.setText("");
         jTextField8.setText("");
         jTextField7.setEnabled(true);
@@ -841,112 +700,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
         habilitarPanel1(false);
         habilitarPanel2(true);
-        jTextField3.requestFocus();                      
-        jTextField2.setText(renglon+"");        
+       
         jTable1.setEnabled(true);
     }//GEN-LAST:event_btn_confirmar_encabezadoActionPerformed
 
-    
-        
-    public void generarAyuda(){
-        mensajeError(" ");
-        //GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,jTextField3,jTextField4,this); 
-        GUI_Ayuda_PC np=new GUI_Ayuda_PC(usuario,r_con,this);
-        //lo centro respecto a x
-        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
-        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, y);        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        np.setVisible(true);
-        this.getDesktopPane().add(np);
-        try {                
-            np.setSelected(true);            
-         } 
-        catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        np.moveToFront();
-        np.requestFocus();         
-    }
-    
-    
-    private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
-
-      boolean es_componente=false;
-      //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
-      //if (evt.getOppositeComponent()!=null){
-        int i=0;        
-        Component[] components = jPanel3.getComponents();
-        while ((!es_componente)&&(i<components.length)){
-            if (components[i]==evt.getOppositeComponent()){
-                es_componente=true;
-            }
-            i++;
-        }
-      //}
-      
-      if(es_componente){
-            String nroCuenta=jTextField3.getText();
-            if(!nroCuenta.equals("")){            
-                cuenta=obtenerCuenta(nroCuenta);            
-                if(cuenta!=null){
-                    if(esImputable(nroCuenta+"")){  
-                        jTextField4.setText(cuenta.getNombre_C());
-                        jTextField4.nextFocus();
-                        mensajeError(" ");
-                    }               
-                    else{
-                            mensajeError("La cuenta seleccionada no es imputable.");
-                            jTextField3.requestFocus();
-                        }
-                    }            
-                else{
-                    jTextField3.requestFocus();
-                    generarAyuda();                   
-                }            
-            }
-            else{           
-                mensajeError("El campo numero de cuenta esta vacio, debe ingresar un valor");
-                jTextField3.requestFocus();
-            }
-      }
-      else{
-          mensajeError(" ");
-      }
-    }//GEN-LAST:event_jTextField3FocusLost
-
-    /**
-     * Nos indica true si es una cuenta, false si es un titulo
-     * @param nroCuenta
-     * @return true si es cuenta, false si es titulo
-     */
-    private boolean esImputable(String nroCuenta){
-        if(!nroCuenta.equals("")){            
-            cuenta=obtenerCuenta(nroCuenta+"");
-            return cuenta.isImputable_C();
-        }        
-        else
-            return false;
-    }
-    
-    
-    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
-        jTextField4.setText("");
-    }//GEN-LAST:event_jTextField3FocusGained
-
-    private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_F1){            
-            generarAyuda();
-        }
-    }//GEN-LAST:event_jTextField3KeyPressed
-
     private void jTextField7FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusLost
         // TODO add your handling code here:    
-        if ((evt.getOppositeComponent()!=jTextField3) && 
-            (evt.getOppositeComponent()!=campoFecha1) &&
-            (evt.getOppositeComponent()!=campoFecha2)){
-        
+
             if(!jTextField7.getText().equals("")){
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField7.getText())){
@@ -973,14 +733,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 jTextField8.setEnabled(true); 
                 jTextField8.requestFocus();
             }
-        }
+        
     }//GEN-LAST:event_jTextField7FocusLost
 
     private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
         // TODO add your handling code here:
-        if ((evt.getOppositeComponent()!=jTextField3) && 
-            (evt.getOppositeComponent()!=campoFecha1) &&
-            (evt.getOppositeComponent()!=campoFecha2)){
+
             if(!jTextField8.getText().equals("")){
                 Validaciones v = new Validaciones();
                 if (v.isFloat(jTextField8.getText())){
@@ -1007,48 +765,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 jTextField7.setEnabled(true);
                 jTextField7.requestFocus();
             }
-        }    
+            
     }//GEN-LAST:event_jTextField8FocusLost
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-        //jTextField4.requestFocus();
-        //jTextField4.nextFocus();
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
-    private void campoFecha1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusLost
-        if ((evt.getOppositeComponent()!=jTextField3)){
-            if (!fecha.isFechaValida(campoFecha1.getText())){
-                mensajeError("La Fecha ingresada no se reconoce como valida.");  
-                campoFecha1.requestFocus();
-            }
-            else{
-                if ((evt.getOppositeComponent()!=campoFecha2)){
-                    mensajeError(" ");
-                }
-            }
-        }
-    }//GEN-LAST:event_campoFecha1FocusLost
-
-    private void campoFecha2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusLost
-       if ((evt.getOppositeComponent()!=jTextField3)){
-            if (fecha.isFechaValida(campoFecha2.getText())){
-                if(fecha.menorFechas(campoFecha1.getText(), campoFecha2.getText())!=1){                               
-                    if (evt.getOppositeComponent()!=campoFecha1){    
-                        mensajeError(" ");
-                    }
-                }
-                else{
-                    campoFecha2.requestFocus();
-                    mensajeError("La fecha ingresada debe ser menor que la fecha de operacion");
-                }
-            }
-            else{
-                 mensajeError("La Fecha ingresada no se reconoce como valida.");
-                 campoFecha2.requestFocus();
-            }
-        }
-    }//GEN-LAST:event_campoFecha2FocusLost
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -1087,14 +805,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void campoFecha1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha1FocusGained
-        campoFecha1.select(0,0);      
-    }//GEN-LAST:event_campoFecha1FocusGained
-
-    private void campoFecha2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoFecha2FocusGained
-        campoFecha2.select(0,0);    
-    }//GEN-LAST:event_campoFecha2FocusGained
-
 
     
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -1112,13 +822,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 BigDecimal debe=convertirEnBigDecimal((String)modelo.getValueAt(fila, 6));
                 BigDecimal haber=convertirEnBigDecimal((String)modelo.getValueAt(fila, 7));
 
-                jTextField2.setText(numRenglon+"");
-                jTextField3.setText(numCuenta+"");
-
-                jTextField3.requestFocus();jTextField2.requestFocus();jTextField3.requestFocus();
-                campoFecha1.setText(fecha.convertirBarras(fechaOp));
-                campoFecha2.setText(fecha.convertirBarras(fechaVto));
-                jTextField5.setText(comprobante);
                 jTextField6.setText(leyenda);
                 jTextField7.setText("");
                 jTextField8.setText("");
@@ -1173,7 +876,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){
                 //int numAsiento=Integer.parseInt(jTextField1.getText());
-                int numRenglon=Integer.parseInt(jTextField2.getText());
+                int numRenglon=1;
                 modelo.removeRow(numRenglon-1);
                 r_con.Connection();
                 //r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
@@ -1183,11 +886,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 boton7.setEnabled(true);
             jButton4.setText("Confirmar");
     }//GEN-LAST:event_boton7ActionPerformed
-
-    private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
-        // TODO add your handling code here:
-        jTextField6.requestFocus();
-    }//GEN-LAST:event_jTextField5FocusLost
 
     private void field_tipo_comprobanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tipo_comprobanteFocusLost
         boolean es_componente=false;
@@ -1236,21 +934,28 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         }
         
         if((es_componente)&&(!field_punto_venta.getText().equals(""))){
-            String detalle = get_NumeroComprobante(field_punto_venta.getText(),field_tipo_comprobante.getText());
-            if (!detalle.equals("")){
-                String numero_com="00";
-                String numero_pto="0000";
-                if ((!field_tipo_comprobante.getText().equals(""))&&(!field_punto_venta.getText().equals(""))){
-                    numero_com = String.format("%02d", Integer.parseInt(field_tipo_comprobante.getText()));
-                    numero_pto = String.format("%04d", Integer.parseInt(field_punto_venta.getText()));
-                }                
-                String numero_fac = String.format("%08d", Integer.parseInt(detalle));
-                label_numero_factura.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
-                mensajeError(" ");
+            if (isPuntoVenta(field_punto_venta.getText())){
+                String detalle = get_NumeroComprobante(field_punto_venta.getText(),field_tipo_comprobante.getText());
+                if (!detalle.equals("")){
+                    String numero_com="00";
+                    String numero_pto="0000";
+                    if ((!field_tipo_comprobante.getText().equals(""))&&(!field_punto_venta.getText().equals(""))){
+                        numero_com = String.format("%02d", Integer.parseInt(field_tipo_comprobante.getText()));
+                        numero_pto = String.format("%04d", Integer.parseInt(field_punto_venta.getText()));
+                    }                
+                    String numero_fac = String.format("%08d", Integer.parseInt(detalle));
+                    label_numero_factura.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
+                    mensajeError(" ");
+                }
+                else{
+                    label_numero_factura.setText(" ");
+                    field_tipo_comprobante.requestFocus();
+                    mensajeError("El tipo de comprobante "+field_tipo_comprobante.getText()+" no esta disponible para el punto de venta "+field_punto_venta.getText());
+                }
             }
-            else{
+            else {
                 field_punto_venta.requestFocus();
-                generarAyuda_Punto_Venta();      
+                generarAyuda_Punto_Venta();   
             }
         }
         else{
@@ -1275,10 +980,18 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
     private void fecha_facturaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusGained
         // TODO add your handling code here:
+        fecha_factura.select(0,0);
     }//GEN-LAST:event_fecha_facturaFocusGained
 
     private void fecha_facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusLost
         // TODO add your handling code here:
+        if (!fecha.isFechaValida(fecha_factura.getText())){
+            fecha_factura.requestFocus();    
+            mensajeError("La Fecha ingresada no se reconoce como valida.");    
+        }
+        else{
+            mensajeError(" ");
+        }
     }//GEN-LAST:event_fecha_facturaFocusLost
 
     private void field_nro_clienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_nro_clienteFocusLost
@@ -1312,7 +1025,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             else{
                 label_situacion.setText(" ");
                 field_nro_cliente.requestFocus();
-                generarAyuda_Punto_Venta();      
+                //generarAyuda_Punto_Venta();      
             }
         }
         else{
@@ -1362,6 +1075,29 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     r_con.cierraConexion();
                   }
         return detalle;
+    }
+    
+    private boolean isPuntoVenta (String codigo){
+        boolean existe = false;
+        try {
+            r_con.Connection();
+            String sql = (
+                        "SELECT * "+
+                        " FROM punto_venta"+
+                        " WHERE pv_codigo = "+codigo);           
+            
+            ResultSet res = r_con.Consultar(sql);
+            
+            while(res.next()){
+                existe = true;
+            }
+            res.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {            
+            r_con.cierraConexion();
+        }
+        return existe;
     }
     
     private Cliente get_Cliente (String codigo){
@@ -1440,14 +1176,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void actualizarTabla(){
-        int numRenglon=(Integer.parseInt(jTextField2.getText()))-1;
+        int numRenglon=(1-1);
             
             int ren=numRenglon+1;
             modelo.setValueAt(ren+"",numRenglon , 0);
-            modelo.setValueAt(Integer.parseInt(jTextField3.getText())+"",numRenglon , 1);
-            modelo.setValueAt(campoFecha1.getText(),numRenglon , 2);
-            modelo.setValueAt(campoFecha2.getText(),numRenglon , 3);
-            modelo.setValueAt(jTextField5.getText(),numRenglon , 4);
+            modelo.setValueAt(1,numRenglon , 1);
+            modelo.setValueAt(1,numRenglon , 2);
+            modelo.setValueAt(1,numRenglon , 3);
             modelo.setValueAt(jTextField6.getText(),numRenglon , 5);
             BigDecimal d=new BigDecimal(0);
             BigDecimal h=new BigDecimal(0);
@@ -1471,11 +1206,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         this.inicializarTabla();
                  
 //        jButton3.setEnabled(false);
-        jTextField3.setText("");                
-        jTextField4.setText("");
-        campoFecha1.setText("");
-        campoFecha2.setText("");
-        jTextField5.setText("");
+
         jTextField6.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
@@ -1509,7 +1240,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             jTextField10.setText(saldo+"");
             if(asiento!=null){                                                             
                 //campoFecha.setText(fecha.convertirBarras(asiento.getFecha_contable()));                
-                jTextField2.setText(++renglon+"");
+                
                 if(asiento.getTipo().equals("Asiento Apertura")){
                     //jRadioButton1.setSelected(true);
                 }
@@ -1549,15 +1280,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void habilitarPanel2(boolean valor){
-        jTextField2.setEnabled(valor);
-        jTextField3.setEnabled(valor);
-        jTextField4.setEnabled(valor);
-        jTextField5.setEnabled(valor);
+
         jTextField6.setEnabled(valor);
         jTextField7.setEnabled(valor);
         jTextField8.setEnabled(valor);
-        campoFecha1.setEnabled(valor);
-        campoFecha2.setEnabled(valor); 
+
         boton7.setEnabled(!valor);
         jButton4.setEnabled(valor);
     }
@@ -1568,8 +1295,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JButton boton7;
     private javax.swing.JButton btn_confirmar_encabezado;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JFormattedTextField campoFecha1;
-    private javax.swing.JFormattedTextField campoFecha2;
     private javax.swing.JFormattedTextField fecha_factura;
     private javax.swing.JTextField field_cuil_1;
     private javax.swing.JTextField field_cuil_2;
@@ -1586,8 +1311,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1604,21 +1327,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
@@ -1674,8 +1389,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         modelo=new DefaultTableModelAsientos();
         String [] columnas= {"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"};
         modelo.setColumnIdentifiers(columnas); 
-        jTable1.setModel(modelo);
-        
+        jTable1.setModel(modelo);        
     }
 
     private void mensajeError(String msj) {
@@ -1692,13 +1406,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void cargarTabla(){
-        //int num_asiento=Integer.parseInt(jTextField1.getText());
-        String tipo=getTipo();
-        //String fecha_contabilidad=campoFecha.getText();
-        int num_cuenta=Integer.parseInt(jTextField3.getText());
-        String fecha_operacion=campoFecha1.getText();
-        String fecha_vencimiento=campoFecha2.getText();
-        String comprobante=jTextField5.getText();
         String leyenda=jTextField6.getText();
         BigDecimal debe,haber;        
         debe=new BigDecimal(0);
@@ -1728,7 +1435,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         //Asiento asiento=new Asiento(num_asiento,renglon,fecha_contabilidad,fecha_operacion,fecha_vencimiento,tipo,num_cuenta,comprobante,leyenda,debe.floatValue(),haber.floatValue(),false,false);
         //asiento.insertar(r_con);
         
-        String []aux_modelo={renglon+"",num_cuenta+"",fecha_operacion,fecha_vencimiento,comprobante,leyenda,debe+"",haber+""};
+        String []aux_modelo={renglon+"",leyenda,debe+"",haber+""};
         modelo.addRow(aux_modelo);  
         jTable1.setModel(modelo);
         renglon++;
@@ -1739,7 +1446,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
      * @return true en caso de que ambos esten completos false de lo contrario
      */
     private boolean controlarCampos(){
-        if((!jTextField5.getText().equals(""))&&(!jTextField6.getText().equals("")))
+        if((!jTextField6.getText().equals("")))
             return true;
         else
             return false;
@@ -1783,6 +1490,14 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         formato=formato.replace(',','.');
         BigDecimal bigNum=new BigDecimal(formato);
         return bigNum;
+    }
+    
+     private void ordenarFoco() {        
+        field_tipo_comprobante.setNextFocusableComponent(field_punto_venta);
+        field_punto_venta.setNextFocusableComponent(field_nro_cliente);
+        field_nro_cliente.setNextFocusableComponent(fecha_factura);
+        fecha_factura.setNextFocusableComponent(btn_confirmar_encabezado);
+        btn_confirmar_encabezado.setNextFocusableComponent(field_tipo_comprobante);               
     }
     
         
