@@ -988,12 +988,14 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
     private void fecha_facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusLost
         // TODO add your handling code here:
-        if (!fecha.isFechaValida(fecha_factura.getText())){
-            fecha_factura.requestFocus();    
-            mensajeError("La Fecha ingresada no se reconoce como valida.");    
-        }
-        else{
-            mensajeError(" ");
+        if (evt.getOppositeComponent()!=field_nro_cliente){
+            if (!fecha.isFechaValida(fecha_factura.getText())){
+                fecha_factura.requestFocus();    
+                mensajeError("La Fecha ingresada no se reconoce como valida.");    
+            }
+            else{
+                mensajeError(" ");
+            }
         }
     }//GEN-LAST:event_fecha_facturaFocusLost
 
