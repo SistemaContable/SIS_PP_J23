@@ -778,6 +778,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                 }              
             }
             else{
+                field_codigo.requestFocus();
                 mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
             }
         }
@@ -817,6 +818,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                                 updateTabla();              
                             }
                             else{
+                                field_codigo.requestFocus();
                                 mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
                             }                                                
                         }
@@ -937,7 +939,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             String sql=(
                     "SELECT tasa_desc "+
                     " FROM tipo_tasas_iva"+
-                    " WHERE tasa_clave = "+clave);
+                    " WHERE tasa_clave = '"+clave+"'");
             
             ResultSet res = r_con.Consultar(sql);
             
@@ -1304,12 +1306,11 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                             +field_descripcion.getText()+"','"
                             +field_cantidad.getText()+"','"
                             +field_costo_u.getText()+"','"
-                            +field_precio_venta.getText()+"',"
-                            +field_tasa_iva.getText()+",'"
+                            +field_precio_venta.getText()+"','"
+                            +field_tasa_iva.getText()+"','"
                             +prod_impuesto_porcentaje+"','"
                             +prod_impuesto_valor+"')";
         
-        System.out.println(sql);
         if(r_con.Insertar(sql)){
             inserto=true;
             mostrar_Msj_Exito("Tipo de Tasa de IVA registrada en el Sistema.");
@@ -1368,7 +1369,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                 + "prod_cantidad = "+cantidad+", "
                 + "prod_costo = "+costo+", "
                 + "prod_precio_neto_venta = "+venta+", "
-                + "prod_tasa_iva = "+field_tasa_iva.getText()+", "
+                + "prod_tasa_iva = '"+field_tasa_iva.getText()+"', "
                 + "prod_impuesto_porcentaje = "+prod_impuesto_porcentaje+", "
                 + "prod_impuesto_valor = "+prod_impuesto_valor+" "
                 + "WHERE prod_codigo = "+codigo);

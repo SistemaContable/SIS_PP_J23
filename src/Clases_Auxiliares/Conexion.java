@@ -618,7 +618,8 @@ public class Conexion{
                //     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
             //}
             else{
-                    System.err.println("9. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
+                System.err.println("9. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage()); 
+                System.out.println("con Script: "+inserta);
             }   
             return (false);
         }
