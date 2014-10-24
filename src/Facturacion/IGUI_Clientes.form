@@ -373,6 +373,7 @@
         <Component class="javax.swing.JTextField" name="field_cuit1">
           <Events>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_cuit1FocusLost"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="field_cuit1KeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="field_cuit2">

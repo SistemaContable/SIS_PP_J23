@@ -53,7 +53,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         r_con = con;
         usuario=u;
         perfil=usuario.getIdPerfil().getId();
-        
+   
         //Frame tome el tamaño de la pantalla al 95% y comienze maximizado
         float escalar = 0.91F;
         int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width);
@@ -62,6 +62,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         this.setSize(ancho,alto);        
         setLocationRelativeTo (null);                
         habilitarMenu(true);
+        
         habilitarFunciones(perfil);
         infoEstado();     
     }

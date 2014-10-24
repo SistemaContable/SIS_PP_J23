@@ -457,7 +457,8 @@ public class Conexion{
             //connectionUrl = "jdbc:sqlserver://192.168.0.50:1433;databaseName=Sistema;user=SA;password=;";            
             //connectionUrl = "jdbc:sqlserver://localhost;integratedSecurity=true";
             //connectionUrl = "jdbc:sqlserver://localhost;databaseName=Sistema;integratedSecurity=true";            
-            this.conn = DriverManager.getConnection(getUrlConexion()); 
+            String cadenaUrl=getUrlConexion();            
+            this.conn = DriverManager.getConnection(cadenaUrl); 
             
             //System.out.println("<<<<<<<<<<<<<<<<< CONECTEEEEEEE!!!!!!!!!!!!!!!! >>>>>>>>>>>>>>");
             

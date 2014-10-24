@@ -305,9 +305,10 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                                 else
                                 {
                                     if(u.getContraseña().equals(pass)){                                        
-                                        this.dispose();                    
-                                        r_con.setUsuario(u.getUsuario());
+                                        this.dispose();                                         
+                                        //r_con.setUsuario(u.getUsuario());                                                                                
                                         new GUI_Principal(u,r_con).setVisible(true);
+                                        
                                         dispose();
                                     }
                                     else
@@ -320,7 +321,7 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
                                 msj_usuario_Error("El Usuario ingresado no Existe.");
                         }
                           
-                    }
+                    }                           
                     else{                                
                         msj_usuario_Error("No hay Empresas Registradas.");
                     }
