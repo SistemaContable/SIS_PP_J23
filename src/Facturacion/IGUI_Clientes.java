@@ -44,7 +44,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
     private String[] colum_names = {"cli_codigo","cli_nombre","cli_apellido","cli_fecha_nac","cli_cuit","cli_localidad","cli_direccion","cli_calle","cli_sit_frente_iva"};
     //nombres reales de los Indices de la Tabla
-    private String[] indices_tabla = {"IX_Clientes_id","IX_Clientes_ape","IX_Clientes_nom"};  
+    private String[] indices_tabla = {"IX_Clientes_id","IX_Clientes_nom","IX_Clientes_ape"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 
@@ -52,7 +52,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     
    
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento)
-    private String[] name_indicesTabla = {"por Codigo de Cliente","por Apellido","por Nombre"};
+    private String[] name_indicesTabla = {"por Codigo de Cliente","por Nombre","por Apellido"};
     //posicion que ocupa el valor indicesTabla en el colum_names_tabla (para saber que buscar)
     private int[] relacion_indices_conTabla = {0,1,2};
     
@@ -66,7 +66,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     
     public IGUI_Clientes(Conexion r) {
         initComponents();
-        restringirCampos();
+        ordenarFoco();
         r_con = r; 
         
         modoConsulta();
@@ -144,7 +144,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         setTitle("Gestión Clientes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cuentas.png"))); // NOI18N
 
-        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -181,7 +181,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         panel_datos.setFocusCycleRoot(true);
 
         field_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -209,6 +209,11 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         field_cuit1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 field_cuit1FocusLost(evt);
+            }
+        });
+        field_cuit1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                field_cuit1KeyPressed(evt);
             }
         });
 
@@ -473,7 +478,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addGap(0, 11, Short.MAX_VALUE))
         );
 
-        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
 
         btn_primero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-circle-left-2x.png"))); // NOI18N
         btn_primero.setText("Primero");
@@ -720,7 +725,8 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         int M = (int)(ini+fin)/2;
 
         //CB1
-        if (elemento.equals((tabla.getValueAt(M,nro_campo_tabla).toString()).toUpperCase())){
+        
+        if ((tabla.getValueAt(M,nro_campo_tabla)!=(null))&&(elemento.equals((tabla.getValueAt(M,nro_campo_tabla).toString()).toUpperCase()))){
                 posicion = M;
             }              
         else{
@@ -938,7 +944,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
 
     private void field_sit_frente_ivaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_sit_frente_ivaKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_F1){            
+        if (evt.getKeyCode() == KeyEvent.VK_F1){           
            generarAyuda_Situacion_Frente_Iva();
         }
     }//GEN-LAST:event_field_sit_frente_ivaKeyPressed
@@ -1093,7 +1099,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_field_cuit3FocusLost
 
     private void field_cuit1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit1FocusLost
-        if(field_cuit1.isEditable()){
+        if(field_cuit1.isEditable()){            
             if(!validar.isInt(field_cuit1.getText())){
                 this.mostrar_Msj_Error("Debe ingresar dos digitos en el campo CUIT");
                 field_cuit1.requestFocus();
@@ -1133,6 +1139,20 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_field_calleFocusLost
+
+    private void field_cuit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_cuit1KeyPressed
+        if((evt.getKeyCode() == KeyEvent.VK_ESCAPE)){
+            field_cuit1.setEditable(false);
+            field_cuit2.setEditable(false);
+            field_cuit3.setEditable(false);
+            field_localidad.nextFocus();
+        }
+        if((evt.getKeyCode() == KeyEvent.VK_ENTER)){
+            field_cuit1.setEditable(true);
+            field_cuit2.setEditable(true);
+            field_cuit3.setEditable(true);
+        }
+    }//GEN-LAST:event_field_cuit1KeyPressed
     
     private String get_tipo_localidad(String clave){
         String descripcion = "";
@@ -1277,11 +1297,22 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 field_codigo.setText(res.getString(1));
                 field_nombre.setText(res.getString(2));
                 field_apellido.setText(res.getString(3));
-                field_fecha_nac.setText(fecha.convertirBarras(res.getString(4)));
+                String fecha_nac=res.getString(4);
+                if(fecha_nac!=null)
+                    field_fecha_nac.setText(fecha.convertirBarras(fecha_nac));
+                else
+                    field_fecha_nac.setText("");
                 String cuit=res.getString(5);
-                field_cuit1.setText(cuit.substring(0, 2));
-                field_cuit2.setText(cuit.substring(2, 10));
-                field_cuit3.setText(cuit.substring(10, 11));
+                if((cuit!=null)&&(!cuit.equals(""))){
+                    field_cuit1.setText(cuit.substring(0, 2));
+                    field_cuit2.setText(cuit.substring(2, 10));
+                    field_cuit3.setText(cuit.substring(10, 11));
+                }
+                else{
+                    field_cuit1.setText("");
+                    field_cuit2.setText("");
+                    field_cuit3.setText("");
+                }
                 field_localidad.setText(res.getString(10));
                 lab_localidad.setText(res.getString(6));
                 field_direccion.setText(res.getString(7));
@@ -1526,7 +1557,11 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         try{
         r_con.Connection();        
         String cuit=field_cuit1.getText()+field_cuit2.getText()+field_cuit3.getText();        
-        
+        String fecha_nac=field_fecha_nac.getText();
+        if(!fecha.isFechaValida(fecha_nac))
+            fecha_nac=null;
+        else
+            fecha_nac="'"+fecha_nac+"'";
         int loc_cod=-1;
         String loc=lab_localidad.getText();
         ResultSet rs=r_con.Consultar("select * from localidades where loc_codigo_postal="+field_localidad.getText()+" and loc_descripcion='"+loc+"'");
@@ -1536,14 +1571,14 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         String sql = "INSERT INTO "+name_tabla
                    + " VALUES('"+field_codigo.getText()+"','"
                             +field_nombre.getText()+"','"
-                            +field_apellido.getText()+"','"
-                            +field_fecha_nac.getText()+"','"
+                            +field_apellido.getText()+"',"
+                            +fecha_nac+",'"
                             +cuit+"',"
                             +loc_cod+",'"
                             +field_direccion.getText()+"',"
                             +field_calle.getText()+","
                             +field_sit_frente_iva.getText()+")";        
-        
+       
         r_con.InsertarSinCartel(sql);
         inserto=true;
         mostrar_Msj_Exito("Nuevo Cliente registrado en el Sistema.");
@@ -1740,12 +1775,20 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
-    private void restringirCampos() {        
+     private void ordenarFoco() {        
         field_codigo.setNextFocusableComponent(field_nombre);
         field_nombre.setNextFocusableComponent(field_apellido);
-        field_apellido.setNextFocusableComponent(field_localidad);
+        field_apellido.setNextFocusableComponent(field_fecha_nac);
+        field_fecha_nac.setNextFocusableComponent(field_cuit1);
+        field_cuit1.setNextFocusableComponent(field_cuit2);
+        field_cuit2.setNextFocusableComponent(field_cuit3);
+        field_cuit3.setNextFocusableComponent(field_localidad);
         field_localidad.setNextFocusableComponent(field_direccion);
-        field_direccion.setNextFocusableComponent(field_sit_frente_iva);        
+        field_direccion.setNextFocusableComponent(field_calle);
+        field_calle.setNextFocusableComponent(field_sit_frente_iva);
+        field_sit_frente_iva.setNextFocusableComponent(btn_aceptar);
+        btn_aceptar.setNextFocusableComponent(btn_cancelar);
+        
     }
     
     /*

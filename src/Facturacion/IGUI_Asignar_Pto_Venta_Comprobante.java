@@ -577,7 +577,9 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         try {
             r_con.Connection();            
             ResultSet res = r_con.Consultar("SELECT * FROM punto_venta"+
-                                            " WHERE pv_codigo = "+combo_pto_venta.getSelectedItem());  
+                                           " WITH (INDEX(PK_pv_codigo)) "+
+                                           " WHERE pv_codigo = "+combo_pto_venta.getSelectedItem()); 
+                                              
             while(res.next()){
                lab_tipo_pto_venta.setText(res.getString(2).toUpperCase());
             }            
@@ -585,7 +587,8 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             Logger.getLogger(IGUI_Asignar_Pto_Venta_Comprobante.class.getName()).log(Level.SEVERE, null, ex);
         } finally {            
             r_con.cierraConexion();
-        }                
+        }       
+        
         updateTabla();
     }//GEN-LAST:event_combo_pto_ventaItemStateChanged
 
@@ -826,10 +829,12 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         try{    
             if (4>=0){
                 r_con.Connection();
-                int puntoVenta=combo_pto_venta.getSelectedIndex()+1;
+                
+                String puntoVenta=lab_tipo_pto_venta.getText();
+                
                 String consulta = ("select pv_descripcion,tc_codigo,tc_descripcion,vxc_numero "
                         + "         from punto_venta,tipo_comprobante,ptoventa_x_tipocomprobante "
-                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_codigo="+puntoVenta);
+                        + "         where pv_codigo=vxc_id_pto_venta and tc_codigo=vxc_id_tipo_comprobante and pv_descripcion='"+puntoVenta+"'");
 
                 PreparedStatement pstm = r_con.getConn().prepareStatement(consulta);
 
@@ -1015,7 +1020,7 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         try {
             combo_pto_venta.removeAllItems();
             r_con.Connection();            
-            ResultSet res = r_con.Consultar("SELECT * FROM punto_venta");            
+            ResultSet res = r_con.Consultar("SELECT * FROM punto_venta WITH (INDEX(PK_pv_codigo)) ");            
 
             while(res.next()){
                combo_pto_venta.addItem(res.getString(1)); 
