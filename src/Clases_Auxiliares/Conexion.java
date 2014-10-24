@@ -614,9 +614,9 @@ public class Conexion{
             if (ex.getErrorCode()==8152){
                     JOptionPane.showMessageDialog(null, "Hay Campos que exceden su longitud, verifique!","Atención",JOptionPane.WARNING_MESSAGE);
             }
-            if (ex.getErrorCode()==547){
-                    JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
-            }
+            //if (ex.getErrorCode()==547){
+               //     JOptionPane.showMessageDialog(null, "Verifique el campo 'Codigo de Tasas de Iva'","Atención",JOptionPane.WARNING_MESSAGE);
+            //}
             else{
                     System.err.println("9. Error Codigo: "+ex.getErrorCode()+"\nError Mensaje: " +ex.getMessage());     
             }   

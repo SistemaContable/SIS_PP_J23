@@ -1304,11 +1304,12 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                             +field_descripcion.getText()+"','"
                             +field_cantidad.getText()+"','"
                             +field_costo_u.getText()+"','"
-                            +field_precio_venta.getText()+"','"
-                            +field_tasa_iva.getText()+"','"
+                            +field_precio_venta.getText()+"',"
+                            +field_tasa_iva.getText()+",'"
                             +prod_impuesto_porcentaje+"','"
                             +prod_impuesto_valor+"')";
         
+        System.out.println(sql);
         if(r_con.Insertar(sql)){
             inserto=true;
             mostrar_Msj_Exito("Tipo de Tasa de IVA registrada en el Sistema.");

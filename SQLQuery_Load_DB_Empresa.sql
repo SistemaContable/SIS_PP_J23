@@ -460,12 +460,12 @@ CREATE TABLE productos(
 	prod_cantidad int,
 	prod_costo float,
 	prod_precio_neto_venta float,
-	prod_tasa_iva int,
+	prod_tasa_iva varchar(2),
 	prod_impuesto_porcentaje float,
 	prod_impuesto_valor float
 	
 	PRIMARY KEY (prod_codigo),
-	FOREIGN KEY (prod_tasa_iva) REFERENCES tasas_iva (tasa_id)
+	FOREIGN KEY (prod_tasa_iva) REFERENCES tipo_tasas_iva (tasa_clave)
  )
  
   CREATE INDEX  PK_Producto_Codigo ON productos (prod_codigo);
