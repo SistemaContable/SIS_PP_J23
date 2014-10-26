@@ -641,13 +641,47 @@ CREATE TABLE parametros_facturacion (
 	pf_numero_control int 
 );
 
-CREATE TABLE encabezado_factura(
-	ef_tipo_comprobante int not null,
-	ef_punto_venta int not null,
-	ef_cliente int not null,
-	ef_fecha_facturacion date,
-	primary key(ef_tipo_comprobante,ef_punto_venta,ef_cliente),
-	foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
-	foreign key(ef_punto_venta)references punto_venta(pv_codigo)
+insert into parametros_contables values('01/01/2014',0);
+
+create table encabezado_factura(
+ef_encabezado_factura_id int not null,
+ef_tipo_comprobante int not null,
+ef_punto_venta int not null,
+ef_num_ptoVenta_tipoComp int not null,
+ef_numero_control int not null,
+ef_cliente varchar(20) not null,
+ef_fecha_facturacion date,
+ef_iva_general float,
+ef_tasa_diferencial float,
+ef_sobretasa float,
+ef_exento float,
+ef_tasa_reducida float,
+ef_no_gravado float,
+ef_impuesto_interno float,
+ef_subtotal float,
+ef_total float,
+ef_confirmado bit,
+primary key(ef_encabezado_factura_id),
+foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
+foreign key(ef_punto_venta)references punto_venta(pv_codigo),
+foreign key(ef_cliente) references clientes(cli_codigo)
 );
 
+create table renglon_factura(
+rf_encabezado_factura_id int not null,
+rf_num_renglon int not null,
+rf_codigo_producto int not null,
+rf_cantidad int not null,
+rf_iva_general float,
+rf_tasa_diferencial float,
+rf_sobretasa float,
+rf_exento float,
+rf_tasa_reducida float,
+rf_no_gravado float,
+rf_impuesto_interno float,
+rf_importe float,
+rf_confirmado bit,
+primary key (rf_encabezado_factura_id,rf_num_renglon),
+foreign key (rf_encabezado_factura_id) references encabezado_factura(ef_encabezado_factura_id),
+foreign key (rf_codigo_producto) references productos(prod_codigo)
+)

@@ -533,7 +533,8 @@ public class Conexion{
             stnt.executeUpdate(actualiza);
             stnt.close();            
             return (true);
-        } catch (SQLException ex) {                         
+        } catch (SQLException ex) {
+           System.out.println(ex.getMessage());
             /*if (ex.getErrorCode()==2627){
                     JOptionPane.showMessageDialog(null, "El campo Clave ya se encuentra registrado!","Atención",JOptionPane.WARNING_MESSAGE);
             }
