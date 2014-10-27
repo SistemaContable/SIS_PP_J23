@@ -956,7 +956,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 jTextField12.setText(leyenda);
                 jTextField7.setText(precioVenta+"");
                 jTextField8.setText(cantidad);            
-                BigDecimal iva=calcularIva(jTextField6);
+                BigDecimal iva=calcularIva(jTextField6.getText(),precioVenta);
                 habilitarPanel2(true);
                 boton7.setEnabled(true);
                 jButton4.setText("Modificar");
@@ -1762,25 +1762,37 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             String tipoIva=rs.getString(1);
             if((tipoIva.equals("00"))||(tipoIva.equals("0"))){
                 BigDecimal ex=convertirEnBigDecimal(field_exento.getText());
-                ex=this.sumarBigDecimal(ex+"", sub+"");
+                if(modificar==-1)
+                    ex=this.sumarBigDecimal(ex+"", sub+"");
+                else
+                    ex=this.sumarBigDecimal(ex+"","-"+sub);
                 field_exento.setText(ex+"");
                 r_con.ActualizarSinCartel("update renglon_factura set rf_exento="+iva+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
             }
             if((tipoIva.equals("01"))||(tipoIva.equals("1"))){
                 BigDecimal aux=convertirEnBigDecimal(field_iva_general.getText());
-                aux=this.sumarBigDecimal(aux+"", iva+"");
+                if(modificar==-1)
+                    aux=this.sumarBigDecimal(aux+"", iva+"");
+                else
+                    aux=this.sumarBigDecimal(aux+"","-"+iva);
                 field_iva_general.setText(aux+"");
                 r_con.ActualizarSinCartel("update renglon_factura set rf_iva_general="+iva+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
             }     
            if((tipoIva.equals("02"))||(tipoIva.equals("2"))){
                 BigDecimal aux=convertirEnBigDecimal(field_tasa_diferencial.getText());
-                aux=this.sumarBigDecimal(aux+"", iva+"");
+                if(modificar==-1)
+                    aux=this.sumarBigDecimal(aux+"", iva+"");
+                else
+                    aux=this.sumarBigDecimal(aux+"","-"+iva);
                 field_tasa_diferencial.setText(aux+"");
                 r_con.ActualizarSinCartel("update renglon_factura set rf_tasa_diferencial="+iva+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
            }
            if((tipoIva.equals("03"))||(tipoIva.equals("3"))){
                 BigDecimal aux=convertirEnBigDecimal(field_tasa_reducida.getText());
-                aux=this.sumarBigDecimal(aux+"", iva+"");
+                if(modificar==-1)
+                    aux=this.sumarBigDecimal(aux+"", iva+"");
+                else
+                    aux=this.sumarBigDecimal(aux+"","-"+iva);
                 field_tasa_reducida.setText(aux+"");
                 r_con.ActualizarSinCartel("update renglon_factura set rf_tasa_reducida="+iva+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
            }                      
