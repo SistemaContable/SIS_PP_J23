@@ -905,8 +905,15 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jTable1.setEnabled(true);
     }//GEN-LAST:event_btn_confirmar_encabezadoActionPerformed
 
+    private void habilitarConfirmar2(){
+        if((!jTextField6.getText().equals(""))&&(!jTextField8.getText().equals("")))
+            jButton4.setEnabled(true);
+        else
+            jButton4.setEnabled(false);
+    }
+    
     private void jTextField8FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField8FocusLost
-
+        habilitarConfirmar2();
     }//GEN-LAST:event_jTextField8FocusLost
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -1208,10 +1215,15 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
         r_con.Connection();
         try{
-            ResultSet rs=r_con.Consultar("select * from productos where prod_codigo="+jTextField6.getText());
-            if(rs.next()){
-                jTextField12.setText(rs.getString(2));
-                jTextField7.setText(rs.getString(5));                
+            if(!jTextField6.getText().equals("")){
+                ResultSet rs=r_con.Consultar("select * from productos where prod_codigo="+jTextField6.getText());
+                if(rs.next()){
+                    jTextField12.setText(rs.getString(2));
+                    jTextField7.setText(rs.getString(5));                
+                }
+                else{
+                    jTextField6.requestFocus();
+                }
             }
             else{
                 jTextField6.requestFocus();
@@ -1491,12 +1503,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             BigDecimal debeTotal=new BigDecimal(0);
             BigDecimal haberTotal=new BigDecimal(0);
             while(rs.next()){
-                renglon++;
-                    asiento=new Asiento(rs.getInt(1),rs.getInt(2),rs.getDate(3).toString(),
-                                            rs.getDate(6).toString(),rs.getDate(7).toString(),
-                                            rs.getString(4),rs.getInt(5),rs.getString(8),
-                                            rs.getString(9),rs.getFloat(10),rs.getFloat(11),
-                                            rs.getBoolean(12),rs.getBoolean(13));
+                renglon++;              
                 modelo.addRow(asiento.getRenglonModelo());
                 jTable1.setModel(modelo);           
                 BigDecimal asDebe=convertirEnBigDecimal(asiento.getDebe()+"");
@@ -1554,8 +1561,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void habilitarPanel2(boolean valor){        
-        jTextField12.setFocusable(false);
         jTextField7.setFocusable(false);
+        jTextField12.setFocusable(false);
         jTextField6.setEnabled(valor);      
         jTextField8.setEnabled(valor);
         jTextField12.setEnabled(valor);
@@ -1873,17 +1880,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         
    // }
   */  
-    private BigDecimal multiplicarBigDecimal(String num1,int num2){        
-        float num1Float=Float.parseFloat(num1);
-        String formato1=new DecimalFormat("0.00").format(num1Float);
-        formato1=formato1.replace(',', '.');
-        BigDecimal num1BigD=new BigDecimal(formato1);
-        for(int i=1;i<num2;i++){
-            num1BigD=sumarBigDecimal(num1BigD+"",num1BigD+"");
-        }
-        return num1BigD;
-    }
-    
+
     
     private BigDecimal sumarBigDecimal(String num1,String num2){        
         float num1Float=Float.parseFloat(num1);
