@@ -956,7 +956,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 jTextField12.setText(leyenda);
                 jTextField7.setText(precioVenta+"");
                 jTextField8.setText(cantidad);            
-                BigDecimal iva=calcularIva(jTextField6)
+                BigDecimal iva=calcularIva(jTextField6);
                 habilitarPanel2(true);
                 boton7.setEnabled(true);
                 jButton4.setText("Modificar");
