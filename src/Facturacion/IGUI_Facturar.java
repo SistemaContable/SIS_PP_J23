@@ -43,13 +43,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
      */
     private Conexion r_con;
     private String name_tabla="borrador_asientos";
-    private Usuario usuario;
+    private Usuario usuario;    
+    private int renglon,modificar;
+    private DefaultTableModelAsientos modelo;    
+    private boolean esCarga=false;    
     
-    private int renglon;
-    private DefaultTableModelAsientos modelo;
-    private String fechaInicio,fechaCierre,fechaDiario;    
-    private BigDecimal ivaGeneral,ivaDiferencial,ivaReducido;
-    private boolean esCarga=false;
     private int numeroControl=-1;
     
     //libreria de manejo de fechas
@@ -61,7 +59,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         r_con=con;
         usuario=usr;
         renglon=0;
-
+        modificar=-1;
         r_con.Connection();
         inicializarTabla();
         inicializarIvas();
@@ -949,22 +947,16 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             if(evt.getClickCount()==2){            
                 int fila=jTable1.getSelectedRow();
             //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
-                int numRenglon=Integer.parseInt((String)modelo.getValueAt(fila, 0));
-                int numCuenta=Integer.parseInt((String)modelo.getValueAt(fila, 1));
-                String fechaOp=(String)modelo.getValueAt(fila, 2);
-                String fechaVto=(String)modelo.getValueAt(fila, 3);
-                String comprobante=(String)modelo.getValueAt(fila, 4);
-                String leyenda=(String)modelo.getValueAt(fila, 5);
-                BigDecimal debe=convertirEnBigDecimal((String)modelo.getValueAt(fila, 6));
-                BigDecimal haber=convertirEnBigDecimal((String)modelo.getValueAt(fila, 7));
-
-                jTextField6.setText(leyenda);
-                jTextField7.setText("");
-                jTextField8.setText("");
-                if(debe.floatValue()==0)
-                    jTextField8.setText(haber+"");
-                else
-                    jTextField7.setText(debe+"");
+                modificar=fila;                               
+                String codProducto=(String)modelo.getValueAt(fila,0);
+                String cantidad=(String)modelo.getValueAt(fila, 2);
+                String leyenda=(String)modelo.getValueAt(fila, 1);
+                BigDecimal precioVenta=convertirEnBigDecimal((String)modelo.getValueAt(fila, 3));                
+                jTextField6.setText(codProducto);
+                jTextField12.setText(leyenda);
+                jTextField7.setText(precioVenta+"");
+                jTextField8.setText(cantidad);            
+                BigDecimal iva=calcularIva(jTextField6)
                 habilitarPanel2(true);
                 boton7.setEnabled(true);
                 jButton4.setText("Modificar");
@@ -978,8 +970,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             if(controlarCampos()){
                 jButton2.setEnabled(true);
                 jButton1.setText("Abandonar Factura");
-                cargarTabla();
-                
+                cargarTabla();                
                 borrarCamposAstoBasicos();
                 mensajeError(" ");
             }
@@ -1004,13 +995,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private void boton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton7ActionPerformed
         // TODO add your handling code here:
         boton7.setEnabled(false);
-        int rta=JOptionPane.showConfirmDialog(null,"El asiento sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
+        int rta=JOptionPane.showConfirmDialog(null,"El renglon sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){
-                //int numAsiento=Integer.parseInt(jTextField1.getText());
+                
                 int numRenglon=1;
                 modelo.removeRow(numRenglon-1);
                 r_con.Connection();
-                //r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
+                
                 renombrarTabla();
             }
             else
@@ -1465,41 +1456,31 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void actualizarTabla(){
-        int numRenglon=(1-1);
+        if(modificar!=-1){            
+            int numRenglon=modificar;            
+            System.out.println(modificar);
+            //int ren=modificar;
+            modelo.setValueAt(jTextField6.getText(),numRenglon , 0);
+            modelo.setValueAt(jTextField12.getText(),numRenglon , 1);
+            BigDecimal precioVenta=convertirEnBigDecimal(jTextField7.getText());
+            modelo.setValueAt(precioVenta.floatValue()+"",numRenglon , 2);
+            int cantidad=Integer.parseInt(jTextField8.getText());
+            modelo.setValueAt(cantidad,numRenglon , 3);            
+            BigDecimal importe=precioVenta.multiply(new BigDecimal(cantidad));
+            BigDecimal iva=calcularIva(jTextField6.getText(),importe);
             
-            int ren=numRenglon+1;
-            modelo.setValueAt(ren+"",numRenglon , 0);
-            modelo.setValueAt(1,numRenglon , 1);
-            modelo.setValueAt(1,numRenglon , 2);
-            modelo.setValueAt(1,numRenglon , 3);
-            modelo.setValueAt(jTextField6.getText(),numRenglon , 5);
-            BigDecimal d=new BigDecimal(0);
-            BigDecimal h=new BigDecimal(0);
-            if(jTextField7.isEnabled()){
-                d=convertirEnBigDecimal(Float.parseFloat(jTextField7.getText())+"");
-            }
-            else
-            {
-                h=convertirEnBigDecimal(Float.parseFloat(jTextField8.getText())+"");
-            }    
-            modelo.setValueAt(d+"",numRenglon , 6);
-            modelo.setValueAt(h+"",numRenglon , 7);
-            //int numAsiento=Integer.parseInt(jTextField1.getText());
+            modelo.setValueAt(importe.floatValue()+"",numRenglon , 4);
+
             r_con.Connection();
 
-            this.actualizarSaldoDebeHaber();
+            this.actualizarTotal();            
+            this.actualizarIvas(jTextField6.getText(), iva, importe, modificar, new BigDecimal(cantidad));
+            modificar=-1;
+        }
     }
     
     
-    private void deshabilitarCampos(){
-        this.inicializarTabla();
-                 
-//        jButton3.setEnabled(false);
 
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-    }
     
     private void cargarCampos(int numAsiento){
         try {
@@ -1657,45 +1638,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private javax.swing.JLabel label_tipo_comprobante;
     private javax.swing.JPanel panel_datos_factura;
     // End of variables declaration//GEN-END:variables
-
-
-    private int getNumeroAsiento() {
-        int asiento=-1;
-        try {                        
-            r_con.Connection();
-            ResultSet rs=r_con.Consultar("select max(ba_nro_asiento) from "+name_tabla);
-            rs.next();
-            asiento=rs.getInt(1)+1;
-            r_con.cierraConexion();
-        } catch (SQLException ex) {
-            r_con.cierraConexion();
-            Logger.getLogger(GUI_Cargar_Asiento.class.getName()).log(Level.SEVERE, null, ex);            
-        }
-        return asiento;
-    }
-
-    private Cuenta obtenerCuenta(String nroCta) {
-        Cuenta aux=null;
-        try {            
-            r_con.Connection();
-            int nroCuenta=Integer.parseInt(nroCta);
-            ResultSet rs=r_con.Consultar("select * from plan_cuentas where pc_nro_cuenta="+nroCuenta);
-            if(rs.next()){
-                aux=new Cuenta();
-                aux.setCodigo_PC(rs.getString(1));
-                aux.setNumero_C(rs.getInt(2));
-                aux.setNombre_C(rs.getString(3));
-                aux.setImputable_C(rs.getBoolean(4));
-                aux.setNumero_Padre_C(rs.getInt(5));
-            }
-            r_con.cierraConexion();
-        } catch (SQLException ex) {
-            r_con.cierraConexion();
-            Logger.getLogger(GUI_Cargar_Asiento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return aux;
-    }
-
 
 
     private void inicializarTabla() {        
