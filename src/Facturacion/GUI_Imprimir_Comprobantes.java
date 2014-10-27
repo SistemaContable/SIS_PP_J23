@@ -301,7 +301,7 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
                         Map parametros = new HashMap();
                         //para que funcione el logo debo pasar la ruta completa
                         String dir_logo = (System.getProperty("user.dir"));
-                        dir_logo+="/src/Reportes/logo.jpg";
+                        dir_logo+="/src/Reportes/logo.png";
 
                         parametros.put("url_logo", dir_logo);
                         parametros.put("letra_comprobante", this.reporte_letra);
