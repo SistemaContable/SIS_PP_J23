@@ -55,16 +55,16 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
     private String nombre_reporte = "recibo.jrxml";
     private String id_modulo_imp = "8";
     
-    private String C01_Factura_A = "factura_a.jrxml";
-    private String C02_NotaDebito_A = "factura_a.jrxml";
-    private String C03_NotaCredito_A = "factura_a.jrxml";
+    private String C01_Factura_A = "factura_A.jrxml";
+    private String C02_NotaDebito_A = "factura_A.jrxml";
+    private String C03_NotaCredito_A = "factura_A.jrxml";
     private String C04_Recibo_A = "recibo.jrxml";
-    private String C05_NotaVenta_A = "factura_a.jrxml";
-    private String C06_Factura_B = "factura_b.jrxml";
-    private String C07_NotaDebito_B = "factura_b.jrxml";
-    private String C08_NotaCredito_B = "factura_b.jrxml";
+    private String C05_NotaVenta_A = "factura_A.jrxml";
+    private String C06_Factura_B = "factura_B.jrxml";
+    private String C07_NotaDebito_B = "factura_B.jrxml";
+    private String C08_NotaCredito_B = "factura_B.jrxml";
     private String C09_Recibo_B = "recibo.jrxml";
-    private String C10_NotaVenta_B = "factura_b.jrxml";
+    private String C10_NotaVenta_B = "factura_B.jrxml";
     
     private String reporte_seleccionado;
     private String reporte_letra;
