@@ -71,6 +71,7 @@ CREATE TABLE modulo
 		insert into modulo values(6,'AUDITORIA');
 		insert into modulo values(7,'RESPALDO');
 		insert into modulo values(8,'CONTABILIDAD');
+		insert into modulo values(9,'FACTURACION');
 
 CREATE TABLE tarea
 (
@@ -629,11 +630,11 @@ CREATE TABLE situacion_x_tipocomprobante(
 		INSERT INTO situacion_x_tipocomprobante VALUES (6,9);
 		INSERT INTO situacion_x_tipocomprobante VALUES (6,10);
 
-		INSERT INTO situacion_x_tipocomprobante VALUES (7,6);
-		INSERT INTO situacion_x_tipocomprobante VALUES (7,7);
-		INSERT INTO situacion_x_tipocomprobante VALUES (7,8);
-		INSERT INTO situacion_x_tipocomprobante VALUES (7,9);
-		INSERT INTO situacion_x_tipocomprobante VALUES (7,10);
+		INSERT INTO situacion_x_tipocomprobante VALUES (7,1);
+		INSERT INTO situacion_x_tipocomprobante VALUES (7,2);
+		INSERT INTO situacion_x_tipocomprobante VALUES (7,3);
+		INSERT INTO situacion_x_tipocomprobante VALUES (7,4);
+		INSERT INTO situacion_x_tipocomprobante VALUES (7,5);
 
 
 CREATE TABLE parametros_facturacion (
@@ -641,30 +642,30 @@ CREATE TABLE parametros_facturacion (
 	pf_numero_control int 
 );
 
-insert into parametros_contables values('01/01/2014',0);
+insert into parametros_facturacion values('01/01/2014',0);
 
 create table encabezado_factura(
-ef_encabezado_factura_id int not null,
-ef_tipo_comprobante int not null,
-ef_punto_venta int not null,
-ef_num_ptoVenta_tipoComp int not null,
-ef_numero_control int not null,
-ef_cliente varchar(20) not null,
-ef_fecha_facturacion date,
-ef_iva_general float,
-ef_tasa_diferencial float,
-ef_sobretasa float,
-ef_exento float,
-ef_tasa_reducida float,
-ef_no_gravado float,
-ef_impuesto_interno float,
-ef_subtotal float,
-ef_total float,
-ef_confirmado bit,
-primary key(ef_encabezado_factura_id),
-foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
-foreign key(ef_punto_venta)references punto_venta(pv_codigo),
-foreign key(ef_cliente) references clientes(cli_codigo)
+	ef_encabezado_factura_id int not null,
+	ef_tipo_comprobante int not null,
+	ef_punto_venta int not null,
+	ef_num_ptoVenta_tipoComp int not null,
+	ef_numero_control int not null,
+	ef_cliente varchar(20) not null,
+	ef_fecha_facturacion date,
+	ef_iva_general float,
+	ef_tasa_diferencial float,
+	ef_sobretasa float,
+	ef_exento float,
+	ef_tasa_reducida float,
+	ef_no_gravado float,
+	ef_impuesto_interno float,
+	ef_subtotal float,
+	ef_total float,
+	ef_confirmado bit,
+	primary key(ef_encabezado_factura_id),
+	foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
+	foreign key(ef_punto_venta)references punto_venta(pv_codigo),
+	foreign key(ef_cliente) references clientes(cli_codigo)
 );
 
 create table renglon_factura(

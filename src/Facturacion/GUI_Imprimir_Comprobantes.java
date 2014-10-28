@@ -53,7 +53,7 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
     private Conexion r_con;
     private Usuario usr;
     private String nombre_reporte = "recibo.jrxml";
-    private String id_modulo_imp = "8";
+    private String id_modulo_imp = "9";
     
     private String C01_Factura_A = "factura_A.jrxml";
     private String C02_NotaDebito_A = "factura_A.jrxml";

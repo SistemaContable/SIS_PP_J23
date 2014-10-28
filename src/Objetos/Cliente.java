@@ -71,6 +71,10 @@ public class Cliente {
     public String getCuil_digito_cliente() {
         return cuil_digito_cliente;
     }
+    
+    public String getCuil (){
+        return (cuil_prefijo_cliente+"-"+cuil_dni_cliente+"-"+cuil_digito_cliente);
+    }
 
     public String getLocalidad_cliente() {
         return localidad_cliente;
@@ -83,7 +87,11 @@ public class Cliente {
     public String getNumero_calle_cliente() {
         return numero_calle_cliente;
     }
-
+    
+    public String getDireccion(){
+        return(calle_cliente+" "+numero_calle_cliente+", "+localidad_cliente);
+    }
+    
     public int getCodigo_situacion_IVA_cliente() {
         return codigo_situacion_IVA_cliente;
     }

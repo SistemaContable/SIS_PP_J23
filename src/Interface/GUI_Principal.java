@@ -1182,7 +1182,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
+        //y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1201,7 +1201,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        y=100;
+        //y=100;
         np.setLocation(x, y);        
         //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
@@ -1231,8 +1231,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();        
-        
+        //np.requestFocusInWindow();         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed

@@ -144,7 +144,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         setTitle("Gestión Clientes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cuentas.png"))); // NOI18N
 
-        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -168,7 +168,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         panel_ayuda.setLayout(panel_ayudaLayout);
         panel_ayudaLayout.setHorizontalGroup(
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_ayudaLayout.createSequentialGroup()
+            .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
@@ -177,11 +177,11 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panel_datos.setFocusCycleRoot(true);
 
         field_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -309,12 +309,15 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         lab_mensaje.setText("mensaje");
 
         lab_codigo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_codigo.setLabelFor(field_codigo);
         lab_codigo.setText("Código:");
 
         lab_descripcion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_descripcion.setLabelFor(field_nombre);
         lab_descripcion.setText("Nombre:");
 
         lab_cantidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_cantidad.setLabelFor(field_apellido);
         lab_cantidad.setText("Apellido:");
 
         lab_cu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -328,12 +331,14 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
 
         lab_tipo_imp.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_tipo_imp.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lab_tipo_imp.setLabelFor(field_sit_frente_iva);
         lab_tipo_imp.setText(" ");
 
         lab_cantidad1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_cantidad1.setText("Cuit:");
 
         lab_cantidad2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lab_cantidad2.setLabelFor(field_fecha_nac);
         lab_cantidad2.setText("Fecha Nacimiento:");
 
         lab_neto1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -341,6 +346,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
 
         lab_localidad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lab_localidad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lab_localidad.setLabelFor(lab_localidad);
         lab_localidad.setText(" ");
 
         javax.swing.GroupLayout panel_datosLayout = new javax.swing.GroupLayout(panel_datos);
@@ -348,137 +354,141 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         panel_datosLayout.setHorizontalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_datosLayout.createSequentialGroup()
-                .addGap(212, 212, 212)
-                .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(102, 102, 102)
-                .addComponent(btn_cancelar)
-                .addGap(0, 212, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(10, 10, 10)
+                        .addComponent(lab_tit_orden)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lab_orden, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lab_tit_modo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lab_mensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panel_datosLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lab_codigo)
+                            .addComponent(lab_descripcion)
+                            .addComponent(lab_cantidad))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panel_datosLayout.createSequentialGroup()
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lab_cantidad)
-                                    .addComponent(lab_descripcion)
-                                    .addComponent(lab_codigo)
-                                    .addComponent(lab_cantidad2))
+                                .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(162, 162, 162)
+                                .addComponent(lab_cu)
+                                .addGap(4, 4, 4)
+                                .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lab_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(panel_datosLayout.createSequentialGroup()
+                                        .addComponent(field_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(130, 130, 130)
+                                        .addComponent(lab_neto1))
+                                    .addGroup(panel_datosLayout.createSequentialGroup()
+                                        .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lab_neto))
+                                    .addGroup(panel_datosLayout.createSequentialGroup()
+                                        .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lab_tasa)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(field_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                                        .addComponent(field_apellido))))
-                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                    .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(field_calle, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(6, 6, 6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                                .addGap(115, 115, 115)
                                 .addComponent(lab_cantidad1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(field_cuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(field_cuit2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(field_cuit3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lab_neto1, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lab_tasa, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lab_neto, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panel_datosLayout.createSequentialGroup()
-                                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                                            .addComponent(field_calle))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lab_tipo_imp, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
-                                .addComponent(lab_cu)
-                                .addGap(92, 92, 92)
-                                .addComponent(lab_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))))
-                    .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lab_tit_orden)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lab_orden)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lab_tit_modo)
-                        .addGap(18, 18, 18)
-                        .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
-            .addComponent(lab_mensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(field_cuit3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                                .addGap(214, 214, 214)
+                                .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(105, 105, 105)
+                                .addComponent(btn_cancelar)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(lab_cantidad2)
+                        .addGap(346, 346, 346)
+                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGap(6, 6, 6)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(lab_tipo_imp, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         panel_datosLayout.setVerticalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_datosLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_tit_orden)
-                            .addComponent(lab_orden)
-                            .addComponent(lab_tit_modo)
-                            .addComponent(lab_modo))
-                        .addGap(39, 39, 39)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lab_codigo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_descripcion)
-                            .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_cantidad)
-                            .addComponent(field_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lab_cantidad2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(field_cuit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(field_cuit2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(field_cuit3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lab_cantidad1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_cu)
-                            .addComponent(lab_localidad)
-                            .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lab_neto)
-                            .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel_datosLayout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(lab_tipo_imp))
-                            .addGroup(panel_datosLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lab_neto1)
-                                    .addComponent(field_calle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lab_tasa))))
-                        .addGap(25, 25, 25)))
+                    .addComponent(lab_tit_orden)
+                    .addComponent(lab_orden)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lab_modo)
+                        .addComponent(lab_tit_modo)))
+                .addGap(28, 28, 28)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lab_codigo)
+                        .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lab_cu)
+                        .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_descripcion))
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_neto)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_calle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_neto1))
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_cantidad)))
+                .addGap(6, 6, 6)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_cantidad2))
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lab_tasa)
+                        .addComponent(lab_tipo_imp)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(field_cuit2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(field_cuit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lab_cantidad1)
+                    .addComponent(field_cuit3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         btn_primero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-circle-left-2x.png"))); // NOI18N
         btn_primero.setText("Primero");
@@ -540,13 +550,13 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addComponent(btn_proximo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_ultimo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lab_buscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_buscar)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
         panel_desplazamientoLayout.setVerticalGroup(
             panel_desplazamientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -566,6 +576,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
 
         menu_interno.setBorderPainted(false);
 
+        menu_alta.setBorder(null);
         menu_alta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/check-4x.png"))); // NOI18N
         menu_alta.setText("ALTA");
         menu_alta.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -612,12 +623,9 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel_datos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panel_desplazamiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel_datos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,9 +633,9 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addComponent(panel_datos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel_desplazamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panel_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1))
         );
 
         pack();
@@ -857,9 +865,15 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         }  
     }
     
+    private void field_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_buscarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            accion_Buscar();            
+        }
+    }//GEN-LAST:event_field_buscarKeyPressed
+
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         ocultar_Msj();
-        menuDisponible(true); 
+        menuDisponible(true);
         modoConsulta();
         if (field_codigo.getText().equals("")){
             cargar_ValoresPorFila(this.fila_ultimo_registro);
@@ -867,18 +881,17 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         else{
             posicionarAyuda(field_codigo.getText());
         }
-        
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-       if (lab_modo.getText().equals("Alta")){
+        if (lab_modo.getText().equals("Alta")){
             if (camposCompletos()){
                 ocultar_Msj();
-                if (insertar()){               
-                    menuDisponible(true); 
-                    modoConsulta();           
-                    updateTabla(); 
-                }              
+                if (insertar()){
+                    menuDisponible(true);
+                    modoConsulta();
+                    updateTabla();
+                }
             }
             else{
                 mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
@@ -891,13 +904,13 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                         mostrar_Msj_Error("Ingrese un codigo que se encuentre registrado en el sistema");
                         field_codigo.requestFocus();
                     }
-                    else{                  
+                    else{
                         ocultar_Msj();
-                        eliminar();                    
-                        menuDisponible(true); 
+                        eliminar();
+                        menuDisponible(true);
                         modoConsulta();
                         vaciarCampos();
-                        updateTabla(); 
+                        updateTabla();
                     }
                 }
                 else{
@@ -915,13 +928,13 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                             if (camposCompletos()){
                                 ocultar_Msj();
                                 modificar();
-                                menuDisponible(true); 
+                                menuDisponible(true);
                                 modoConsulta();
-                                updateTabla();              
+                                updateTabla();
                             }
                             else{
                                 mostrar_Msj_Error("Por favor, complete todos los campos solicitados");
-                            }                                                
+                            }
                         }
                     }
                     else{
@@ -932,65 +945,198 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
-    private void field_codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_codigoKeyTyped
-        onlyNum(evt);
-    }//GEN-LAST:event_field_codigoKeyTyped
-
-    private void field_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_buscarKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            accion_Buscar();            
-        }
-    }//GEN-LAST:event_field_buscarKeyPressed
-
     private void field_sit_frente_ivaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_sit_frente_ivaKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_F1){           
-           generarAyuda_Situacion_Frente_Iva();
+        if (evt.getKeyCode() == KeyEvent.VK_F1){
+            generarAyuda_Situacion_Frente_Iva();
         }
     }//GEN-LAST:event_field_sit_frente_ivaKeyPressed
+
+    private void field_sit_frente_ivaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_field_sit_frente_ivaInputMethodTextChanged
+        // TODO add your handling code here:
+        String descripcion = get_Tipo_Sit_frente_Iva(field_sit_frente_iva.getText());
+        if (!descripcion.equals("")){
+            lab_tipo_imp.setText("("+descripcion+")");
+        }
+    }//GEN-LAST:event_field_sit_frente_ivaInputMethodTextChanged
 
     private void field_sit_frente_ivaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_sit_frente_ivaFocusLost
         if((field_sit_frente_iva.isEditable())&&(validar.isInt(field_calle.getText()))){
             boolean es_componente=false;
-            //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos        
-            int i=0;        
+            //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+            int i=0;
             Component[] components = panel_datos.getComponents();
             while ((!es_componente)&&(i<components.length)){
                 if (components[i]==evt.getOppositeComponent()){
                     es_componente=true;
                 }
                 i++;
-            }            
-            if((es_componente)&&(field_codigo.isEditable())){            
+            }
+            if((es_componente)&&(field_codigo.isEditable())){
                 String id_sfi=field_sit_frente_iva.getText();
-                   if(!id_sfi.equals("")){
-                        String descripcion =get_Tipo_Sit_frente_Iva(id_sfi);
-                        if (!descripcion.equals("")){
-                            lab_tipo_imp.setText("("+descripcion+")");
-                        }
-                        else{
-                            field_sit_frente_iva.requestFocus();
-                            this.generarAyuda_Situacion_Frente_Iva();
-                        }
-                   }
-                   else{   
-                       this.mostrar_Msj_Error("El tipo de Situacion Frente IVA esta vacio, debe ingresar un valor");
-                       field_sit_frente_iva.requestFocus();
-                   }
-             }
-             else{        
-                 this.ocultar_Msj();
-             }
+                if(!id_sfi.equals("")){
+                    String descripcion =get_Tipo_Sit_frente_Iva(id_sfi);
+                    if (!descripcion.equals("")){
+                        lab_tipo_imp.setText("("+descripcion+")");
+                    }
+                    else{
+                        field_sit_frente_iva.requestFocus();
+                        this.generarAyuda_Situacion_Frente_Iva();
+                    }
+                }
+                else{
+                    this.mostrar_Msj_Error("El tipo de Situacion Frente IVA esta vacio, debe ingresar un valor");
+                    field_sit_frente_iva.requestFocus();
+                }
+            }
+            else{
+                this.ocultar_Msj();
+            }
         }
     }//GEN-LAST:event_field_sit_frente_ivaFocusLost
 
-    private void field_sit_frente_ivaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_field_sit_frente_ivaInputMethodTextChanged
-        // TODO add your handling code here:       
-        String descripcion = get_Tipo_Sit_frente_Iva(field_sit_frente_iva.getText());
-        if (!descripcion.equals("")){
-            lab_tipo_imp.setText("("+descripcion+")");
+    private void field_calleFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_calleFocusLost
+        if(field_calle.isEditable()){
+            if(!validar.isInt(field_calle.getText())){
+                this.mostrar_Msj_Error("El campo Calle es incorrecto, debe ingresar un valor numerico");
+                //field_calle.requestFocus();
+            }
+            else{
+                this.ocultar_Msj();
+            }
         }
-    }//GEN-LAST:event_field_sit_frente_ivaInputMethodTextChanged
+    }//GEN-LAST:event_field_calleFocusLost
+
+    private void field_localidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_localidadKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_F1){
+            generarAyuda_Localidades();
+        }
+    }//GEN-LAST:event_field_localidadKeyPressed
+
+    private void field_localidadInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_field_localidadInputMethodTextChanged
+        String descripcion = get_tipo_localidad(field_localidad.getText());
+        if (!descripcion.equals("")){
+            lab_localidad.setText(descripcion);
+        }
+    }//GEN-LAST:event_field_localidadInputMethodTextChanged
+
+    private void field_localidadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_localidadFocusLost
+
+        boolean es_componente=false;
+        //   voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
+        int i=0;
+        Component[] components = panel_datos.getComponents();
+        while ((!es_componente)&&(i<components.length)){
+            if (components[i]==evt.getOppositeComponent()){
+                es_componente=true;
+            }
+            i++;
+        }
+        if((es_componente)&&(field_codigo.isEditable())){
+            String id_sfi=field_localidad.getText();
+            if(!id_sfi.equals("")){
+                String descripcion =get_tipo_localidad(id_sfi);
+                if (!descripcion.equals("")){
+                    lab_localidad.setText(descripcion);
+                }
+                else{
+                    field_localidad.requestFocus();
+                    this.generarAyuda_Localidades();
+                }
+            }
+            else{
+                this.mostrar_Msj_Error("El campo Localidad esta vacio, debe ingresar un valor");
+                field_localidad.requestFocus();
+            }
+        }
+        else{
+            this.ocultar_Msj();
+        }
+    }//GEN-LAST:event_field_localidadFocusLost
+
+    private void field_cuit3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit3FocusLost
+
+        if(field_cuit3.isEditable()){
+            String cuit1=field_cuit1.getText();
+            String cuit2=field_cuit2.getText();
+            String cuit3=field_cuit3.getText();
+            if(!field_cuit2.getText().equals("")){
+                this.ocultar_Msj();
+                if(!validar.isInt(field_cuit3.getText())){
+                    this.mostrar_Msj_Error("Debe ingresar el digitos DV correspondiente al CUIT");
+                    field_cuit3.requestFocus();
+                }
+                if(field_cuit3.getText().equals("")){
+                    this.mostrar_Msj_Error("El campo CUIT-DV se encuentra vacio, debe ingresar un valor");
+                    field_cuit3.requestFocus();
+                }
+                if(validar.isCuit(cuit1,cuit2,cuit3)){
+                    this.mostrar_Msj_Exito("El CUIT ingresado es correcto");
+                }
+                else{
+                    this.mostrar_Msj_Error("El campo CUIT ingresado es incorrecto");
+                }
+            }
+        }
+    }//GEN-LAST:event_field_cuit3FocusLost
+
+    private void field_cuit2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit2FocusLost
+        if(field_cuit2.isEditable()){
+            if(!field_cuit1.getText().equals("")){
+                this.ocultar_Msj();
+                if(!validar.isInt(field_cuit2.getText())){
+                    this.mostrar_Msj_Error("Debe ingresar el numero correspondiente al CUIT");
+                    field_cuit2.requestFocus();
+                }
+                if(field_cuit2.getText().equals("")){
+                    this.mostrar_Msj_Error("El campo CUIT-Numero se encuentra vacio, debe ingresar un valor");
+                    field_cuit2.requestFocus();
+                }
+            }
+        }
+    }//GEN-LAST:event_field_cuit2FocusLost
+
+    private void field_cuit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_cuit1KeyPressed
+        if((evt.getKeyCode() == KeyEvent.VK_ESCAPE)){
+            field_cuit1.setEditable(false);
+            field_cuit2.setEditable(false);
+            field_cuit3.setEditable(false);
+            field_localidad.nextFocus();
+        }
+        if((evt.getKeyCode() == KeyEvent.VK_ENTER)){
+            field_cuit1.setEditable(true);
+            field_cuit2.setEditable(true);
+            field_cuit3.setEditable(true);
+        }
+    }//GEN-LAST:event_field_cuit1KeyPressed
+
+    private void field_cuit1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit1FocusLost
+        if(field_cuit1.isEditable()){
+            if(!validar.isInt(field_cuit1.getText())){
+                this.mostrar_Msj_Error("Debe ingresar dos digitos en el campo CUIT");
+                field_cuit1.requestFocus();
+            }
+            if(field_cuit1.getText().equals("")){
+                this.mostrar_Msj_Error("El campo CUIT se encuentra vacio, debe ingresar un valor");
+                field_cuit1.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_field_cuit1FocusLost
+
+    private void field_fecha_nacFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_fecha_nacFocusLost
+        // TODO add your handling code here:
+        if (fecha.isFechaValida(field_fecha_nac.getText())){
+            mostrar_Msj_Error(" ");
+            //fecha_nac=true;
+        }
+        else{
+            mostrar_Msj_Error("La Fecha ingresada no se reconoce como valida.");
+        }
+    }//GEN-LAST:event_field_fecha_nacFocusLost
+
+    private void field_codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_codigoKeyTyped
+        onlyNum(evt);
+    }//GEN-LAST:event_field_codigoKeyTyped
 
     private void field_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_codigoFocusLost
         if (field_codigo.isEditable() && (lab_modo.getText().equals("Alta"))){
@@ -1008,151 +1154,10 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 else{
                     field_codigo.requestFocus();
                     this.mostrar_Msj_Error("Debe ingresar un codigo de Cliente.");
-                } 
-            }           
-        }       
+                }
+            }
+        }
     }//GEN-LAST:event_field_codigoFocusLost
-
-    private void field_fecha_nacFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_fecha_nacFocusLost
-        // TODO add your handling code here:
-        if (fecha.isFechaValida(field_fecha_nac.getText())){
-            mostrar_Msj_Error(" ");
-            //fecha_nac=true;
-        }
-        else{
-            mostrar_Msj_Error("La Fecha ingresada no se reconoce como valida.");                
-            }        
-    }//GEN-LAST:event_field_fecha_nacFocusLost
-
-    private void field_localidadFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_localidadFocusLost
-        
-            boolean es_componente=false;
-         //   voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos        
-            int i=0;        
-            Component[] components = panel_datos.getComponents();
-            while ((!es_componente)&&(i<components.length)){
-                if (components[i]==evt.getOppositeComponent()){
-                    es_componente=true;
-                }
-                i++;
-            }
-            if((es_componente)&&(field_codigo.isEditable())){            
-                String id_sfi=field_localidad.getText();
-                   if(!id_sfi.equals("")){
-                        String descripcion =get_tipo_localidad(id_sfi);
-                        if (!descripcion.equals("")){
-                            lab_localidad.setText(descripcion);
-                        }
-                        else{
-                            field_localidad.requestFocus();
-                            this.generarAyuda_Localidades();
-                        }
-                   }
-                   else{   
-                       this.mostrar_Msj_Error("El campo Localidad esta vacio, debe ingresar un valor");
-                       field_localidad.requestFocus();
-                   }
-             }
-             else{        
-                 this.ocultar_Msj();
-             }                
-     
-    }//GEN-LAST:event_field_localidadFocusLost
-
-    private void field_localidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_localidadKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_F1){            
-           generarAyuda_Localidades();
-        }
-    }//GEN-LAST:event_field_localidadKeyPressed
-
-    private void field_localidadInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_field_localidadInputMethodTextChanged
-        String descripcion = get_tipo_localidad(field_localidad.getText());
-        if (!descripcion.equals("")){
-            lab_localidad.setText(descripcion);
-        }        
-    }//GEN-LAST:event_field_localidadInputMethodTextChanged
-
-    private void field_cuit3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit3FocusLost
-        
-        if(field_cuit3.isEditable()){
-            String cuit1=field_cuit1.getText();
-            String cuit2=field_cuit2.getText();
-            String cuit3=field_cuit3.getText();
-            if(!field_cuit2.getText().equals("")){
-                this.ocultar_Msj();
-                if(!validar.isInt(field_cuit3.getText())){
-                   this.mostrar_Msj_Error("Debe ingresar el digitos DV correspondiente al CUIT");
-                   field_cuit3.requestFocus();
-                }
-                if(field_cuit3.getText().equals("")){
-                    this.mostrar_Msj_Error("El campo CUIT-DV se encuentra vacio, debe ingresar un valor");
-                    field_cuit3.requestFocus();
-                }
-                if(validar.isCuit(cuit1,cuit2,cuit3)){
-                    this.mostrar_Msj_Exito("El CUIT ingresado es correcto");
-                }
-                else{
-                    this.mostrar_Msj_Error("El campo CUIT ingresado es incorrecto");
-                }
-            }        
-        }
-    }//GEN-LAST:event_field_cuit3FocusLost
-
-    private void field_cuit1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit1FocusLost
-        if(field_cuit1.isEditable()){            
-            if(!validar.isInt(field_cuit1.getText())){
-                this.mostrar_Msj_Error("Debe ingresar dos digitos en el campo CUIT");
-                field_cuit1.requestFocus();
-            }
-            if(field_cuit1.getText().equals("")){
-                this.mostrar_Msj_Error("El campo CUIT se encuentra vacio, debe ingresar un valor");
-                field_cuit1.requestFocus();
-            }        
-        }
-    }//GEN-LAST:event_field_cuit1FocusLost
-
-    private void field_cuit2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_cuit2FocusLost
-        if(field_cuit2.isEditable()){
-            if(!field_cuit1.getText().equals("")){
-                this.ocultar_Msj();
-                if(!validar.isInt(field_cuit2.getText())){
-                   this.mostrar_Msj_Error("Debe ingresar el numero correspondiente al CUIT");
-                   field_cuit2.requestFocus();
-                }
-                if(field_cuit2.getText().equals("")){
-                    this.mostrar_Msj_Error("El campo CUIT-Numero se encuentra vacio, debe ingresar un valor");
-                    field_cuit2.requestFocus();
-                }
-            }        
-        }
-    }//GEN-LAST:event_field_cuit2FocusLost
-
-    private void field_calleFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_calleFocusLost
-        if(field_calle.isEditable()){
-            if(!validar.isInt(field_calle.getText())){
-                this.mostrar_Msj_Error("El campo Calle es incorrecto, debe ingresar un valor numerico");
-                //field_calle.requestFocus();
-            }
-            else{
-                this.ocultar_Msj();
-            }
-        }
-        
-    }//GEN-LAST:event_field_calleFocusLost
-
-    private void field_cuit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_cuit1KeyPressed
-        if((evt.getKeyCode() == KeyEvent.VK_ESCAPE)){
-            field_cuit1.setEditable(false);
-            field_cuit2.setEditable(false);
-            field_cuit3.setEditable(false);
-            field_localidad.nextFocus();
-        }
-        if((evt.getKeyCode() == KeyEvent.VK_ENTER)){
-            field_cuit1.setEditable(true);
-            field_cuit2.setEditable(true);
-            field_cuit3.setEditable(true);
-        }
-    }//GEN-LAST:event_field_cuit1KeyPressed
     
     private String get_tipo_localidad(String clave){
         String descripcion = "";
