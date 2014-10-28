@@ -454,6 +454,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 jTextField6FocusLost(evt);
             }
         });
+        jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField6MouseClicked(evt);
+            }
+        });
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField6KeyPressed(evt);
@@ -655,27 +660,27 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     .addComponent(field_tasa_diferencial, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(field_no_gravado))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
+                        .addGap(73, 73, 73)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel10))
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(field_total_iva, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(field_sobretasa, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(5, 5, 5)
-                                .addComponent(field_impuesto_interno))
+                                .addGap(65, 65, 65)
+                                .addComponent(jLabel8))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(field_sobretasa)
-                                    .addComponent(field_total_iva, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap())
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel7)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(field_impuesto_interno)
+                            .addComponent(field_no_gravado))))
+                .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -834,16 +839,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         }                        
     }
     
-    public void borrarCampos(){
 
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-        jTextField7.setEnabled(true);
-        jTextField8.setEnabled(true);        
-    }
     
-    private void borrarCamposAstoBasicos(){
+    private void borrarCamposBasicos(){
         jTextField6.setText("");
         jTextField12.setText("");
         jTextField7.setText("");
@@ -890,7 +888,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         r_con.cierraConexion();
         jButton2.setEnabled(true);                    
         habilitarPanel1(false);
-        habilitarPanel2(true);       
+        habilitarPanel2(true);
+        boton7.setEnabled(false);
+        jButton4.setEnabled(false);
         jTable1.setEnabled(true);
         jTextField6.requestFocusInWindow();
     }//GEN-LAST:event_btn_confirmar_encabezadoActionPerformed
@@ -946,7 +946,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
                 modificar=fila;                               
                 String codProducto=(String)modelo.getValueAt(fila,0);
-                String cantidad=(String)modelo.getValueAt(fila, 2);
+                String cantidad=modelo.getValueAt(fila, 2)+"";
                 String leyenda=(String)modelo.getValueAt(fila, 1);
                 BigDecimal precioVenta=convertirEnBigDecimal((String)modelo.getValueAt(fila, 3));                
                 jTextField6.setText(codProducto);
@@ -962,14 +962,15 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    
+    jButton4.setEnabled(false);
+    boton7.setEnabled(false);
         if(jButton4.getText().equals("Confirmar")){
             if(controlarCampos()){
                 jButton2.setEnabled(true);
                 jButton1.setText("Abandonar Factura");
                 cargarTabla();
                 jTextField6.requestFocusInWindow();
-                borrarCamposAstoBasicos();
+                borrarCamposBasicos();
                 mensajeError(" ");
             }
             else
@@ -980,11 +981,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         else
         {
             if(controlarCampos()){
-                jButton4.setText("Confirmar");
-               
+                jButton4.setText("Confirmar");               
                 actualizarTabla();
                 mensajeError(" ");
-                borrarCamposAstoBasicos();                
+                borrarCamposBasicos();                
             }
             else
                 mensajeError("Debe completar todos los campos");
@@ -996,9 +996,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         boton7.setEnabled(false);
         int rta=JOptionPane.showConfirmDialog(null,"El renglon sera eliminado. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){                                
-                modelo.removeRow(modificar);
-                r_con.Connection();
-                r_con.ActualizarSinCartel("delete from renglon_factura where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+modificar);
+                modelo.removeRow(modificar);                
+                borrarRenglon();
+                borrarCamposBasicos();
+                r_con.Connection();                
                 actualizar();                
             }
             else
@@ -1007,6 +1008,29 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             modificar=-1;
     }//GEN-LAST:event_boton7ActionPerformed
 
+    private void borrarRenglon(){
+        r_con.Connection();
+        r_con.ActualizarSinCartel("delete from renglon_factura where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+modificar);
+        ResultSet rs=r_con.Consultar("select * from renglon_factura order by rf_num_renglon");
+        renglon--;
+        try{
+            if(modificar<jTable1.getModel().getRowCount()){                
+                int i=0;
+                int posBuscada=modificar+1;
+                while(rs.next()){
+                    System.out.println(i+" "+rs.getInt("rf_num_renglon")+" "+posBuscada);
+                    if(i!=rs.getInt("rf_num_renglon")){
+                        r_con.ActualizarSinCartel("update renglon_factura set rf_num_renglon="+i+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+posBuscada);
+                        posBuscada++;
+                    }                
+                    i++;
+                }
+            }
+        }        
+        catch(Exception e){r_con.cierraConexion();}        
+        r_con.cierraConexion();
+    }
+    
     private void field_tipo_comprobanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tipo_comprobanteFocusLost
         boolean es_componente=false;
         //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
@@ -1201,10 +1225,14 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_F1){            
            generarAyuda_Producto();
         }        
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE){            
+           jTextField6.setFocusable(false);
+        }
     }//GEN-LAST:event_jTextField6KeyPressed
 
     private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
         r_con.Connection();
+        jButton4.setEnabled(true);
         try{
             if(!jTextField6.getText().equals("")){
                 ResultSet rs=r_con.Consultar("select * from productos where prod_codigo="+jTextField6.getText());
@@ -1229,6 +1257,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             generarAyuda_Cliente();
         }        
     }//GEN-LAST:event_field_nro_clienteKeyPressed
+
+    private void jTextField6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseClicked
+        if(evt.getClickCount()==1){
+            jTextField6.setFocusable(true);
+        }
+    }//GEN-LAST:event_jTextField6MouseClicked
     
     public void generarAyuda_Producto(){
         GUI_Ayuda_Producto np=new GUI_Ayuda_Producto(r_con,this);
@@ -1491,6 +1525,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             if((tipoIva.equals("03"))||(tipoIva.equals("3"))){
                 r_con.ActualizarSinCartel("update renglon_factura set rf_tasa_reducida="+iva.floatValue()+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+modificar);
             }
+            
             int sitFrenteIva=Integer.parseInt(field_situacion_IVA.getText());
             if(sitFrenteIva==2){
                 BigDecimal sobretasa=calcularSobreTasa(jTextField6.getText(),importe);                
@@ -1637,10 +1672,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
     private void cargarTabla(){
-        String leyenda=jTextField12.getText();        
-        BigDecimal precioVenta=new BigDecimal(0);        
-        float d=Float.parseFloat(jTextField7.getText());
-        precioVenta=convertirEnBigDecimal(d+"");
+        String descripcionProducto=jTextField12.getText();                       
+        float preVenta=Float.parseFloat(jTextField7.getText());
+        BigDecimal precioVenta=convertirEnBigDecimal(preVenta+"");
         int cantidad=Integer.parseInt(jTextField8.getText());        
         String cod_prod=jTextField6.getText();                              
         BigDecimal subSinIva=precioVenta.multiply(new BigDecimal(cantidad));                                
@@ -1649,6 +1683,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         
         r_con.Connection();
         BigDecimal sub=analizarTipoCliente(cod_prod,iva,subSinIva,new BigDecimal(cantidad));
+        
         String sql="insert into renglon_factura values("+numeroControl+","+renglon+","+cod_prod+","+cantidad+",0,0,0,0,0,0,0,"+sub+",0)";
         r_con.InsertarSinCartel(sql);
         actualizarIvas(cod_prod,iva,subSinIva,renglon,new BigDecimal(cantidad));
@@ -1658,13 +1693,14 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         anterior=sumarBigDecimal(anterior+"",impInterno+"");
         field_impuesto_interno.setText(anterior+"");
         
-        String []aux_modelo={cod_prod,leyenda,cantidad+"",pre_venta,sub+""};
+        String []aux_modelo={cod_prod,descripcionProducto,cantidad+"",pre_venta,sub+""};
         modelo.addRow(aux_modelo);  
         actualizarTotal();
         jTable1.setModel(modelo);
         
         renglon++;
     }
+    
     
     private BigDecimal calcularImpInterno(String codProducto,BigDecimal sub,BigDecimal cantidad){
         r_con.Connection();
@@ -1679,11 +1715,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     impuestoInterno=cantidad.multiply(new BigDecimal(rs.getFloat(2)));
                 }
            
-            }        
-            /*BigDecimal anterior=convertirEnBigDecimal(field_impuesto_interno.getText());
-            anterior=sumarBigDecimal(anterior+"",impuestoInterno+"");
-            field_impuesto_interno.setText(anterior+"");
-            */
+            }                 
         }
         catch(Exception e){}
         return impuestoInterno;
@@ -1736,33 +1768,41 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     return sub;
     }
     
+    private boolean esExento(String codProducto){
+       String tipoIva=tipoIvaProducto(codProducto);
+       if((tipoIva.equals("0"))||(tipoIva.equals("00")))        
+            return true;
+       return false;           
+    }
+    
 private void actualizarTotal(){
-        BigDecimal subtotal=new BigDecimal(0);
+        BigDecimal subtotal=new BigDecimal(0);        
         for(int i=0;i<jTable1.getModel().getRowCount();i++){
-            subtotal=this.sumarBigDecimal(subtotal+"", convertirEnBigDecimal(modelo.getValueAt(i,4).toString())+"");
+            if(!esExento(modelo.getValueAt(i,0).toString()))
+                subtotal=this.sumarBigDecimal(subtotal+"", modelo.getValueAt(i,4).toString());
         }
         int sitFrenteIva=Integer.parseInt(field_situacion_IVA.getText());
         BigDecimal total=new BigDecimal(0);        
-        if(sitFrenteIva==1){  // si es RESPONSABLE INSCRIPTO                      
-            BigDecimal totalIva=new BigDecimal(0);
-            totalIva=this.sumarBigDecimal(totalIva+"", field_iva_general.getText());
-            totalIva=this.sumarBigDecimal(totalIva+"", field_tasa_diferencial.getText());
-            totalIva=this.sumarBigDecimal(totalIva+"", field_tasa_reducida.getText());            
-            field_total_iva.setText(totalIva.floatValue()+"");
-            
+        BigDecimal totalIva=new BigDecimal(0);
+        totalIva=this.sumarBigDecimal(totalIva+"", field_iva_general.getText());
+        totalIva=this.sumarBigDecimal(totalIva+"", field_tasa_diferencial.getText());
+        totalIva=this.sumarBigDecimal(totalIva+"", field_tasa_reducida.getText());            
+        field_total_iva.setText(totalIva+"");
+        if(sitFrenteIva==1){  // si es RESPONSABLE INSCRIPTO
             total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_exento.getText())+"");
             total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_no_gravado.getText())+"");
             total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_total_iva.getText())+"");            
-            //total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_iva_general.getText())+"");
-            //total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_tasa_diferencial.getText())+"");
-            //total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_tasa_reducida.getText())+"");
             total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_sobretasa.getText())+"");
             total=this.sumarBigDecimal(total+"", convertirEnBigDecimal(field_impuesto_interno.getText())+"");                        
+            jTextField11.setText(total+"");
+            jTextField10.setText(field_no_gravado.getText()+"");        
         }        
-        jTextField11.setText(total+"");
-        jTextField10.setText(subtotal+"");        
-        if(sitFrenteIva!=1)
-            jTextField11.setText(subtotal+"");
+        else
+        {
+            total=this.sumarBigDecimal(subtotal+"", convertirEnBigDecimal(field_exento.getText())+"");
+            jTextField11.setText(total+"");
+            jTextField10.setText(field_no_gravado.getText()+"");
+        }                
     }
     
     private String tipoIvaProducto(String codProducto){
@@ -1786,7 +1826,7 @@ private void actualizarTotal(){
             //"Codigo Producto","Descripcion","Cantidad","Precio","Importe"
             String codProducto=(String)modelo.getValueAt(i, 0);
             BigDecimal cantidad=convertirEnBigDecimal(modelo.getValueAt(i, 2)+"");
-            System.out.println(cantidad+"---");
+            
             BigDecimal precioVenta=convertirEnBigDecimal((String)modelo.getValueAt(i,3));
             BigDecimal importe=convertirEnBigDecimal((String)modelo.getValueAt(i,4));
             String tipoIva=tipoIvaProducto(codProducto);            
@@ -1821,9 +1861,10 @@ private void actualizarTotal(){
                 field_sobretasa.setText(aux+"");
             }            
             // NO GRAVADO
-            BigDecimal aux=sumarBigDecimal(field_no_gravado.getText(),importe+"");
-            field_no_gravado.setText(aux+"");
-            
+            if(!esExento(codProducto)){
+                BigDecimal aux=sumarBigDecimal(field_no_gravado.getText(),importe+"");
+                field_no_gravado.setText(aux+"");
+            }
             // IMPUESTO INTERNO
             BigDecimal impInterno=calcularImpInterno(codProducto,importe,cantidad);
             BigDecimal anterior=convertirEnBigDecimal(field_impuesto_interno.getText());
@@ -1914,25 +1955,7 @@ private void actualizarTotal(){
             return false;
     }
     
-    /**
-     * Recorre la tabla y recalcula el debe el haber y saldo 
-     */
-    public void actualizarSaldoDebeHaber(){
-        BigDecimal importe=new BigDecimal(0);
-        BigDecimal iva=new BigDecimal(0);
-        String impAux;
-        BigDecimal ivaAux=new BigDecimal(0);
-        for(int i=0;i<modelo.getRowCount();i++){
-            //ivaAux=sumarIvaTotal(modelo.getValueAt(i,2)+"",modelo.getValueAt(i,5)+"");
-           // ivaAux=modelo.getValueAt(i, 6)+"";
-            impAux=modelo.getValueAt(i, 5)+"";
-            iva=sumarBigDecimal(iva+"",ivaAux+"");
-            importe=sumarBigDecimal(importe+"",impAux);
-        }
-        
-        jTextField10.setText(importe+"");
-        jTextField11.setText(sumarBigDecimal(importe+"",iva+"")+"");
-    }
+
     
 /*    private BigDecimal sumarIvaTotal(String codProducto,String subtotal){
         r_con.Connection();
