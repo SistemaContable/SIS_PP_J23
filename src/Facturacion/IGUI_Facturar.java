@@ -7,25 +7,19 @@
 package Facturacion;
 
 import Contabilidad.*;
-import Interface.*;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Fechas;
 import Clases_Auxiliares.Validaciones;
-import Objetos.Asiento;
 import Objetos.Cliente;
-import Objetos.Cuenta;
 import Objetos.Usuario;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +46,7 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
  *
  * @author Manolo
  */
+
 public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
     /**
@@ -111,7 +106,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }    
     
     private void vaciar_panel_datos(){
-        field_tipo_comprobante.requestFocus();
+        field_tipo_comprobante.requestFocusInWindow();
         this.vaciar_cliente();
         fecha_factura.setText(fecha.getHoy());
         field_tipo_comprobante.setText("");
@@ -815,19 +810,17 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         if(jTable1.getModel().getRowCount()>0){
             int rta=JOptionPane.showConfirmDialog(null,"La factura será eliminada. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
-            if (rta==JOptionPane.YES_OPTION){
-                
+            if (rta==JOptionPane.YES_OPTION){                
                 r_con.Connection();
                 r_con.ActualizarSinCartel("delete from renglon_factura where rf_confirmado=0");
                 r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");                                
                 this.dispose();
                 r_con.cierraConexion();
             }        
-        }
-        
+        }        
         else{
             this.dispose();
             r_con.cierraConexion();
@@ -837,15 +830,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+
         boton7.setEnabled(false);
         int rta=JOptionPane.showConfirmDialog(null,"La factura sera eliminada. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
             if (rta==JOptionPane.YES_OPTION){
-                //int numAsiento=Integer.parseInt(jTextField1.getText());
                 int numRenglon=1;
                 modelo.removeRow(numRenglon-1);
                 r_con.Connection();
-                //r_con.ActualizarSinCartel("delete from borrador_asientos where ba_nro_asiento="+numAsiento);
                 renombrarTabla();
             }        
             jButton4.setText("Confirmar");
@@ -858,9 +849,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             
         }                        
     }
-    
 
-    
     private void borrarCamposBasicos(){
         jTextField6.setText("");
         jTextField12.setText("");
@@ -871,18 +860,17 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
    private int getIdNuevoEncabezadoFactura(){
-       r_con.Connection();
-       int id=-1;
-       try{
-       ResultSet rs=r_con.Consultar("select max(ef_encabezado_factura_id) from encabezado_factura");
-       if(rs.next()){
-           id=rs.getInt(1);           
-       }
-       id++;
-       }
-       catch(Exception e){r_con.cierraConexion();}       
-       r_con.cierraConexion();             
-       return id;
+        r_con.Connection();
+        int id=-1;
+        try{
+            ResultSet rs=r_con.Consultar("select max(ef_encabezado_factura_id) from encabezado_factura");
+            if(rs.next()){
+                id=rs.getInt(1);           
+            }
+            id++;
+        }catch(Exception e){r_con.cierraConexion();       
+        }finally {r_con.cierraConexion();}   
+        return id;
    }
     
     
@@ -894,16 +882,18 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         int numCliente=Integer.parseInt(field_nro_cliente.getText());       
         String fec=fecha_factura.getText();                
         String sql="insert into encabezado_factura values("+idFactura+","+tipoComprobante+","+puntoVenta+","+
-                "(select max(vxc_numero)+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+puntoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+"),"+
-                "(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0)";
+                   "(select max(vxc_numero)+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+puntoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+"),"+
+                   "(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0)";
         
         r_con.InsertarSinCartel(sql);        
         r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control+1 from parametros_facturacion)");
+        
         ResultSet rs=r_con.Consultar("select pf_numero_control from parametros_facturacion");
         try{
-        if(rs.next())
-            numeroControl=rs.getInt(1);
+            if(rs.next())
+                numeroControl=rs.getInt(1);
         }catch(Exception e){}
+        
         btn_confirmar_encabezado.setEnabled(false);
         r_con.cierraConexion();
         jButton2.setEnabled(true);                    
@@ -927,8 +917,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField8FocusLost
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
+
         String ivaGeneral=field_iva_general.getText();
         String tasaDiferencial=field_tasa_diferencial.getText();
         String tasaReducida=field_tasa_reducida.getText();
@@ -938,6 +927,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         String total=jTextField11.getText();
         String subtotal=jTextField10.getText();
         String impuestoInterno=field_impuesto_interno.getText();
+        
         r_con.Connection();
         r_con.ActualizarSinCartel("update encabezado_factura set ef_iva_general="+ivaGeneral+",ef_tasa_diferencial="+tasaDiferencial+",ef_sobretasa="+sobretasa+",ef_exento="+exento+",ef_tasa_reducida="+tasaReducida+",ef_no_gravado="+noGravado+",ef_impuesto_interno="+impuestoInterno+",ef_subtotal="+subtotal+",ef_total="+total+",ef_confirmado=1 where ef_encabezado_factura_id="+numeroControl);
         r_con.ActualizarSinCartel("update renglon_factura set rf_confirmado=1 where rf_encabezado_factura_id="+numeroControl);
@@ -957,14 +947,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         imprimir();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-
-    
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:        
         if(jTable1.isEnabled()){
             if(evt.getClickCount()==2){            
                 int fila=jTable1.getSelectedRow();
-            //"Renglon","Nro. Cuenta","Fecha Oper.","Fecha Vto.","Nro Comprobante","Leyenda","Debe","Haber"
                 modificar=fila;                               
                 String codProducto=(String)modelo.getValueAt(fila,0);
                 String cantidad=modelo.getValueAt(fila, 2)+"";
@@ -1048,8 +1035,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 }
             }
         }        
-        catch(Exception e){r_con.cierraConexion();}        
-        r_con.cierraConexion();
+        catch(Exception e){r_con.cierraConexion();
+        }finally {r_con.cierraConexion();} 
     }
     
     private void field_tipo_comprobanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tipo_comprobanteFocusLost
@@ -1073,7 +1060,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                         mensajeError(" ");
                     }
                     else{
-                        field_tipo_comprobante.requestFocus();
+                        field_tipo_comprobante.requestFocusInWindow();
                         label_tipo_comprobante.setText("TIPO COMPROBANTE:");
                         generarAyuda_Tipo_Comprobante();
                     }
@@ -1116,12 +1103,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     }
                     else{
                         label_numero_factura.setText(" ");
-                        field_punto_venta.requestFocus();
+                        field_punto_venta.requestFocusInWindow();
                         mensajeError("El tipo de comprobante "+field_tipo_comprobante.getText()+" no esta disponible para el punto de venta "+field_punto_venta.getText());
                     }
                 }
                 else {
-                    field_punto_venta.requestFocus();
+                    field_punto_venta.requestFocusInWindow();
                     generarAyuda_Punto_Venta();   
                 }
             }
@@ -1162,7 +1149,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
             if (es_componente){
                 if (!fecha.isFechaValida(fecha_factura.getText())){
-                    fecha_factura.requestFocus();    
+                    fecha_factura.requestFocusInWindow();    
                     mensajeError("La Fecha ingresada no se reconoce como valida.");    
                 }
                 else{
@@ -1223,19 +1210,19 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                             mensajeError(" ");
                         }
                         else{
-                            field_nro_cliente.requestFocus();
+                            field_nro_cliente.requestFocusInWindow();
                             mensajeError("El tipo de comprobante seleccionado no esta permitido para la situacion frente al IVA del Cliente");
                         }
                     }
                     else{
                         vaciar_cliente ();
-                        field_nro_cliente.requestFocus();
+                        field_nro_cliente.requestFocusInWindow();
                         generarAyuda_Cliente();      
                     }
                 }
                 else{
                     vaciar_cliente ();
-                    field_nro_cliente.requestFocus();
+                    field_nro_cliente.requestFocusInWindow();
                     mensajeError("Por favor, ingrese un cliente");
                 }
             }
@@ -1262,11 +1249,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     jTextField7.setText(rs.getString(5));                
                 }
                 else{
-                    jTextField6.requestFocus();
+                    jTextField6.requestFocusInWindow();
                 }
             }
             else{
-                jTextField6.requestFocus();
+                jTextField6.requestFocusInWindow();
             }
         }
         catch(Exception e){}
