@@ -2081,15 +2081,21 @@ private void actualizarTotal(){
                                     parametros.put("tasa_1", separar[1].trim());
                                     parametros.put("valor_tasa_1",field_tasa_reducida.getText());
                                 }
-                                String ivaGeneral=field_iva_general.getText();
-                                String tasaDiferencial=field_tasa_diferencial.getText();
-                                String tasaReducida=field_tasa_reducida.getText();
-                                String exento=field_exento.getText();
-                                String sobretasa=field_sobretasa.getText();
-                                String noGravado=field_no_gravado.getText();
-                                String total=jTextField10.getText();
-                                String subtotal=jTextField11.getText();
-                                String impuestoInterno=field_impuesto_interno.getText();
+                                if ((!field_iva_general.getText().equals("")) && (!field_iva_general.getText().equals("0"))){
+                                    separar = jLabel3.getText().split(" ");
+                                    parametros.put("tasa_2", separar[1].trim());
+                                    parametros.put("valor_tasa_2",field_iva_general.getText());
+                                }
+                                if ((!field_tasa_diferencial.getText().equals("")) && (!field_tasa_diferencial.getText().equals("0"))){
+                                    separar = jLabel4.getText().split(" ");
+                                    parametros.put("tasa_2", separar[1].trim());
+                                    parametros.put("valor_tasa_2",field_tasa_diferencial.getText());
+                                }                                
+                                parametros.put("total_iva", field_total_iva.getText());
+                                parametros.put("exento", field_exento.getText());
+                                parametros.put("sobretasa", field_sobretasa.getText());
+                                parametros.put("conceptos_no_gravados", field_impuesto_interno.getText());
+                                parametros.put("neto", field_no_gravado.getText());
                             }
                             
                             print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
