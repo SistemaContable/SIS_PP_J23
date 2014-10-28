@@ -69,12 +69,7 @@ public class GUI_Ayuda_Punto_Venta extends javax.swing.JInternalFrame {
         if (tabla.getRowCount()>0){
             cargar_Seleccionado(0);
             tabla.setRowSelectionInterval(0,0);
-            tabla.requestFocus();
-            //unica manera de que la columna gane el foco y se pueda desplazar con las flechas
-            try {
-                Robot robot = new Robot();
-                robot.keyPress(KeyEvent.VK_TAB);            
-            } catch (AWTException ex) {}
+            tabla.requestFocusInWindow();
         }
     }
     

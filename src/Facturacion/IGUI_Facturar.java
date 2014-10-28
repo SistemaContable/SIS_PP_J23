@@ -1284,7 +1284,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             Logger.getLogger(IGUI_Clientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();         
+        //np.requestFocus();         
     }
     
     private boolean validar_Comprobante_Cliente (Cliente cli, String codigo_comprobante){
@@ -1448,7 +1448,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();         
+        //np.requestFocus();         
     }
     
      public void generarAyuda_Punto_Venta(){
@@ -1467,7 +1467,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();         
+        //np.requestFocus();         
     }
      
      public void generarAyuda_Cliente(){
@@ -1486,7 +1486,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();         
+        //np.requestFocus();         
     }
     
     private void actualizarTabla(){
