@@ -71,11 +71,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     public IGUI_Facturar(Usuario usr,Conexion con) {        
         initComponents();
+        ordenarFoco();
         r_con=con;
         usuario=usr;
         renglon=0;
         modificar=-1;
-        r_con.Connection();
+        //r_con.Connection();
         inicializarTabla();
         inicializarIvas();
         
@@ -86,8 +87,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jButton2.setEnabled(false);        
         btn_confirmar_encabezado.setEnabled(false);
         jTable1.setEnabled(false);
-        fecha_factura.setText(fecha.getHoy());        
-        ordenarFoco();
+        fecha_factura.setText(fecha.getHoy());  
         field_tipo_comprobante.requestFocusInWindow();
     }
 
@@ -817,13 +817,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 r_con.Connection();
                 r_con.ActualizarSinCartel("delete from renglon_factura where rf_confirmado=0");
                 r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");                                
-                this.dispose();
                 r_con.cierraConexion();
+                this.dispose();
             }        
         }        
         else{
             this.dispose();
-            r_con.cierraConexion();
+            //r_con.cierraConexion();
        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -892,10 +892,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         try{
             if(rs.next())
                 numeroControl=rs.getInt(1);
-        }catch(Exception e){}
+        } catch(Exception e){
+        } finally{r_con.cierraConexion();};
         
-        btn_confirmar_encabezado.setEnabled(false);
-        r_con.cierraConexion();
+        btn_confirmar_encabezado.setEnabled(false);        
         jButton2.setEnabled(true);                    
         habilitarPanel1(false);
         habilitarPanel2(true);
@@ -929,20 +929,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         String impuestoInterno=field_impuesto_interno.getText();
         
         r_con.Connection();
-        r_con.ActualizarSinCartel("update encabezado_factura set ef_iva_general="+ivaGeneral+",ef_tasa_diferencial="+tasaDiferencial+",ef_sobretasa="+sobretasa+",ef_exento="+exento+",ef_tasa_reducida="+tasaReducida+",ef_no_gravado="+noGravado+",ef_impuesto_interno="+impuestoInterno+",ef_subtotal="+subtotal+",ef_total="+total+",ef_confirmado=1 where ef_encabezado_factura_id="+numeroControl);
-        r_con.ActualizarSinCartel("update renglon_factura set rf_confirmado=1 where rf_encabezado_factura_id="+numeroControl);
-        int ptoVenta=Integer.parseInt(field_punto_venta.getText());
-        int tipoComprobante=Integer.parseInt(field_tipo_comprobante.getText());
-        r_con.ActualizarSinCartel("update ptoventa_x_tipocomprobante set vxc_numero=(select vxc_numero+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+") where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante);
-        this.inicializarTabla();
-        this.inicializarIvas();
-        this.vaciar_panel_datos();
-        this.habilitarPanel1(true);
-        this.habilitarPanel2(false);
-        label_mensaje.setForeground(Color.green);
-        label_mensaje.setText("La factura fue cargada correctamente");
-        
-        renglon=0;
+            r_con.ActualizarSinCartel("update encabezado_factura set ef_iva_general="+ivaGeneral+",ef_tasa_diferencial="+tasaDiferencial+",ef_sobretasa="+sobretasa+",ef_exento="+exento+",ef_tasa_reducida="+tasaReducida+",ef_no_gravado="+noGravado+",ef_impuesto_interno="+impuestoInterno+",ef_subtotal="+subtotal+",ef_total="+total+",ef_confirmado=1 where ef_encabezado_factura_id="+numeroControl);
+            r_con.ActualizarSinCartel("update renglon_factura set rf_confirmado=1 where rf_encabezado_factura_id="+numeroControl);
+            int ptoVenta=Integer.parseInt(field_punto_venta.getText());
+            int tipoComprobante=Integer.parseInt(field_tipo_comprobante.getText());
+            r_con.ActualizarSinCartel("update ptoventa_x_tipocomprobante set vxc_numero=(select vxc_numero+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+") where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante);       
+            renglon=0;
         r_con.cierraConexion();
         imprimir();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -970,8 +962,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    jButton4.setEnabled(false);
-    boton7.setEnabled(false);
+        jButton4.setEnabled(false);
+        boton7.setEnabled(false);
         if(jButton4.getText().equals("Confirmar")){
             if(controlarCampos()){
                 jButton2.setEnabled(true);
@@ -981,13 +973,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 borrarCamposBasicos();
                 mensajeError(" ");
             }
-            else
-            {
+            else{
                 mensajeError("Debe completar todos los campos");
             }
         }
-        else
-        {
+        else{
             if(controlarCampos()){
                 jButton4.setText("Confirmar");               
                 actualizarTabla();
@@ -1155,8 +1145,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     mensajeError(" ");
                 }
             }
-            try{
-                r_con.Connection();
+            r_con.Connection();
+            try{                
                 String fechaFacturacion="";
                 ResultSet rs=r_con.Consultar("select pf_fecha_ultima_factura from parametros_facturacion");
                 if(rs.next())
@@ -1283,14 +1273,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         catch (PropertyVetoException ex) {
             Logger.getLogger(IGUI_Clientes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        np.moveToFront();
-        //np.requestFocus();         
+        np.moveToFront();        
     }
     
     private boolean validar_Comprobante_Cliente (Cliente cli, String codigo_comprobante){
         boolean existe = false;
-        try {
-            r_con.Connection();
+        r_con.Connection();
+        try {            
             String sql = (
                         "SELECT * "+
                         " FROM situacion_x_tipocomprobante "+
@@ -1323,8 +1312,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     private String get_TipoComprobante (String codigo){
         String detalle = "";
-        try {            
-            r_con.Connection();
+        r_con.Connection();
+        try {   
             String sql = ( "SELECT * "+
                     " FROM tipo_comprobante"+
                     " WHERE tc_codigo = "+codigo);
@@ -1343,8 +1332,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     private String get_NumeroComprobante (String pto, String codigo){
         String detalle = "";
-        try {            
-            r_con.Connection();
+        r_con.Connection();
+        try {       
             String sql = ( "SELECT * "+
                     " FROM ptoventa_x_tipocomprobante"+
                     " WHERE vxc_id_pto_venta = "+pto+" AND vxc_id_tipo_comprobante = "+codigo);
@@ -1386,8 +1375,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private Cliente get_Cliente (String codigo){
         String detalle = "";
         Cliente cli = new Cliente();
+        r_con.Connection();
         try {            
-            r_con.Connection();
             String sql = ( "SELECT cli_codigo, cli_nombre, cli_apellido, cli_fecha_nac, cli_cuit, loc_descripcion, cli_direccion, cli_calle, cli_sit_frente_iva, sfi_descripcion " +
                            "FROM clientes, localidades, situacion_frente_iva " +
                            "WHERE (cli_codigo = "+codigo+") AND (cli_localidad = loc_id) AND (cli_sit_frente_iva = sfi_id)");
@@ -1447,8 +1436,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         catch (PropertyVetoException ex) {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        np.moveToFront();
-        //np.requestFocus();         
+        np.moveToFront();        
     }
     
      public void generarAyuda_Punto_Venta(){
@@ -1466,8 +1454,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         catch (PropertyVetoException ex) {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        np.moveToFront();
-        //np.requestFocus();         
+        np.moveToFront();        
     }
      
      public void generarAyuda_Cliente(){
@@ -1485,11 +1472,10 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         catch (PropertyVetoException ex) {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        np.moveToFront();
-        //np.requestFocus();         
+        np.moveToFront();       
     }
     
-    private void actualizarTabla(){
+     private void actualizarTabla(){
         if(modificar!=-1){            
             int numRenglon=modificar;            
             System.out.println(modificar);
@@ -1536,7 +1522,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                             
             actualizar();
             modificar=-1;
-            r_con.cierraConexion();
         }
     }         
    
@@ -1648,6 +1633,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
 
+
     private void inicializarTabla() {        
         modelo=new DefaultTableModelAsientos();
         String [] columnas= {"Codigo Producto","Descripcion","Cantidad","Precio","Importe"};
@@ -1659,16 +1645,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         label_mensaje.setForeground(Color.red);
         label_mensaje.setText(msj);        
     }
-    
-    /**
-     * Nos retorna el numero del tipo, segun el radio button seleccionado
-     * @return 
-     */
-    private String getTipo(){
-
-        return "";
-    }
-    
+        
     private void cargarTabla(){
         String descripcionProducto=jTextField12.getText();                       
         float preVenta=Float.parseFloat(jTextField7.getText());
@@ -1697,7 +1674,6 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jTable1.setModel(modelo);
         
         renglon++;
-        r_con.cierraConexion();
     }
     
     
@@ -1715,8 +1691,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 }
            
             }                 
-        } catch(Exception e){
-        } finally {r_con.cierraConexion();}
+        }
+        catch(Exception e){}
         return impuestoInterno;
     }
     
@@ -1812,9 +1788,8 @@ private void actualizarTotal(){
             if(rs.next()){
                 aux=rs.getString(1);
             }
-        } catch(Exception e){
-        } finally {r_con.cierraConexion();}
-        
+        }
+        catch(Exception e){}
         return aux;
     }
 
@@ -1826,8 +1801,7 @@ private void actualizarTotal(){
             //"Codigo Producto","Descripcion","Cantidad","Precio","Importe"
             String codProducto=(String)modelo.getValueAt(i, 0);
             BigDecimal cantidad=convertirEnBigDecimal(modelo.getValueAt(i, 2)+"");
-            
-            BigDecimal precioVenta=convertirEnBigDecimal((String)modelo.getValueAt(i,3));
+                        
             BigDecimal importe=convertirEnBigDecimal((String)modelo.getValueAt(i,4));
             String tipoIva=tipoIvaProducto(codProducto);            
             BigDecimal iva=calcularIva(codProducto,importe);
@@ -1916,9 +1890,8 @@ private void actualizarTotal(){
                 r_con.ActualizarSinCartel("update renglon_factura set rf_no_gravado="+sub+",rf_impuesto_interno="+impInterno.floatValue()+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
             }
             }
-        } catch(Exception e){
-        } finally {r_con.cierraConexion();}
- 
+        }catch(Exception e){r_con.cierraConexion();}
+        r_con.cierraConexion();
     }
 
     /**
@@ -1939,9 +1912,11 @@ private void actualizarTotal(){
                 iva=rs.getFloat(1);
             }        
             bigAux=importe.multiply(new BigDecimal(iva)).divide(new BigDecimal(100));        
-        } catch(Exception e){return null;
-        } finally {r_con.cierraConexion();}
- 
+        } catch(Exception e){
+            return null;
+        } finally {
+            r_con.cierraConexion();
+        }
         return bigAux;
     }
     
@@ -1956,19 +1931,7 @@ private void actualizarTotal(){
         else
             return false;
     }
-    
-
-    
-/*    private BigDecimal sumarIvaTotal(String codProducto,String subtotal){
-        r_con.Connection();
-        ResultSet rs=r_con.Consultar("select * from productos,tasas_iva where prod_codigo="+codProducto+" and prod_tasa_iva=tasa_id");
-        float ivaProducto=
-        //BigDecimal bigAux=
-        
-   // }
-  */  
-
-    
+       
     private BigDecimal sumarBigDecimal(String num1,String num2){        
         float num1Float=Float.parseFloat(num1);
         float num2Float=Float.parseFloat(num2);
@@ -2008,136 +1971,158 @@ private void actualizarTotal(){
      
 
     
-    private void identificarReporte (String nro){        
+    private void identificarReporte (int nro){        
         switch(nro) {
-            case "1": 
+            case 1: 
                 reporte_seleccionado = "modelo_factura_A.jrxml";
                 break;
-            case "2": 
+            case 2: 
                 reporte_seleccionado = "modelo_factura_A.jrxml";
                 break;
-            case "3": 
+            case 3: 
                 reporte_seleccionado = "modelo_factura_A.jrxml";
                 break;
-            case "4": 
+            case 4: 
                 reporte_seleccionado = "modelo_recibo.jrxml";
                 break;
-            case "5": 
+            case 5: 
                 reporte_seleccionado = "modelo_factura_A.jrxml";
                 break;
-            case "6": 
+            case 6: 
                 reporte_seleccionado = "modelo_factura_B.jrxml";
                 break;
-            case "7": 
+            case 7: 
                 reporte_seleccionado = "modelo_factura_B.jrxml";
                 break;
-            case "8": 
+            case 8: 
                 reporte_seleccionado = "modelo_factura_B.jrxml";
                 break;
-            case "9": 
+            case 9: 
                 reporte_seleccionado = "modelo_recibo.jrxml";
                 break;
-            case "10": 
+            case 10: 
                 reporte_seleccionado = "modelo_factura_B.jrxml";
                 break;
             default: 
+                reporte_seleccionado = null;
                 break;
         }
     }
-     
-     
-     private void imprimir (){   
-         identificarReporte(field_tipo_comprobante.getText()); 
-         try {                   
-                r_con.Connection();
-                //vector con las impresoras del modulo de la base de datos
-                Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
-                //total impresoras disponibles
-                PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
-                //vector con las impresoras del modulo como objeto impresora (PrintService)
-                Vector<PrintService>impresoras_modulo = new Vector();
-                //objeto impresora en el que se imprime
-                PrintService impresora = null;
-
-                if (v.size()>0){
-                    String nombre_imp;
-                    //caso en que haya mas de una impresora por modulo
-                    if (v.size()>=1){
-                        //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
-                        for (int i = 0; i < v.size(); i++) {
-                            nombre_imp=v.elementAt(i).firstElement();
-                            AttributeSet aset = new HashAttributeSet();
-                            aset.add(new PrinterName(nombre_imp, null));
-                            impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
-                            impresora = impresoras[0];
-                            impresoras_modulo.add(impresora);
-                        }
-                        //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
-                        PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
-                        for (int i = 0; i < impresoras_modulo.size(); i++) {
-                            listado_impresoras[i]=impresoras_modulo.elementAt(i);
-                        }
-                        //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
-                        impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
-                            "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
-                    }
-                    
-                    //si hay impresora para el modulo
-                    if (impresora != null){
-                        //cargo Parametros del Reporte
-                        Map parametros = new HashMap();
-                        //localizo el reporte para usarlo
-                        JasperReport report = JasperCompileManager.compileReport("src/Reportes/modelo_factura_A.jrxml");
-                        //cargo los datos
-                        JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
-                        
-                        JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
-                        jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
-                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
-                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
-                        jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
-
-                        String message="Esta a punto de imprimir un comprobantes, ¿esta seguro? " ;
-                        int rta=JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-                        if (rta==JOptionPane.YES_OPTION){                            
-                                String fecha = fecha_factura.getText();
-                                parametros.put("dia", fecha.substring(8,10));
-                                parametros.put("mes", fecha.substring(5,7));
-                                parametros.put("anio", fecha.substring(0,4));
-                                parametros.put("nombre", cliente_factura.getApellido_cliente()+", "+cliente_factura.getNombre_cliente());
-                                parametros.put("cuil", cliente_factura.getCuil());
-                                parametros.put("domicilio", cliente_factura.getDireccion());
-                                parametros.put("iva", cliente_factura.getDescripcion_situacion_IVA_cliente());
-                                parametros.put("control", Integer.toString(numeroControl));
-                                parametros.put("total", jTextField11.getText());
-                                print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
-                                jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
-                                jrprintServiceExporter.exportReport(); 
-                                
-                                if (reporte_seleccionado.equals("modelo_factura_A.jrxml")){
-                                    String ivaGeneral=field_iva_general.getText();
-                                    String tasaDiferencial=field_tasa_diferencial.getText();
-                                    String tasaReducida=field_tasa_reducida.getText();
-                                    String exento=field_exento.getText();
-                                    String sobretasa=field_sobretasa.getText();
-                                    String noGravado=field_no_gravado.getText();
-                                    String total=jTextField10.getText();
-                                    String subtotal=jTextField11.getText();
-                                    String impuestoInterno=field_impuesto_interno.getText();
-                                }
-                        }
-                    }                                          
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
-                        + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
-                }
-                r_con.cierraConexion();
-            } catch (JRException ex) {r_con.cierraConexion();                          
-            } finally {r_con.cierraConexion();}   
-     }
     
-        
+    private void imprimir () {   
+        r_con.Connection();
+        identificarReporte(Integer.parseInt(field_tipo_comprobante.getText()));          
+        try {
+            if (reporte_seleccionado != null){
+                String message = "Esta a punto de imprimir su Comprobantes, ¿Está seguro?:" ;
+                int rta = JOptionPane.showConfirmDialog(null, message, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (rta==JOptionPane.YES_OPTION){                    
+                    //vector con las impresoras del modulo de la base de datos
+                    Vector<Vector<String>>v = r_con.getContenidoTabla("SELECT * FROM impresoras WHERE imp_id_modulo = "+id_modulo_imp);
+                    //total impresoras disponibles
+                    PrintService [] impresoras = PrintServiceLookup.lookupPrintServices(null, null);
+                    //vector con las impresoras del modulo como objeto impresora (PrintService)
+                    Vector<PrintService>impresoras_modulo = new Vector();
+                    //objeto impresora en el que se imprime
+                    PrintService impresora = null; 
+
+                    if (v.size()>0){
+                        String nombre_imp;
+                        //caso en que haya mas de una impresora por modulo
+                        if (v.size()>=1){
+                            //localizo con el simple nombre de la base de dato, el objeto impresora y los cargo
+                            for (int i = 0; i < v.size(); i++) {
+                                nombre_imp=v.elementAt(i).firstElement();
+                                AttributeSet aset = new HashAttributeSet();
+                                aset.add(new PrinterName(nombre_imp, null));
+                                impresoras = PrintServiceLookup.lookupPrintServices(null, aset);
+                                impresora = impresoras[0];
+                                impresoras_modulo.add(impresora);
+                            }
+                            //paso las impresoras del modulo a un arreglo para poder mostrarlo en el Dialog
+                            PrintService [] listado_impresoras = new PrintService[impresoras_modulo.size()];
+                            for (int i = 0; i < impresoras_modulo.size(); i++) {
+                                listado_impresoras[i]=impresoras_modulo.elementAt(i);
+                            }
+                            //muestro el listado de impresoras como objeto y se la asigno a la impresora a imprimir
+                            impresora = (PrintService) JOptionPane.showInputDialog(null, "Seleccione una impresora asignada a este módulo:",
+                                "Imprimir Reporte", JOptionPane.QUESTION_MESSAGE, null, listado_impresoras, listado_impresoras[0]);
+                        }
+
+                        //si hay impresora para el modulo
+                        if (impresora != null){
+                            //cargo Parametros del Reporte
+                            Map parametros = new HashMap();
+                            //localizo el reporte para usarlo
+                            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);
+                            //cargo los datos al reporte
+                            JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
+
+                            JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
+                            jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
+                            jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, impresora );
+                            jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+                            jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+
+                            String [] separar = fecha_factura.getText().split("/");
+                            parametros.put("dia", separar[0]);
+                            parametros.put("mes", separar[1]);
+                            parametros.put("anio", separar[2]);
+                            parametros.put("nombre", cliente_factura.getApellido_cliente()+", "+cliente_factura.getNombre_cliente());
+                            parametros.put("cuil", cliente_factura.getCuil());
+                            parametros.put("domicilio", cliente_factura.getDireccion());
+                            parametros.put("iva", cliente_factura.getDescripcion_situacion_IVA_cliente());
+                            parametros.put("control", Integer.toString(numeroControl));
+                            parametros.put("total", jTextField11.getText());                             
+
+                            if (reporte_seleccionado.equals("modelo_factura_A.jrxml")){
+                                if ((!field_tasa_reducida.getText().equals("")) && (!field_tasa_reducida.getText().equals("0"))){
+                                    separar = jLabel5.getText().split(" ");
+                                    parametros.put("tasa_1", separar[1].trim());
+                                    parametros.put("valor_tasa_1",field_tasa_reducida.getText());
+                                }
+                                String ivaGeneral=field_iva_general.getText();
+                                String tasaDiferencial=field_tasa_diferencial.getText();
+                                String tasaReducida=field_tasa_reducida.getText();
+                                String exento=field_exento.getText();
+                                String sobretasa=field_sobretasa.getText();
+                                String noGravado=field_no_gravado.getText();
+                                String total=jTextField10.getText();
+                                String subtotal=jTextField11.getText();
+                                String impuestoInterno=field_impuesto_interno.getText();
+                            }
+                            
+                            print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
+                            
+                            if (print.getPages().size()>0){
+                                jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
+                                jrprintServiceExporter.exportReport();
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "El Reporte está vacío.","Atención",JOptionPane.WARNING_MESSAGE);
+                            }                            
+                        }                                          
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "No hay Impresoras asignadas a este Modulo, "
+                            + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No hay Reporte asignado a este Comprobante, "
+                           + "\npóngase en contacto con el Administrador.","Atención",JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (JRException ex) {
+            ex.printStackTrace();
+        } finally {
+            this.inicializarTabla();
+            this.inicializarIvas();
+            this.vaciar_panel_datos();
+            this.habilitarPanel1(true);
+            this.habilitarPanel2(false); 
+            r_con.cierraConexion();
+        }   
+     }        
     
 }

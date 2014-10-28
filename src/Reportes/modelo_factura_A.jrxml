@@ -73,7 +73,7 @@
 	<queryString>
 		<![CDATA[SELECT rf_num_renglon, rf_codigo_producto, prod_descripcion, rf_cantidad, prod_precio_neto_venta, rf_importe
 FROM renglon_factura, productos
-WHERE rf_encabezado_factura_id = '1' AND rf_codigo_producto=prod_codigo]]>
+WHERE rf_encabezado_factura_id = $P{control} AND rf_codigo_producto=prod_codigo]]>
 	</queryString>
 	<field name="rf_num_renglon" class="java.lang.Integer"/>
 	<field name="rf_codigo_producto" class="java.lang.Integer"/>
