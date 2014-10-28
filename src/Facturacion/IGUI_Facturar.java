@@ -868,8 +868,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 id=rs.getInt(1);           
             }
             id++;
-        }catch(Exception e){r_con.cierraConexion();       
-        }finally {r_con.cierraConexion();}   
+        } catch(Exception e){       
+        } finally {r_con.cierraConexion();}   
         return id;
    }
     
@@ -1034,9 +1034,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                     i++;
                 }
             }
-        }        
-        catch(Exception e){r_con.cierraConexion();
-        }finally {r_con.cierraConexion();} 
+        } catch(Exception e){
+        } finally {r_con.cierraConexion();} 
     }
     
     private void field_tipo_comprobanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tipo_comprobanteFocusLost
@@ -1170,11 +1169,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 else{
                     mensajeError("La Fecha ingresada debe ser superior a la fecha de la ultima factura: "+fechaFacturacion);    
                 }
-            }
-            catch(Exception e){
-            r_con.cierraConexion();
-            }
-            r_con.cierraConexion();
+            } catch(Exception e){
+            } finally {r_con.cierraConexion();}
         }
     }//GEN-LAST:event_fecha_facturaFocusLost
 
@@ -1255,8 +1251,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             else{
                 jTextField6.requestFocusInWindow();
             }
-        }
-        catch(Exception e){}
+        } catch(Exception e){            
+        } finally {r_con.cierraConexion();}
         
     }//GEN-LAST:event_jTextField6FocusLost
 
@@ -1308,11 +1304,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             res.close();
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {            
-            r_con.cierraConexion();
-        }
-        return existe;
-    
+        } finally {r_con.cierraConexion();}
+        
+        return existe;    
     }
     
     private void vaciar_cliente (){
@@ -1342,9 +1336,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             res.close();           
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Facturar.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-                    r_con.cierraConexion();
-                  }
+        } finally {r_con.cierraConexion();}
+        
         return detalle;
     }
     
@@ -1363,9 +1356,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             res.close();           
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Facturar.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-                    r_con.cierraConexion();
-                  }
+        } finally {r_con.cierraConexion();}
+        
         return detalle;
     }
     
@@ -1386,9 +1378,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             res.close();
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {            
-            r_con.cierraConexion();
-        }
+        } finally {r_con.cierraConexion();}
+        
         return existe;
     }
     
@@ -1436,10 +1427,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             res.close();           
         } catch (SQLException ex) {
             Logger.getLogger(IGUI_Facturar.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-                    r_con.cierraConexion();
-                  }
-        //System.out.println(cli.toString());
+        } finally {r_con.cierraConexion();}
+
         return cli;
     }
     
@@ -1547,6 +1536,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                             
             actualizar();
             modificar=-1;
+            r_con.cierraConexion();
         }
     }         
    
@@ -1707,6 +1697,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         jTable1.setModel(modelo);
         
         renglon++;
+        r_con.cierraConexion();
     }
     
     
@@ -1724,8 +1715,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 }
            
             }                 
-        }
-        catch(Exception e){}
+        } catch(Exception e){
+        } finally {r_con.cierraConexion();}
         return impuestoInterno;
     }
     
@@ -1821,8 +1812,9 @@ private void actualizarTotal(){
             if(rs.next()){
                 aux=rs.getString(1);
             }
-        }
-        catch(Exception e){}
+        } catch(Exception e){
+        } finally {r_con.cierraConexion();}
+        
         return aux;
     }
 
@@ -1924,8 +1916,9 @@ private void actualizarTotal(){
                 r_con.ActualizarSinCartel("update renglon_factura set rf_no_gravado="+sub+",rf_impuesto_interno="+impInterno.floatValue()+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+reng);
             }
             }
-        }catch(Exception e){r_con.cierraConexion();}
-        r_con.cierraConexion();
+        } catch(Exception e){
+        } finally {r_con.cierraConexion();}
+ 
     }
 
     /**
@@ -1946,8 +1939,9 @@ private void actualizarTotal(){
                 iva=rs.getFloat(1);
             }        
             bigAux=importe.multiply(new BigDecimal(iva)).divide(new BigDecimal(100));        
-        }
-        catch(Exception e){return null;}
+        } catch(Exception e){return null;
+        } finally {r_con.cierraConexion();}
+ 
         return bigAux;
     }
     
@@ -2140,10 +2134,8 @@ private void actualizarTotal(){
                         + "\npóngase en contacto con el Administrador de Impresoras.","Atención",JOptionPane.WARNING_MESSAGE);
                 }
                 r_con.cierraConexion();
-            } catch (JRException ex) {
-                r_con.cierraConexion();
-                Logger.getLogger(GUI_Imprimir_PC.class.getName()).log(Level.SEVERE, null, ex);           
-            }   
+            } catch (JRException ex) {r_con.cierraConexion();                          
+            } finally {r_con.cierraConexion();}   
      }
     
         
