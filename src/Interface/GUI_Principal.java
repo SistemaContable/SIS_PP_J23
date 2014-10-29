@@ -17,6 +17,8 @@ import Facturacion.GUI_Parametros_Facturacion;
 import Facturacion.IGUI_Asignar_Pto_Venta_Comprobante;
 import Facturacion.IGUI_Clientes;
 import Facturacion.IGUI_Facturar;
+import Facturacion.IGUI_Listado_Clientes;
+import Facturacion.IGUI_Listado_Fac;
 import Facturacion.IGUI_Localidades;
 import Facturacion.IGUI_Productos;
 import Facturacion.IGUI_Punto_Venta;
@@ -192,6 +194,7 @@ public class GUI_Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem31 = new javax.swing.JMenuItem();
+        jMenuItem32 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
@@ -397,6 +400,16 @@ public class GUI_Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem31);
+
+        jMenuItem32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/item.png"))); // NOI18N
+        jMenuItem32.setText("Listar Facturas");
+        jMenuItem32.setName("M1"); // NOI18N
+        jMenuItem32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem32ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem32);
 
         jMenuBar1.add(jMenu2);
 
@@ -1317,6 +1330,23 @@ public class GUI_Principal extends javax.swing.JFrame {
         np.requestFocus();
         
     }//GEN-LAST:event_jMenuItem31ActionPerformed
+
+    private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
+        // TODO add your handling code here:
+        IGUI_Listado_Fac np = new IGUI_Listado_Fac(r_con);
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {
+            np.setSelected(true);
+        }
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+    }//GEN-LAST:event_jMenuItem32ActionPerformed
     
     
     public void abrirSesion (){
@@ -1411,6 +1441,7 @@ public class GUI_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem31;
+    private javax.swing.JMenuItem jMenuItem32;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;

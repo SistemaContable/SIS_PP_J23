@@ -680,6 +680,10 @@ CREATE TABLE encabezado_factura(
 	foreign key(ef_punto_venta)references punto_venta(pv_codigo),
 	foreign key(ef_cliente) references clientes(cli_codigo)
 );
+	CREATE INDEX  IX_ef_encabezado_factura_id ON encabezado_factura (ef_encabezado_factura_id);
+	CREATE INDEX  IX_ef_tipo_comprobante ON encabezado_factura (ef_tipo_comprobante);
+	CREATE INDEX  IX_ef_numero_control ON encabezado_factura (ef_numero_control);
+	
 
 CREATE TABLE renglon_factura(
 	rf_encabezado_factura_id int not null,
