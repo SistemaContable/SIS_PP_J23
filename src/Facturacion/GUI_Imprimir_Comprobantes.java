@@ -302,8 +302,9 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
                         parametros.put("cod_comprobante", this.reporte_numero);
                        
                         //localizo el reporte para usarlo
+                        r_con.Connection();
                         JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);                        
-//JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+this.reporte_seleccionado);
+                        //JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+this.reporte_seleccionado);
                         //cargo los datos
                         JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
                         
