@@ -44,7 +44,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     //nombre de las columnas de la Tabla a mostrar en la Ayuda
     private String[] colum_names = {"tasa_id","tasa_tipo","tasa_desde","tasa_hasta","tasa_tasa","tasa_sobretasa"};
     //nombres reales de los Indices de la Tabla
-    private String[] indices_tabla = {"PK_Tasa_ID","IX_Tipo","IX_Desde","IX_Tasa"};  
+    private String[] indices_tabla = {"IX_Tasa_ID","IX_Tipo","IX_Desde","IX_Tasa"};  
     
     
     //nombres de los campos de la JTabla (formales a mostrar en la ayuda) 

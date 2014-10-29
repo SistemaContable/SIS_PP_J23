@@ -27,7 +27,7 @@ CREATE TABLE tasas_iva
 	PRIMARY KEY (tasa_id),
 	FOREIGN KEY (tasa_tipo) REFERENCES tipo_tasas_iva (tasa_clave)
 )
-
+		 CREATE INDEX  IX_Tasa_ID ON tasas_iva (tasa_id);
 		 CREATE INDEX  IX_Tipo ON tasas_iva (tasa_tipo);
 		 CREATE INDEX  IX_Desde ON tasas_iva (tasa_desde);
 		 CREATE INDEX  IX_Tasa ON tasas_iva (tasa_tasa);
