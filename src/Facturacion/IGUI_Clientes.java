@@ -138,13 +138,14 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         menu_baja = new javax.swing.JMenu();
         menu_mod = new javax.swing.JMenu();
         menu_recorrido = new javax.swing.JMenu();
+        menu_listar = new javax.swing.JMenu();
         menu_salir = new javax.swing.JMenu();
 
         setMaximizable(true);
         setTitle("Gestión Clientes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cuentas.png"))); // NOI18N
 
-        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_ayuda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -177,11 +178,11 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_datos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panel_datos.setFocusCycleRoot(true);
 
         field_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -352,7 +353,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(102, 102, 102)
                 .addComponent(btn_cancelar)
-                .addGap(0, 212, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_datosLayout.createSequentialGroup()
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel_datosLayout.createSequentialGroup()
@@ -478,7 +479,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                 .addGap(0, 11, Short.MAX_VALUE))
         );
 
-        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        panel_desplazamiento.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         btn_primero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/arrow-circle-left-2x.png"))); // NOI18N
         btn_primero.setText("Primero");
@@ -597,6 +598,15 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         menu_recorrido.setText(" ORDEN RECORRIDO ");
         menu_interno.add(menu_recorrido);
 
+        menu_listar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/listado.png"))); // NOI18N
+        menu_listar.setText("LISTADO");
+        menu_listar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_listarMouseClicked(evt);
+            }
+        });
+        menu_interno.add(menu_listar);
+
         menu_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/circle-x-4x.png"))); // NOI18N
         menu_salir.setText("SALIR           ");
         menu_salir.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -614,10 +624,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panel_ayuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panel_desplazamiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel_datos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panel_datos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1153,6 +1160,22 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
             field_cuit3.setEditable(true);
         }
     }//GEN-LAST:event_field_cuit1KeyPressed
+
+    private void menu_listarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_listarMouseClicked
+        IGUI_Listado_Clientes np = new IGUI_Listado_Clientes(r_con);
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {
+            np.setSelected(true);
+        }
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+    }//GEN-LAST:event_menu_listarMouseClicked
     
     private String get_tipo_localidad(String clave){
         String descripcion = "";
@@ -1766,6 +1789,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     private javax.swing.JMenu menu_alta;
     private javax.swing.JMenu menu_baja;
     private javax.swing.JMenuBar menu_interno;
+    private javax.swing.JMenu menu_listar;
     private javax.swing.JMenu menu_mod;
     private javax.swing.JMenu menu_recorrido;
     private javax.swing.JMenu menu_salir;
