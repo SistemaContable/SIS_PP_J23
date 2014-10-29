@@ -1333,8 +1333,6 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
         IGUI_Listado_Fac np = new IGUI_Listado_Fac (r_con);       
-
-        //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
         np.setLocation(x, y);        
