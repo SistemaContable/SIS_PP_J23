@@ -1504,6 +1504,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         menu_baja.setEnabled(disponible);
         menu_mod.setEnabled(disponible);
         menu_recorrido.setEnabled(disponible);
+        menu_listar.setEnabled(disponible);
         menu_salir.setEnabled(disponible);
     }
     

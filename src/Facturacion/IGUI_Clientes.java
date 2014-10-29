@@ -138,6 +138,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         menu_baja = new javax.swing.JMenu();
         menu_mod = new javax.swing.JMenu();
         menu_recorrido = new javax.swing.JMenu();
+        menu_listar = new javax.swing.JMenu();
         menu_salir = new javax.swing.JMenu();
 
         setMaximizable(true);
@@ -365,42 +366,6 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lab_modo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lab_mensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panel_datosLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lab_codigo)
-                            .addComponent(lab_descripcion)
-                            .addComponent(lab_cantidad))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel_datosLayout.createSequentialGroup()
-                                .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(162, 162, 162)
-                                .addComponent(lab_cu)
-                                .addGap(4, 4, 4)
-                                .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lab_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panel_datosLayout.createSequentialGroup()
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(panel_datosLayout.createSequentialGroup()
-                                        .addComponent(field_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(130, 130, 130)
-                                        .addComponent(lab_neto1))
-                                    .addGroup(panel_datosLayout.createSequentialGroup()
-                                        .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lab_neto))
-                                    .addGroup(panel_datosLayout.createSequentialGroup()
-                                        .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lab_tasa)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(field_calle, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(6, 6, 6))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
                         .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
@@ -418,15 +383,48 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
                                 .addGap(105, 105, 105)
                                 .addComponent(btn_cancelar)))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(lab_cantidad2)
-                        .addGap(346, 346, 346)
+                    .addGroup(panel_datosLayout.createSequentialGroup()
                         .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGap(6, 6, 6)
+                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lab_codigo)
+                                    .addComponent(lab_descripcion)
+                                    .addComponent(lab_cantidad))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel_datosLayout.createSequentialGroup()
+                                        .addComponent(field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(162, 162, 162)
+                                        .addComponent(lab_cu)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(field_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lab_localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panel_datosLayout.createSequentialGroup()
+                                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                                .addComponent(field_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(130, 130, 130)
+                                                .addComponent(lab_neto1))
+                                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                                .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(lab_neto))
+                                            .addGroup(panel_datosLayout.createSequentialGroup()
+                                                .addComponent(field_fecha_nac, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(lab_tasa)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(field_sit_frente_iva, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(field_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(field_calle, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(lab_tipo_imp, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(40, 40, 40)
+                                .addComponent(lab_cantidad2)
+                                .addGap(346, 346, 346)))
+                        .addGap(6, 6, 6)))
                 .addContainerGap())
         );
         panel_datosLayout.setVerticalGroup(
@@ -607,6 +605,15 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         menu_recorrido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/magnifying-glass-4x.png"))); // NOI18N
         menu_recorrido.setText(" ORDEN RECORRIDO ");
         menu_interno.add(menu_recorrido);
+
+        menu_listar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/listado.png"))); // NOI18N
+        menu_listar.setText("LISTADO");
+        menu_listar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_listarMouseClicked(evt);
+            }
+        });
+        menu_interno.add(menu_listar);
 
         menu_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/circle-x-4x.png"))); // NOI18N
         menu_salir.setText("SALIR           ");
@@ -1158,6 +1165,22 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_field_codigoFocusLost
+
+    private void menu_listarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_listarMouseClicked
+        IGUI_Listado_Clientes np = new IGUI_Listado_Clientes(r_con);
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {
+            np.setSelected(true);
+        }
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+    }//GEN-LAST:event_menu_listarMouseClicked
     
     private String get_tipo_localidad(String clave){
         String descripcion = "";
@@ -1712,6 +1735,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         menu_baja.setEnabled(disponible);
         menu_mod.setEnabled(disponible);
         menu_recorrido.setEnabled(disponible);
+        menu_listar.setEnabled(disponible);
         menu_salir.setEnabled(disponible);
     }
     
@@ -1771,6 +1795,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
     private javax.swing.JMenu menu_alta;
     private javax.swing.JMenu menu_baja;
     private javax.swing.JMenuBar menu_interno;
+    private javax.swing.JMenu menu_listar;
     private javax.swing.JMenu menu_mod;
     private javax.swing.JMenu menu_recorrido;
     private javax.swing.JMenu menu_salir;
