@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prueba" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dd16baa8-45b2-434a-8709-177ab3fb4f0e">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="name_empresa" class="java.lang.String"/>
+	<parameter name="desde" class="java.lang.String"/>
+	<parameter name="hasta" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     balance."blc_cuenta" AS balance_blc_cuenta,
+     balance."blc_codigo_plan_cuenta" AS balance_blc_codigo_plan_cuenta,
+     balance."blc_nombre_cta" AS balance_blc_nombre_cta,
+     balance."blc_saldo_inicial" AS balance_blc_saldo_inicial,
+     balance."blc_debito" AS balance_blc_debito,
+     balance."blc_haber" AS balance_blc_haber,
+     balance."blc_saldo_acumulado" AS balance_blc_saldo_acumulado,
+     balance."blc_saldo_cierre" AS balance_blc_saldo_cierre,
+     pc_imputable AS balance_blc_imputable
+FROM
+     "dbo"."balance" balance, plan_cuentas
+
+WHERE
+     (blc_cuenta = pc_nro_cuenta)
+
+ORDER BY blc_codigo_plan_cuenta]]>
+	</queryString>
+	<field name="balance_blc_cuenta" class="java.lang.Integer"/>
+	<field name="balance_blc_codigo_plan_cuenta" class="java.lang.String"/>
+	<field name="balance_blc_nombre_cta" class="java.lang.String"/>
+	<field name="balance_blc_saldo_inicial" class="java.lang.Double"/>
+	<field name="balance_blc_debito" class="java.lang.Double"/>
+	<field name="balance_blc_haber" class="java.lang.Double"/>
+	<field name="balance_blc_saldo_acumulado" class="java.lang.Double"/>
+	<field name="balance_blc_saldo_cierre" class="java.lang.Double"/>
+	<field name="balance_blc_imputable" class="java.lang.Boolean"/>
+	<variable name="subdeb" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="subcre" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="subsal" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta">
+		<variableExpression><![CDATA[((($V{subdeb}-$V{subcre})>=0) ? ($V{subdeb}-$V{subcre}) : ($V{subcre}-$V{subdeb}))]]></variableExpression>
+	</variable>
+	<variable name="totdeb" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="totcre" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="totsal" class="java.lang.Number" resetType="Group" resetGroup="por_cuenta">
+		<variableExpression><![CDATA[((($V{totdeb}-$V{totcre})>=0) ? ($V{totdeb}-$V{totcre}) : ($V{totcre}-$V{totdeb}))]]></variableExpression>
+	</variable>
+	<variable name="sum_inicial" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance_blc_saldo_inicial}]]></variableExpression>
+	</variable>
+	<variable name="sum_acum" class="java.lang.Integer" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance_blc_saldo_acumulado}]]></variableExpression>
+	</variable>
+	<variable name="sum_saldo" class="java.lang.Integer" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance_blc_saldo_cierre}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_inicial} : 0))]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance_blc_saldo_acumulado}]]></variableExpression>
+	</variable>
+	<variable name="variable3" class="java.lang.Integer" calculation="Sum"/>
+	<group name="por_cuenta">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupFooter>
+			<band height="52">
+				<line>
+					<reportElement x="0" y="9" width="555" height="1" uuid="89fac664-b2e9-4b36-9e1a-a2d36599bda0"/>
+					<graphicElement>
+						<pen lineWidth="3.5" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+				<rectangle>
+					<reportElement x="232" y="19" width="324" height="20" uuid="89dba85b-3462-4c96-9c67-073fa2ff2409"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+					</graphicElement>
+				</rectangle>
+				<textField pattern="###0.00">
+					<reportElement x="199" y="22" width="100" height="20" uuid="2003440a-be6c-4769-9c3d-5774b46bff64"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_inicial} : 0))]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00" isBlankWhenNull="false">
+					<reportElement mode="Transparent" x="393" y="22" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e60b8f8d-09fc-4374-8d4b-16a893128f2f"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_acumulado} : 0))]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00">
+					<reportElement x="453" y="22" width="100" height="20" uuid="e046f8ee-931d-479b-87a1-7083c22f0bb4"/>
+					<textElement textAlignment="Right">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Double((($F{balance_blc_codigo_plan_cuenta}.equals("1") || ($F{balance_blc_codigo_plan_cuenta}.equals("2")) || ($F{balance_blc_codigo_plan_cuenta}.equals("3")) || ($F{balance_blc_codigo_plan_cuenta}.equals("4")) || ($F{balance_blc_codigo_plan_cuenta}.equals("5"))) ? $F{balance_blc_saldo_cierre} : 0))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="130" y="19" width="97" height="20" uuid="1e440dd6-b852-41e2-9936-0bc9da3fff06"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[RESULTADOS:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="74">
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="dc70d7aa-d3c5-4d1c-b83d-f374b51b47a0"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="33" width="83" height="20" uuid="79ab5ee7-ba04-4498-b16f-c036e1566559"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empresa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="83" y="33" width="169" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6c6e464d-549c-4022-9c91-2aa26adda14c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{name_empresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="2" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="89d68c59-c40f-45dc-84ad-cebd009c96f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="22" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Balance Completo Detallado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="2" width="87" height="15" uuid="7a6e8245-97b0-4a1f-8259-a5e961cd5d6e"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sistema Contable]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="32" width="555" height="1" uuid="802d3f77-bbdf-47bf-a48b-c6adda555d8a"/>
+			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="405" y="33" width="150" height="21" uuid="8317ea72-7a15-4e3b-a5a3-95015ce002af"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="73" width="555" height="1" uuid="fbb5d00f-da3c-421b-b520-0be163151ac4"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="429" y="54" width="53" height="15" uuid="ab5bf3d5-c4b4-4ce3-846b-a526e8003496"/>
+				<text><![CDATA[Hasta Fec.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="54" width="56" height="15" uuid="7c0b7726-be2d-4599-823f-82bb85622f5d"/>
+				<text><![CDATA[Desde Fec.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="319" y="54" width="100" height="15" uuid="28a80118-6dc1-4bf9-9511-3e7e8e9cbb42"/>
+				<textFieldExpression><![CDATA[$P{desde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="485" y="54" width="68" height="15" uuid="ef179c05-6954-4238-b082-553e4472284e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{hasta}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="261" y="68" width="294" height="1" uuid="9f37eb51-4dc2-4bff-b57c-a5a3dab60236"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="107c11af-0f3f-4156-8542-eeb4ef2849eb"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="3" width="39" height="14" uuid="c1947066-a44e-481a-ab7d-52b27fdd89ee"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cta.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="3" width="84" height="14" uuid="e1be1835-1a7f-4d39-bda3-58b44726ad82"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suc. Sec. Cód.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="3" width="54" height="14" uuid="691cbe98-8653-43f2-b61c-ae05282668ba"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="3" width="74" height="14" uuid="8d0fe795-3a98-44a0-a94f-2acb76615b2b"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S. INICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="3" width="65" height="14" uuid="c243e30b-c3b8-432a-8a58-377b6a256c32"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEBITOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="3" width="60" height="14" uuid="39501b65-7615-4382-8eff-1ba1ea51934e"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CREDITOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="3" width="77" height="14" uuid="74a32fc6-7976-43d5-847e-5a231129921b"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SDO. ACUM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="3" width="70" height="14" uuid="37658d32-aef6-470c-a3e9-d11cbb31711f"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S. CIERRE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="15" backcolor="#F0F0F0" uuid="1cf3f9ed-8384-4407-bfa6-7bf94d7e768a">
+					<printWhenExpression><![CDATA[new Boolean ($F{balance_blc_imputable}==false)]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="108" y="0" width="141" height="15" uuid="26b7185d-e003-4456-917f-d72088709fac"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_nombre_cta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="247" y="0" width="53" height="15" uuid="4e85062f-ada8-4b53-a2d0-fde352243dc5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_saldo_inicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="295" y="0" width="69" height="15" uuid="626bf13c-f70a-4388-bfba-1247ca2a82fa"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_debito}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="360" y="0" width="69" height="15" uuid="c46a5687-1568-4380-8324-ab3b1ac74e76"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_haber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="424" y="0" width="69" height="15" uuid="9fd39a58-ed64-4e2b-945d-ed45b4aec76b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_saldo_acumulado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="485" y="0" width="69" height="15" uuid="31fed5a6-6bf8-498b-b372-f2132b91b75f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_saldo_cierre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="29" y="0" width="84" height="15" uuid="1b015527-7f3c-4797-b24f-5bb097201914"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_codigo_plan_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="39" height="15" uuid="e6d7aad6-dbcf-4c0e-b8e8-4f94fdb9d311"/>
+				<textFieldExpression><![CDATA[$F{balance_blc_cuenta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="bc7e0d48-db77-48ba-871c-870e82445779"/>
+			</line>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="468" y="0" width="87" height="20" uuid="5f2bf051-4cbb-43a1-a50c-778736807bbe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="428" y="0" width="42" height="20" uuid="1c226601-af7e-4d35-a03e-5cba94ce0fdc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Impreso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="67" height="20" uuid="1a6c8f18-5195-4da2-997a-92a79ae6adda"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="62" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e574893-18c2-4612-824d-522890d660d9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="28" splitType="Stretch"/>
+	</summary>
+</jasperReport>

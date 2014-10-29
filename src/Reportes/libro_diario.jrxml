@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prueba" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dd16baa8-45b2-434a-8709-177ab3fb4f0e">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="name_empresa" class="java.lang.String"/>
+	<parameter name="ultimo_asto" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$F{nro_asiento}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="min_fec" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="max_fec" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["C:\\Users\\Manolo\\Documents\\NetBeansProjects\\Sistema_Contable\\src\\Reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cierre_fec" class="java.lang.String"/>
+	<parameter name="nro_folio" class="java.lang.Integer"/>
+	<parameter name="ultimo_renglon" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     ROW_NUMBER () OVER (ORDER BY as_fecha_contabilidad) AS nro_linea,
+     as_ok_carga AS ok_carga,
+     as_ok_registrado AS ok_registrado,
+     as_nro_asiento AS nro_asiento,
+     as_nro_renglon AS nro_renglon,
+     as_fecha_contabilidad AS fecha_contabilidad,
+     as_tipo AS tipo,
+     as_nro_cuenta AS nro_cuenta,
+     pc_nombre_cuenta AS nombre_cuenta,
+     as_fecha_operacion AS fecha_operacion,
+     as_fecha_vencimiento AS fecha_vencimiento,
+     as_nro_comprobante AS nro_comprobante,
+     as_leyenda AS leyenda,
+     as_debe AS debe,
+     as_haber AS haber
+FROM
+     asientos,plan_cuentas
+
+WHERE
+(as_nro_cuenta = pc_nro_cuenta) and
+((as_fecha_contabilidad>$P{min_fec}) and (as_fecha_contabilidad<=$P{max_fec}))
+and ((as_ok_carga = 1) and (as_ok_registrado = 1))
+
+SELECT
+     ROW_NUMBER () OVER (ORDER BY as_fecha_contabilidad) AS nro_linea,
+     as_ok_carga AS ok_carga,
+     as_ok_registrado AS ok_registrado,
+     as_nro_asiento AS nro_asiento,
+     as_nro_renglon AS nro_renglon,
+     as_fecha_contabilidad AS fecha_contabilidad,
+     as_tipo AS tipo,
+     as_nro_cuenta AS nro_cuenta,
+     pc_nombre_cuenta AS nombre_cuenta,
+     as_fecha_operacion AS fecha_operacion,
+     as_fecha_vencimiento AS fecha_vencimiento,
+     as_nro_comprobante AS nro_comprobante,
+     as_leyenda AS leyenda,
+     as_debe AS debe,
+     as_haber AS haber
+FROM
+     asientos,plan_cuentas
+
+WHERE
+(as_nro_cuenta = pc_nro_cuenta) and
+((as_fecha_contabilidad>$P{min_fec}) and (as_fecha_contabilidad<=$P{max_fec}))
+and ((as_ok_carga = 1) and (as_ok_registrado = 1))]]>
+	</queryString>
+	<field name="nro_linea" class="java.lang.Integer"/>
+	<field name="ok_carga" class="java.lang.Boolean"/>
+	<field name="ok_registrado" class="java.lang.Boolean"/>
+	<field name="nro_asiento" class="java.lang.Integer"/>
+	<field name="nro_renglon" class="java.lang.Integer"/>
+	<field name="fecha_contabilidad" class="java.sql.Date"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="nro_cuenta" class="java.lang.Integer"/>
+	<field name="nombre_cuenta" class="java.lang.String"/>
+	<field name="fecha_operacion" class="java.sql.Date"/>
+	<field name="fecha_vencimiento" class="java.sql.Date"/>
+	<field name="nro_comprobante" class="java.lang.String"/>
+	<field name="leyenda" class="java.lang.String"/>
+	<field name="debe" class="java.lang.Double"/>
+	<field name="haber" class="java.lang.Double"/>
+	<variable name="ASTO_TRA" class="java.lang.Integer" incrementType="Group" incrementGroup="lili">
+		<variableExpression><![CDATA[$F{nro_asiento}]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{ultimo_asto}]]></initialValueExpression>
+	</variable>
+	<variable name="COUNT_ASTO" class="java.lang.Integer" incrementType="Group" incrementGroup="lili" calculation="Count">
+		<variableExpression><![CDATA[($P{ultimo_renglon}+$V{lili_COUNT})]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="NUMERO_RENGLON" class="java.lang.Integer" incrementType="Column">
+		<variableExpression><![CDATA[($F{nro_linea}+$P{ultimo_renglon})]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{ultimo_renglon}]]></initialValueExpression>
+	</variable>
+	<variable name="NUMERO_ASTO" class="java.lang.Integer"/>
+	<group name="lili">
+		<groupExpression><![CDATA[$F{nro_asiento}]]></groupExpression>
+		<groupHeader>
+			<band height="17">
+				<line>
+					<reportElement x="0" y="-1" width="555" height="1" uuid="90d71e10-4f11-477a-b004-08d135e528f7"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="56" y="1" width="77" height="14" uuid="9d9ca748-d5e4-47e5-b270-9a526bbbbeaa"/>
+					<textFieldExpression><![CDATA[$F{fecha_contabilidad}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="1" width="56" height="14" uuid="ba479c5b-9147-495a-874b-4aa688da27ed"/>
+					<text><![CDATA[F. Contable:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="15" width="555" height="1" uuid="34450378-8ef6-4c2e-b083-82dec4edfeb9"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement mode="Transparent" x="296" y="1" width="100" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="9ccf319b-67cd-4524-ad7c-a7ea515a73ea"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($P{ultimo_asto}+$V{COUNT_ASTO})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="223" y="1" width="100" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="64ad5fb9-00e7-4237-bc0c-a73c14139ee9"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Nro. de Asiento:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="454" y="1" width="58" height="14" uuid="0ab309f6-e4d2-4b7a-b565-feef08b7100e"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Nro. Control:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="512" y="1" width="43" height="14" uuid="d729aae2-1ba8-49c4-a92c-cb3da25078a2"/>
+					<textElement>
+						<font isBold="false" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nro_asiento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="2"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="80">
+			<line>
+				<reportElement x="-1" y="1" width="555" height="1" uuid="ebd29707-309f-4a1e-8a60-ec77c9fc6a8d"/>
+			</line>
+			<staticText>
+				<reportElement x="-1" y="33" width="83" height="20" uuid="f9f7179c-4a51-48e6-bf8c-6bc0c21a851b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empresa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="82" y="33" width="169" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="23e9ef88-b643-4c93-8be3-590aded6a313"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{name_empresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="-1" y="2" width="555" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="fb13c287-85b3-4066-8746-6cf769f58411"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Arial" size="22" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Libro Diario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="2" width="87" height="15" uuid="b1161e02-acef-4bf0-8bfb-73c14ff6de54"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sistema Contable]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="32" width="555" height="1" uuid="14ad4dd5-f0bf-4f39-bedb-da5a0ad1e1fa"/>
+			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="418" y="33" width="136" height="21" uuid="0ffba3f2-609e-49a5-889c-37a80e739784"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="79" width="555" height="1" uuid="5c983fc0-e972-4c90-878b-781d9d2471f6"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="238" y="51" width="28" height="15" uuid="30165888-86f1-4c2e-90e9-ad54ad18ed2b"/>
+				<text><![CDATA[Folio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="63" width="134" height="15" uuid="6b5bc200-a70a-4e92-8c04-b6082bb067a5"/>
+				<text><![CDATA[Fecha de Cierre de Ejercicio:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="266" y="63" width="100" height="14" uuid="324bdd76-d6d5-42cf-a4db-39f85f4a18ea"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cierre_fec}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="51" width="100" height="15" uuid="99b4a62d-5bbd-4bd5-af1c-d636d581f5a0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{nro_folio}+$V{PAGE_NUMBER})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="33" y="0" width="61" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="c802a6f6-2b5b-4966-b302-15156e315fe0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Cta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="66" y="0" width="76" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="69e9691e-e3a2-4ff8-a639-aa1c55df6fa5"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Nombre Cta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="210" y="0" width="61" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="34eb490d-6ddc-46f6-a179-2d0115ff65b0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[F. Ven.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="269" y="0" width="37" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="d7652efa-c8f4-4006-ab23-69a25d4d5452"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Com.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="0" width="61" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="e958de68-c9d1-4307-a091-438457f3b634"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Leyenda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="454" y="0" width="40" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="06df1876-9eb6-46d7-8bd6-122b28867bcc"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="515" y="0" width="37" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="da34aba4-d59e-45d4-92eb-fd7499131728"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="18" width="554" height="1" uuid="cd538d3d-6cc1-4997-a2b4-2c5a3534f963"/>
+			</line>
+			<subreport>
+				<reportElement x="0" y="19" width="554" height="19" uuid="574374d2-4596-45b8-877d-2736096ae04f"/>
+				<subreportParameter name="ULTIMO_RENGLON">
+					<subreportParameterExpression><![CDATA[$V{NUMERO_RENGLON}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "diario_transporte.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="66" y="1" width="143" height="12" uuid="74e8b98c-1315-4993-bfae-6a901d8957bc"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="209" y="0" width="51" height="13" uuid="f8f91f56-69db-46e2-9882-c40623aae8ef"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="0" width="64" height="13" uuid="f1d1d931-16b9-451b-81d7-33eb5394a84f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_comprobante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="0" width="94" height="13" uuid="099ab647-13a5-4b84-aa16-6488f911a000"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{leyenda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="427" y="0" width="61" height="13" uuid="1a2c8626-c9fe-4b44-9110-a4af38e16803"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{debe}==0) ? "" : $F{debe})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="494" y="0" width="61" height="13" uuid="b3faee84-f205-4353-9c11-d334a80a7517"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{haber}==0) ? "" : $F{haber})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="31" y="1" width="32" height="12" uuid="fde4088f-d976-4ff1-a319-3e600ff47f32"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="0" width="29" height="13" uuid="62052b1e-514d-4818-b87b-c1c836f3f134"/>
+				<textFieldExpression><![CDATA[$V{NUMERO_RENGLON}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" uuid="bc7e0d48-db77-48ba-871c-870e82445779"/>
+			</line>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="468" y="21" width="87" height="20" uuid="5f2bf051-4cbb-43a1-a50c-778736807bbe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="428" y="21" width="42" height="20" uuid="1c226601-af7e-4d35-a03e-5cba94ce0fdc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Impreso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="21" width="67" height="20" uuid="1a6c8f18-5195-4da2-997a-92a79ae6adda"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="62" y="21" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9e574893-18c2-4612-824d-522890d660d9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="2" width="554" height="23" uuid="30840571-b26d-4f56-9968-b2a7ba4ff4cd"/>
+				<subreportParameter name="ULTIMO_RENGLON">
+					<subreportParameterExpression><![CDATA[$V{NUMERO_RENGLON}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "diario_transporte.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="27" splitType="Stretch"/>
+	</summary>
+</jasperReport>
