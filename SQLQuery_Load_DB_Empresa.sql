@@ -587,6 +587,7 @@ CREATE TABLE clientes(
 
 		CREATE INDEX  IX_Clientes_id ON clientes (cli_codigo);
 		CREATE INDEX  IX_Clientes_nom ON clientes (cli_nombre);
+		CREATE INDEX  IX_Clientes_ape ON clientes (cli_apellido);
 
 CREATE TABLE situacion_x_tipocomprobante(
 	sfi_id	int not null,
