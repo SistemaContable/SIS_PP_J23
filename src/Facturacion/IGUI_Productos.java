@@ -971,6 +971,22 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             field_precio_venta.setText(aux.floatValue()+"");
         }
     }//GEN-LAST:event_field_precio_ventaFocusLost
+
+    private void menu_listarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_listarMouseClicked
+        IGUI_Listado_Productos np = new IGUI_Listado_Productos(r_con);
+        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
+        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        np.setVisible(true);
+        this.getDesktopPane().add(np);
+        try {                
+            np.setSelected(true);            
+         } 
+        catch (PropertyVetoException ex) {
+            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+    }//GEN-LAST:event_menu_listarMouseClicked
     
     private String get_Tipo_Tasa_IVA (String clave){
         String descripcion = "";
