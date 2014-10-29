@@ -134,6 +134,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         menu_alta = new javax.swing.JMenu();
         menu_baja = new javax.swing.JMenu();
         menu_mod = new javax.swing.JMenu();
+        menu_listar = new javax.swing.JMenu();
         menu_recorrido = new javax.swing.JMenu();
         menu_salir = new javax.swing.JMenu();
 
@@ -174,7 +175,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             panel_ayudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -507,6 +508,15 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             }
         });
         menu_interno.add(menu_mod);
+
+        menu_listar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/listado.png"))); // NOI18N
+        menu_listar.setText("LISTADO");
+        menu_listar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_listarMouseClicked(evt);
+            }
+        });
+        menu_interno.add(menu_listar);
 
         menu_recorrido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/magnifying-glass-4x.png"))); // NOI18N
         menu_recorrido.setText(" ORDEN RECORRIDO ");
@@ -1530,6 +1540,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
     private javax.swing.JMenu menu_alta;
     private javax.swing.JMenu menu_baja;
     private javax.swing.JMenuBar menu_interno;
+    private javax.swing.JMenu menu_listar;
     private javax.swing.JMenu menu_mod;
     private javax.swing.JMenu menu_recorrido;
     private javax.swing.JMenu menu_salir;

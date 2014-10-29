@@ -69,7 +69,6 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         restringirCampos();
         r_con = r; 
         
-        System.out.print(field_desdee.getText());
         modoConsulta();
         cargarOrdenamientos ();
         detectarOrden ();

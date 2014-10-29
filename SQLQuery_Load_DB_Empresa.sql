@@ -37,7 +37,7 @@ CREATE TABLE tasas_iva
 		 insert into tasas_iva values ('01','01-01-1996','31-12-2000',15,7.5);
 		 insert into tasas_iva values ('01','01-01-2001','31-12-2500',21,10.5);
 		 insert into tasas_iva values ('02','01-01-2007','31-12-2500',27,13.5);
-		 insert into tasas_iva values ('03','01-01-2007','31-12-2500',10.5,null);
+		 insert into tasas_iva values ('03','01-01-2007','31-12-2500',10.5,5.25);
 		 
 
 CREATE TABLE Articulos
@@ -483,25 +483,25 @@ CREATE TABLE tipo_comprobante(
 		insert into tipo_comprobante values ('01','FACTURA A',1);
 		insert into tipo_comprobante values ('02','NOTA DE DEBITO A',1);
 		insert into tipo_comprobante values ('03','NOTA DE CREDITO A',0);
-		insert into tipo_comprobante values ('04','RECIBOS A',1);
+		insert into tipo_comprobante values ('04','RECIBOS A',0);
 		insert into tipo_comprobante values ('05','NOTA DE VENTA AL CONTADO A',1);
 		insert into tipo_comprobante values ('06','FACTURA B',1);
 		insert into tipo_comprobante values ('07','NOTA DE DEBITO B',1);
 		insert into tipo_comprobante values ('08','NOTA DE CREDITO B',0);
-		insert into tipo_comprobante values ('09','RECIBO B',1);
+		insert into tipo_comprobante values ('09','RECIBO B',0);
 		insert into tipo_comprobante values ('10','NOTA DE VENTA AL CONTADO B',1);
 		insert into tipo_comprobante values ('11','FACTURA C',1);
 		insert into tipo_comprobante values ('12','NOTA DE DEBITO C',1);
 		insert into tipo_comprobante values ('13','NOTA DE CREDITO C',0);
 		insert into tipo_comprobante values ('14','DOCUMENTO ADUANERO',1);
-		insert into tipo_comprobante values ('15','RECIBO C',1);
+		insert into tipo_comprobante values ('15','RECIBO C',0);
 		insert into tipo_comprobante values ('16','NOTA DE VENTA AL CONTADO C',1);
 		insert into tipo_comprobante values ('19','FACTURA DE EXPORTACION',1);
 
 		insert into tipo_comprobante values ('51','FACTURA M',1);
 		insert into tipo_comprobante values ('52','NOTA DE DEBITO M',1);
 		insert into tipo_comprobante values ('53','NOTA DE CREDITO M',0);
-		insert into tipo_comprobante values ('54','RECIBO M',1);
+		insert into tipo_comprobante values ('54','RECIBO M',0);
 		insert into tipo_comprobante values ('55','NOTA DE VENTA AL CONTADO M',1);
 
 		insert into tipo_comprobante values ('80','COMPROBANTE DIARIO DE CIERRE (ZETA)',1);
@@ -519,9 +519,8 @@ CREATE TABLE punto_venta(
 		CREATE INDEX PK_pv_codigo ON punto_venta (pv_codigo);
 		CREATE INDEX PK_pv_descripcion ON punto_venta (pv_descripcion);
 
-		insert into punto_venta values(1,'PV01');
-		insert into punto_venta values(2,'PV02');
-		insert into punto_venta values(3,'PV03');
+		insert into punto_venta values(1,'PV05');
+		
 
 CREATE TABLE localidades(
 	loc_id int not null,
@@ -642,9 +641,9 @@ CREATE TABLE parametros_facturacion (
 	pf_numero_control int 
 );
 
-insert into parametros_facturacion values('01/01/2014',0);
+		insert into parametros_facturacion values('01/01/2014',0);
 
-create table encabezado_factura(
+CREATE TABLE encabezado_factura(
 	ef_encabezado_factura_id int not null,
 	ef_tipo_comprobante int not null,
 	ef_punto_venta int not null,
@@ -668,21 +667,21 @@ create table encabezado_factura(
 	foreign key(ef_cliente) references clientes(cli_codigo)
 );
 
-create table renglon_factura(
-rf_encabezado_factura_id int not null,
-rf_num_renglon int not null,
-rf_codigo_producto int not null,
-rf_cantidad int not null,
-rf_iva_general float,
-rf_tasa_diferencial float,
-rf_sobretasa float,
-rf_exento float,
-rf_tasa_reducida float,
-rf_no_gravado float,
-rf_impuesto_interno float,
-rf_importe float,
-rf_confirmado bit,
-primary key (rf_encabezado_factura_id,rf_num_renglon),
-foreign key (rf_encabezado_factura_id) references encabezado_factura(ef_encabezado_factura_id),
-foreign key (rf_codigo_producto) references productos(prod_codigo)
+CREATE TABLE renglon_factura(
+	rf_encabezado_factura_id int not null,
+	rf_num_renglon int not null,
+	rf_codigo_producto int not null,
+	rf_cantidad int not null,
+	rf_iva_general float,
+	rf_tasa_diferencial float,
+	rf_sobretasa float,
+	rf_exento float,
+	rf_tasa_reducida float,
+	rf_no_gravado float,
+	rf_impuesto_interno float,
+	rf_importe float,
+	rf_confirmado bit,
+	primary key (rf_encabezado_factura_id,rf_num_renglon),
+	foreign key (rf_encabezado_factura_id) references encabezado_factura(ef_encabezado_factura_id),
+	foreign key (rf_codigo_producto) references productos(prod_codigo)
 )
