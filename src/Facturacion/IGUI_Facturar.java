@@ -9,6 +9,7 @@ package Facturacion;
 import Contabilidad.*;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Fechas;
+import static Clases_Auxiliares.NumberToLetterConverter.convertNumberToLetter;
 import Clases_Auxiliares.Validaciones;
 import Objetos.Cliente;
 import Objetos.Usuario;
@@ -2216,14 +2217,20 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                 }
                                 if ((!field_tasa_diferencial.getText().equals("")) && (!field_tasa_diferencial.getText().equals("0"))){
                                     separar = jLabel4.getText().split(" ");
-                                    parametros.put("tasa_2", separar[1].trim());
-                                    parametros.put("valor_tasa_2",field_tasa_diferencial.getText());
+                                    parametros.put("tasa_3", separar[1].trim());
+                                    parametros.put("valor_tasa_3",field_tasa_diferencial.getText());
                                 }                                
                                 parametros.put("total_iva", field_total_iva.getText());
                                 parametros.put("exento", field_exento.getText());
                                 parametros.put("sobretasa", field_sobretasa.getText());
                                 parametros.put("conceptos_no_gravados", field_impuesto_interno.getText());
                                 parametros.put("neto", field_no_gravado.getText());
+                            }
+                            else{
+                                if (reporte_seleccionado.equals("modelo_recibo.jrxml")){
+                                    String enletra = convertNumberToLetter(jTextField11.getText());                                    
+                                    parametros.put("valor_letra", enletra);
+                                }
                             }
                             
                             JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());

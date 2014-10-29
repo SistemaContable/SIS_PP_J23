@@ -58,7 +58,7 @@
 	<parameter name="valor_letra" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT rf_num_renglon, rf_descripcion_recibo, rf_importe
+		<![CDATA[SELECT rf_num_renglon, rf_descripcion_recibo, (-1*rf_importe) AS rf_importe
 FROM renglon_factura, productos
 WHERE rf_encabezado_factura_id = $P{control} AND rf_codigo_producto=prod_codigo]]>
 	</queryString>
