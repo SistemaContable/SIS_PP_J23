@@ -15,6 +15,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
