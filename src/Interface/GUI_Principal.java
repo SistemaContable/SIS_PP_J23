@@ -1332,20 +1332,21 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem31ActionPerformed
 
     private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
-        // TODO add your handling code here:
-        IGUI_Listado_Fac np = new IGUI_Listado_Fac(r_con);
-        int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
-        int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, y);
+        IGUI_Listado_Fac np = new IGUI_Listado_Fac (r_con);       
+
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
         np.setVisible(true);
-        this.getDesktopPane().add(np);
-        try {
+        this.jDesktopPane1.add(np);
+        try {        
             np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (PropertyVetoException ex) {
-            Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        np.moveToFront();
+        np.moveToFront();        
     }//GEN-LAST:event_jMenuItem32ActionPerformed
     
     
