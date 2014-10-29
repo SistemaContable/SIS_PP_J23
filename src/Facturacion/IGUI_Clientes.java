@@ -1560,7 +1560,9 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         boolean inserto = false;                
         try{
         r_con.Connection();        
-        String cuit=field_cuit1.getText()+field_cuit2.getText()+field_cuit3.getText();        
+        String cuit="";
+        if(validar.isCuit(field_cuit1.getText(),field_cuit2.getText(), field_cuit3.getText()))
+            cuit=field_cuit1.getText()+field_cuit2.getText()+field_cuit3.getText();        
         String fecha_nac=field_fecha_nac.getText();
         if(!fecha.isFechaValida(fecha_nac))
             fecha_nac=null;
