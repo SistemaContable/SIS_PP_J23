@@ -318,6 +318,9 @@
         <Component class="javax.swing.JTextField" name="field_cantidad">
         </Component>
         <Component class="javax.swing.JTextField" name="field_costo_u">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_costo_uFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_aceptar">
           <Properties>
@@ -348,6 +351,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="field_precio_venta">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="field_precio_ventaFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="field_tasa_iva">
           <Events>

@@ -15,10 +15,13 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -191,6 +194,12 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             }
         });
 
+        field_costo_u.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_costo_uFocusLost(evt);
+            }
+        });
+
         btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_aceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
         btn_aceptar.setText("ACEPTAR");
@@ -206,6 +215,12 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelarActionPerformed(evt);
+            }
+        });
+
+        field_precio_venta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_precio_ventaFocusLost(evt);
             }
         });
 
@@ -942,8 +957,23 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         }       
     }//GEN-LAST:event_field_codigoFocusLost
 
+    private void field_costo_uFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_costo_uFocusLost
+        // TODO add your handling code here:        
+        if(!field_costo_u.getText().equals("")){                       
+            BigDecimal aux=convertirEnBigDecimal(field_costo_u.getText());
+            field_costo_u.setText(aux.floatValue()+"");
+        }
+    }//GEN-LAST:event_field_costo_uFocusLost
+
+    private void field_precio_ventaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_precio_ventaFocusLost
+        if(!field_precio_venta.getText().equals("")){                       
+            BigDecimal aux=convertirEnBigDecimal(field_precio_venta.getText());
+            field_precio_venta.setText(aux.floatValue()+"");
+        }
+    }//GEN-LAST:event_field_precio_ventaFocusLost
+
     private void menu_listarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_listarMouseClicked
-        IGUI_Listado_Productos np = new IGUI_Listado_Productos (r_con);
+        IGUI_Listado_Productos np = new IGUI_Listado_Productos(r_con);
         int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
         int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
         np.setLocation(x, y);        
@@ -956,7 +986,6 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             Logger.getLogger(IGUI_Productos.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        //np.requestFocus();  
     }//GEN-LAST:event_menu_listarMouseClicked
     
     private String get_Tipo_Tasa_IVA (String clave){
@@ -1562,5 +1591,15 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
     public String getName_tabla() {
         return name_tabla;
     }
+    
+      private BigDecimal convertirEnBigDecimal(String num){
+        float num1=Float.parseFloat(num);
+        String formato=new DecimalFormat("0.00").format(num1);
+        formato=formato.replace(',','.');
+        BigDecimal bigNum=new BigDecimal(formato);
+        return bigNum;
+    }
+    
+    
 }
 

@@ -141,24 +141,18 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Preferencias:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("desde Número:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("hasta Número:");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel7.setForeground(java.awt.Color.red);
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("  ");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Punto de Venta:");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Tipo Comprobante:");
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel8.setForeground(java.awt.Color.red);
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("  ");
@@ -306,9 +300,10 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
                         parametros.put("url_logo", dir_logo);
                         parametros.put("letra_comprobante", this.reporte_letra);
                         parametros.put("cod_comprobante", this.reporte_numero);
-
+                       
                         //localizo el reporte para usarlo
-                        JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+this.reporte_seleccionado);
+                        JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);                        
+//JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+this.reporte_seleccionado);
                         //cargo los datos
                         JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
                         
