@@ -518,8 +518,6 @@ CREATE TABLE punto_venta(
 );
 		CREATE INDEX PK_pv_codigo ON punto_venta (pv_codigo);
 		CREATE INDEX PK_pv_descripcion ON punto_venta (pv_descripcion);
-
-		insert into punto_venta values(1,'PV05');
 		
 
 CREATE TABLE localidades(
@@ -659,9 +657,11 @@ CREATE TABLE encabezado_factura(
 	ef_tasa_reducida float,
 	ef_no_gravado float,
 	ef_impuesto_interno float,
+	ef_total_iva float,
 	ef_subtotal float,
 	ef_total float,
 	ef_confirmado bit,
+	ef_anulado bit,
 	primary key(ef_encabezado_factura_id),
 	foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
 	foreign key(ef_punto_venta)references punto_venta(pv_codigo),
@@ -682,6 +682,7 @@ CREATE TABLE renglon_factura(
 	rf_impuesto_interno float,
 	rf_importe float,
 	rf_confirmado bit,
+	rf_descripcion_recibo varchar(60),
 	primary key (rf_encabezado_factura_id,rf_num_renglon),
 	foreign key (rf_encabezado_factura_id) references encabezado_factura(ef_encabezado_factura_id),
 	foreign key (rf_codigo_producto) references productos(prod_codigo)

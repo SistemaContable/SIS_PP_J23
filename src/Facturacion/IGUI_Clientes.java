@@ -1211,8 +1211,7 @@ public class IGUI_Clientes extends javax.swing.JInternalFrame {
         //lo centro respecto a x
         int x = (this.getDesktopPane().getWidth() / 2) - np.getWidth() / 2;
         int y = (this.getDesktopPane().getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, y);        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setLocation(x, y);
         np.setVisible(true);
         this.getDesktopPane().add(np);
         try {                
