@@ -46,6 +46,7 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
     //nombre de las columnas de la Tabla del SGBD (los que desee mostrar)
     private String[] colum_names = {"prod_codigo","prod_descripcion","prod_cantidad","prod_costo","prod_precio_neto_venta","prod_tasa_iva","prod_impuesto_porcentaje","prod_impuesto_valor"};
     //nombres reales de los Indices de la Tabla del SGBD
+    //V:1.1 :  POR FAVOR PONER EN 0 EL INDICE DEL CAMPO CLAVE.
     private String[] indices_tabla = {"PK_Producto_Codigo","PK_Producto_Cantidad","PK_Producto_Costo","PK_Producto_Tasa"};  
     
     //nombres de los campos de la JTabla (formales a mostrar, misma cantidad que los de ls Tabla) 
@@ -87,6 +88,7 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
             tabla.setRowSelectionInterval(0,0); 
         }        
         this.requestFocusInWindow();
+        fila_ultimo_registro=0;
     }
     
     public IGUI_Listado_Productos(){}
@@ -368,7 +370,8 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
     
     
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        scrollCellToView(this.tabla,tabla.getSelectedRow(),1);        
+        scrollCellToView(this.tabla,tabla.getSelectedRow(),1); 
+        fila_ultimo_registro=tabla.getSelectedRow();
     }//GEN-LAST:event_tablaMouseClicked
     
     private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeroActionPerformed
@@ -409,12 +412,41 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
 
     public int buscarValor (String valor){
         if (tabla.getRowCount()>0){
+            System.out.println(valor.toUpperCase()+" - "+relacion_indices_conTabla[numero_ordenamiento_elegido]);
             return busquedaBinaria(valor.toUpperCase(),0,tabla.getRowCount()-1,relacion_indices_conTabla[numero_ordenamiento_elegido]); 
         }
         else{
             return -1;
         }
-    } 
+    }
+    
+    private void posicionarFilaClave(int nrocla) {
+        int i = 0;
+        boolean encontre = false;
+        
+        while ((!encontre)&&(i<tabla.getRowCount())) {            
+            if (Integer.parseInt(String.valueOf(tabla.getValueAt(i, 0)))==nrocla){
+                encontre=true;
+            }
+            i++;
+        }
+        
+        if (encontre){
+            scrollCellToView(this.tabla,i-1,1);
+            tabla.setRowSelectionInterval(i-1, i-1);
+            fila_ultimo_registro=i-1;
+        }
+    }
+    
+    public int ubicarClave (String codigo){
+        //if (tabla.getRowCount()>0){
+            System.out.println(codigo.toUpperCase()+" - "+relacion_indices_conTabla[0]);
+            return busquedaBinaria(codigo.toUpperCase(),0,tabla.getRowCount()-1,0); 
+        //}
+        //else{
+            //return -1;
+        //}
+    }
 
     private int busquedaBinaria(String elemento, int ini, int fin, int nro_campo_tabla){
         int posicion;
@@ -539,10 +571,11 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
     private void accion_Buscar(){
         int rta = buscarValor(field_buscar.getText());
         if (rta >= 0){
-            posicionarAyuda(field_buscar.getText());
+            //posicionarAyuda(field_buscar.getText());
             ocultar_Msj();
             scrollCellToView(this.tabla,rta,1);
-            //tabla.setRowSelectionInterval(rta, rta);
+            tabla.setRowSelectionInterval(rta, rta);
+            fila_ultimo_registro=rta;
         }
         else{
             field_buscar.requestFocus();
@@ -636,7 +669,13 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
      * realiza una consulta a la tabla Cuentas de la BD y la vuelca a la jTable
      */
     private void updateTabla(){ 
-                      
+        
+        //** anterior
+        String codigo_anterior="-1";
+        if ((tabla.getRowCount()>0)&&(tabla.getValueAt(fila_ultimo_registro, 0)!=null)){
+            codigo_anterior = String.valueOf(tabla.getValueAt(fila_ultimo_registro, 0));
+        }
+        
         //** pido los datos a la tabla  
         Object[][] vcta = this.getDatos();
                
@@ -652,21 +691,13 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
         columna.setMinWidth(100);
         columna.setMaxWidth(100);*/
         
-        //posiciono en el buscado, por si cambia el orden de recorrido
-        if (!field_buscar.getText().equals("")){
-            posicionarAyuda(field_buscar.getText());
+        //posiciono en el buscado, por si cambia el orden de recorrido           
+        if(!codigo_anterior.equals("-1")){
+            posicionarFilaClave(Integer.parseInt(codigo_anterior));                
         }
         else{
-            if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
-                tabla.setRowSelectionInterval(fila_ultimo_registro-1,fila_ultimo_registro-1);
-                scrollCellToView(this.tabla,fila_ultimo_registro-1,fila_ultimo_registro-1); 
-            }
-            else{
-                 if ((fila_ultimo_registro+1 >= 0)&&(fila_ultimo_registro+1 <= tabla.getRowCount())){                      
-                    tabla.setRowSelectionInterval(fila_ultimo_registro,fila_ultimo_registro); 
-                    scrollCellToView(this.tabla,fila_ultimo_registro,fila_ultimo_registro);  
-                }
-            }
+            tabla.setRowSelectionInterval(0,0);
+            scrollCellToView(this.tabla,0,0);
         }
     }
     
@@ -675,7 +706,7 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
      * al valor selecionado 
      * @param valor numero de la registro seleccionado
      */
-    private void posicionarAyuda(String valor) {
+    /*private void posicionarAyuda(String valor) {
         int posicion = buscarValor(valor);      
         if (posicion>=0){
             //cargar_ValoresPorFila(posicion);
@@ -683,7 +714,7 @@ public class IGUI_Listado_Productos extends javax.swing.JInternalFrame {
             scrollCellToView(this.tabla,posicion,1);
             tabla.setRowSelectionInterval(posicion,posicion);
         }
-    }
+    }*/
     
     /**
      * metodo que maneja el modelo de una jTable para centrar el scroll al medio
