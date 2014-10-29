@@ -883,13 +883,16 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
     }
     
     private void insertar(){             
-        r_con.Connection();
+        r_con.Connection();   
         int puntoVenta=Integer.parseInt((String)combo_pto_venta.getSelectedItem());        
-        for(int i:listaComprobantes.getSelectedIndices()){                            
-            int comprobante=i+1;            
-            String sql = "INSERT INTO "+name_tabla
-                       + " VALUES("+puntoVenta+","+comprobante+",0)";                        
-            r_con.InsertarSinCartel(sql);                                
+        for(int i:listaComprobantes.getSelectedIndices()){
+            if(i<listaComprobantes.getModel().getSize()){
+                String aux=(String)listaComprobantes.getModel().getElementAt(i);
+                String[] numComprobante=aux.split("-");                        
+                String sql = "INSERT INTO "+name_tabla
+                           + " VALUES("+puntoVenta+","+numComprobante[0]+",0)";                        
+                r_con.InsertarSinCartel(sql);                
+            }
         }
     }
     
