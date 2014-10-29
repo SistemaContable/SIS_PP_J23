@@ -373,10 +373,7 @@ public class GUI_Parametros_Facturacion extends javax.swing.JInternalFrame {
             this.jLabel1.setText(t);
     }
 
-    private void cargarUltimo(){
-        
-        System.out.println(combo_punto_venta.getSelectedItem()!=null);
-        System.out.println(combo_tipo_comprobante.getSelectedItem()!=null);
+    private void cargarUltimo(){                
         if((combo_punto_venta.getSelectedItem()!=null)&&(combo_tipo_comprobante.getSelectedItem()!=null)){
             
             String pv = combo_punto_venta.getSelectedItem().toString();
