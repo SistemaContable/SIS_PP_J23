@@ -298,7 +298,6 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
                         dir_logo+="/src/Reportes/logo.png";
 
                         parametros.put("url_logo", dir_logo);
-                        parametros.put("letra_comprobante", this.reporte_letra);
                         parametros.put("cod_comprobante", this.reporte_numero);
                        
                         //localizo el reporte para usarlo

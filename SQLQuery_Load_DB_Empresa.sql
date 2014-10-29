@@ -469,6 +469,12 @@ CREATE TABLE productos(
 		CREATE INDEX  PK_Producto_Costo ON productos (prod_costo);
 		CREATE INDEX  PK_Producto_Tasa ON productos (prod_tasa_iva);
  
+ insert into productos values(0,'',0,0,0,'01',0,0);
+ insert into productos values(1,'Producto A',200,30,36,'01',0,0);
+ insert into productos values(2,'Producto B',300,40,48,'02',0,0);
+ insert into productos values(3,'Producto C',100,50,60,'00',0,0);
+ insert into productos values(4,'Producto D',200,60,72,'01',0,15.2);
+ 
 
 CREATE TABLE tipo_comprobante(
 	tc_codigo int not null,
@@ -585,6 +591,13 @@ CREATE TABLE clientes(
 	foreign key (cli_sit_frente_iva) references situacion_frente_iva(sfi_id)
 )
 
+insert into clientes values('1','Juan Carlos','Perez','02/05/1970','20123456786',2,'Vieytes',130,1);
+insert into clientes values('2','Jose Alberto','Gomez','02/05/1966','23112223339',2,'Rondeau',115,1);
+insert into clientes values('3','Horacio','Hernandez','02/05/1978','',2,'Güemes',151,7);
+insert into clientes values('4','Juan Jose','Hernandez','02/05/1980','20176543214',2,'Moreno',130,6);
+insert into clientes values('5','Cooperadora EM 13','','','23176512349',2,'Rondeau',164,3);
+insert into clientes values('900','Consumidor Final','','','',2,'-',0,5);
+
 		CREATE INDEX  IX_Clientes_id ON clientes (cli_codigo);
 		CREATE INDEX  IX_Clientes_nom ON clientes (cli_nombre);
 		CREATE INDEX  IX_Clientes_ape ON clientes (cli_apellido);
@@ -659,9 +672,11 @@ CREATE TABLE encabezado_factura(
 	ef_tasa_reducida float,
 	ef_no_gravado float,
 	ef_impuesto_interno float,
+	ef_total_iva float,
 	ef_subtotal float,
 	ef_total float,
 	ef_confirmado bit,
+	ef_anulada bit,
 	primary key(ef_encabezado_factura_id),
 	foreign key(ef_tipo_comprobante)references tipo_comprobante(tc_codigo),
 	foreign key(ef_punto_venta)references punto_venta(pv_codigo),
@@ -682,6 +697,7 @@ CREATE TABLE renglon_factura(
 	rf_impuesto_interno float,
 	rf_importe float,
 	rf_confirmado bit,
+	rf_descripcion_recibo varchar(60),
 	primary key (rf_encabezado_factura_id,rf_num_renglon),
 	foreign key (rf_encabezado_factura_id) references encabezado_factura(ef_encabezado_factura_id),
 	foreign key (rf_codigo_producto) references productos(prod_codigo)

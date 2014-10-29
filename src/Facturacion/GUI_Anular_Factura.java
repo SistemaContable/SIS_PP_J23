@@ -41,42 +41,55 @@ public class GUI_Anular_Factura extends javax.swing.JInternalFrame {
         lab_anulada.setText(" ");
         r_con=r;
         r_con.Connection();  
+        iniciarFacturaActual();        
         rs=r_con.Consultar("select * from encabezado_factura where ef_encabezado_factura_id="+facturaActual);                
         try{
             rs.next();
+            cargarFactura();
         }
         catch(Exception e){}        
-        cargarFactura();
+        
     }
 
+    private void iniciarFacturaActual(){
+        ResultSet aux=r_con.Consultar("select min(ef_encabezado_factura_id) from encabezado_factura");
+        try{
+            if(aux.next())
+                facturaActual=rs.getInt(1);            
+        }
+        catch(Exception e){};        
+    }
+    
+    
     private void cargarFactura(){
         try{
-            String numControl=rs.getString("ef_encabezado_factura_id");
+            String numControl=rs.getString("ef_encabezado_factura_id");            
             cargarDatosCliente(rs.getString("ef_cliente"));                        
             
             String numero_com = String.format("%02d", Integer.parseInt(rs.getString("ef_tipo_comprobante")));
             String numero_pto = String.format("%04d", Integer.parseInt(rs.getString("ef_punto_venta")));                                        
             String numero_fac = String.format("%08d", Integer.parseInt(rs.getString("ef_num_ptoVenta_tipoComp")));
-            campoFacturaNum.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
-            
+            campoFacturaNum.setText(numero_com+"-"+numero_pto+"-"+numero_fac);            
             jTextField2.setText(rs.getString("ef_cliente"));
             fecha_factura.setText(fecha.convertirBarras(rs.getString("ef_fecha_facturacion")));
             field_iva_general.setText(rs.getString("ef_iva_general"));
             field_sobretasa.setText(rs.getString("ef_sobretasa"));
             field_tasa_diferencial.setText(rs.getString("ef_tasa_diferencial"));
             field_tasa_reducida.setText(rs.getString("ef_tasa_reducida"));
-            field_exento.setText(rs.getString("ef_exento"));    
+            field_exento.setText(rs.getString("ef_exento"));                
             field_impuesto_interno.setText(rs.getString("ef_impuesto_interno"));
             field_no_gravado.setText(rs.getString("ef_no_gravado"));
             field_total_iva.setText(rs.getString("ef_total_iva"));
             jTextField10.setText(rs.getString("ef_subtotal"));
             jTextField11.setText(rs.getString("ef_total")); 
             boolean anulada=rs.getBoolean("ef_anulada");
+            
             if(anulada)
                 lab_anulada.setText("ANULADA");
             else
                 lab_anulada.setText(" ");
-            cargarRenglones();
+            
+            cargarRenglones(numControl);
         
         }
         catch(Exception e){System.out.println("Cargar Factura ERROR");}
@@ -96,13 +109,13 @@ public class GUI_Anular_Factura extends javax.swing.JInternalFrame {
                 field_situacion_IVA.setText(rsAux.getString("cli_sit_frente_iva"));                
             }            
         }
-        catch(Exception e){System.out.println("Cargar Datos Cliente ERROR");}
+        catch(Exception e){System.out.println("Cargar Datos Cliente ERROR");System.out.println(e.getMessage());}
     }
     
-    private void cargarRenglones(){
+    private void cargarRenglones(String numControl){
         try{
-            String numFactura=rs.getString("ef_encabezado_factura_id");
-            ResultSet rsAux=r_con.Consultar("select * from renglon_factura,productos where rf_codigo_producto=prod_codigo and rf_encabezado_factura_id="+numFactura);
+            
+            ResultSet rsAux=r_con.Consultar("select * from renglon_factura,productos where rf_codigo_producto=prod_codigo and rf_encabezado_factura_id="+numControl);            
             inicializarTabla();
             while(rsAux.next()){                
                 String cod_prod=rsAux.getString("rf_codigo_producto");
@@ -115,7 +128,7 @@ public class GUI_Anular_Factura extends javax.swing.JInternalFrame {
                 //tabla.setModel(modelo);                                
             }                        
         }
-        catch(Exception e){}
+        catch(Exception e){System.out.println(e.getMessage());}
     }
     
     private void inicializarTabla() {        

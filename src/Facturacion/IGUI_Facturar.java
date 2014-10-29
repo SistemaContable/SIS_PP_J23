@@ -830,7 +830,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 r_con.Connection();
                 r_con.ActualizarSinCartel("delete from renglon_factura where rf_confirmado=0");
                 r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");
-                r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control-1 from parametros_facturacion)");
+               // r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control-1 from parametros_facturacion)");
                 this.dispose();
             }                    
         }
@@ -875,12 +875,11 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         String fec=fecha_factura.getText();                
         String sql="insert into encabezado_factura values("+idFactura+","+tipoComprobante+","+puntoVenta+","+
                 "(select max(vxc_numero)+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+puntoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+"),"+
-                "(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0,0,0)";
-        
+                "(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0,0,0)";        
         r_con.InsertarSinCartel(sql);        
         r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control+1 from parametros_facturacion)");
         
-        ResultSet rs=r_con.Consultar("select pf_numero_control from parametros_facturacion");
+        ResultSet rs=r_con.Consultar("select max(ef_encabezado_factura_id) from encabezado_factura");
         try{
         if(rs.next())
             numeroControl=rs.getInt(1);
@@ -1134,7 +1133,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_field_punto_ventaKeyPressed
 
     private void fecha_facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_facturaFocusLost
-        habilitarConfirmar1();
+
         boolean es_componente=false;
         if (evt.getOppositeComponent() != field_nro_cliente){
             //voy a preguntar si la componente que me saco el foco es algun campo del panel de datos de asientos
@@ -1163,11 +1162,13 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 if(rs.next())
                     fechaFacturacion=rs.getString("pf_fecha_ultima_factura");
                 fechaFacturacion=fecha.convertirBarras(fechaFacturacion);
-                if(fecha.menorFechas(fecha_factura.getText(),fechaFacturacion)==2){
+                if((fecha.menorFechas(fecha_factura.getText(),fechaFacturacion)==2)||(fecha.menorFechas(fecha_factura.getText(),fechaFacturacion)==0)){
                     btn_confirmar_encabezado.setEnabled(true);
                     btn_confirmar_encabezado.requestFocus();
+                    habilitarConfirmar1();
                 }
                 else{
+                    btn_confirmar_encabezado.setEnabled(false);
                     mensajeError("La Fecha ingresada debe ser superior a la fecha de la ultima factura: "+fechaFacturacion);    
                 }
             }
@@ -1711,7 +1712,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         
         r_con.Connection();
         BigDecimal sub=analizarTipoCliente(cod_prod,iva,subSinIva,new BigDecimal(cantidad));
-        
+                
         String sql="insert into renglon_factura values("+numeroControl+","+renglon+","+cod_prod+","+cantidad+",0,0,0,0,0,0,0,"+sub+",0,'')";
         r_con.InsertarSinCartel(sql);
         actualizarIvas(cod_prod,iva,subSinIva,renglon,new BigDecimal(cantidad));
@@ -2187,11 +2188,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                             r_con.Connection();
                             //cargo Parametros del Reporte
                             Map parametros = new HashMap();
-                            //localizo el reporte para usarlo
+                            //localizo el reporte para usarlo                            
                             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);
                             //cargo los datos al reporte                            
                             //JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
 
+                            
                             String [] separar = fecha_factura.getText().split("/");
                             parametros.put("dia", separar[0]);
                             parametros.put("mes", separar[1]);
@@ -2237,6 +2239,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                                 jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
                                 jrprintServiceExporter.exportReport();
                                 
+                                r_con.ActualizarSinCartel("update parametros_facturacion set pf_fecha_ultima_factura='"+fecha_factura.getText()+"'");
                                 this.inicializarTabla();
                                 this.inicializarIvas();
                                 this.vaciar_panel_datos();
