@@ -524,10 +524,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     }// </editor-fold>                        
     */
     
-    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {                                   
+    /*private void tablaMouseClicked(java.awt.event.MouseEvent evt) {                                   
         cargar_ValoresPorFila(tabla.rowAtPoint(evt.getPoint()));
         scrollCellToView(this.tabla,tabla.getSelectedRow(),1);        
-    }                                  
+    } */                                 
     
    /* private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {                                       
         menuDisponible(false);
@@ -540,7 +540,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         combo_tipo.requestFocus();
     }*/                                      
 
-    private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {                                       
+    /*private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {                                       
         menuDisponible(false);
         lab_modo.setText("Baja");
         camposEditables(false);
@@ -549,8 +549,8 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         btn_cancelar.setEnabled(true);
         mostrar_Msj_Error("¿Está seguro que desea Eliminar?");
         btn_aceptar.requestFocus();
-    }                                      
-
+    }*/                                      
+/*
     private void menu_modMouseClicked(java.awt.event.MouseEvent evt) {                                      
         menuDisponible(false);
         lab_modo.setText("Modificación");
@@ -564,34 +564,26 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         field_desde.setEnabled(false);
         field_hasta.setEnabled(false);
     }                                     
-
-    private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {                                            
+*/
+    /*private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {                                            
         if (tabla.getRowCount()>0){
             scrollToCenter(this.tabla,0,0);
             tabla.setRowSelectionInterval(0,0); 
             cargar_ValoresPorFila(0);
         }
-    }                                           
+    }  */                                         
 
-    private void btn_ultimoActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    /*private void btn_ultimoActionPerformed(java.awt.event.ActionEvent evt) {                                           
         if (tabla.getRowCount()>0){
             scrollToCenter(this.tabla,tabla.getRowCount(),tabla.getRowCount());
             tabla.setRowSelectionInterval(tabla.getRowCount()-1,tabla.getRowCount()-1); 
             cargar_ValoresPorFila(tabla.getRowCount()-1);
         }
-    }                                          
+    } */                                         
 
-    private void menu_salirMouseClicked(java.awt.event.MouseEvent evt) {                                        
-        this.dispose();
-    }                                       
+                                        
 
-    private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
-            tabla.setRowSelectionInterval(fila_ultimo_registro-1,fila_ultimo_registro-1);
-            scrollCellToView(this.tabla,fila_ultimo_registro-1,fila_ultimo_registro-1); 
-            cargar_ValoresPorFila(fila_ultimo_registro-1);  
-        }
-    }                                            
+                                               
 
     private void btn_proximoActionPerformed(java.awt.event.ActionEvent evt) {                                            
         if ((fila_ultimo_registro+1 >= 0)&&(fila_ultimo_registro+1 < tabla.getRowCount())){                      
@@ -1830,11 +1822,12 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-/*  
+
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        
+        cargar_ValoresPorFila(tabla.rowAtPoint(evt.getPoint()));
+        scrollCellToView(this.tabla,tabla.getSelectedRow(),1);
     }//GEN-LAST:event_tablaMouseClicked
-*/   
+   
     private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_altaMouseClicked
         menuDisponible(false);
         lab_modo.setText("Alta");
@@ -1845,31 +1838,61 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         btn_cancelar.setEnabled(true);
         combo_tipo.requestFocus();
     }//GEN-LAST:event_menu_altaMouseClicked
-/*
+
     private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_bajaMouseClicked
-        
+        menuDisponible(false);
+        lab_modo.setText("Baja");
+        camposEditables(false);
+        ayudaDisponible(false);
+        btn_aceptar.setEnabled(true);
+        btn_cancelar.setEnabled(true);
+        mostrar_Msj_Error("¿Está seguro que desea Eliminar?");
+        btn_aceptar.requestFocus();
     }//GEN-LAST:event_menu_bajaMouseClicked
 
     private void menu_modMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_modMouseClicked
-        
+        menuDisponible(false);
+        lab_modo.setText("Modificación");
+        camposEditables(true);
+        ayudaDisponible(false);
+        btn_aceptar.setEnabled(true);
+        btn_cancelar.setEnabled(true);
+        mostrar_Msj_Error("¿Está seguro que desea Modificar?");
+        field_tasa.requestFocus();
+        combo_tipo.setEnabled(false);
+        field_desde.setEnabled(false);
+        field_hasta.setEnabled(false);
     }//GEN-LAST:event_menu_modMouseClicked
 
     private void btn_primeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_primeroActionPerformed
-
+        if (tabla.getRowCount()>0){
+            scrollToCenter(this.tabla,0,0);
+            tabla.setRowSelectionInterval(0,0); 
+            cargar_ValoresPorFila(0);
+        }
     }//GEN-LAST:event_btn_primeroActionPerformed
 
     private void btn_ultimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ultimoActionPerformed
-
+        if (tabla.getRowCount()>0){
+            scrollToCenter(this.tabla,tabla.getRowCount(),tabla.getRowCount());
+            tabla.setRowSelectionInterval(tabla.getRowCount()-1,tabla.getRowCount()-1); 
+            cargar_ValoresPorFila(tabla.getRowCount()-1);
+        }
     }//GEN-LAST:event_btn_ultimoActionPerformed
 
     private void menu_salirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_salirMouseClicked
-
+        this.dispose();
     }//GEN-LAST:event_menu_salirMouseClicked
 
     private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anteriorActionPerformed
-
+         if ((fila_ultimo_registro-1 >= 0)&&(fila_ultimo_registro-1 < tabla.getRowCount())){             
+            tabla.setRowSelectionInterval(fila_ultimo_registro-1,fila_ultimo_registro-1);
+            scrollCellToView(this.tabla,fila_ultimo_registro-1,fila_ultimo_registro-1); 
+            cargar_ValoresPorFila(fila_ultimo_registro-1);  
+        }
     }//GEN-LAST:event_btn_anteriorActionPerformed
-
+/*
+    
     private void btn_proximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proximoActionPerformed
 
     }//GEN-LAST:event_btn_proximoActionPerformed
