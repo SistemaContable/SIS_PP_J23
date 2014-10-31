@@ -299,6 +299,7 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
 
                         parametros.put("url_logo", dir_logo);
                         parametros.put("cod_comprobante", this.reporte_numero);
+                        parametros.put("letra_comprobante", this.reporte_letra);
                        
                         //localizo el reporte para usarlo
                         r_con.Connection();
@@ -326,6 +327,8 @@ public class GUI_Imprimir_Comprobantes extends javax.swing.JInternalFrame {
                             for (int i = Integer.parseInt(jTextField1.getText()); i <= Integer.parseInt(jTextField2.getText()); i++) {
                                 String numero_fac = String.format("%08d", i);
                                 parametros.put("num_factura",(numero_com+"-"+numero_pto+"-"+numero_fac));
+                                
+                                //parametros.put("letra_comprobante",);
                                 print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
                                 jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
                                 jrprintServiceExporter.exportReport(); 
