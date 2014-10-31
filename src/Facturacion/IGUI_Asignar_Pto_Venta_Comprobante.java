@@ -72,19 +72,29 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
         r_con = r; 
         
         cargarComboTipoIVA();
-        combo_pto_venta.setSelectedIndex(0);
-        modoConsulta();
-        cargarOrdenamientos ();
-        detectarOrden ();
-        ocultar_Msj();
+        if(combo_pto_venta.getItemCount()!=0){
+            combo_pto_venta.setSelectedIndex(0);
+            modoConsulta();
+            cargarOrdenamientos ();
+            detectarOrden ();
+            ocultar_Msj();
         
-        //**selecciono el primer registro y cargo los campos
-        if (tabla.getRowCount()>0){
-            tabla.setRowSelectionInterval(0,0); 
-            cargar_ValoresPorFila(0);
+         //**selecciono el primer registro y cargo los campos
+            if (tabla.getRowCount()>0){
+                tabla.setRowSelectionInterval(0,0); 
+                cargar_ValoresPorFila(0);
+            }
+            cargarListaComprobantes();
         }
-//        cargarComboTipoIVA();
-        cargarListaComprobantes();
+        else
+        {
+            mostrar_Msj_Error("No existe ningun punto de venta");
+            btn_cancelar.setEnabled(false);
+            btn_aceptar.setEnabled(false);
+            menu_alta.setEnabled(false);
+            menu_baja.setEnabled(false);
+            menu_recorrido.setEnabled(false);
+        }
     }
 
     /**
@@ -1022,7 +1032,6 @@ public class IGUI_Asignar_Pto_Venta_Comprobante extends javax.swing.JInternalFra
             combo_pto_venta.removeAllItems();
             r_con.Connection();            
             ResultSet res = r_con.Consultar("SELECT * FROM punto_venta WITH (INDEX(PK_pv_codigo)) ");            
-
             while(res.next()){
                combo_pto_venta.addItem(res.getString(1)); 
             }
