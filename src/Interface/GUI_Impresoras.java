@@ -35,6 +35,7 @@ public class GUI_Impresoras extends javax.swing.JInternalFrame {
         r_con=con;  
         cargarComboBox();
         listar_Impresoras();
+        jComboBox1.requestFocusInWindow();
     }
 
     /**

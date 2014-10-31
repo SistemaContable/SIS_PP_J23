@@ -93,6 +93,7 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
         
         r_con.ActualizarSinCartel("delete from libro_mayor");        
         r_con.cierraConexion();
+        jTextField1.requestFocusInWindow();
     }
 
     public BigDecimal[] saldoAnterior(int numCuenta){
@@ -497,19 +498,19 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
             if (fecha.isFechaValida(campoFecha.getText())){                
                 if(fecha.fechaEntreFechas(campoFecha.getText(), fechaInicio, fechaCierre)){
                     mensajeError(" ");                         
-                    campoFecha1.requestFocus();
+                    campoFecha1.requestFocusInWindow();
                     aceptada=true;
                 }
                 else
                 {                    
                     mensajeError("La Fecha ingresada debe ser mayor a "+fechaInicio+" y menor que "+fechaCierre);
-                    campoFecha.requestFocus();
+                    campoFecha.requestFocusInWindow();
                 }
             }
             else
             {
                 mensajeError("La Fecha ingresada no se reconoce como valida.");
-                campoFecha.requestFocus();
+                campoFecha.requestFocusInWindow();
             }                    
     }//GEN-LAST:event_campoFechaFocusLost
 
@@ -525,13 +526,13 @@ public class GUI_Imprimir_Mayor extends javax.swing.JInternalFrame {
                     mensajeError(" ");                    
                 }
                 else{
-                    campoFecha1.requestFocus();
+                    campoFecha1.requestFocusInWindow();
                     mensajeError("La fecha ingresada debe ser mayor que "+campoFecha.getText()+" y menor que "+fechaCierre);
                 }
             }
             else{
                 mensajeError("La Fecha ingresada no se reconoce como valida.");
-                campoFecha1.requestFocus();
+                campoFecha1.requestFocusInWindow();
             }                                    
         }
     }//GEN-LAST:event_campoFecha1FocusLost

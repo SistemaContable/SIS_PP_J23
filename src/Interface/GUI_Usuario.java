@@ -35,15 +35,15 @@ public class GUI_Usuario extends javax.swing.JInternalFrame {
         initComponents();        
         r_con=con;
         perfiles = new Perfiles(r_con);
-        usuarios = new Usuarios(r_con);
-        jTextField1.requestFocus();
+        usuarios = new Usuarios(r_con);        
         usuarioLogueado=r_con.getUsuario();
         cargarComboBox();
         //cargarTabla(1);
         jTable1.setEnabled(false);        
         jTextField4.setEnabled(false);
         this.modo=modo;
-        tipoVentana();        
+        tipoVentana(); 
+        jTextField1.requestFocusInWindow();
     }
        
     private void completarCampos(String usr){        

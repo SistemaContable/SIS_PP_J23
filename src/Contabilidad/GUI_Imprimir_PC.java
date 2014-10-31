@@ -66,6 +66,7 @@ public class GUI_Imprimir_PC extends javax.swing.JInternalFrame {
         minNC="";
         maxCPC="";
         minimosYmaximos();
+        jTextField1.requestFocusInWindow();
     }
 
     /**

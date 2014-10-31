@@ -65,7 +65,7 @@ public class GUI_Cargar_Asiento extends javax.swing.JInternalFrame {
         jButton2.setEnabled(false);
         boton7.setEnabled(false);
         jTable1.setEnabled(false);
-        jButton5.requestFocus();
+        jButton5.requestFocusInWindow();
     }
 
     private void cargarFechas(){

@@ -691,7 +691,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         guiU.moveToFront();
-        guiU.requestFocus();
+        //guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -712,7 +712,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         guiI.moveToFront();
-        guiI.requestFocus();
+        //guiI.requestFocus();
         
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
@@ -754,9 +754,6 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
- 
-        
-        // TODO add your handling code here:
         GUI_BackUp guiU=new GUI_BackUp(r_con);                
         //l.Listado_Articulos();
          //lo centro respecto a x
@@ -773,14 +770,10 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         guiU.moveToFront();
-        guiU.requestFocus();
-        
+        //guiU.requestFocus();        
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-      
-        // TODO add your handling code here:
-        // TODO add your handling code here:
         this.dispose();        
         String name_interno = r_con.getBase_datos();
         String razon_soc = r_con.getRazon_social();
@@ -793,16 +786,10 @@ public class GUI_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        // TODO add your handling code here:
-         // TODO add your handling code here:
         GUI_Usuario guiU=new GUI_Usuario("Baja",usuario,r_con);                
-        //l.Listado_Articulos();
-         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - guiU.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
         guiU.setLocation(x, guiU.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
         guiU.setVisible(true);
         this.jDesktopPane1.add(guiU);
         try {        
@@ -811,20 +798,14 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         guiU.moveToFront();
-        guiU.requestFocus();
+        //guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        // TODO add your handling code here:
-         // TODO add your handling code here:
         GUI_Usuario guiU=new GUI_Usuario("Alta",usuario,r_con);                
-        //l.Listado_Articulos();
-         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - guiU.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - bp.getHeight() / 2;
         guiU.setLocation(x, guiU.getLocation().y);
-        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
         guiU.setVisible(true);
         this.jDesktopPane1.add(guiU);
         try {        
@@ -833,7 +814,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         guiU.moveToFront();
-        guiU.requestFocus();
+        //guiU.requestFocus();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
@@ -929,29 +910,7 @@ public class GUI_Principal extends javax.swing.JFrame {
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
         //creo el InternalFrame;
-        GUI_Plan_Cuentas np = new GUI_Plan_Cuentas(usuario,r_con);       
-
-        //lo centro respecto a x
-        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
-        //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
-        np.setLocation(x, np.getLocation().y);        
-        //lo hago visible, lo agrego al DesktopPanel, hago foco.
-        np.setVisible(true);
-        this.jDesktopPane1.add(np);
-        try {        
-            np.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        np.moveToFront();
-        np.requestFocus(); 
-        
-    }//GEN-LAST:event_jMenuItem19ActionPerformed
-
-    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
-        // TODO add your handling code here:
-        GUI_Cargar_Asiento np = new GUI_Cargar_Asiento(usuario,r_con);       
-
+        GUI_Plan_Cuentas np = new GUI_Plan_Cuentas(usuario,r_con);    
         //lo centro respecto a x
         int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
         //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
@@ -966,7 +925,25 @@ public class GUI_Principal extends javax.swing.JFrame {
         }
         np.moveToFront();
         //np.requestFocus(); 
-        
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        // TODO add your handling code here:
+        GUI_Cargar_Asiento np = new GUI_Cargar_Asiento(usuario,r_con);       
+        //lo centro respecto a x
+        int x = (jDesktopPane1.getWidth() / 2) - np.getWidth() / 2;
+        //int y = (jDesktopPane1.getHeight() / 2) - np.getHeight() / 2;
+        np.setLocation(x, np.getLocation().y);        
+        //lo hago visible, lo agrego al DesktopPanel, hago foco.
+        np.setVisible(true);
+        this.jDesktopPane1.add(np);
+        try {        
+            np.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        np.moveToFront();
+        //np.requestFocus();         
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 
     private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
@@ -986,8 +963,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus(); 
-        
+        //np.requestFocus();
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
     private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
@@ -1006,7 +982,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();        
+        //np.requestFocus();        
     }//GEN-LAST:event_jMenuItem22ActionPerformed
 
     private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
@@ -1026,7 +1002,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();
+        //np.requestFocus();
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 
     private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
@@ -1045,7 +1021,7 @@ public class GUI_Principal extends javax.swing.JFrame {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         np.moveToFront();
-        np.requestFocus();        
+        //np.requestFocus();        
     }//GEN-LAST:event_jMenuItem24ActionPerformed
 
     private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed

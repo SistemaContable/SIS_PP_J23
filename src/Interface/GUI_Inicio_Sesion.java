@@ -39,7 +39,8 @@ public class GUI_Inicio_Sesion extends javax.swing.JFrame {
         jComboBox2.setSelectedIndex(0);
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
-        jTextField3.requestFocus();        
+        //jTextField3.requestFocus();
+        jComboBox1.requestFocusInWindow();
     }
 
     /**

@@ -51,6 +51,7 @@ public class GUI_Plan_Cuentas extends javax.swing.JInternalFrame {
         verPanelOperacion(false);
         bloquearCampos(false);
         cargarArbol();  
+        JTreeConta.requestFocusInWindow();
     }
 
     public void setCtaAyuda(Cuenta ctaAyuda) {

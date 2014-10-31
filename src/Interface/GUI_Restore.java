@@ -42,7 +42,8 @@ public class GUI_Restore extends javax.swing.JFrame  {
         this.url_conexion_dat_sis = url;
         setLocationRelativeTo (null);
         jButton2.setEnabled(false);
-        generarCaptcha ();        
+        generarCaptcha ();
+        jButton3.requestFocusInWindow();
     }
 
     /**

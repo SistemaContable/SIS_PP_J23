@@ -64,6 +64,7 @@ public class GUI_Imprimir_ASTO extends javax.swing.JInternalFrame {
         minFEC="";
         maxFEC="";
         minimosYmaximos();
+        jTextField1.requestFocusInWindow();
     }
 
     /**

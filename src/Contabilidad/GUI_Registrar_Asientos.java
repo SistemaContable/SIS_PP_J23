@@ -44,6 +44,7 @@ public class GUI_Registrar_Asientos extends javax.swing.JInternalFrame {
         campoFecha2.setEnabled(false);
         jLabel6.setText(" ");
         fecha1Correcta=false;
+        jButton2.requestFocusInWindow();
     }
 
     

@@ -9,6 +9,7 @@ package Facturacion;
 import Contabilidad.*;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Fechas;
+import Clases_Auxiliares.JTextFieldFilter;
 import static Clases_Auxiliares.NumberToLetterConverter.convertNumberToLetter;
 import Clases_Auxiliares.Validaciones;
 import Objetos.Cliente;
@@ -90,7 +91,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         fecha_factura.setText(fecha.getHoy()); 
         actualizarLabelIva();
         ordenarFoco();
-        field_tipo_comprobante.requestFocus();
+        field_tipo_comprobante.requestFocusInWindow();
     }
     
     /**
@@ -836,6 +837,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             }                    
         }
         else{
+            r_con.Connection();
             r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");
             dispose();
         }
@@ -1242,25 +1244,36 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField6KeyPressed
 
     private void jTextField6FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusLost
-        r_con.Connection();
-        jButton4.setEnabled(true);
-        try{
-            if(!jTextField6.getText().equals("")){
-                ResultSet rs=r_con.Consultar("select * from productos where prod_codigo="+jTextField6.getText());
-                if(rs.next()){
-                    jTextField12.setText(rs.getString(2));
-                    jTextField7.setText(rs.getString(5));                
+        boolean es_componente=false;        
+        int i=0;        
+        Component[] components = jPanel3.getComponents();
+        while ((!es_componente)&&(i<components.length)){
+            if (components[i]==evt.getOppositeComponent()){
+                es_componente=true;
+            }
+            i++;
+        }        
+        System.out.println(es_componente);
+        if(es_componente){   
+            r_con.Connection();
+            jButton4.setEnabled(true);
+            try{
+                if(!jTextField6.getText().equals("")){
+                    ResultSet rs=r_con.Consultar("select * from productos where prod_codigo="+jTextField6.getText());
+                    if(rs.next()){
+                        jTextField12.setText(rs.getString(2));
+                        jTextField7.setText(rs.getString(5));                
+                    }
+                    else{
+                        jTextField6.requestFocusInWindow();
+                    }
                 }
                 else{
                     jTextField6.requestFocusInWindow();
                 }
-            }
-            else{
-                jTextField6.requestFocusInWindow();
-            }
-        } catch(Exception e){            
-        } finally {r_con.cierraConexion();}
-        
+            } catch(Exception e){            
+            } finally {r_con.cierraConexion();}        
+        }        
     }//GEN-LAST:event_jTextField6FocusLost
 
     private void field_nro_clienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_nro_clienteKeyPressed
@@ -1295,7 +1308,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         catch (PropertyVetoException ex) {
             Logger.getLogger(IGUI_Clientes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        np.moveToFront();        
+        np.moveToFront(); 
     }
     
     private boolean validar_Comprobante_Cliente (Cliente cli, String codigo_comprobante){
@@ -2034,7 +2047,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         return bigNum;
     }
     
-     private void ordenarFoco() {        
+     private void ordenarFoco() {    
+        //JTextFieldFilter jtff = new JTextFieldFilter(JTextFieldFilter.ALPHA_NUMERIC);
+        field_tipo_comprobante.setDocument(new JTextFieldFilter(JTextFieldFilter.ALPHA_NUMERIC,10));
         field_tipo_comprobante.setNextFocusableComponent(field_punto_venta);
         field_punto_venta.setNextFocusableComponent(field_nro_cliente);
         field_nro_cliente.setNextFocusableComponent(fecha_factura);

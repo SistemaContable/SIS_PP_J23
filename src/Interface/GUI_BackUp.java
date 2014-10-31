@@ -32,7 +32,8 @@ public class GUI_BackUp extends javax.swing.JInternalFrame {
     public GUI_BackUp(Conexion con) {
         initComponents();
         r_con = con;
-        jButton2.setEnabled(false);        
+        jButton2.setEnabled(false);
+        jButton3.requestFocusInWindow();
     }
 
     /**
