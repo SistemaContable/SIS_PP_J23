@@ -963,14 +963,14 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:        
         if(!field_costo_u.getText().equals("")){                       
             BigDecimal aux=convertirEnBigDecimal(field_costo_u.getText());
-            field_costo_u.setText(aux.floatValue()+"");
+            field_costo_u.setText(aux+"");
         }
     }//GEN-LAST:event_field_costo_uFocusLost
 
     private void field_precio_ventaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_precio_ventaFocusLost
         if(!field_precio_venta.getText().equals("")){                       
             BigDecimal aux=convertirEnBigDecimal(field_precio_venta.getText());
-            field_precio_venta.setText(aux.floatValue()+"");
+            field_precio_venta.setText(aux+"");
         }
     }//GEN-LAST:event_field_precio_ventaFocusLost
 
@@ -1091,8 +1091,8 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
                 field_codigo.setText(res.getString(1));
                 field_descripcion.setText(res.getString(2));
                 field_cantidad.setText(res.getString(3));
-                field_costo_u.setText(res.getString(4));
-                field_precio_venta.setText(res.getString(5));
+                field_costo_u.setText(convertirEnBigDecimal(res.getString(4))+"");
+                field_precio_venta.setText(convertirEnBigDecimal(res.getString(5))+"");
                 field_tasa_iva.setText(res.getString(6));
                 
                 imp_porc = res.getString(7);

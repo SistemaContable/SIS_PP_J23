@@ -60,7 +60,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     private int renglon,modificar;
     private DefaultTableModel modelo,modeloRecibo;    
     private boolean esCarga=false;        
-    private int numeroControl=-1;    
+    private int numeroControl=-1;
+    private int ultimoNumeroFactura=-1;
     //libreria de manejo de fechas
     private Fechas fecha = new Fechas ();    
     private Cliente cliente_factura;
@@ -77,6 +78,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         usuario=usr;
         renglon=0;
         modificar=-1;
+        
         //r_con.Connection();
         inicializarTabla();
         inicializarIvas();
@@ -92,6 +94,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
         actualizarLabelIva();
         ordenarFoco();
         field_tipo_comprobante.requestFocusInWindow();
+        r_con.Connection();
+        r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");
+        r_con.ActualizarSinCartel("delete from renglon_factura where rf_confirmado=0");
     }
     
     /**
@@ -831,14 +836,17 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             if (rta==JOptionPane.YES_OPTION){                
                 r_con.Connection();
                 r_con.ActualizarSinCartel("delete from renglon_factura where rf_confirmado=0");
+                r_con.ActualizarSinCartel("delete from renglon_factura where rf_encabezado_factura_id="+numeroControl);
                 r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");
-               // r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control-1 from parametros_facturacion)");
+                r_con.ActualizarSinCartel("delete from encabezado_factura where ef_encabezado_factura_id="+numeroControl);
+               
                 this.dispose();
             }                    
         }
         else{
             r_con.Connection();
             r_con.ActualizarSinCartel("delete from encabezado_factura where ef_confirmado=0");
+           // r_con.ActualizarSinCartel("delete from encabezado_factura where ef_encabezado_factura_id="+numeroControl);
             dispose();
         }
         r_con.cierraConexion();
@@ -870,23 +878,24 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     
     
     private void btn_confirmar_encabezadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmar_encabezadoActionPerformed
-        int idFactura=getIdNuevoEncabezadoFactura();  
+        numeroControl=getIdNuevoEncabezadoFactura();  
         r_con.Connection();
         int tipoComprobante=Integer.parseInt(field_tipo_comprobante.getText());
         int puntoVenta=Integer.parseInt(field_punto_venta.getText()); 
         int numCliente=Integer.parseInt(field_nro_cliente.getText());       
         String fec=fecha_factura.getText();                
-        String sql="insert into encabezado_factura values("+idFactura+","+tipoComprobante+","+puntoVenta+","+
-                "(select max(vxc_numero)+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+puntoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+"),"+
-                "(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0,0,0)";        
-        r_con.InsertarSinCartel(sql);        
-        r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control=(select pf_numero_control+1 from parametros_facturacion)");
         
-        ResultSet rs=r_con.Consultar("select max(ef_encabezado_factura_id) from encabezado_factura");
-        try{
-        if(rs.next())
-            numeroControl=rs.getInt(1);
-        }catch(Exception e){}
+        ResultSet rsAux=r_con.Consultar("select max(vxc_numero) from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+puntoVenta +" and vxc_id_tipo_comprobante="+tipoComprobante);
+        try{                    
+            if(rsAux.next())
+                ultimoNumeroFactura=rsAux.getInt(1)+1;        
+        }catch(Exception e){}        
+        
+        String sql="insert into encabezado_factura values("+numeroControl+","+tipoComprobante+","+puntoVenta+","+ultimoNumeroFactura+
+                ",(select pf_numero_control+1 from parametros_facturacion),'"+numCliente+"','"+fec+"',0,0,0,0,0,0,0,0,0,0,0,0)";        
+        r_con.InsertarSinCartel(sql);        
+        r_con.ActualizarSinCartel("update parametros_facturacion set pf_numero_control="+numeroControl);
+                                                
         if(cliente_factura.getCodigo_situacion_IVA_cliente()!=1){
             jLabel2.setVisible(false);
             jTextField10.setVisible(false);            
@@ -918,15 +927,28 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             jTable1.setModel(modeloRecibo); 
             jTable1.setEnabled(false);
             boton7.setEnabled(true);
-            jTextField6.setVisible(false);jTextField6.setFocusable(false);jLabel6.setVisible(false);
-            jTextField8.setVisible(false);jTextField8.setFocusable(false);jLabel13.setVisible(false);        
-            jTextField12.setEditable(true);jTextField12.setEnabled(true);jTextField12.setFocusable(true);
-            jTextField7.setEditable(true);jTextField7.setEnabled(true);jTextField7.setFocusable(true);
+            habilitarPanelRecibo(true);
             jTextField10.setVisible(false);jLabel2.setVisible(false);
             jTextField12.requestFocusInWindow();
         }
+        else{
+            habilitarPanelRecibo(false);
+            jTextField12.setEnabled(true);
+            jTextField7.setEnabled(true);
+            if(tipoComprobante==1){
+                jTextField10.setVisible(true);jLabel2.setVisible(true);//subtotal
+            }
+        }
     }
         
+    private void habilitarPanelRecibo(boolean valor){
+        jTextField6.setVisible(!valor);jTextField6.setFocusable(!valor);jLabel6.setVisible(!valor);
+        jTextField8.setVisible(!valor);jTextField8.setFocusable(!valor);jLabel13.setVisible(!valor);        
+        jTextField12.setEditable(valor);jTextField12.setEnabled(valor);jTextField12.setFocusable(valor);
+        jTextField7.setEditable(valor);jTextField7.setEnabled(valor);jTextField7.setFocusable(valor);
+        
+    }
+    
     private void habilitarConfirmar2(){
         if((!jTextField6.getText().equals(""))&&(!jTextField8.getText().equals("")))
             jButton4.setEnabled(true);
@@ -1099,7 +1121,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                             numero_com = String.format("%02d", Integer.parseInt(field_tipo_comprobante.getText()));
                             numero_pto = String.format("%04d", Integer.parseInt(field_punto_venta.getText()));
                         }                
-                        String numero_fac = String.format("%08d", Integer.parseInt(detalle));
+                        String numero_fac = String.format("%08d", Integer.parseInt(detalle)+1);
                         label_numero_factura.setText(numero_com+"-"+numero_pto+"-"+numero_fac);
                         mensajeError(" ");
                     }
@@ -2118,7 +2140,8 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             r_con.ActualizarSinCartel("update renglon_factura set rf_confirmado=1 where rf_encabezado_factura_id="+numeroControl);
             int ptoVenta=Integer.parseInt(field_punto_venta.getText());
             int tipoComprobante=Integer.parseInt(field_tipo_comprobante.getText());
-            r_con.ActualizarSinCartel("update ptoventa_x_tipocomprobante set vxc_numero=(select vxc_numero+1 from ptoventa_x_tipocomprobante where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante+") where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante);
+            
+            r_con.ActualizarSinCartel("update ptoventa_x_tipocomprobante set vxc_numero="+ultimoNumeroFactura+" where vxc_id_pto_venta="+ptoVenta+" and vxc_id_tipo_comprobante="+tipoComprobante);
             esNegativo();                                   
             r_con.cierraConexion();
         }        
@@ -2207,12 +2230,12 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
 
                         //si hay impresora para el modulo
                         if (impresora != null){                            
-                            guardarDatos();
+                            
                             r_con.Connection();
                             //cargo Parametros del Reporte
                             Map parametros = new HashMap();
                             //localizo el reporte para usarlo                            
-                            JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);
+                             JasperReport report = JasperCompileManager.compileReport("src/Reportes/"+reporte_seleccionado);
                             //cargo los datos al reporte                            
                             //JasperPrint print = JasperFillManager.fillReport(report, parametros, r_con.getConn());
 
@@ -2266,8 +2289,9 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                             
                             if (print.getPages().size()>0){
                                 jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, print );
-                                jrprintServiceExporter.exportReport();
-                                
+                                jrprintServiceExporter.exportReport();                                
+                                guardarDatos();
+                                r_con.Connection();
                                 r_con.ActualizarSinCartel("update parametros_facturacion set pf_fecha_ultima_factura='"+fecha_factura.getText()+"'");
                                 this.inicializarTabla();
                                 this.inicializarIvas();
