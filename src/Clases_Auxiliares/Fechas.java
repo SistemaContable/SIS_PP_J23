@@ -212,7 +212,6 @@ public class Fechas {
         cal.getMaximum(Calendar.HOUR_OF_DAY),
         cal.getMaximum(Calendar.MINUTE),
         cal.getMaximum(Calendar.SECOND));
-
         return cal.getTime();
 
     }

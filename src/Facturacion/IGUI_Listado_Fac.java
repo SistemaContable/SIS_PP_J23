@@ -18,12 +18,14 @@ import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -44,18 +46,18 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
     //nombre de la Tabla del SGBD
     private String name_tabla = "encabezado_factura";
     //nombre de las columnas de la Tabla del SGBD (los que desee mostrar)
-    private String[] colum_names = {"ef_encabezado_factura_id","ef_tipo_comprobante","ef_punto_venta","ef_num_ptoVenta_tipoComp","ef_numero_control","ef_fecha_facturacion","ef_subtotal","ef_total"};
+    private String[] colum_names = {"ef_encabezado_factura_id","tc_descripcion","ef_tipo_comprobante","ef_punto_venta","ef_num_ptoVenta_tipoComp","ef_numero_control","ef_fecha_facturacion","ef_subtotal","ef_total","CASE ef_anulado WHEN '1' THEN 'Si' WHEN '0' THEN 'No' ELSE '?' END AS anulado"};
     //nombres reales de los Indices de la Tabla del SGBD
     //V:1.1 :  POR FAVOR PONER EN 0 EL INDICE DEL CAMPO CLAVE.
     private String[] indices_tabla = {"IX_ef_encabezado_factura_id","IX_ef_tipo_comprobante","IX_ef_numero_control"};  
     
     //nombres de los campos de la JTabla (formales a mostrar, misma cantidad que los de ls Tabla) 
-    private String[] colum_names_tabla = {"Codigo ","Tipo","PV","NPV","Nro Control","Fecha","Sub Total","Total"};    
+    private String[] colum_names_tabla = {"Cód.","Descripción","T.C.","Pto V.","NºC.","Nro Control","Fecha","Sub Total","Total","Anulado"};    
     
     //nombres formales de los Indices de la Tabla (a mostrar en el menu ordenamiento, misma cantidad que Indices)
-    private String[] name_indicesTabla = {"por Encabezado","por Comprbante","por Nro Control"};
+    private String[] name_indicesTabla = {"por Nº Control","por Tipo Comprobante","por Nro Control"};
     //posicion que ocupa el valor indices_tabla en colum_names_tabla (para saber que Buscar)
-    private int[] relacion_indices_conTabla = {0,1,2};
+    private int[] relacion_indices_conTabla = {0,2,2};
     
     //modo ordenamiento (Indice) elegido inicial por defecto (cambiar manualmente)
     private int numero_ordenamiento_elegido = 0; //(corresponde al numero de indices_tabla)
@@ -70,10 +72,12 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
         //ajusto el tamaño del listado
         r_con = r;
         float escalar = 0.80F;
-        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*escalar);
+        int ancho = (int)(Toolkit.getDefaultToolkit().getScreenSize(). width*(escalar+0.10));
         int alto = (int)(Toolkit.getDefaultToolkit().getScreenSize(). height*escalar);   
         this.setSize(ancho,alto);
 
+        fecha_desde.setText("01/01/1900");
+        fecha_hasta.setText(fecha.getHoy());
         //cargo los ordenamientos
         cargarOrdenamientos ();
         detectarOrden ();
@@ -81,14 +85,12 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
         ocultar_Msj();
         rango_1.setEnabled(false);
         rango_2.setEnabled(false);
-        btn_filtro.setEnabled(false);
         
         //selecciono el primer registro y cargo los campos
         if (tabla.getRowCount()>0){
             tabla.setRowSelectionInterval(0,0); 
         }        
-        this.requestFocusInWindow();
-        fila_ultimo_registro=0;
+        this.requestFocusInWindow();        
     }
     
     public IGUI_Listado_Fac(){}
@@ -114,6 +116,9 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
         rango_1 = new javax.swing.JTextField();
         rango_2 = new javax.swing.JTextField();
         btn_filtro = new javax.swing.JButton();
+        lab_tit_fechas = new javax.swing.JLabel();
+        fecha_desde = new javax.swing.JFormattedTextField();
+        fecha_hasta = new javax.swing.JFormattedTextField();
         lab_buscar = new javax.swing.JLabel();
         field_buscar = new javax.swing.JTextField();
         btn_buscar = new javax.swing.JButton();
@@ -172,7 +177,7 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
             .addGroup(panel_ayudaLayout.createSequentialGroup()
                 .addComponent(lab_mensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -203,6 +208,37 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
         btn_filtro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filtroActionPerformed(evt);
+            }
+        });
+
+        lab_tit_fechas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lab_tit_fechas.setText("Fechas:");
+
+        try {
+            fecha_desde.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        fecha_desde.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fecha_desdeFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fecha_desdeFocusLost(evt);
+            }
+        });
+
+        try {
+            fecha_hasta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        fecha_hasta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fecha_hastaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fecha_hastaFocusLost(evt);
             }
         });
 
@@ -266,6 +302,13 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
             .addComponent(lab_tit_filtros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lab_buscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lab_desplazamiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lab_tit_fechas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_opcionesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rango_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rango_2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
             .addGroup(panel_opcionesLayout.createSequentialGroup()
                 .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btn_anterior)
@@ -281,17 +324,19 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                     .addComponent(combo_filtro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(field_buscar))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_opcionesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rango_1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rango_2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
             .addGroup(panel_opcionesLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
                 .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_opcionesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(fecha_desde, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(fecha_hasta, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_opcionesLayout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(btn_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_opcionesLayout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_opcionesLayout.setVerticalGroup(
@@ -301,7 +346,7 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                 .addComponent(lab_tit_orden1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lab_orden)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lab_tit_filtros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(combo_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,9 +354,15 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                 .addComponent(rango_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rango_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lab_tit_fechas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fecha_desde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fecha_hasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_filtro)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lab_buscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -327,7 +378,7 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                 .addGroup(panel_opcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_primero)
                     .addComponent(btn_ultimo))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(43, 43, 43))
         );
 
         menu_interno.setBorderPainted(false);
@@ -598,7 +649,6 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
             rango_2.setEnabled(false);
             rango_1.setText("");
             rango_2.setText("");
-            btn_filtro.setEnabled(false);
             updateTabla();
         }
         else{
@@ -619,6 +669,26 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_combo_filtroItemStateChanged
+
+    private void fecha_desdeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_desdeFocusLost
+        if (!fecha.isFechaValida(fecha_desde.getText())){
+            fecha_desde.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_fecha_desdeFocusLost
+
+    private void fecha_hastaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_hastaFocusLost
+        if (!fecha.isFechaValida(fecha_hasta.getText())){
+            fecha_hasta.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_fecha_hastaFocusLost
+
+    private void fecha_desdeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_desdeFocusGained
+        fecha_desde.select(0,0);
+    }//GEN-LAST:event_fecha_desdeFocusGained
+
+    private void fecha_hastaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fecha_hastaFocusGained
+        fecha_hasta.select(0,0);
+    }//GEN-LAST:event_fecha_hastaFocusGained
     
     /*
     * carga los Indices de la Tabla del SGBD al menu de Recorridos para poder ser usados
@@ -682,11 +752,32 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
         datos = new DefaultTableModel(vcta,colum_names_tabla);                        
         tabla.setModel(datos); 
         
-        //ajustamos tamaño de la celda Fecha Alta
-        /*TableColumn columna = tabla.getColumn("Fecha Alta");        
-        columna.setPreferredWidth(100);
-        columna.setMinWidth(100);
-        columna.setMaxWidth(100);*/
+        //ajustamos tamaño de la celda Fecha Alta "Codigo","NºC.","Descrip.","Pto. V.","Fecha","Sub Total","Total"}; 
+        //codigo        
+        TableColumn columna = tabla.getColumn(colum_names_tabla[0]);        
+        columna.setPreferredWidth(50);
+        columna.setMinWidth(50);
+        columna.setMaxWidth(50);        
+        //descripcion comprobante 
+        columna = tabla.getColumn(colum_names_tabla[1]);        
+        columna.setPreferredWidth(115);
+        columna.setMinWidth(115);
+        columna.setMaxWidth(115);
+        //tipo comprobante
+        columna = tabla.getColumn(colum_names_tabla[2]);        
+        columna.setPreferredWidth(35);
+        columna.setMinWidth(35);
+        columna.setMaxWidth(35);
+        //punto venta
+        columna = tabla.getColumn(colum_names_tabla[3]);        
+        columna.setPreferredWidth(45);
+        columna.setMinWidth(45);
+        columna.setMaxWidth(45);
+        //numero comprobante
+        columna = tabla.getColumn(colum_names_tabla[4]);        
+        columna.setPreferredWidth(75);
+        columna.setMinWidth(75);
+        columna.setMaxWidth(75);
         
         //posiciono en el buscado, por si cambia el orden de recorrido           
         if(!codigo_anterior.equals("-1")){
@@ -821,23 +912,24 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                 
                 if (combo_filtro.getSelectedIndex()==0){
                     consulta = ("SELECT "+campos+" "+
-                                "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+"))");
+                                "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+")), tipo_comprobante "+
+                                "WHERE ef_tipo_comprobante = tc_codigo AND ef_fecha_facturacion between '"+fecha_desde.getText()+"' and '"+fecha_hasta.getText()+"' ");
                     ocultar_Msj();
                 }
                 else{
                     if (combo_filtro.getSelectedIndex()==1){
                         String campobuscado = colum_names[relacion_indices_conTabla[numero_ordenamiento_elegido]];
                         consulta = ("SELECT "+campos+" "+
-                                    "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+")) "+
-                                    "WHERE ("+campobuscado+" >= '"+rango_1.getText()+"' AND "+campobuscado+" <= '"+rango_2.getText()+"')");
+                                    "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+")), tipo_comprobante "+
+                                    "WHERE ("+campobuscado+" >= '"+rango_1.getText()+"' AND "+campobuscado+" <= '"+rango_2.getText()+"') and ef_tipo_comprobante = tc_codigo AND ef_fecha_facturacion between '"+fecha_desde.getText()+"' and '"+fecha_hasta.getText()+"' ");
                         String buscado = colum_names_tabla[relacion_indices_conTabla[numero_ordenamiento_elegido]];
                         mostrar_Msj_Exito("FILTRO: "+buscado+" entre: "+rango_1.getText()+" y "+rango_2.getText());
                     }
                     else{
                         String campobuscado = colum_names[relacion_indices_conTabla[numero_ordenamiento_elegido]];
                         consulta = ("SELECT "+campos+" "+
-                                    "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+")) "+
-                                    "WHERE ("+campobuscado+" = '"+rango_1.getText()+"')");
+                                    "FROM "+name_tabla+" WITH (INDEX("+indices_tabla[numero_ordenamiento_elegido]+")), tipo_comprobante "+
+                                    "WHERE ("+campobuscado+" = '"+rango_1.getText()+"') AND ef_tipo_comprobante = tc_codigo AND ef_fecha_facturacion between '"+fecha_desde.getText()+"' AND '"+fecha_hasta.getText()+"' ");
                         String buscado = colum_names_tabla[relacion_indices_conTabla[numero_ordenamiento_elegido]];
                         mostrar_Msj_Exito("FILTRO: "+buscado+" = "+rango_1.getText());
                     }
@@ -849,7 +941,32 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
                     int i = 0;
                     while(res.next()){
                         for (int j = 0; j < colum_names.length; j++) {  
-                            data[i][j] = res.getString(j+1);
+                            //si es el tipo comprobante
+                            if (j==2){
+                                data[i][j] = String.format("%02d", Integer.parseInt(res.getString(j+1)));
+                            }
+                            else{
+                                //si es el punto de venta
+                                if (j==3){
+                                    data[i][j] = String.format("%04d", Integer.parseInt(res.getString(j+1)));
+                                }
+                                else{
+                                    //si es el numero de comprobante
+                                    if (j==4){
+                                        data[i][j] = String.format("%08d", Integer.parseInt(res.getString(j+1)));
+                                    }
+                                    else{
+                                        //si es fecha la acomodo 
+                                        if (j==6){
+                                            data[i][j] = fecha.convertirBarras(res.getString(j+1));
+                                        }
+                                        else{
+                                            data[i][j] = res.getString(j+1);
+                                        }
+                                    }
+                                }
+                            }
+                            
                         }     
                         i++;
                     }
@@ -898,12 +1015,15 @@ public class IGUI_Listado_Fac extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_proximo;
     private javax.swing.JButton btn_ultimo;
     private javax.swing.JComboBox combo_filtro;
+    private javax.swing.JFormattedTextField fecha_desde;
+    private javax.swing.JFormattedTextField fecha_hasta;
     private javax.swing.JTextField field_buscar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lab_buscar;
     private javax.swing.JLabel lab_desplazamiento;
     private javax.swing.JLabel lab_mensaje;
     private javax.swing.JLabel lab_orden;
+    private javax.swing.JLabel lab_tit_fechas;
     private javax.swing.JLabel lab_tit_filtros;
     private javax.swing.JLabel lab_tit_orden1;
     private javax.swing.JMenuBar menu_interno;
