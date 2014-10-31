@@ -20,12 +20,13 @@ public class JTextFieldFilter extends PlainDocument {
     protected String acceptedChars = null;
     protected boolean negativeAccepted = false;
 
-    //public JTextFieldFilter() {
-      //this(ALPHA_NUMERIC);
-    //}
 
     public JTextFieldFilter(String acceptedchars, int max) {
       acceptedChars = acceptedchars;
+      LIMIT = max;
+    }
+    
+    public JTextFieldFilter(int max) {
       LIMIT = max;
     }
 
@@ -40,24 +41,27 @@ public class JTextFieldFilter extends PlainDocument {
         //si es nulo
         if (str == null)
           return;
-        //controlo los caracteres
-        for (int i = 0; i < str.length(); i++) {
-          if (acceptedChars.indexOf(str.valueOf(str.charAt(i))) == -1)
-            return;
-        }
-        //si acepta negaticos
-        if (negativeAccepted) {
-          if (str.indexOf(".") != -1) {
-            if (getText(0, getLength()).indexOf(".") != -1) {
-              return;
+        
+        if (acceptedChars!=null){
+            //controlo los caracteres
+            for (int i = 0; i < str.length(); i++) {
+              if (acceptedChars.indexOf(str.valueOf(str.charAt(i))) == -1)
+                return;
             }
-          }
-        }
-        //control negativos
-        if (negativeAccepted && str.indexOf("-") != -1) {
-          if (str.indexOf("-") != 0 || offset != 0) {
-            return;
-          }
+            //si acepta negaticos
+            if (negativeAccepted) {
+              if (str.indexOf(".") != -1) {
+                if (getText(0, getLength()).indexOf(".") != -1) {
+                  return;
+                }
+              }
+            }
+            //control negativos
+            if (negativeAccepted && str.indexOf("-") != -1) {
+              if (str.indexOf("-") != 0 || offset != 0) {
+                return;
+              }
+            }
         }
         //controlo la longitud y acepto finalmente
         if ((getLength() + str.length()) <= LIMIT) {

@@ -82,7 +82,7 @@ public class GUI_Anular_Factura extends javax.swing.JInternalFrame {
             field_total_iva.setText(rs.getString("ef_total_iva"));
             jTextField10.setText(rs.getString("ef_subtotal"));
             jTextField11.setText(rs.getString("ef_total")); 
-            boolean anulada=rs.getBoolean("ef_anulada");
+            boolean anulada=rs.getBoolean("ef_anulado");
             
             if(anulada)
                 lab_anulada.setText("ANULADA");
@@ -854,7 +854,7 @@ try{
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
         int rta=JOptionPane.showConfirmDialog(null,"La factura será Anulada. ¿Desea continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);                            
         if (rta==JOptionPane.YES_OPTION){    
-            r_con.ActualizarSinCartel("update encabezado_factura set ef_anulada=1, ef_subtotal=0, ef_total=0,ef_no_gravado=0,ef_total_iva=0,ef_impuesto_interno=0,ef_tasa_reducida=0,ef_exento=0,ef_sobretasa=0,ef_tasa_diferencial=0,ef_iva_general=0 where ef_encabezado_factura_id="+facturaActual);        
+            r_con.ActualizarSinCartel("update encabezado_factura set ef_anulado=1, ef_subtotal=0, ef_total=0,ef_no_gravado=0,ef_total_iva=0,ef_impuesto_interno=0,ef_tasa_reducida=0,ef_exento=0,ef_sobretasa=0,ef_tasa_diferencial=0,ef_iva_general=0 where ef_encabezado_factura_id="+facturaActual);        
             rs=r_con.Consultar("select * from encabezado_factura where ef_encabezado_factura_id="+facturaActual);                            
             try{
             if(rs.next())

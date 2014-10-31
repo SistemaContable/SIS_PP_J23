@@ -13,6 +13,7 @@ import Clases_Auxiliares.Fechas;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,6 +90,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    /*
     private void initComponents() {
 
         panel_ayuda = new javax.swing.JPanel();
@@ -520,14 +522,14 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>                        
-    
+    */
     
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {                                   
         cargar_ValoresPorFila(tabla.rowAtPoint(evt.getPoint()));
         scrollCellToView(this.tabla,tabla.getSelectedRow(),1);        
     }                                  
     
-    private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {                                       
+   /* private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {                                       
         menuDisponible(false);
         lab_modo.setText("Alta");
         vaciarCampos();
@@ -536,7 +538,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         btn_aceptar.setEnabled(true);
         btn_cancelar.setEnabled(true);
         combo_tipo.requestFocus();
-    }                                      
+    }*/                                      
 
     private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {                                       
         menuDisponible(false);
@@ -559,7 +561,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         mostrar_Msj_Error("¿Está seguro que desea Modificar?");
         field_tasa.requestFocus();
         combo_tipo.setEnabled(false);
-        field_desdee.setEnabled(false);
+        field_desde.setEnabled(false);
         field_hasta.setEnabled(false);
     }                                     
 
@@ -764,7 +766,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                     ocultar_Msj();
                     insertar();
                     combo_tipo.setEnabled(true);
-                    field_desdee.setEnabled(true);
+                    field_desde.setEnabled(true);
                     field_hasta.setEnabled(true);
                     menuDisponible(true); 
                     modoConsulta();           
@@ -846,16 +848,16 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     }                                           
 
     private void field_desdeeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeeFocusGained
-        field_desdee.select(0,0);
+        field_desde.select(0,0);
     }//GEN-LAST:event_field_desdeeFocusGained
 
     private void field_desdeeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeeFocusLost
-        if (fecha.isFechaValida(field_desdee.getText())){
+        if (fecha.isFechaValida(field_desde.getText())){
             ocultar_Msj();
         }
         else{
             mostrar_Msj_Error("La Fecha ingresada no se reconoce como valida.");
-            field_desdee.requestFocus();
+            field_desde.requestFocus();
         }
     }//GEN-LAST:event_field_desdeeFocusLost
 
@@ -924,7 +926,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
             while(res.next()){
                 lab_ID.setText(res.getString(1));
                 combo_tipo.setSelectedItem(res.getString(2));
-                field_desdee.setText(fecha.convertirBarras(res.getString(3)));
+                field_desde.setText(fecha.convertirBarras(res.getString(3)));
                 field_hasta.setText(fecha.convertirBarras(res.getString(4)));
                 field_tasa.setText(res.getString(5));
                 field_sobretasa.setText(res.getString(6));
@@ -1165,7 +1167,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         r_con.Connection();
         String sql = "INSERT INTO "+name_tabla
                    + " VALUES('"+combo_tipo.getSelectedItem()+"','"
-                                +field_desdee.getText()+"','"
+                                +field_desde.getText()+"','"
                                 +field_hasta.getText()+"',"
                                 +field_tasa.getText()+","
                                 +field_sobretasa.getText()+")";
@@ -1210,7 +1212,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     
     private void camposEditables (boolean condicion){
         combo_tipo.setEditable(condicion);
-        field_desdee.setEditable(condicion);
+        field_desde.setEditable(condicion);
         field_hasta.setEditable(condicion);
         field_tasa.setEditable(condicion);
         field_sobretasa.setEditable(condicion);        
@@ -1231,7 +1233,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         if(combo_tipo.getItemCount()>0){
             combo_tipo.setSelectedIndex(0);
         }
-        field_desdee.setText("");
+        field_desde.setText("");
         field_hasta.setText("");
         field_tasa.setText("");
         field_sobretasa.setText("");
@@ -1239,7 +1241,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     
     private boolean camposCompletos (){
         if((combo_tipo.getSelectedIndex()>=0)&&
-           (fecha.isFechaValida(field_desdee.getText()))&&
+           (fecha.isFechaValida(field_desde.getText()))&&
            (fecha.isFechaValida(field_hasta.getText()))&&
            (!field_tasa.getText().equals(""))&&
            (!field_sobretasa.getText().equals(""))
@@ -1272,9 +1274,14 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void mostrar_Msj_Error(String texto) {
         this.lab_mensaje.setText(texto);
         this.lab_mensaje.setForeground(Color.RED);
-    }   
+    }
     
-
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        System.out.println("pepe");
+    }  
+    
+    /*
     // Variables declaration - do not modify                     
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_anterior;
@@ -1314,7 +1321,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panel_desplazamiento;
     private javax.swing.JTable tabla;
     // End of variables declaration                   
-
+    */
     private void restringirCampos() {        
         //field_tasa.setNextFocusableComponent(field_sobretasa);
         //field_sobretasa.setNextFocusableComponent(field_sigla);
@@ -1351,7 +1358,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private boolean validarFechas (){
         boolean cumple = false;
         
-        if (fecha.menorFechas(field_desdee.getText(), field_hasta.getText())==1){
+        if (fecha.menorFechas(field_desde.getText(), field_hasta.getText())==1){
             try {
                 String sql = "SELECT * " +
                         " FROM Tasas_IVA" +
@@ -1361,7 +1368,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                 ResultSet res = r_con.Consultar(sql);
                 if (res.next()){
                     String fecha_desde = res.getString(3);
-                    if (fecha.menorFechas(field_desdee.getText(), fecha.convertirBarras(fecha_desde))==2){
+                    if (fecha.menorFechas(field_desde.getText(), fecha.convertirBarras(fecha_desde))==2){
                         cumple=true;
                         ocultar_Msj();
                     }
@@ -1384,10 +1391,10 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         
         return cumple;        
     }
-}
 
 
-/*
+
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -1511,11 +1518,6 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         });
 
         field_tasa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        field_tasa.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                field_tasaFocusLost(evt);
-            }
-        });
         field_tasa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 field_tasaKeyTyped(evt);
@@ -1523,11 +1525,6 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         });
 
         field_sobretasa.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        field_sobretasa.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                field_sobretasaFocusLost(evt);
-            }
-        });
 
         btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_aceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
@@ -1635,7 +1632,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
                         .addComponent(combo_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addComponent(lab_tipo_tasa, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(173, 173, 173))
+                .addGap(134, 134, 134))
         );
         panel_datosLayout.setVerticalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1833,15 +1830,22 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    
+/*  
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         
     }//GEN-LAST:event_tablaMouseClicked
-    
+*/   
     private void menu_altaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_altaMouseClicked
-        
+        menuDisponible(false);
+        lab_modo.setText("Alta");
+        vaciarCampos();
+        camposEditables(true);
+        ayudaDisponible(false);
+        btn_aceptar.setEnabled(true);
+        btn_cancelar.setEnabled(true);
+        combo_tipo.requestFocus();
     }//GEN-LAST:event_menu_altaMouseClicked
-
+/*
     private void menu_bajaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_bajaMouseClicked
         
     }//GEN-LAST:event_menu_bajaMouseClicked
@@ -1892,7 +1896,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void field_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_buscarKeyPressed
         
     }//GEN-LAST:event_field_buscarKeyPressed
-
+    */
     private void field_desdeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeFocusGained
         
     }//GEN-LAST:event_field_desdeFocusGained
@@ -1900,7 +1904,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void field_desdeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_desdeFocusLost
         
     }//GEN-LAST:event_field_desdeFocusLost
-
+/*
     private void field_hastaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_hastaFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_field_hastaFocusGained
@@ -1912,16 +1916,8 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private void combo_tipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_tipoItemStateChanged
         
     }//GEN-LAST:event_combo_tipoItemStateChanged
-
-    private void field_tasaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_tasaFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_tasaFocusLost
-
-    private void field_sobretasaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_sobretasaFocusLost
-        
-    }//GEN-LAST:event_field_sobretasaFocusLost
- 
     
+  */  
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_aceptar;
@@ -1963,5 +1959,7 @@ public class IGUI_Tasas_IVA extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
-  */  
+    
+    
+    }
 

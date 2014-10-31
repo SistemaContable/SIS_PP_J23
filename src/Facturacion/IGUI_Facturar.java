@@ -1029,7 +1029,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
                 int i=0;
                 int posBuscada=modificar+1;
                 while(rs.next()){
-                    System.out.println(i+" "+rs.getInt("rf_num_renglon")+" "+posBuscada);
+                    //System.out.println(i+" "+rs.getInt("rf_num_renglon")+" "+posBuscada);
                     if(i!=rs.getInt("rf_num_renglon")){
                         r_con.ActualizarSinCartel("update renglon_factura set rf_num_renglon="+i+" where rf_encabezado_factura_id="+numeroControl+" and rf_num_renglon="+posBuscada);
                         posBuscada++;
@@ -1253,7 +1253,7 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
             }
             i++;
         }        
-        System.out.println(es_componente);
+
         if(es_componente){   
             r_con.Connection();
             jButton4.setEnabled(true);
@@ -2048,8 +2048,15 @@ public class IGUI_Facturar extends javax.swing.JInternalFrame {
     }
     
      private void ordenarFoco() {    
-        //JTextFieldFilter jtff = new JTextFieldFilter(JTextFieldFilter.ALPHA_NUMERIC);
-        field_tipo_comprobante.setDocument(new JTextFieldFilter(JTextFieldFilter.ALPHA_NUMERIC,10));
+        field_tipo_comprobante.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,3));
+        field_punto_venta.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,4));
+        field_nro_cliente.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,5));
+        jTextField6.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,6));
+        jTextField8.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,6)); 
+        
+        jTextField7.setDocument(new JTextFieldFilter(JTextFieldFilter.REAL,10));
+        jTextField12.setDocument(new JTextFieldFilter(60));
+        
         field_tipo_comprobante.setNextFocusableComponent(field_punto_venta);
         field_punto_venta.setNextFocusableComponent(field_nro_cliente);
         field_nro_cliente.setNextFocusableComponent(fecha_factura);
