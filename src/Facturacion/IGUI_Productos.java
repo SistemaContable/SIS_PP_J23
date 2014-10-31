@@ -10,6 +10,7 @@ package Facturacion;
 import Clases_Auxiliares.Conexion;
 import Clases_Auxiliares.Validaciones;
 import Clases_Auxiliares.Fechas;
+import Clases_Auxiliares.JTextFieldFilter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -70,6 +71,7 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
     
     public IGUI_Productos(Conexion r) {
         initComponents();
+        ordenarFoco ();
         restringirCampos();
         r_con = r; 
         
@@ -104,12 +106,12 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         field_descripcion = new javax.swing.JTextField();
         field_cantidad = new javax.swing.JTextField();
         field_costo_u = new javax.swing.JTextField();
-        btn_aceptar = new javax.swing.JButton();
-        btn_cancelar = new javax.swing.JButton();
         field_precio_venta = new javax.swing.JTextField();
         field_tasa_iva = new javax.swing.JTextField();
         combo_tipo_imp = new javax.swing.JComboBox();
         field_impuesto = new javax.swing.JTextField();
+        btn_aceptar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
         lab_tit_orden = new javax.swing.JLabel();
         lab_orden = new javax.swing.JLabel();
         lab_tit_modo = new javax.swing.JLabel();
@@ -200,24 +202,6 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
             }
         });
 
-        btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_aceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
-        btn_aceptar.setText("ACEPTAR");
-        btn_aceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_aceptarActionPerformed(evt);
-            }
-        });
-
-        btn_cancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
-        btn_cancelar.setText("CANCELAR");
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
-            }
-        });
-
         field_precio_venta.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 field_precio_ventaFocusLost(evt);
@@ -247,6 +231,24 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         combo_tipo_imp.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 combo_tipo_impItemStateChanged(evt);
+            }
+        });
+
+        btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_aceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/aceptar.png"))); // NOI18N
+        btn_aceptar.setText("ACEPTAR");
+        btn_aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_aceptarActionPerformed(evt);
+            }
+        });
+
+        btn_cancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cancelar.png"))); // NOI18N
+        btn_cancelar.setText("CANCELAR");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
             }
         });
 
@@ -1603,6 +1605,24 @@ public class IGUI_Productos extends javax.swing.JInternalFrame {
         return bigNum;
     }
     
+    public void ordenarFoco (){
+        field_codigo.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,10));
+        field_descripcion.setDocument(new JTextFieldFilter(60));
+        field_cantidad.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,10));
+        field_costo_u.setDocument(new JTextFieldFilter(JTextFieldFilter.REAL,12));
+        field_precio_venta.setDocument(new JTextFieldFilter(JTextFieldFilter.REAL,12));
+        field_tasa_iva.setDocument(new JTextFieldFilter(JTextFieldFilter.NUMERIC,2));
+        field_impuesto.setDocument(new JTextFieldFilter(JTextFieldFilter.REAL,10));
+        
+        field_codigo.setNextFocusableComponent(field_descripcion);
+        field_descripcion.setNextFocusableComponent(field_cantidad);
+        field_cantidad.setNextFocusableComponent(field_costo_u);
+        field_costo_u.setNextFocusableComponent(field_precio_venta);
+        field_precio_venta.setNextFocusableComponent(field_tasa_iva);
+        field_tasa_iva.setNextFocusableComponent(combo_tipo_imp);
+        combo_tipo_imp.setNextFocusableComponent(field_impuesto);
+        field_impuesto.setNextFocusableComponent(btn_aceptar);
+    }
     
 }
 
