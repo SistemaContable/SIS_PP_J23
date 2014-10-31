@@ -190,7 +190,7 @@ WHERE rf_encabezado_factura_id = $P{control} AND rf_codigo_producto=prod_codigo]
 				<textFieldExpression><![CDATA[$F{rf_codigo_producto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="100" y="0" width="294" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2a5b6b96-487e-4825-a38c-17ec734b87f9"/>
+				<reportElement mode="Transparent" x="103" y="0" width="290" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2a5b6b96-487e-4825-a38c-17ec734b87f9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>

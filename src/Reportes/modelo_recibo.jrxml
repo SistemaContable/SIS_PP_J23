@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="39be304a-dd9e-4d7a-8b80-5f271fefd27a">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="175"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -144,7 +144,7 @@ WHERE rf_encabezado_factura_id = $P{control} AND rf_codigo_producto=prod_codigo]
 				</reportElement>
 			</rectangle>
 			<textField>
-				<reportElement x="5" y="38" width="546" height="43" uuid="f42911f8-a954-4f79-a2d9-613178b16153"/>
+				<reportElement x="8" y="38" width="540" height="43" uuid="f42911f8-a954-4f79-a2d9-613178b16153"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -167,7 +167,7 @@ WHERE rf_encabezado_factura_id = $P{control} AND rf_codigo_producto=prod_codigo]
 				</line>
 			</elementGroup>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="4" y="0" width="482" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5839948f-e732-43cc-96d9-776476acfc9d"/>
+				<reportElement mode="Transparent" x="5" y="0" width="481" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5839948f-e732-43cc-96d9-776476acfc9d"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
